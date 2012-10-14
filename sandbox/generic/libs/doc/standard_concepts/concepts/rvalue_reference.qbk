@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section RvalueReference]
+[section:rvaluereference Rvalue[']Reference]
 
 [heading Description]
 Determines whether a given type is an rvalue reference type.

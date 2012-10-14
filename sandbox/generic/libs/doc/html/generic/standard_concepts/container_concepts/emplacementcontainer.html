@@ -15,7 +15,7 @@
 </div>
 <div class="section generic_standard_concepts_container_concepts_emplacementcontainer">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="generic.standard_concepts.container_concepts.emplacementcontainer"></a><a class="link" href="emplacementcontainer.html" title="EmplacementContainer">EmplacementContainer</a>
+<a name="generic.standard_concepts.container_concepts.emplacementcontainer"></a><a class="link" href="emplacementcontainer.html" title="EmplacementContainer">EmplacementC<span class="emphasis"><em></em></span>ontainer</a>
 </h4></div></div></div>
 <h6>
 <a name="generic.standard_concepts.container_concepts.emplacementcontainer.h0"></a>
@@ -50,10 +50,12 @@
 </tr></thead>
 <tbody><tr>
 <td>
+                  <p>
+</p>
 <pre class="programlisting"><span class="identifier">BOOST_GENERIC_CONCEPT</span>
 <span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span><span class="identifier">EmplacementContainer</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">C</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">,,,)</span> <span class="identifier">Args</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <span class="identifier">Container</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">Container</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;::</span><span class="identifier">iterator</span><span class="special">)(</span><span class="identifier">emplace</span><span class="special">)(</span> <span class="special">(</span><span class="identifier">C</span><span class="special">&amp;)</span> <span class="identifier">c</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">Container</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span><span class="special">)</span> <span class="identifier">position</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;,,,)</span> <span class="identifier">args</span><span class="special">)</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><a class="link" href="emplacementcontainer.html" title="EmplacementContainer">EmplacementContainer</a><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">C</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">,,,)</span> <span class="identifier">Args</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <a class="link" href="container.html" title="Container">Container</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">typename</span> <a class="link" href="container.html" title="Container">Container</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;::</span><span class="identifier">iterator</span><span class="special">)(</span><span class="identifier">emplace</span><span class="special">)(</span> <span class="special">(</span><span class="identifier">C</span><span class="special">&amp;)</span> <span class="identifier">c</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span> <a class="link" href="container.html" title="Container">Container</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span><span class="special">)</span> <span class="identifier">position</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;,,,)</span> <span class="identifier">args</span><span class="special">)</span> <span class="special">)</span>
 
 <span class="comment">// TODO support this</span>
 <span class="comment">//, ( requires ( Constructible&lt;typename Container&lt;C&gt;::value_type, Args...&gt; )</span>
@@ -69,22 +71,28 @@
 <span class="comment">//  )</span>
 <span class="special">)</span>
 </pre>
+<p>
+                  </p>
                 </td>
 <td>
-<pre class="programlisting"><span class="keyword">concept</span> <span class="identifier">EmplacementContainer</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">Container</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">{</span>
+                  <p>
+</p>
+<pre class="programlisting"><span class="keyword">concept</span> <a class="link" href="emplacementcontainer.html" title="EmplacementContainer">EmplacementContainer</a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span> <span class="special">:</span> <a class="link" href="container.html" title="Container">Container</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">{</span>
   <span class="identifier">iterator</span> <span class="identifier">emplace</span><span class="special">(</span><span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">const_iterator</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 
-  <span class="keyword">requires</span> <span class="identifier">Constructible</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
+  <span class="keyword">requires</span> <a class="link" href="../concepts/constructible.html" title="Constructible">Constructible</a><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
     <span class="keyword">axiom</span> <span class="identifier">Emplacement</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">const_iterator</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...</span> <span class="identifier">args</span><span class="special">)</span> <span class="special">{</span>
       <span class="identifier">value_type</span><span class="special">(</span><span class="identifier">args</span><span class="special">...)</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">c</span><span class="special">,</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">args</span><span class="special">...);</span>
   <span class="special">}</span>
 
-  <span class="keyword">requires</span> <span class="identifier">InsertionContainer</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <span class="identifier">Constructible</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
+  <span class="keyword">requires</span> <a class="link" href="insertioncontainer.html" title="InsertionContainer">InsertionContainer</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <a class="link" href="../concepts/constructible.html" title="Constructible">Constructible</a><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
     <span class="keyword">axiom</span> <span class="identifier">EmplacementPushEquivalence</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">const_iterator</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...</span> <span class="identifier">args</span><span class="special">)</span> <span class="special">{</span>
       <span class="special">*</span><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">c</span><span class="special">,</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">args</span><span class="special">...)</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">c</span><span class="special">,</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">(</span><span class="identifier">args</span><span class="special">...));</span>
   <span class="special">}</span>
 <span class="special">}</span>
 </pre>
+<p>
+                  </p>
                 </td>
 </tr></tbody>
 </table></div>
@@ -93,7 +101,7 @@
 <a name="generic.standard_concepts.container_concepts.emplacementcontainer.h2"></a>
           <span class="phrase"><a name="generic.standard_concepts.container_concepts.emplacementcontainer.header"></a></span><a class="link" href="emplacementcontainer.html#generic.standard_concepts.container_concepts.emplacementcontainer.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">container_concepts</span><span class="special">/</span><span class="identifier">emplacement_container</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../include/boost/generic/std_concept/container_concepts/emplacement_container.hpp" target="_top">boost/generic/std_concept/container_concepts/emplacement_container.hpp</a><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="generic.standard_concepts.container_concepts.emplacementcontainer.h3"></a>
@@ -101,7 +109,7 @@
           in N2914</a>
         </h6>
 <p>
-          The corresponding definition of <code class="computeroutput"><span class="identifier">EmplacementContainer</span></code>
+          The corresponding definition of <code class="computeroutput"><a class="link" href="emplacementcontainer.html" title="EmplacementContainer">EmplacementContainer</a></code>
           may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
           section [<span class="emphasis"><em>container.concepts.free</em></span>].
         </p>

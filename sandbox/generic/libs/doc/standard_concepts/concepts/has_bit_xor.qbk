@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasBitXor]
+[section:hasbitxor Has[']BitXor]
 
 [heading Description]
 Describes types with an `operator^`.

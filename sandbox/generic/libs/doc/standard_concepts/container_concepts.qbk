@@ -6,7 +6,27 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Container Concepts]
+[section:container_concepts C[']ontainer Concepts]
+
+[heading Overview]
+The concepts presented in this section describe requirements on the template
+arguments used in container adaptors. It contains two sets of container
+concepts, one that uses non-member functions and the other that uses member
+functions. A set of concept map templates adapts the member function syntax (the
+way most containers are implemented) to free-function syntax (which is used by
+most generic functions, because of its flexibility).
+
+Inclusion of the concepts of this section may be done in one of two ways:
+
+ // Include all of the <container_concepts> concepts
+ #include <boost/generic/std_concept/container_concepts.hpp>
+
+ // -or-
+
+ // Include the <container_concepts> concepts on a case-by-case basis
+ #include <boost/generic/std_concept/container_concepts/back_emplacement_container.hpp>
+ #include <boost/generic/std_concept/container_concepts/back_insertion_container.hpp>
+ // etc.
 
 [include container_concepts/back_emplacement_container.qbk]
 [include container_concepts/back_insertion_container.qbk]

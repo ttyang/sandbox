@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section ClassType]
+[section:classtype C[']lassType]
 
 [heading Description]
 Describes class types (i.e., unions, classes, and structs).

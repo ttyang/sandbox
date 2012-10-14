@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Constructible]
+[section:constructible Construct[']ible]
 
 [heading Description]
 Describes types that can be constructed from a given set of arguments that also

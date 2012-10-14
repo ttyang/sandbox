@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Convertible]
+[section:convertible Convert[']ible]
 
 [heading Description]
 Describes types with an implicit conversion from `T` to `U`.

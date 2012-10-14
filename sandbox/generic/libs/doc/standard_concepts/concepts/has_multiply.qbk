@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasMultiply]
+[section:hasmultiply Has[']Multiply]
 
 [heading Description]
 Describes types with a binary `operator*`.

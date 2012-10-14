@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasPostdecrement]
+[section:haspostdecrement Has[']Postdecrement]
 
 [heading Description]
 Describes types with a post-decrement operator.

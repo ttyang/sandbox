@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section DerivedFrom]
+[section:derivedfrom Derived[']From]
 
 [heading Description]
 Describes types that are the same or that are unambiguously related by public

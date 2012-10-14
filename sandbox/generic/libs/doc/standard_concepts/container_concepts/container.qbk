@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Container]
+[section:container C[']ontainer]
 
 [heading Description]
 Describes a container which provides iteration through a sequence of elements

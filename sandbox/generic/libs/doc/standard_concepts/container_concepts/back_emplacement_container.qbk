@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section BackEmplacementContainer]
+[section:backemplacementcontainer BackEmplacementC[']ontainer]
 
 [heading Description]
 Describes a container that can be modified by constructing elements at the back

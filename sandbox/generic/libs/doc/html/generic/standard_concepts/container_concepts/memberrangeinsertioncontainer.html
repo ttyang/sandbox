@@ -15,7 +15,7 @@
 </div>
 <div class="section generic_standard_concepts_container_concepts_memberrangeinsertioncontainer">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer"></a><a class="link" href="memberrangeinsertioncontainer.html" title="MemberRangeInsertionContainer">MemberRangeInsertionContainer</a>
+<a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer"></a><a class="link" href="memberrangeinsertioncontainer.html" title="MemberRangeInsertionContainer">MemberRangeInsertionC<span class="emphasis"><em></em></span>ontainer</a>
 </h4></div></div></div>
 <h6>
 <a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.h0"></a>
@@ -30,7 +30,7 @@
           <span class="phrase"><a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.definition"></a></span><a class="link" href="memberrangeinsertioncontainer.html#generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.definition">Definition</a>
         </h6>
 <div class="table">
-<a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.memberrangeinsertioncontainer_de"></a><p class="title"><b>Table&#160;1.117.&#160;MemberRangeInsertionContainer Definition</b></p>
+<a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.memberrangeinsertioncontainer_definition"></a><p class="title"><b>Table&#160;1.117.&#160;MemberRangeInsertionContainer Definition</b></p>
 <div class="table-contents"><table class="table" summary="MemberRangeInsertionContainer Definition">
 <colgroup>
 <col>
@@ -50,20 +50,28 @@
 </tr></thead>
 <tbody><tr>
 <td>
+                  <p>
+</p>
 <pre class="programlisting"><span class="identifier">BOOST_GENERIC_AUTO_CONCEPT</span>
 <span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span><span class="identifier">MemberRangeInsertionContainer</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">C</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">Iter</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <span class="identifier">MemberInsertionContainer</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><a class="link" href="memberrangeinsertioncontainer.html" title="MemberRangeInsertionContainer">MemberRangeInsertionC<span class="emphasis"><em></em></span>ontainer</a><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">C</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">Iter</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <a class="link" href="memberinsertioncontainer.html" title="MemberInsertionContainer">MemberInsertionC<span class="emphasis"><em></em></span>ontainer</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">)</span>
 <span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">void</span><span class="special">)(</span><span class="keyword">this</span><span class="special">(</span><span class="identifier">C</span><span class="special">)</span> <span class="identifier">insert</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">MemberInsertionContainer</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span><span class="special">)</span> <span class="identifier">position</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">void</span><span class="special">)(</span><span class="keyword">this</span><span class="special">(</span><span class="identifier">C</span><span class="special">)</span> <span class="identifier">insert</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span> <a class="link" href="memberinsertioncontainer.html" title="MemberInsertionContainer">MemberInsertionC<span class="emphasis"><em></em></span>ontainer</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span><span class="special">)</span> <span class="identifier">position</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
 <span class="special">)</span>
 </pre>
+<p>
+                  </p>
                 </td>
 <td>
-<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">MemberRangeInsertionContainer</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Iter</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">MemberInsertionContainer</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">{</span>
+                  <p>
+</p>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <a class="link" href="memberrangeinsertioncontainer.html" title="MemberRangeInsertionContainer">MemberRangeInsertionC<span class="emphasis"><em></em></span>ontainer</a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Iter</span><span class="special">&gt;</span> <span class="special">:</span> <a class="link" href="memberinsertioncontainer.html" title="MemberInsertionContainer">MemberInsertionC<span class="emphasis"><em></em></span>ontainer</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">{</span>
   <span class="keyword">requires</span> <span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;;</span>
   <span class="keyword">void</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">last</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
+<p>
+                  </p>
                 </td>
 </tr></tbody>
 </table></div>
@@ -72,7 +80,7 @@
 <a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.h2"></a>
           <span class="phrase"><a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.header"></a></span><a class="link" href="memberrangeinsertioncontainer.html#generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">container_concepts</span><span class="special">/</span><span class="identifier">member_range_insertion_container</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../include/boost/generic/std_concept/container_concepts/member_range_insertion_container.hpp" target="_top">boost/generic/std_concept/container_concepts/member_range_insertion_container.hpp</a><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="generic.standard_concepts.container_concepts.memberrangeinsertioncontainer.h3"></a>
@@ -80,7 +88,7 @@
           in N2914</a>
         </h6>
 <p>
-          The corresponding definition of <code class="computeroutput"><span class="identifier">MemberRangeInsertionContainer</span></code>
+          The corresponding definition of <code class="computeroutput"><a class="link" href="memberrangeinsertioncontainer.html" title="MemberRangeInsertionContainer">MemberRangeInsertionC<span class="emphasis"><em></em></span>ontainer</a></code>
           may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
           section [<span class="emphasis"><em>container.concepts.member</em></span>].
         </p>

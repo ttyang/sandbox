@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Returnable]
+[section:returnable Return[']able]
 
 [heading Description]
 Describes types that can be used as the return type of a function.

@@ -15,7 +15,7 @@
 </div>
 <div class="section generic_standard_concepts_concepts_copyassignable">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="generic.standard_concepts.concepts.copyassignable"></a><a class="link" href="copyassignable.html" title="CopyAssignable">CopyAssignable</a>
+<a name="generic.standard_concepts.concepts.copyassignable"></a><a class="link" href="copyassignable.html" title="CopyAssignable">Copy<span class="emphasis"><em></em></span>Assignable</a>
 </h4></div></div></div>
 <h6>
 <a name="generic.standard_concepts.concepts.copyassignable.h0"></a>
@@ -49,11 +49,13 @@
 </tr></thead>
 <tbody><tr>
 <td>
+                  <p>
+</p>
 <pre class="programlisting"><span class="identifier">BOOST_GENERIC_AUTO_CONCEPT</span>
 <span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span><span class="identifier">CopyAssignable</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span> <span class="keyword">public</span> <span class="special">(</span><span class="identifier">HasAssign</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;&gt;)</span>
-           <span class="special">(</span><span class="identifier">MoveAssignable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;)</span>
+<span class="special">,</span> <span class="special">(</span><a class="link" href="copyassignable.html" title="CopyAssignable">CopyAssignable</a><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">public</span> <span class="special">(</span><a class="link" href="hasassign.html" title="HasAssign">HasAssign</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;&gt;)</span>
+           <span class="special">(</span><a class="link" href="moveassignable.html" title="MoveAssignable">MoveAssignable</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;)</span>
   <span class="special">)</span>
 <span class="special">,</span> <span class="special">(</span> <span class="keyword">axiom</span> <span class="identifier">CopyPreservation</span><span class="special">(</span> <span class="special">(</span><span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">x</span><span class="special">,</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="identifier">y</span> <span class="special">)</span> <span class="special">{</span>
       <span class="special">(</span><span class="identifier">x</span> <span class="special">=</span> <span class="identifier">y</span><span class="special">,</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">y</span><span class="special">;</span>
@@ -61,14 +63,20 @@
   <span class="special">)</span>
 <span class="special">)</span>
 </pre>
+<p>
+                  </p>
                 </td>
 <td>
-<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">CopyAssignable</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">HasAssign</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;&gt;,</span> <span class="identifier">MoveAssignable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+                  <p>
+</p>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <a class="link" href="copyassignable.html" title="CopyAssignable">CopyAssignable</a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <a class="link" href="hasassign.html" title="HasAssign">HasAssign</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;&gt;,</span> <a class="link" href="moveassignable.html" title="MoveAssignable">MoveAssignable</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
   <span class="keyword">axiom</span> <span class="identifier">CopyPreservation</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">y</span><span class="special">)</span> <span class="special">{</span>
     <span class="special">(</span><span class="identifier">x</span> <span class="special">=</span> <span class="identifier">y</span><span class="special">,</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">y</span><span class="special">;</span>
   <span class="special">}</span>
 <span class="special">}</span>
 </pre>
+<p>
+                  </p>
                 </td>
 </tr></tbody>
 </table></div>
@@ -77,7 +85,7 @@
 <a name="generic.standard_concepts.concepts.copyassignable.h2"></a>
           <span class="phrase"><a name="generic.standard_concepts.concepts.copyassignable.header"></a></span><a class="link" href="copyassignable.html#generic.standard_concepts.concepts.copyassignable.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">copy_assignable</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../include/boost/generic/std_concept/concepts/copy_assignable.hpp" target="_top">boost/generic/std_concept/concepts/copy_assignable.hpp</a><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="generic.standard_concepts.concepts.copyassignable.h3"></a>
@@ -85,7 +93,7 @@
           in N2914</a>
         </h6>
 <p>
-          The corresponding definition of <code class="computeroutput"><span class="identifier">CopyAssignable</span></code>
+          The corresponding definition of <code class="computeroutput"><a class="link" href="copyassignable.html" title="CopyAssignable">CopyAssignable</a></code>
           may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
           section [<span class="emphasis"><em>concept.copymove</em></span>].
         </p>

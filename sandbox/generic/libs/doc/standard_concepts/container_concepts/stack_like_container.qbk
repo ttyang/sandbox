@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section StackLikeContainer]
+[section:stacklikecontainer StackLikeCo[']ntainer]
 
 [heading Description]
 Describes a container that can be modified by adding or removing elements from

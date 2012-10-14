@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasDereference]
+[section:hasdereference Has[']Dereference]
 
 [heading Description]
 Describes types with a dereferencing `operator*`.

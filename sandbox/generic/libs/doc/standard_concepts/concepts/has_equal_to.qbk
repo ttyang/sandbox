@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasEqualTo]
+[section:hasequalto Has[']EqualTo]
 
 [heading Description]
 Describes types with an `operator==`.

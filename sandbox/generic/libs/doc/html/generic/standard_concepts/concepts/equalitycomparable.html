@@ -15,7 +15,7 @@
 </div>
 <div class="section generic_standard_concepts_concepts_equalitycomparable">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="generic.standard_concepts.concepts.equalitycomparable"></a><a class="link" href="equalitycomparable.html" title="EqualityComparable">EqualityComparable</a>
+<a name="generic.standard_concepts.concepts.equalitycomparable"></a><a class="link" href="equalitycomparable.html" title="EqualityComparable">Equality<span class="emphasis"><em></em></span>Comparable</a>
 </h4></div></div></div>
 <h6>
 <a name="generic.standard_concepts.concepts.equalitycomparable.h0"></a>
@@ -50,9 +50,11 @@
 </tr></thead>
 <tbody><tr>
 <td>
+                  <p>
+</p>
 <pre class="programlisting"><span class="identifier">BOOST_GENERIC_AUTO_CONCEPT</span>
 <span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span><span class="identifier">EqualityComparable</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <span class="identifier">HasEqualTo</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><a class="link" href="equalitycomparable.html" title="EqualityComparable">EqualityComparable</a><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <a class="link" href="hasequalto.html" title="HasEqualTo">HasEqualTo</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">)</span>
 <span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">bool</span><span class="special">)(</span><span class="keyword">operator</span> <span class="identifier">not_equal_to</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">a</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">b</span> <span class="special">),</span> <span class="special">{</span>
       <span class="keyword">return</span> <span class="special">!(</span> <span class="identifier">a</span> <span class="special">==</span> <span class="identifier">b</span> <span class="special">);</span>
     <span class="special">}</span>
@@ -77,9 +79,13 @@
   <span class="special">)</span>
 <span class="special">)</span>
 </pre>
+<p>
+                  </p>
                 </td>
 <td>
-<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">HasEqualTo</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+                  <p>
+</p>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <a class="link" href="equalitycomparable.html" title="EqualityComparable">EqualityComparable</a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <a class="link" href="hasequalto.html" title="HasEqualTo">HasEqualTo</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">!=(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">!(</span><span class="identifier">a</span> <span class="special">==</span> <span class="identifier">b</span><span class="special">);</span> <span class="special">}</span>
 
   <span class="keyword">axiom</span> <span class="identifier">Consistency</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">b</span><span class="special">)</span> <span class="special">{</span>
@@ -99,6 +105,8 @@
   <span class="special">}</span>
 <span class="special">}</span>
 </pre>
+<p>
+                  </p>
                 </td>
 </tr></tbody>
 </table></div>
@@ -107,7 +115,7 @@
 <a name="generic.standard_concepts.concepts.equalitycomparable.h2"></a>
           <span class="phrase"><a name="generic.standard_concepts.concepts.equalitycomparable.header"></a></span><a class="link" href="equalitycomparable.html#generic.standard_concepts.concepts.equalitycomparable.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">equality_comparable</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../include/boost/generic/std_concept/concepts/equality_comparable.hpp" target="_top">boost/generic/std_concept/concepts/equality_comparable.hpp</a><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="generic.standard_concepts.concepts.equalitycomparable.h3"></a>
@@ -115,7 +123,7 @@
           in N2914</a>
         </h6>
 <p>
-          The corresponding definition of <code class="computeroutput"><span class="identifier">EqualityComparable</span></code>
+          The corresponding definition of <code class="computeroutput"><a class="link" href="equalitycomparable.html" title="EqualityComparable">EqualityComparable</a></code>
           may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
           section [<span class="emphasis"><em>concept.comparison</em></span>].
         </p>

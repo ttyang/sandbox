@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section ValueType]
+[section:valuetype Value[']Type]
 
 [heading Description]
 Describes value types, for which objects, variables, references, pointers, and

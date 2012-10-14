@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section FreeStoreAllocatable]
+[section:freestoreallocatable Free[']StoreAllocatable]
 
 [heading Description]
 Describes types for which objects and arrays of objects can be allocated on or

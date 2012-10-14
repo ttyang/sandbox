@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section RangeInsertionContainer]
+[section:rangeinsertioncontainer RangeInsertionC[']ontainer]
 
 [heading Description]
 Describes a container that can be modified by inserting a sequence of elements

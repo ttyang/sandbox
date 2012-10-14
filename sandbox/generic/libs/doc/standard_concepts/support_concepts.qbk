@@ -9,7 +9,6 @@
 [section Support Concepts]
 
 [heading Overview]
-
 The concepts described in this section correspond to the "support concepts" of
 [n2914] that are specified to be automatically defined in each translation unit.
 Because this is not possible in a library-level implementation, these concepts
@@ -26,17 +25,19 @@ be done in one of two ways:
  #include <boost/generic/std_concept/support_concepts/class.hpp>
  // etc.
 
-[note These concepts as described in N2914 are generally [explicit_concepts],
+[note
+These concepts as described in N2914 are generally [explicit_concepts],
 but they are implemented in [boost_generic] as [auto_concepts] with an internal
 [concept_requires_clause] that depends on the C++ standard library type traits.
 This difference should generally not be noticeable in practice when using the
-library, but it deserves mention.]
+library, but it deserves mention.
+]
 
 [include support_concepts/arithmetic_type.qbk]
-[include support_concepts/enumeration_type.qbk]
 [include support_concepts/class.qbk]
 [include support_concepts/class_type.qbk]
 [include support_concepts/derived_from.qbk]
+[include support_concepts/enumeration_type.qbk]
 [include support_concepts/floating_point_type.qbk]
 [include support_concepts/integral_constant_expression_type.qbk]
 [include support_concepts/integral_type.qbk]

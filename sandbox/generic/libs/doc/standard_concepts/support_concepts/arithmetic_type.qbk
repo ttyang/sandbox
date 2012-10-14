@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section ArithmeticType]
+[section:arithmetictype Arithmetic[']Type]
 
 [heading Description]
 Describes arithmetic types.

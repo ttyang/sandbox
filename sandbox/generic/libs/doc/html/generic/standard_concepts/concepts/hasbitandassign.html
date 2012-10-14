@@ -15,7 +15,7 @@
 </div>
 <div class="section generic_standard_concepts_concepts_hasbitandassign">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="generic.standard_concepts.concepts.hasbitandassign"></a><a class="link" href="hasbitandassign.html" title="HasBitAndAssign">HasBitAndAssign</a>
+<a name="generic.standard_concepts.concepts.hasbitandassign"></a><a class="link" href="hasbitandassign.html" title="HasBitAndAssign">Has<span class="emphasis"><em></em></span>BitAndAssign</a>
 </h4></div></div></div>
 <h6>
 <a name="generic.standard_concepts.concepts.hasbitandassign.h0"></a>
@@ -49,20 +49,28 @@
 </tr></thead>
 <tbody><tr>
 <td>
+                  <p>
+</p>
 <pre class="programlisting"><span class="identifier">BOOST_GENERIC_AUTO_CONCEPT</span>
 <span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span><span class="identifier">HasBitAndAssign</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">U</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><a class="link" href="hasbitandassign.html" title="HasBitAndAssign">HasBitAndAssign</a><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">U</span> <span class="special">)</span>
 <span class="special">,</span> <span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">result_type</span> <span class="special">)</span>
 <span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">result_type</span><span class="special">)(</span><span class="keyword">operator</span> <span class="identifier">bit_and_assign</span><span class="special">)(</span> <span class="special">(</span><span class="identifier">T</span><span class="special">&amp;),</span> <span class="special">(</span><span class="identifier">U</span><span class="special">)</span> <span class="special">)</span> <span class="special">)</span>
 <span class="special">)</span>
 </pre>
+<p>
+                  </p>
                 </td>
 <td>
-<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">HasBitAndAssign</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="special">{</span>
+                  <p>
+</p>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <a class="link" href="hasbitandassign.html" title="HasBitAndAssign">HasBitAndAssign</a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="special">{</span>
   <span class="keyword">typename</span> <span class="identifier">result_type</span><span class="special">;</span>
   <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">&amp;=(</span><span class="identifier">T</span><span class="special">&amp;,</span> <span class="identifier">U</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
+<p>
+                  </p>
                 </td>
 </tr></tbody>
 </table></div>
@@ -71,7 +79,7 @@
 <a name="generic.standard_concepts.concepts.hasbitandassign.h2"></a>
           <span class="phrase"><a name="generic.standard_concepts.concepts.hasbitandassign.header"></a></span><a class="link" href="hasbitandassign.html#generic.standard_concepts.concepts.hasbitandassign.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">has_bit_and_assign</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../include/boost/generic/std_concept/concepts/has_bit_and_assign.hpp" target="_top">boost/generic/std_concept/concepts/has_bit_and_assign.hpp</a><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="generic.standard_concepts.concepts.hasbitandassign.h3"></a>
@@ -79,7 +87,7 @@
           in N2914</a>
         </h6>
 <p>
-          The corresponding definition of <code class="computeroutput"><span class="identifier">HasBitAndAssign</span></code>
+          The corresponding definition of <code class="computeroutput"><a class="link" href="hasbitandassign.html" title="HasBitAndAssign">HasBitAndAssign</a></code>
           may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
           section [<span class="emphasis"><em>concept.operator</em></span>].
         </p>

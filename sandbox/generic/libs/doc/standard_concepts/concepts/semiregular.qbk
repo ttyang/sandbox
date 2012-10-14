@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Semiregular]
+[section:semiregular Semi[']regular]
 
 [heading Description]
 Collects several common requirements supported by most types.

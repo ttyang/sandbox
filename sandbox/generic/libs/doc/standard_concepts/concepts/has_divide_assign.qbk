@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasDivideAssign]
+[section:hasdivideassign Has[']DivideAssign]
 
 [heading Description]
 Describes types with an `operator/=`.

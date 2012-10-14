@@ -19,7 +19,8 @@ between a given library implementation and its working paper definition.
 
 [tip It is highly recommended that before using the standard concepts of
 [boost_generic] you enable the library's internal use of preprocessed headers as
-described [link generic.getting_started.enabling_use_of_preprocessed_con here].
-Doing so can dramatically decrease compilation time for code that uses
+described
+[link generic.getting_started.enabling_use_of_preprocessed_concept_headers
+here]. Doing so can dramatically decrease compilation time for code that uses
 [boost_generic] standard concepts and also simplifies any error messages
 produced by the library.]

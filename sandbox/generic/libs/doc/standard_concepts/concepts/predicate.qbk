@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Predicate]
+[section:predicate P[']redicate]
 
 [heading Description]
 Describes function objects callable with some set of arguments, the result of

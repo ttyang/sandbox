@@ -15,7 +15,7 @@
 </div>
 <div class="section generic_standard_concepts_concepts_haslogicalor">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="generic.standard_concepts.concepts.haslogicalor"></a><a class="link" href="haslogicalor.html" title="HasLogicalOr">HasLogicalOr</a>
+<a name="generic.standard_concepts.concepts.haslogicalor"></a><a class="link" href="haslogicalor.html" title="HasLogicalOr">Has<span class="emphasis"><em></em></span>LogicalOr</a>
 </h4></div></div></div>
 <h6>
 <a name="generic.standard_concepts.concepts.haslogicalor.h0"></a>
@@ -49,18 +49,26 @@
 </tr></thead>
 <tbody><tr>
 <td>
+                  <p>
+</p>
 <pre class="programlisting"><span class="identifier">BOOST_GENERIC_AUTO_CONCEPT</span>
 <span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span><span class="identifier">HasLogicalOr</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">U</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><a class="link" href="haslogicalor.html" title="HasLogicalOr">HasLogicalOr</a><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">U</span> <span class="special">)</span>
 <span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">bool</span><span class="special">)(</span><span class="keyword">operator</span> <span class="identifier">logical_or</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;),</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">U</span><span class="special">&amp;)</span> <span class="special">)</span> <span class="special">)</span>
 <span class="special">)</span>
 </pre>
+<p>
+                  </p>
                 </td>
 <td>
-<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">HasLogicalOr</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="special">{</span>
+                  <p>
+</p>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <a class="link" href="haslogicalor.html" title="HasLogicalOr">HasLogicalOr</a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="special">{</span>
   <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">||(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">U</span><span class="special">&amp;);</span>
 <span class="special">}</span>
 </pre>
+<p>
+                  </p>
                 </td>
 </tr></tbody>
 </table></div>
@@ -69,7 +77,7 @@
 <a name="generic.standard_concepts.concepts.haslogicalor.h2"></a>
           <span class="phrase"><a name="generic.standard_concepts.concepts.haslogicalor.header"></a></span><a class="link" href="haslogicalor.html#generic.standard_concepts.concepts.haslogicalor.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">has_logical_or</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../include/boost/generic/std_concept/concepts/has_logical_or.hpp" target="_top">boost/generic/std_concept/concepts/has_logical_or.hpp</a><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="generic.standard_concepts.concepts.haslogicalor.h3"></a>
@@ -77,7 +85,7 @@
           in N2914</a>
         </h6>
 <p>
-          The corresponding definition of <code class="computeroutput"><span class="identifier">HasLogicalOr</span></code>
+          The corresponding definition of <code class="computeroutput"><a class="link" href="haslogicalor.html" title="HasLogicalOr">HasLogicalOr</a></code>
           may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
           section [<span class="emphasis"><em>concept.operator</em></span>].
         </p>

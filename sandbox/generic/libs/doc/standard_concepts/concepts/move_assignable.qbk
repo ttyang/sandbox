@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section MoveAssignable]
+[section:moveassignable MoveA[']ssignable]
 
 [heading Description]
 Describes types with the ability to assign to an object from an rvalue,

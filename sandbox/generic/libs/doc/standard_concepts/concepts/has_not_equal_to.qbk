@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasNotEqualTo]
+[section:hasnotequalto Has[']NotEqualTo]
 
 [heading Description]
 Describes types with an `operator!=`.

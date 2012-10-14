@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section DefaultConstructible]
+[section:defaultconstructible DefaultC[']onstructible]
 
 [heading Description]
 Describes types for which an object can be constructed without initializing the

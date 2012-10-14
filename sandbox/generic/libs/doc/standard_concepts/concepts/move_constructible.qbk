@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section MoveConstructible]
+[section:moveconstructible MoveC[']onstructible]
 
 [heading Description]
 Describes types that can move-construct an object from a value of the same type,

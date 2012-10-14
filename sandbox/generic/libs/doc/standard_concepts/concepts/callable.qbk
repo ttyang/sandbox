@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Callable]
+[section:callable Call[']able]
 
 [heading Description]
 Describes function object types callable given arguments of types `Args...`.

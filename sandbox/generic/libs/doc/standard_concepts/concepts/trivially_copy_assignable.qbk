@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section TriviallyCopyAssignable]
+[section:triviallycopyassignable TriviallyCopy[']Assignable]
 
 [heading Description]
 Describes types whose copy-assignment operator is equivalent to `memcpy`.

@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section EquivalenceRelation]
+[section:equivalencerelation Equivalence[']Relation]
 
 [heading Description]
 Describes an equivalence relation, `F`, on a type `T`.

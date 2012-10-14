@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section NonTypeTemplateParameterType]
+[section:nontypetemplateparametertype NonTypeTemplateParameter[']Type]
 
 [heading Description]
 Describes type that can be used as the type of a non-type template parameter.

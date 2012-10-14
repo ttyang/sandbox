@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasSubscript]
+[section:hassubscript Has[']Subscript]
 
 [heading Description]
 Describes types with a subscript `operator[]`.

@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section UnsignedIntegralLike]
+[section:unsignedintegrallike UnsignedIntegral[']Like]
 
 [heading Description]
 Describes types that provide all of the operations available on unsigned

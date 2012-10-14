@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section TriviallyDefaultConstructible]
+[section:triviallydefaultconstructible TriviallyDefaultC[']onstructible]
 
 [heading Description]
 Describes types whose default constructor is trivial.

@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section FloatingPointType]
+[section:floatingpointtype FloatingPoint[']Type]
 
 [heading Description]
 Describes floating point types

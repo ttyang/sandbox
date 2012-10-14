@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasLogicalAnd]
+[section:haslogicaland Has[']LogicalAnd]
 
 [heading Description]
 Describes types with a logical conjunction operator.

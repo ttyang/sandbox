@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section HasSwap]
+[section:hasswap Has[']Swap]
 
 [heading Description]
 Describes types that have a swap operation.

@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section ObjectType]
+[section:objecttype Object[']Type]
 
 [heading Description]
 Describes object types, for which storage can be allocated.

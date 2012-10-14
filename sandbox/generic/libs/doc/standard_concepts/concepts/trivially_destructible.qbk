@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section TriviallyDestructible]
+[section:triviallydestructible Trivially[']Destructible]
 
 [heading Description]
 Describes types whose destructors do not need to be executed when the object is

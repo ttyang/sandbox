@@ -15,7 +15,7 @@
 </div>
 <div class="section generic_standard_concepts_container_concepts_backemplacementcontainer">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="generic.standard_concepts.container_concepts.backemplacementcontainer"></a><a class="link" href="backemplacementcontainer.html" title="BackEmplacementContainer">BackEmplacementContainer</a>
+<a name="generic.standard_concepts.container_concepts.backemplacementcontainer"></a><a class="link" href="backemplacementcontainer.html" title="BackEmplacementContainer">BackEmplacementC<span class="emphasis"><em></em></span>ontainer</a>
 </h4></div></div></div>
 <h6>
 <a name="generic.standard_concepts.container_concepts.backemplacementcontainer.h0"></a>
@@ -30,7 +30,7 @@
           <span class="phrase"><a name="generic.standard_concepts.container_concepts.backemplacementcontainer.definition"></a></span><a class="link" href="backemplacementcontainer.html#generic.standard_concepts.container_concepts.backemplacementcontainer.definition">Definition</a>
         </h6>
 <div class="table">
-<a name="generic.standard_concepts.container_concepts.backemplacementcontainer.backemplacementcontainer_definit"></a><p class="title"><b>Table&#160;1.102.&#160;BackEmplacementContainer Definition</b></p>
+<a name="generic.standard_concepts.container_concepts.backemplacementcontainer.backemplacementcontainer_definition"></a><p class="title"><b>Table&#160;1.102.&#160;BackEmplacementContainer Definition</b></p>
 <div class="table-contents"><table class="table" summary="BackEmplacementContainer Definition">
 <colgroup>
 <col>
@@ -50,9 +50,11 @@
 </tr></thead>
 <tbody><tr>
 <td>
+                  <p>
+</p>
 <pre class="programlisting"><span class="identifier">BOOST_GENERIC_CONCEPT</span>
 <span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
-<span class="special">,</span> <span class="special">(</span><span class="identifier">BackEmplacementContainer</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">C</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">,,,)</span> <span class="identifier">Args</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <span class="identifier">Container</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><a class="link" href="backemplacementcontainer.html" title="BackEmplacementContainer">BackEmplacementContainer</a><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">C</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">,,,)</span> <span class="identifier">Args</span> <span class="special">),</span> <span class="special">(</span> <span class="keyword">public</span> <a class="link" href="container.html" title="Container">Container</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">)</span>
 <span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">void</span><span class="special">)(</span><span class="identifier">emplace_back</span><span class="special">)(</span> <span class="special">(</span><span class="identifier">C</span><span class="special">&amp;)</span> <span class="identifier">c</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;,,,)</span> <span class="identifier">args</span><span class="special">)</span> <span class="special">)</span>
 
 <span class="comment">// TODO support this</span>
@@ -69,22 +71,28 @@
 <span class="comment">//  )</span>
 <span class="special">)</span>
 </pre>
+<p>
+                  </p>
                 </td>
 <td>
-<pre class="programlisting"><span class="keyword">concept</span> <span class="identifier">BackEmplacementContainer</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">Container</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">{</span>
+                  <p>
+</p>
+<pre class="programlisting"><span class="keyword">concept</span> <a class="link" href="backemplacementcontainer.html" title="BackEmplacementContainer">BackEmplacementContainer</a><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span> <span class="special">:</span> <a class="link" href="container.html" title="Container">Container</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">{</span>
   <span class="keyword">void</span> <span class="identifier">emplace_back</span><span class="special">(</span><span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">);</span>
 
-  <span class="keyword">requires</span> <span class="identifier">StackLikeContainer</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <span class="identifier">Constructible</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
+  <span class="keyword">requires</span> <a class="link" href="stacklikecontainer.html" title="StackLikeContainer">StackLikeContainer</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <a class="link" href="../concepts/constructible.html" title="Constructible">Constructible</a><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
     <span class="keyword">axiom</span> <span class="identifier">BackEmplacement</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...</span> <span class="identifier">args</span><span class="special">)</span> <span class="special">{</span>
       <span class="identifier">value_type</span><span class="special">(</span><span class="identifier">args</span><span class="special">...)</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">emplace_back</span><span class="special">(</span><span class="identifier">c</span><span class="special">,</span> <span class="identifier">args</span><span class="special">...),</span> <span class="identifier">back</span><span class="special">(</span><span class="identifier">c</span><span class="special">));</span>
   <span class="special">}</span>
 
-  <span class="keyword">requires</span> <span class="identifier">StackLikeContainer</span><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <span class="identifier">Constructible</span><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
+  <span class="keyword">requires</span> <a class="link" href="stacklikecontainer.html" title="StackLikeContainer">StackLikeContainer</a><span class="special">&lt;</span><span class="identifier">C</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <a class="link" href="../concepts/constructible.html" title="Constructible">Constructible</a><span class="special">&lt;</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...&gt;</span>
     <span class="keyword">axiom</span> <span class="identifier">BackEmplacementPushEquivalence</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">Args</span><span class="special">...</span> <span class="identifier">args</span><span class="special">)</span> <span class="special">{</span>
       <span class="special">(</span><span class="identifier">emplace_back</span><span class="special">(</span><span class="identifier">c</span><span class="special">,</span> <span class="identifier">args</span><span class="special">...),</span> <span class="identifier">back</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">c</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">(</span><span class="identifier">args</span><span class="special">...)),</span> <span class="identifier">back</span><span class="special">(</span><span class="identifier">c</span><span class="special">));</span>
   <span class="special">}</span>
 <span class="special">}</span>
 </pre>
+<p>
+                  </p>
                 </td>
 </tr></tbody>
 </table></div>
@@ -93,7 +101,7 @@
 <a name="generic.standard_concepts.container_concepts.backemplacementcontainer.h2"></a>
           <span class="phrase"><a name="generic.standard_concepts.container_concepts.backemplacementcontainer.header"></a></span><a class="link" href="backemplacementcontainer.html#generic.standard_concepts.container_concepts.backemplacementcontainer.header">Header</a>
         </h6>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">container_concepts</span><span class="special">/</span><span class="identifier">back_emplacement_container</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../include/boost/generic/std_concept/container_concepts/back_emplacement_container.hpp" target="_top">boost/generic/std_concept/container_concepts/back_emplacement_container.hpp</a><span class="special">&gt;</span>
 </pre>
 <h6>
 <a name="generic.standard_concepts.container_concepts.backemplacementcontainer.h3"></a>
@@ -101,7 +109,7 @@
           in N2914</a>
         </h6>
 <p>
-          The corresponding definition of <code class="computeroutput"><span class="identifier">BackEmplacementContainer</span></code>
+          The corresponding definition of <code class="computeroutput"><a class="link" href="backemplacementcontainer.html" title="BackEmplacementContainer">BackEmplacementContainer</a></code>
           may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
           section [<span class="emphasis"><em>container.concepts.free</em></span>].
         </p>

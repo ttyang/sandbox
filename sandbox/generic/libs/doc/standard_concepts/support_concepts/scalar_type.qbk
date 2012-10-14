@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section ScalarType]
+[section:scalartype Scalar[']Type]
 
 [heading Description]
 Describes scalar types.

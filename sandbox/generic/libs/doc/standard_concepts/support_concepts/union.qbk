@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Union]
+[section:union Un[']ion]
 
 [heading Description]
 Describes union types.

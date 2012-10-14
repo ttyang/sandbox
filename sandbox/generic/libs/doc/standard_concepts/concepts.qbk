@@ -9,7 +9,6 @@
 [section Concepts]
 
 [heading Overview]
-
 The concepts described in this section correspond to those in the `<concepts>`
 header of [n2914] as specified in [['utility.concepts]]. These concepts provide
 requirements on template arguments used throughout the C++ Standard Library.
@@ -23,12 +22,12 @@ syntax-detection concepts, for example, the `Constructible` concept refines the
 
 Inclusion of the concepts of this section may be done in one of two ways:
 
- // Include all of the support concepts
+ // Include all of the <concepts> concepts
  #include <boost/generic/std_concept/concepts.hpp>
 
  // -or-
 
- // Include the support concepts on a case-by-case basis
+ // Include the <concepts> concepts on a case-by-case basis
  #include <boost/generic/std_concept/concepts/arithmetic_like.hpp>
  #include <boost/generic/std_concept/concepts/callable.hpp>
  // etc.
@@ -80,8 +79,8 @@ Inclusion of the concepts of this section may be done in one of two ways:
 [include concepts/has_not_equal_to.qbk]
 [include concepts/has_plus.qbk]
 [include concepts/has_plus_assign.qbk]
-[include concepts/has_postincrement.qbk]
 [include concepts/has_postdecrement.qbk]
+[include concepts/has_postincrement.qbk]
 [include concepts/has_predecrement.qbk]
 [include concepts/has_preincrement.qbk]
 [include concepts/has_right_shift.qbk]

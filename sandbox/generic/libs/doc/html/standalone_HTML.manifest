@@ -3,10 +3,10 @@ generic/getting_started.html
 generic/standard_concepts.html
 generic/standard_concepts/support_concepts.html
 generic/standard_concepts/support_concepts/arithmetictype.html
-generic/standard_concepts/support_concepts/enumerationtype.html
 generic/standard_concepts/support_concepts/class.html
 generic/standard_concepts/support_concepts/classtype.html
 generic/standard_concepts/support_concepts/derivedfrom.html
+generic/standard_concepts/support_concepts/enumerationtype.html
 generic/standard_concepts/support_concepts/floatingpointtype.html
 generic/standard_concepts/support_concepts/integralconstantexpressiontype.html
 generic/standard_concepts/support_concepts/integraltype.html
@@ -73,8 +73,8 @@ generic/standard_concepts/concepts/hasnegate.html
 generic/standard_concepts/concepts/hasnotequalto.html
 generic/standard_concepts/concepts/hasplus.html
 generic/standard_concepts/concepts/hasplusassign.html
-generic/standard_concepts/concepts/haspostincrement.html
 generic/standard_concepts/concepts/haspostdecrement.html
+generic/standard_concepts/concepts/haspostincrement.html
 generic/standard_concepts/concepts/haspredecrement.html
 generic/standard_concepts/concepts/haspreincrement.html
 generic/standard_concepts/concepts/hasrightshift.html

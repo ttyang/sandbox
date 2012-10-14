@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section VariableType]
+[section:variabletype Variable[']Type]
 
 [heading Description]
 Describes types that can be used to declare a variable.

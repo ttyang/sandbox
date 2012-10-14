@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section EnumerationType]
+[section:enumerationtype Enumeration[']Type]
 
 [heading Description]
 Describes enumeration types.

@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section QueueLikeContainer]
+[section:queuelikecontainer QueueLikeC[']ontainer]
 
 [heading Description]
 Describes a container that can be modified by adding elements to the back or

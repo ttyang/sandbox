@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section NothrowDestructible]
+[section:nothrowdestructible Nothrow[']Destructible]
 
 [heading Description]
 Describes types that can be destroyed and where destruction will not propagate

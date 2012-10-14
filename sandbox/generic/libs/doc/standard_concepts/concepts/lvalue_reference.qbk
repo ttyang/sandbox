@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section LvalueReference]
+[section:lvaluereference Lvalue[']Reference]
 
 [heading Description]
 Determines whether a given type is an lvalue reference type.

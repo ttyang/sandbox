@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section RvalueOf]
+[section:rvalueof Rvalue[']Of]
 
 [heading Description]
 Describes the rvalue reference type for an arbitrary type `T`.

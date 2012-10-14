@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section CopyConstructible]
+[section:copyconstructible CopyC[']onstructible]
 
 [heading Description]
 Describes types with a public copy constructor.

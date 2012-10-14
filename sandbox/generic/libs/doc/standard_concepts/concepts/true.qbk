@@ -6,11 +6,11 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section True]
+[section:true T[']rue]
 
 [heading Description]
 Used to express the requirement that a particular integral constant expression
-evaluate true.
+evaluate `true`.
 
 [heading Definition]
 

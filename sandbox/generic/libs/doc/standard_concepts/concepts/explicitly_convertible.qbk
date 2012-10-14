@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section ExplicitlyConvertible]
+[section:explicitlyconvertible ExplicitlyC[']onvertible]
 
 [heading Description]
 Describes types with a conversion (explicit or implicit) from `T` to `U`.

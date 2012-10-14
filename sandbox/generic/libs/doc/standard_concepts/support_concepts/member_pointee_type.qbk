@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section MemberPointeeType]
+[section:memberpointeetype MemberPointee[']Type]
 
 [heading Description]
 Describes types to which a pointer-to-member can be created.

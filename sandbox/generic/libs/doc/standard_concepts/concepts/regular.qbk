@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section Regular]
+[section:regular R[']egular]
 
 [heading Description]
 Describes semi-regular types that are default constructible and have equality

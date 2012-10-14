@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section SameType]
+[section:sametype Same[']Type]
 
 [heading Description]
 Describes a same-type requirement.

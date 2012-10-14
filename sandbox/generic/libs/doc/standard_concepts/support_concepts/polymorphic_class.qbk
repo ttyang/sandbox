@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section PolymorphicClass]
+[section:polymorphicclass PolymorphicC[']lass]
 
 [heading Description]
 Describes polymorphic class types.

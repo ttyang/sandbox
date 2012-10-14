@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section IntegralConstantExpressionType]
+[section:integralconstantexpressiontype IntegralConstantExpression[']Type]
 
 [heading Description]
 Describes types that can be the type of an integral constant expression.

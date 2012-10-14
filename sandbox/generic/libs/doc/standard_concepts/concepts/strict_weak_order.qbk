@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section StrictWeakOrder]
+[section:strictweakorder StrictWeak[']Order]
 
 [heading Description]
 Describes a strict weak ordering relation, `F`, on a type `T`.

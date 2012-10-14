@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================/]
 
-[section MemberFrontInsertionContainer]
+[section:memberfrontinsertioncontainer MemberFrontInsertionC[']ontainer]
 
 [heading Description]
 Describes a container, in terms of member functions, that can be modified by
