@@ -31,6 +31,7 @@ if __name__ == '__main__':
   tuple_min_size=10
   tuple_max_size=20
   tuple_del_size=10
+  boost_root="/home/evansl/prog_dev/boost-svn/ro/boost_1_49_0"
   compiler_map={}
   if False:
     compiler_map["gcc4_8"]=(
@@ -44,11 +45,13 @@ if __name__ == '__main__':
          )
   impl_map_hpp={}#implementation key -> implementation include .hpp file.
   impl_map_inc=collections.defaultdict(lambda:"")#implementation key -> -I include flags to compiler
-  impl_map_hpp["horizontal"]="tuple_impl_horizontal.hpp"
-  impl_map_hpp["vertical"  ]="tuple_impl_vertical.hpp"
+  #impl_map_hpp["horizontal"]="tuple_impl_horizontal.hpp"
+  #impl_map_hpp["vertical"  ]="tuple_impl_vertical.hpp"
+  impl_map_inc["vertical"  ]=\
+      " -I"+boost_root\
+    #
   impl_map_hpp["std"       ]="tuple_impl_std.hpp"
-  #impl_map_hpp["compstor"  ]="tuple_impl_compstor.hpp"
-  boost_root="/home/evansl/prog_dev/boost-svn/ro/boost_1_49_0"
+  impl_map_hpp["compstor"  ]="tuple_impl_compstor.hpp"
   impl_map_inc["compstor"  ]=\
       " -I"+boost_root\
     + " -I"+boost_root+"/sandbox/rw/variadic_templates"\

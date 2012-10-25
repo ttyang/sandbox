@@ -17,7 +17,7 @@ HOWS=gcc4_8n clangxx
 SLIM_DIR=../slim/include 
 #INCS:= -I$(SLIM_DIR) $(INCS)
 
-BFLAGS=-DTUPLE_SIZE=4 -DLAST_LESS=2 -DTUPLE_IMPL=tuple_impl_compstor.hpp -DTUPLE_CHUNK=4
+BFLAGS=-DTUPLE_SIZE=4 -DLAST_LESS=2 -DTUPLE_IMPL=tuple_impl_std.hpp -DTUPLE_CHUNK=4
 BFNAME:=$(shell ./flags2filename.pl -S $(BFLAGS))
 PROF_BASE=$(MAIN).$(HOW).$(BFNAME)
 COMPILER.clangxx_ins-rt=$(PATH.llvm.top)/llvm/projects/compiler-rt
@@ -75,7 +75,7 @@ compiler_help_driver: compiler_help compiler_driver
 
 .PHONY: main.o
 main.o : $(MAIN).cpp
-	$(COMPILE.$(HOW)) -c -std=c++11 $(BFLAGS) $(INCS) $<
+	$(COMPILE.$(HOW)) -c -MMD -std=c++11 $(BFLAGS) $(INCS) $<
 
 .PHONY: tuple.benchmark.report
 tuple.benchmark.report: $(MAIN).$(HOW).$(MEASURE)
