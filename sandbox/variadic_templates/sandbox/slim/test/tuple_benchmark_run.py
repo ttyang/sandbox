@@ -29,7 +29,7 @@ def measure_ftime(compiler_exe, compiler_args, measure_out):
 
 if __name__ == '__main__':
   tuple_min_size=10
-  tuple_max_size=20
+  tuple_max_size=40
   tuple_del_size=10
   boost_root="/home/evansl/prog_dev/boost-svn/ro/boost_1_49_0"
   compiler_map={}
@@ -44,14 +44,19 @@ if __name__ == '__main__':
          , "-std=c++11 -cxx-isystem /home/evansl/download/llvm/svn/llvm/projects/libcxx/include"
          )
   impl_map_hpp={}#implementation key -> implementation include .hpp file.
+  impl_map_hpp["horizontal"]="tuple_impl_horizontal.hpp"
+  impl_map_hpp["vertical"  ]="tuple_impl_vertical.hpp"
+  impl_map_hpp["bcon12_horizontal"]="tuple_impl_bcon12_horizontal.hpp"
+  impl_map_hpp["bcon12_vertical"  ]="tuple_impl_bcon12_vertical.hpp"
+  #impl_map_hpp["std"       ]="tuple_impl_std.hpp"
+  #impl_map_hpp["compstor"  ]="tuple_impl_compstor.hpp"
   impl_map_inc=collections.defaultdict(lambda:"")#implementation key -> -I include flags to compiler
-  #impl_map_hpp["horizontal"]="tuple_impl_horizontal.hpp"
-  #impl_map_hpp["vertical"  ]="tuple_impl_vertical.hpp"
   impl_map_inc["vertical"  ]=\
       " -I"+boost_root\
     #
-  impl_map_hpp["std"       ]="tuple_impl_std.hpp"
-  impl_map_hpp["compstor"  ]="tuple_impl_compstor.hpp"
+  impl_map_inc["bcon12_vertical"  ]=\
+      " -I"+boost_root\
+    #
   impl_map_inc["compstor"  ]=\
       " -I"+boost_root\
     + " -I"+boost_root+"/sandbox/rw/variadic_templates"\

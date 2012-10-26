@@ -45,11 +45,11 @@ struct int_value //values stored in tuple
 };
 
 template<int I,int J, int Max, typename... Args>
-struct make_tuple:
-	make_tuple<I,J,Max-1,int_value<I*TUPLE_SIZE*TUPLE_SIZE+J*TUPLE_SIZE+Max>,Args...>
+struct mk_tuple_col_row:
+	mk_tuple_col_row<I,J,Max-1,int_value<I*TUPLE_SIZE*TUPLE_SIZE+J*TUPLE_SIZE+Max>,Args...>
 {};
 template<int I,int J, typename... Args>
-struct make_tuple<I,J,0, Args...>
+struct mk_tuple_col_row<I,J,0, Args...>
 {
 	typedef tuple_bench<Args...> type;
 };
@@ -63,7 +63,7 @@ template<int I,int J=0>
 struct test_row
 {
  private:
-	typedef typename make_tuple<I, J, TUPLE_SIZE>::type tuple_type;
+	typedef typename mk_tuple_col_row<I, J, TUPLE_SIZE>::type tuple_type;
 
 	template<int K>
 	static int at_test(tuple_type& t,int_key<K>)

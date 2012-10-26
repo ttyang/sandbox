@@ -1,0 +1,72 @@
+compiler= clangxx
+version={
+clang version 3.2 (trunk 165317)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+compiler_exe= /home/evansl/download/llvm/svn/build/Release/bin/clang
+}
+['compiler', 'TUPLE_IMPL', 'TUPLE_SIZE', 'LAST_LESS', 'TUPLE_CHUNK']
+['clangxx', 'horizontal', 10, 4, -1]
+{
+user:0.26 system:0.00 elapsed:0.25
+}
+['clangxx', 'horizontal', 20, 4, -1]
+{
+user:0.42 system:0.06 elapsed:0.47
+}
+['clangxx', 'horizontal', 30, 4, -1]
+{
+user:0.60 system:0.10 elapsed:0.69
+}
+['clangxx', 'horizontal', 40, 4, -1]
+{
+user:0.86 system:0.08 elapsed:0.93
+}
+['clangxx', 'bcon12_horizontal', 10, 4, -1]
+{
+user:0.53 system:0.03 elapsed:0.55
+}
+['clangxx', 'bcon12_horizontal', 20, 4, -1]
+{
+user:0.75 system:0.08 elapsed:0.82
+}
+['clangxx', 'bcon12_horizontal', 30, 4, -1]
+{
+user:1.00 system:0.11 elapsed:1.10
+}
+['clangxx', 'bcon12_horizontal', 40, 4, -1]
+{
+user:1.30 system:0.11 elapsed:1.40
+}
+['clangxx', 'vertical', 10, 4, 10]
+{
+user:0.24 system:0.04 elapsed:0.33
+}
+['clangxx', 'vertical', 20, 4, 10]
+{
+user:0.40 system:0.02 elapsed:0.41
+}
+['clangxx', 'vertical', 30, 4, 10]
+{
+user:0.56 system:0.05 elapsed:0.60
+}
+['clangxx', 'vertical', 40, 4, 10]
+{
+user:0.74 system:0.07 elapsed:0.80
+}
+['clangxx', 'bcon12_vertical', 10, 4, -1]
+{
+user:0.45 system:0.05 elapsed:0.49
+}
+['clangxx', 'bcon12_vertical', 20, 4, -1]
+{
+user:0.63 system:0.04 elapsed:0.66
+}
+['clangxx', 'bcon12_vertical', 30, 4, -1]
+{
+user:0.76 system:0.11 elapsed:0.86
+}
+['clangxx', 'bcon12_vertical', 40, 4, -1]
+{
+user:0.98 system:0.08 elapsed:1.05
+}

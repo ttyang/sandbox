@@ -1,7 +1,6 @@
 #if !defined(TUPLE_SIZE)
   //This only used when not running several benchmarks where
   //macro values are set on command line with -DMACRO=VALUE.
-  //See tuple.benchmark.mk.
   #define TUPLE_IMPL tuple_impl_horizontal.hpp
     //TUPLE_TEST_IMPL selects the tuple implementation method.
     //TUPLE_TEST_VERTICAL selects the preprocessor generated

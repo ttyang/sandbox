@@ -1,23 +1,24 @@
 MAIN=test
 BENCHMARK=mini
+BENCHMARK=tree_builder
 MAIN=tuple.benchmark.$(BENCHMARK)
+MAIN=tuple.test
 MEASURE=time
 THISFILE=Makefile
 PYTHON=python3.1
 
+HOW=gcc4_8_20120624
+#HOW=clangxx_rel
 DIR.root := $(shell dirup_dir_file.pl $(PWD) root.imk)
 include $(DIR.root)/root.imk
 #include compiler_macros.imk
-
-HOW=gcc4_8n
-HOW=clangxx_rel
 
 HOWS=gcc4_8n clangxx
 
 SLIM_DIR=../slim/include 
 #INCS:= -I$(SLIM_DIR) $(INCS)
 
-BFLAGS=-DTUPLE_SIZE=4 -DLAST_LESS=2 -DTUPLE_IMPL=tuple_impl_std.hpp -DTUPLE_CHUNK=4
+BFLAGS=-DTUPLE_SIZE=4 -DLAST_LESS=2 -DTUPLE_IMPL=tuple_impl_bcon12_vertical.hpp -DTUPLE_CHUNK=4
 BFNAME:=$(shell ./flags2filename.pl -S $(BFLAGS))
 PROF_BASE=$(MAIN).$(HOW).$(BFNAME)
 COMPILER.clangxx_ins-rt=$(PATH.llvm.top)/llvm/projects/compiler-rt
@@ -141,6 +142,6 @@ nest_loop:
 echo:
 	@echo "SHELL="$(SHELL)
 
-.PHONY: python
-python:
+.PHONY: benchmark_run
+benchmark_run:
 	$(PYTHON) tuple_benchmark_run.py
