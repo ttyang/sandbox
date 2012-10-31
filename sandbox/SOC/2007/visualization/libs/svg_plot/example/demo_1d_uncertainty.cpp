@@ -3,7 +3,7 @@
     \details An example to demonstrate simple 1D plot using two vectors,
      including showing values with uncertainty information as
      "plus minus" and degrees of freedom estimates.
-    \author Paul A. Bristow
+    \author Paul A. Bristow cpp
     \date Mar 2009
 */
 
