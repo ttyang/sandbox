@@ -1,0 +1,95 @@
+[article Bidirectional Associative Incidence Graph
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Runtime_Complexity__ [@http://en.wikipedia.org/wiki/Amortized_analysis Runtime Complexity]]
+[def __Associative_Incidence_Graph__ [@AssociativeIncidenceGraph.html [*Associative Incidence Graph]]]
+[def __Bidirectional_Graph__ [@boost:libs/graph/doc/BidirectionalGraph.html [*Bidirectional Graph]]]
+[def _graph_traits_ [@boost:libs/graph/doc/graph_traits.html boost::graph_traits]]
+[def _edge_key_trait_ [@edge_key_trait.html boost::edge_key_trait]]
+[def __zeta_grid_graph__ [@zeta_grid_graph.html `boost::zeta_grid_graph`]]
+[def __bitset_grid_graph__ [@bitset_grid_graph.html `boost::bitset_grid_graph`]]
+[def __bitruncated_cubic_honeycomb_graph__ [@btrnc_cubic_hcomb_graph.html `boost::bitruncated_cubic_honeycomb_graph`]]
+[def __upsilon_grid_graph__ [@upsilon_grid_graph.html `boost::upsilon_grid_graph`]]
+
+[section Description]
+Models of this concept provide key-based access to their in-edges and their
+source vertices.  This access can be useful to graph algorithms that traverse
+these edges according to a specific criterion, e.g. direction.
+[endsect]
+
+[section Refinement of]
+
+  * __Associative_Incidence_Graph__
+  * __Bidirectional_Graph__
+
+[endsect]
+
+[variablelist Notation
+    [
+        [`Graph`]
+        [
+            A type that models the [*Bidirectional Associative Incidence Graph]
+            concept.
+        ]
+    ]
+    [[`const_graph`][An object of type `Graph const&`.]]
+    [
+        [`v`]
+        [
+            An object of type [^_graph_traits_<Graph>::vertex_descriptor]
+            `const&`.
+        ]
+    ]
+    [[`key`][An object of type [^_edge_key_trait_<Graph>::type] `const&`.]]
+]
+
+[section:types Associated Types]
+None beyond those defined by the __Associative_Incidence_Graph__ and
+__Bidirectional_Graph__ concepts.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Associative_Incidence_Graph__
+and __Bidirectional_Graph__ concepts, the following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Previous vertex]
+        [``
+            const_graph.previous(v, key);
+        ``]
+        [``
+            _graph_traits_<Graph>::vertex_descriptor
+        ``]
+        [
+            Returns the source vertex of the in-edge to `v` that is
+            associated with `key`, or `v` if no such in-edge exists.
+        ]
+        [Linear with respect to the in-degree of `v`]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __zeta_grid_graph__
+  * __bitset_grid_graph__
+  * __bitruncated_cubic_honeycomb_graph__
+  * __upsilon_grid_graph__
+
+[endsect]
+

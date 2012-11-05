@@ -1,0 +1,429 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Grid Graph</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="GridGraph.html" title="Grid Graph">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="grid_graph"></a>Grid Graph</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="grid_graph.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="GridGraph.html#grid_graph.description">Description</a></span></dt>
+<dt><span class="section"><a href="GridGraph.html#grid_graph.refinement_of">Refinement of</a></span></dt>
+<dt><span class="section"><a href="GridGraph.html#grid_graph.types">Associated Types</a></span></dt>
+<dt><span class="section"><a href="GridGraph.html#grid_graph.expressions">Valid Expressions and Semantics</a></span></dt>
+<dt><span class="section"><a href="GridGraph.html#grid_graph.models">Models</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="grid_graph.description"></a><a class="link" href="GridGraph.html#grid_graph.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      Models of this concept represent grid structures by matching their vertices
+      to the corresponding grid points. Only vertices that are next to each other
+      according to the grid structure have out-edges to and from each other.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="grid_graph.refinement_of"></a><a class="link" href="GridGraph.html#grid_graph.refinement_of" title="Refinement of">Refinement of</a>
+</h2></div></div></div>
+<p>
+      <a href="AssociativeIncidenceGraph.html" target="_top"><span class="bold"><strong>Associative
+      Incidence Graph</strong></span></a>
+    </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl class="variablelist">
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Graph</span></code></span></dt>
+<dd><p>
+          A type that models the <span class="bold"><strong>Grid Graph</strong></span> concept.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">const_graph</span></code></span></dt>
+<dd><p>
+          An object of type <code class="computeroutput"><span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">v</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a>&lt;Graph&gt;::vertex_descriptor</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">key</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="edge_key_trait.html" target="_top">boost::edge_key_trait</a>&lt;Graph&gt;::type</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">dimension</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="vertex_dimension_trait.html" target="_top">boost::vertex_dimension_trait</a>&lt;Graph&gt;::type</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">distance</span></code></span></dt>
+<dd><p>
+          An unsigned integral type.
+        </p></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="grid_graph.types"></a><a class="link" href="GridGraph.html#grid_graph.types" title="Associated Types">Associated Types</a>
+</h2></div></div></div>
+<p>
+      Two new types are introduced.
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Expression
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+<th>
+              <p>
+                Requirements
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Vertex dimension type
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="vertex_dimension_trait.html" target="_top">boost::vertex_dimension_trait</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                The type by which a vertex is indexable.
+              </p>
+            </td>
+<td>
+              <p>
+                Model-specific.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex coordinate type
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="vertex_coordinate_trait.html" target="_top">boost::vertex_coordinate_trait</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                The type of each coordinate of a vertex.
+              </p>
+            </td>
+<td>
+              <p>
+                Model-specific.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="grid_graph.expressions"></a><a class="link" href="GridGraph.html#grid_graph.expressions" title="Valid Expressions and Semantics">Valid Expressions and Semantics</a>
+</h2></div></div></div>
+<p>
+      In addition to the expressions defined in the <a href="AssociativeIncidenceGraph.html" target="_top"><span class="bold"><strong>Associative Incidence Graph</strong></span></a> concept, the following
+      expressions must be valid.
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Expression
+              </p>
+            </th>
+<th>
+              <p>
+                Return Type
+              </p>
+            </th>
+<th>
+              <p>
+                Semantics
+              </p>
+            </th>
+<th>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                Complexity</a>
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Dimension count
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_graph</span><span class="special">.</span><span class="identifier">dimensions</span><span class="special">()</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="vertex_dimension_trait.html" target="_top">boost::vertex_dimension_trait</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Returns the number of dimensions that the graph straddles.
+              </p>
+            </td>
+<td>
+              <p>
+                Constant
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Dimension length
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_graph</span><span class="special">.</span><span class="identifier">length</span><span class="special">(</span><span class="identifier">dimension</span><span class="special">)</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                An unsigned integer type.
+              </p>
+            </td>
+<td>
+              <p>
+                Returns the number of vertices lying on a grid line running along
+                the specified dimension.
+              </p>
+            </td>
+<td>
+              <p>
+                Constant
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Dimension wraparound query
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_graph</span><span class="special">.</span><span class="identifier">wrapped</span><span class="special">(</span><span class="identifier">dimension</span><span class="special">)</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="keyword">bool</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Returns <code class="computeroutput"><span class="keyword">true</span></code> if two
+                vertices on opposite ends of a grid line running along the specified
+                dimension are adjacent to each other, <code class="computeroutput"><span class="keyword">false</span></code>
+                otherwise. A two-dimensional grid is considered a <span class="bold"><strong>cylinder</strong></span>
+                if it wraps around exactly one dimension, or a <span class="bold"><strong>torus</strong></span>
+                if it wraps around both dimensions.
+              </p>
+            </td>
+<td>
+              <p>
+                Constant
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex coordinate
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">v</span><span class="special">[</span><span class="identifier">dimension</span><span class="special">]</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="vertex_coordinate_trait.html" target="_top">boost::vertex_coordinate_trait</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Returns the coordinate of the vertex at the specified dimension.
+                Prerequisite: <code class="computeroutput"><span class="number">0</span> <span class="special">&lt;=</span>
+                <span class="identifier">dimension</span> <span class="special">&lt;</span>
+                <span class="identifier">const_graph</span><span class="special">.</span><span class="identifier">dimensions</span><span class="special">()</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Amortized constant with respect to the number of dimensions
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Next vertex
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_graph</span><span class="special">.</span><span class="identifier">next</span><span class="special">(</span><span class="identifier">v</span><span class="special">,</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">distance</span><span class="special">)</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Equivalent to, but more efficient than:
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="identifier">u</span> <span class="special">=</span> <span class="identifier">v</span><span class="special">;</span>
+
+<span class="keyword">for</span> <span class="special">(</span>
+    <a href="http://www.boost.org/doc/html/typeof/refe.html" target="_top">BOOST_TYPEOF</a><span class="special">(</span><span class="identifier">distance</span><span class="special">)</span> <span class="identifier">d</span> <span class="special">=</span> <a href="http://www.boost.org/libs/utility/value_init.htm#initialized_value" target="_top">boost::initialized_value</a><span class="special">;</span>
+    <span class="identifier">d</span> <span class="special">&lt;</span> <span class="identifier">distance</span><span class="special">;</span>
+    <span class="special">++</span><span class="identifier">d</span>
+<span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">u</span> <span class="special">=</span> <span class="identifier">const_graph</span><span class="special">.</span><span class="identifier">next</span><span class="special">(</span><span class="identifier">u</span><span class="special">,</span> <span class="identifier">key</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">return</span> <span class="identifier">u</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Linear with respect to the out-degree of <code class="computeroutput"><span class="identifier">v</span></code>;
+                amortized constant with respect to <code class="computeroutput"><span class="identifier">distance</span></code>
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="grid_graph.models"></a><a class="link" href="GridGraph.html#grid_graph.models" title="Models">Models</a>
+</h2></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="zeta_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">zeta_grid_graph</span></code></a>
+<span class="special">*</span> <a href="bitset_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bitset_grid_graph</span></code></a>
+<span class="special">*</span> <a href="btrnc_cubic_hcomb_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bitruncated_cubic_honeycomb_graph</span></code></a>
+<span class="special">*</span> <a href="upsilon_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">upsilon_grid_graph</span></code></a>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: November 05, 2012 at 03:37:53 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

@@ -1,0 +1,1128 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>bitset_grid_graph</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="bitset_grid_graph.html" title="bitset_grid_graph">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="bitset_grid_graph"></a>bitset_grid_graph</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="bitset_grid_graph.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.description">Description</a></span></dt>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.declaration">Where Declared</a></span></dt>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.definition">Where Defined</a></span></dt>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.tpl_param">Template Parameters</a></span></dt>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.model_of">Model of</a></span></dt>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.public_bases">Public Base Classes</a></span></dt>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.members">Members</a></span></dt>
+<dt><span class="section"><a href="bitset_grid_graph.html#bitset_grid_graph.non_members">Non-members</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.description"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      BGL representation of a multi-dimensional grid whose vertices are bitsets.
+      Two vertices are considered adjacent to each other if their disjunction contains
+      exactly one bit on.
+    </p>
+<p>
+      This data structure is an <span class="bold"><strong>implicit graph</strong></span>,
+      which means that its vertices and edges take up no internal memory.
+    </p>
+</div>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="http://www.boost.org/doc/libs/release/doc/src/images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+      This component depends on <a href="http://svn.boost.org/svn/boost/sandbox/container_gen/libs/container_gen/doc/html/" target="_top"><span class="bold"><strong>Boost.ContainerGen</strong></span></a>, which is not yet a part
+      of Boost. For now, you must perform a Subversion checkout from the <a href="http://svn.boost.org/" target="_top">SVN
+      Trac</a>.
+    </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.declaration"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.declaration" title="Where Declared">Where Declared</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/bitset_grid_graph_fwd.hpp" target="_top">boost/graph/bitset_grid_graph_fwd.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.definition"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.definition" title="Where Defined">Where Defined</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/bitset_grid_graph.hpp" target="_top">boost/graph/bitset_grid_graph.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.tpl_param"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.tpl_param" title="Template Parameters">Template Parameters</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Parameter
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+<th>
+              <p>
+                Requirements
+              </p>
+            </th>
+<th>
+              <p>
+                Default
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">BitCount</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Compile-time representation of the number of bits in each vertex.
+              </p>
+            </td>
+<td>
+              <p>
+                It must model the <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>MPL Integral Constant</strong></span></a> concept, and
+                its value must not be less than <code class="computeroutput"><span class="number">2</span></code>.
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">VertexIndex</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The type used to represent the number of vertices in this graph.
+              </p>
+            </td>
+<td>
+              <p>
+                It must be an unsigned integer type.
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">degree_size_type</span>
+</pre>
+<p>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">EdgeIndex</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The type used to represent the number of vertices in this graph.
+              </p>
+            </td>
+<td>
+              <p>
+                It must be an unsigned integer type.
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertices_size_type</span>
+</pre>
+<p>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">AllocSel</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                A metafunction class that takes in the value type of <code class="computeroutput"><span class="identifier">BitCount</span></code> and returns an allocator
+                model.
+              </p>
+            </td>
+<td>
+              <p>
+                It must model the <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> concept.
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://svn.boost.org/svn/boost/sandbox/container_gen/libs/container_gen/doc/html/container_gen/reference/selectors.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">std_allocator_selector</span></code></a>
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.model_of"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.model_of" title="Model of">Model of</a>
+</h2></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="BidirectionalGridGraph.html" target="_top"><span class="bold"><strong>Bidirectional Grid Graph</strong></span></a>
+<span class="special">*</span> <a href="BidirIndexIncidenceGraph.html" target="_top"><span class="bold"><strong>Bidirectional Indexable Incidence Graph</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top"><span class="bold"><strong>Vertex List Graph</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/graph/doc/EdgeListGraph.html" target="_top"><span class="bold"><strong>Edge List Graph</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/graph/doc/AdjacencyGraph.html" target="_top"><span class="bold"><strong>Adjacency Graph</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/graph/doc/AdjacencyMatrix.html" target="_top"><span class="bold"><strong>Adjacency Matrix</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/graph/doc/PropertyGraph.html" target="_top"><span class="bold"><strong>Property Graph</strong></span></a>
+<span class="special">*</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.public_bases"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.public_bases" title="Public Base Classes">Public Base Classes</a>
+</h2></div></div></div>
+<p>
+      None.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.members"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.members" title="Members">Members</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Definition
+              </p>
+            </th>
+<th>
+              <p>
+                Where defined
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Default constructor
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">bitset_grid_graph</span><span class="special">();</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Copy constructor
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">bitset_grid_graph</span><span class="special">(</span><span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Assignment operator
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">bitset_grid_graph</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Dimension count
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="vertex_dimension_trait.html" target="_top">vertex_dimension_trait</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">dimensions</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="GridGraph.html" target="_top"><span class="bold"><strong>Grid Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Dimension length
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uint8_t</span>
+    <span class="identifier">length</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="vertex_dimension_trait.html" target="_top">vertex_dimension_trait</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">dimension</span>
+    <span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="GridGraph.html" target="_top"><span class="bold"><strong>Grid Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Dimension wraparound query
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">bool</span>
+    <span class="identifier">wrapped</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="vertex_dimension_trait.html" target="_top">vertex_dimension_trait</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">dimension</span>
+    <span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="GridGraph.html" target="_top"><span class="bold"><strong>Grid Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Next vertex
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Distance</span><span class="special">&gt;</span>
+<span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+    <span class="identifier">next</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">vertex</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="edge_key_trait.html" target="_top">edge_key_trait</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span>
+      <span class="special">,</span> <span class="identifier">Distance</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">distance</span>
+    <span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="GridGraph.html" target="_top"><span class="bold"><strong>Grid Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Previous vertex
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Distance</span><span class="special">&gt;</span>
+<span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+    <span class="identifier">previous</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">vertex</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="edge_key_trait.html" target="_top">edge_key_trait</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span>
+      <span class="special">,</span> <span class="identifier">Distance</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">distance</span>
+    <span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="BidirectionalGridGraph.html" target="_top"><span class="bold"><strong>Bidirectional
+                Grid Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Next vertex
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+    <span class="identifier">next</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">vertex</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="edge_key_trait.html" target="_top">edge_key_trait</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span>
+    <span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="AssociativeIncidenceGraph.html" target="_top"><span class="bold"><strong>Associative
+                Incidence Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Previous vertex
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+    <span class="identifier">previous</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">vertex</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="edge_key_trait.html" target="_top">edge_key_trait</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span>
+    <span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="BidirAssocIncidenceGraph.html" target="_top"><span class="bold"><strong>Bidirectional
+                Associative Incidence Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitset_grid_graph.non_members"></a><a class="link" href="bitset_grid_graph.html#bitset_grid_graph.non_members" title="Non-members">Non-members</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Definition
+              </p>
+            </th>
+<th>
+              <p>
+                Where defined
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Null vertex
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+    <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">null_vertex</span><span class="special">();</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/Graph.html" target="_top"><span class="bold"><strong>Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge key count
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">degree_size_type</span>
+    <span class="identifier">num_edge_keys</span><span class="special">(</span><span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="AssociativeIncidenceGraph.html" target="_top"><span class="bold"><strong>Associative
+                Incidence Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge key indexed access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="edge_key_trait.html" target="_top">edge_key_trait</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">edge_key</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">degree_size_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">index</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="AssociativeIncidenceGraph.html" target="_top"><span class="bold"><strong>Associative
+                Incidence Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex range
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_iterator</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_iterator</span>
+<span class="special">&gt;</span>
+    <span class="identifier">vertices</span><span class="special">(</span><span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top"><span class="bold"><strong>Vertex List Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex count
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertices_size_type</span> <span class="keyword">const</span><span class="special">&amp;</span>
+    <span class="identifier">num_vertices</span><span class="special">(</span><span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top"><span class="bold"><strong>Vertex List Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex indexed access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+    <span class="identifier">vertex</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertices_size_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">index</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                bitset_grid_graph
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge range
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edge_iterator</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edge_iterator</span>
+<span class="special">&gt;</span>
+    <span class="identifier">edges</span><span class="special">(</span><span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/EdgeListGraph.html" target="_top"><span class="bold"><strong>Edge
+                List Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge count
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edges_size_type</span> <span class="keyword">const</span><span class="special">&amp;</span>
+    <span class="identifier">num_edges</span><span class="special">(</span><span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/EdgeListGraph.html" target="_top"><span class="bold"><strong>Edge
+                List Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge indexed access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span>
+    <span class="identifier">edge_at</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">edges_size_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">index</span>
+      <span class="special">,</span> <span class="identifier">zeta_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                bitset_grid_graph
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex out-edge range
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">out_edge_iterator</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">out_edge_iterator</span>
+<span class="special">&gt;</span>
+    <span class="identifier">out_edges</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/IncidenceGraph.html" target="_top"><span class="bold"><strong>Incidence
+                Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex out-degree
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">degree_size_type</span>
+    <span class="identifier">out_degree</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/IncidenceGraph.html" target="_top"><span class="bold"><strong>Incidence
+                Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex out-edge indexed access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span>
+    <span class="identifier">out_edge_at</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">degree_size_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">index</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="IndexableIncidenceGraph.html" target="_top"><span class="bold"><strong>Indexable
+                Incidence Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex adjacency range
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">adjacency_iterator</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">adjacency_iterator</span>
+<span class="special">&gt;</span>
+    <span class="identifier">adjacent_vertices</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/AdjacencyGraph.html" target="_top"><span class="bold"><strong>Adjacency
+                Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex in-edge range
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">in_edge_iterator</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">in_edge_iterator</span>
+<span class="special">&gt;</span>
+    <span class="identifier">in_edges</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/BidirectionalGraph.html" target="_top"><span class="bold"><strong>Bidirectional Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex in-degree
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">degree_size_type</span>
+    <span class="identifier">in_degree</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/BidirectionalGraph.html" target="_top"><span class="bold"><strong>Bidirectional Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex degree
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">degree_size_type</span>
+    <span class="identifier">degree</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/BidirectionalGraph.html" target="_top"><span class="bold"><strong>Bidirectional Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex in-edge indexed access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span>
+    <span class="identifier">in_edge_at</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">degree_size_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">index</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="BidirIndexIncidenceGraph.html" target="_top"><span class="bold"><strong>Bidirectional
+                Indexable Incidence Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Direct edge access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span>
+    <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span>
+  <span class="special">,</span> <span class="keyword">bool</span>
+<span class="special">&gt;</span>
+    <span class="identifier">edge</span><span class="special">(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">u</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/AdjacencyMatrix.html" target="_top"><span class="bold"><strong>Adjacency Matrix</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex index property map access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/property_map.html" target="_top">property_map</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">,</span><span class="identifier">vertex_index_t</span><span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">get</span><span class="special">(</span><span class="identifier">vertex_index_t</span><span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/PropertyGraph.html" target="_top"><span class="bold"><strong>Property
+                Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Vertex index access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">vertices_size_type</span>
+    <span class="identifier">get</span><span class="special">(</span>
+        <span class="identifier">vertex_index_t</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">v</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/PropertyGraph.html" target="_top"><span class="bold"><strong>Property
+                Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge index property map access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/property_map.html" target="_top">property_map</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">,</span><span class="identifier">edge_index_t</span><span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">get</span><span class="special">(</span><span class="identifier">edge_index_t</span><span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/PropertyGraph.html" target="_top"><span class="bold"><strong>Property
+                Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge index access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">bitset_grid_graph</span><span class="special">&gt;::</span><span class="identifier">edges_size_type</span>
+    <span class="identifier">get</span><span class="special">(</span>
+        <span class="identifier">edge_index_t</span>
+      <span class="special">,</span> <span class="identifier">bitset_grid_graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span>
+            <span class="identifier">bitset_grid_graph</span>
+        <span class="special">&gt;::</span><span class="identifier">edge_descriptor</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">e</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://www.boost.org/libs/graph/doc/PropertyGraph.html" target="_top"><span class="bold"><strong>Property
+                Graph</strong></span></a>
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: November 05, 2012 at 05:06:05 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

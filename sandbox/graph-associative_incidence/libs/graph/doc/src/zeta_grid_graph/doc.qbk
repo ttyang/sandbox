@@ -1,0 +1,511 @@
+[article zeta_grid_graph
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __eight_cardinal_and_ordinal_directions__ [@http://en.wikipedia.org/wiki/Cardinal_direction eight cardinal and ordinal directions]]
+[def __Graph__ [@boost:libs/graph/doc/Graph.html [*Graph]]]
+[def __Incidence_Graph__ [@boost:libs/graph/doc/IncidenceGraph.html [*Incidence Graph]]]
+[def __Bidirectional_Graph__ [@boost:libs/graph/doc/BidirectionalGraph.html [*Bidirectional Graph]]]
+[def __Associative_Incidence_Graph__ [@AssociativeIncidenceGraph.html [*Associative Incidence Graph]]]
+[def __Grid_Graph__ [@GridGraph.html [*Grid Graph]]]
+[def __Bidirectional_Grid_Graph__ [@BidirectionalGridGraph.html [*Bidirectional Grid Graph]]]
+[def __Indexable_Incidence_Graph__ [@IndexableIncidenceGraph.html [*Indexable Incidence Graph]]]
+[def __Bidirectional_Indexable_Incidence_Graph__ [@BidirIndexIncidenceGraph.html [*Bidirectional Indexable Incidence Graph]]]
+[def __Vertex_List_Graph__ [@boost:libs/graph/doc/VertexListGraph.html [*Vertex List Graph]]]
+[def __Adjacency_Graph__ [@boost:libs/graph/doc/AdjacencyGraph.html [*Adjacency Graph]]]
+[def __Adjacency_Matrix__ [@boost:libs/graph/doc/AdjacencyMatrix.html [*Adjacency Matrix]]]
+[def __Property_Graph__ [@boost:libs/graph/doc/PropertyGraph.html [*Property Graph]]]
+[def __Copy_Constructible__ [@boost:libs/utility/CopyConstructible.html [*Copy Constructible]]]
+[def __Assignable__ [@boost:libs/utility/Assignable.html [*Assignable]]]
+[def _std_pair_ [@http://www.sgi.com/tech/stl/pair.html std::pair]]
+[def _std_tr1_array_ [@boost:doc/html/boost_tr1/subject_list.html#boost_tr1.subject_list.array std::tr1::array]]
+[def _property_map_ [@boost:libs/graph/doc/property_map.html property_map]]
+[def _graph_traits_ [@boost:libs/graph/doc/graph_traits.html graph_traits]]
+[def _edge_key_trait_ [@edge_key_trait.html edge_key_trait]]
+[def _vertex_dimension_trait_ [@vertex_dimension_trait.html vertex_dimension_trait]]
+[def _vertex_coordinate_trait_ [@vertex_coordinate_trait.html vertex_coordinate_trait]]
+[def __boost_graph_zeta_grid_graph_fwd_hpp__ [@../../../boost/graph/zeta_grid_graph_fwd.hpp boost/graph/zeta_grid_graph_fwd.hpp]]
+[def __boost_graph_zeta_grid_graph_hpp__ [@../../../boost/graph/zeta_grid_graph.hpp boost/graph/zeta_grid_graph.hpp]]
+
+[section Description]
+BGL representation of a multi-dimensional *zeta grid*, a rectangular grid that
+allows diagonal edges between vertices as well as horizontal and vertical ones.
+Two vertices are considered adjacent to each other if they are not at the same
+location and none of their corresponding coordinates in each dimension are
+different by more than one unit (taking wraparound into account).
+
+The vector from a vertex to an adjacent one is the edge key associated with it.
+A two-dimensional `zeta_grid_graph` has eight distinct edge keys, corresponding
+to the __eight_cardinal_and_ordinal_directions__; a three-dimensional one has
+26 edge keys; a `zeta_grid_graph` with `N` dimensions has `3 ^ N - 1` edge
+keys.
+
+This data structure is an *implicit graph*, which means that its vertices and
+edges take up no internal memory.
+[endsect]
+
+[section:declaration Where Declared]
+``
+#include <__boost_graph_zeta_grid_graph_fwd_hpp__>
+``
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_zeta_grid_graph_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`DimensionCount`]
+        [The number of dimensions in this graph.]
+        [It must not be less than `2`.]
+        []
+    ]
+    [
+        [`Coordinate`]
+        [The vertex coordinate type.]
+        [It must be an unsigned integer type.]
+        [`std::size_t`]
+    ]
+    [
+        [`VertexIndex`]
+        [The type used to represent the number of vertices in this graph.]
+        [It must be an unsigned integer type.]
+        [`Coordinate`]
+    ]
+    [
+        [`EdgeIndex`]
+        [The type used to represent the number of vertices in this graph.]
+        [It must be an unsigned integer type.]
+        [``
+            typename _graph_traits_<zeta_grid_graph>::vertices_size_type
+        ``]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Bidirectional_Grid_Graph__
+  * __Bidirectional_Indexable_Incidence_Graph__
+  * __Vertex_List_Graph__
+  * __Adjacency_Graph__
+  * __Adjacency_Matrix__
+  * __Property_Graph__
+  * __Copy_Constructible__ if `Coordinate` is __Copy_Constructible__
+  * __Assignable__ if `Coordinate` is __Assignable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Definition][Description][Requirements]]
+    [
+        [Constructor with dimensions and flag]
+        [``
+        explicit zeta_grid_graph(
+            _std_tr1_array_<Coordinate,DimensionCount> const& dimension_lengths
+          , bool wrap_all_dimensions = false
+        );
+        ``]
+        [
+            Constructs a new `zeta_grid_graph` object with the specified
+            lengths for each dimension.  All valid dimensions will wraparound
+            or not depending on the specified flag.
+        ]
+        [
+            None of the lengths for dimensions with wraparound can be less than
+            `3`.  None of the lengths for dimensions without wraparound can be
+            less than `2`.
+        ]
+    ]
+    [
+        [Constructor with dimensions and wraparound]
+        [``
+        zeta_grid_graph(
+            _std_tr1_array_<Coordinate,DimensionCount> const& dimension_lengths
+          , _std_tr1_array_<bool,DimensionCount> const& wraparound_dimension
+        );
+        ``]
+        [
+            Constructs a new `zeta_grid_graph` object with the specified
+            lengths and wraparound for each dimension.
+        ]
+        [
+            None of the lengths for dimensions with wraparound can be less than
+            `3`.  None of the lengths for dimensions without wraparound can be
+            less than `2`.
+        ]
+    ]
+    [
+        [Constructor with dimension range and flag]
+        [``
+        template <typename DimensionIterator>
+        zeta_grid_graph(
+            DimensionIterator dimension_lengths_itr
+          , DimensionIterator dimension_lengths_end
+          , bool wrap_all_dimensions = false
+        );
+        ``]
+        [
+            Constructs a new `zeta_grid_graph` object with the lengths in the
+            specified dimension range.  All valid dimensions will wraparound
+            or not depending on the specified flag.
+        ]
+        [
+            None of the lengths for dimensions with wraparound can be less than
+            `3`.  None of the lengths for dimensions without wraparound can be
+            less than `2`.
+        ]
+    ]
+    [
+        [Constructor with dimension and wraparound ranges]
+        [``
+        template <typename DimensionIterator, typename WraparoundIterator>
+        zeta_grid_graph(
+            DimensionIterator dimension_lengths_itr
+          , DimensionIterator dimension_lengths_end
+          , WraparoundIterator wraparound_dimension_itr
+          , WraparoundIterator wraparound_dimension_end
+        );
+        ``]
+        [
+            Constructs a new `zeta_grid_graph` object with the lengths and
+            wraparound capability in the specified dimension and wraparound
+            ranges.
+        ]
+        [
+            None of the lengths for dimensions with wraparound can be less than
+            `3`.  None of the lengths for dimensions without wraparound can be
+            less than `2`.
+        ]
+    ]
+    [
+        [Copy constructor]
+        [``
+        zeta_grid_graph(zeta_grid_graph const& copy);
+        ``]
+        [Defined in the __Copy_Constructible__ concept.]
+        []
+    ]
+    [
+        [Assignment operator]
+        [``
+        zeta_grid_graph& operator=(zeta_grid_graph const& copy);
+        ``]
+        [Defined in the __Assignable__ concept.]
+        []
+    ]
+    [
+        [Dimension count]
+        [``
+        typename _vertex_dimension_trait_<zeta_grid_graph>::type
+            dimensions() const;
+        ``]
+        [Defined in the __Grid_Graph__ concept.]
+        []
+    ]
+    [
+        [Dimension length]
+        [``
+        typename _vertex_coordinate_trait_<zeta_grid_graph>::type const&
+            length(
+                typename _vertex_dimension_trait_<
+                    zeta_grid_graph
+                >::type const& dimension
+            ) const;
+        ``]
+        [Defined in the __Grid_Graph__ concept.]
+        []
+    ]
+    [
+        [Dimension wraparound query]
+        [``
+        bool
+            wrapped(
+                typename _vertex_dimension_trait_<
+                    zeta_grid_graph
+                >::type const& dimension
+            ) const;
+        ``]
+        [Defined in the __Grid_Graph__ concept.]
+        []
+    ]
+    [
+        [Next vertex]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::vertex_descriptor
+            next(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& vertex
+              , typename _edge_key_trait_<zeta_grid_graph>::type const& key
+              , typename _vertex_coordinate_trait_<
+                    zeta_grid_graph
+                >::type const& distance = 1
+            ) const;
+        ``]
+        [Defined in the __Grid_Graph__ concept.]
+        []
+    ]
+    [
+        [Previous vertex]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::vertex_descriptor
+            previous(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& vertex
+              , typename _edge_key_trait_<zeta_grid_graph>::type const& key
+              , typename _vertex_coordinate_trait_<
+                    zeta_grid_graph
+                >::type const& distance = 1
+            ) const;
+        ``]
+        [Defined in the __Bidirectional_Grid_Graph__ concept.]
+        []
+    ]
+]
+[endsect]
+
+[section Non-members]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [Null vertex]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::vertex_descriptor
+            typename _graph_traits_<zeta_grid_graph>::null_vertex();
+        ``]
+        [__Graph__]
+    ]
+    [
+        [Edge key count]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::degree_size_type
+            num_edge_keys(zeta_grid_graph const& graph);
+        ``]
+        [__Associative_Incidence_Graph__]
+    ]
+    [
+        [Edge key indexed access]
+        [``
+        typename _edge_key_trait_<zeta_grid_graph>::type
+            edge_key(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::degree_size_type const& index
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Associative_Incidence_Graph__]
+    ]
+    [
+        [Vertex range]
+        [``
+        _std_pair_<
+            typename _graph_traits_<zeta_grid_graph>::vertex_iterator
+          , typename _graph_traits_<zeta_grid_graph>::vertex_iterator
+        >
+            vertices(zeta_grid_graph const& graph);
+        ``]
+        [__Vertex_List_Graph__]
+    ]
+    [
+        [Vertex count]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::vertices_size_type const&
+            num_vertices(zeta_grid_graph const& graph);
+        ``]
+        [__Vertex_List_Graph__]
+    ]
+    [
+        [Vertex indexed access]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::vertex_descriptor
+            vertex(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertices_size_type const& index
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [zeta_grid_graph]
+    ]
+    [
+        [Vertex out-edge range]
+        [``
+        _std_pair_<
+            typename _graph_traits_<zeta_grid_graph>::out_edge_iterator
+          , typename _graph_traits_<zeta_grid_graph>::out_edge_iterator
+        >
+            out_edges(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Incidence_Graph__]
+    ]
+    [
+        [Vertex out-degree]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::degree_size_type
+            out_degree(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Incidence_Graph__]
+    ]
+    [
+        [Vertex out-edge indexed access]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::edge_descriptor
+            out_edge_at(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , typename _graph_traits_<
+                    zeta_grid_graph
+                >::degree_size_type const& index
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Indexable_Incidence_Graph__]
+    ]
+    [
+        [Vertex adjacency range]
+        [``
+        _std_pair_<
+            typename _graph_traits_<zeta_grid_graph>::adjacency_iterator
+          , typename _graph_traits_<zeta_grid_graph>::adjacency_iterator
+        >
+            adjacent_vertices(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Adjacency_Graph__]
+    ]
+    [
+        [Vertex in-edge range]
+        [``
+        _std_pair_<
+            typename _graph_traits_<zeta_grid_graph>::in_edge_iterator
+          , typename _graph_traits_<zeta_grid_graph>::in_edge_iterator
+        >
+            in_edges(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Bidirectional_Graph__]
+    ]
+    [
+        [Vertex in-degree]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::degree_size_type
+            in_degree(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Bidirectional_Graph__]
+    ]
+    [
+        [Vertex degree]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::degree_size_type
+            degree(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Bidirectional_Graph__]
+    ]
+    [
+        [Vertex in-edge indexed access]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::edge_descriptor
+            in_edge_at(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , typename _graph_traits_<
+                    zeta_grid_graph
+                >::degree_size_type const& index
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Bidirectional_Indexable_Incidence_Graph__]
+    ]
+    [
+        [Direct edge access]
+        [``
+        _std_pair_<
+            typename _graph_traits_<zeta_grid_graph>::edge_descriptor
+          , bool
+        >
+            edge(
+                typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& u
+              , typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+              , zeta_grid_graph const& graph
+            );
+        ``]
+        [__Adjacency_Matrix__]
+    ]
+    [
+        [Vertex index property map access]
+        [``
+        typename _property_map_<zeta_grid_graph,vertex_index_t>::type
+            get(vertex_index_t, zeta_grid_graph const& graph);
+        ``]
+        [__Property_Graph__]
+    ]
+    [
+        [Vertex index access]
+        [``
+        typename _graph_traits_<zeta_grid_graph>::vertices_size_type
+            get(
+                vertex_index_t
+              , zeta_grid_graph const& graph
+              , typename _graph_traits_<
+                    zeta_grid_graph
+                >::vertex_descriptor const& v
+            );
+        ``]
+        [__Property_Graph__]
+    ]
+]
+[endsect]
+

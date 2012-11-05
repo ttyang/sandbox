@@ -1,0 +1,324 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Associative Incidence Graph</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="AssociativeIncidenceGraph.html" title="Associative Incidence Graph">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="associative_incidence_graph"></a>Associative Incidence Graph</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="associative_incidence_graph.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="AssociativeIncidenceGraph.html#associative_incidence_graph.description">Description</a></span></dt>
+<dt><span class="section"><a href="AssociativeIncidenceGraph.html#associative_incidence_graph.refinement_of">Refinement of</a></span></dt>
+<dt><span class="section"><a href="AssociativeIncidenceGraph.html#associative_incidence_graph.types">Associated Types</a></span></dt>
+<dt><span class="section"><a href="AssociativeIncidenceGraph.html#associative_incidence_graph.expressions">Valid Expressions
+    and Semantics</a></span></dt>
+<dt><span class="section"><a href="AssociativeIncidenceGraph.html#associative_incidence_graph.models">Models</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="associative_incidence_graph.description"></a><a class="link" href="AssociativeIncidenceGraph.html#associative_incidence_graph.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      Models of this concept provide key-based access to their out-edges and adjacent
+      vertices. This access can be useful to graph algorithms that traverse edges
+      according to a specific criterion, e.g. direction.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="associative_incidence_graph.refinement_of"></a><a class="link" href="AssociativeIncidenceGraph.html#associative_incidence_graph.refinement_of" title="Refinement of">Refinement of</a>
+</h2></div></div></div>
+<p>
+      <a href="http://www.boost.org/libs/graph/doc/IncidenceGraph.html" target="_top"><span class="bold"><strong>Incidence
+      Graph</strong></span></a>
+    </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl class="variablelist">
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Graph</span></code></span></dt>
+<dd><p>
+          A type that models the <span class="bold"><strong>Associative Incidence Graph</strong></span>
+          concept.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">const_graph</span></code></span></dt>
+<dd><p>
+          An object of type <code class="computeroutput"><span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">v</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a>&lt;Graph&gt;::vertex_descriptor</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">degree</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a>&lt;Graph&gt;::degree_size_type</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">key</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="edge_key_trait.html" target="_top">boost::edge_key_trait</a>&lt;Graph&gt;::type</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="associative_incidence_graph.types"></a><a class="link" href="AssociativeIncidenceGraph.html#associative_incidence_graph.types" title="Associated Types">Associated Types</a>
+</h2></div></div></div>
+<p>
+      One new type is introduced.
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Expression
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+<th>
+              <p>
+                Requirements
+              </p>
+            </th>
+</tr></thead>
+<tbody><tr>
+<td>
+              <p>
+                Edge key type
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="edge_key_trait.html" target="_top">boost::edge_key_trait</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                The type of a key with which a vertex will associate an out-edge.
+              </p>
+            </td>
+<td>
+              <p>
+                Model-specific.
+              </p>
+            </td>
+</tr></tbody>
+</table></div>
+<p>
+      In addition, the requirements for the edge parallel category type are strengthened:
+      it must be convertible to <code class="computeroutput"><span class="identifier">disallow_parallel_edge_tag</span></code>.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="associative_incidence_graph.expressions"></a><a class="link" href="AssociativeIncidenceGraph.html#associative_incidence_graph.expressions" title="Valid Expressions and Semantics">Valid Expressions
+    and Semantics</a>
+</h2></div></div></div>
+<p>
+      In addition to the expressions defined in the <a href="http://www.boost.org/libs/graph/doc/IncidenceGraph.html" target="_top"><span class="bold"><strong>Incidence Graph</strong></span></a> concept, the following expressions
+      must be valid.
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Expression
+              </p>
+            </th>
+<th>
+              <p>
+                Return Type
+              </p>
+            </th>
+<th>
+              <p>
+                Semantics
+              </p>
+            </th>
+<th>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                Complexity</a>
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Next vertex
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_graph</span><span class="special">.</span><span class="identifier">next</span><span class="special">(</span><span class="identifier">v</span><span class="special">,</span> <span class="identifier">key</span><span class="special">)</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Returns the target vertex of the out-edge from <code class="computeroutput"><span class="identifier">v</span></code>
+                that is associated with <code class="computeroutput"><span class="identifier">key</span></code>,
+                or <code class="computeroutput"><span class="identifier">v</span></code> if no such out-edge
+                exists.
+              </p>
+            </td>
+<td>
+              <p>
+                Linear with respect to the out-degree of <code class="computeroutput"><span class="identifier">v</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge key count
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">num_edge_keys</span><span class="special">(</span><span class="identifier">const_graph</span><span class="special">)</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">degree_size_type</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Returns the number of distinct edge keys that the graph will recognize.
+              </p>
+            </td>
+<td>
+              <p>
+                Amortized constant
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Edge key indexed access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">edge_key</span><span class="special">(</span><span class="identifier">degree</span><span class="special">,</span> <span class="identifier">const_graph</span><span class="special">)</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="edge_key_trait.html" target="_top">boost::edge_key_trait</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Returns the <code class="computeroutput"><span class="identifier">degree</span></code>-th
+                edge key that the graph will recognize.
+              </p>
+            </td>
+<td>
+              <p>
+                Amortized constant with respect to edge key count
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="associative_incidence_graph.models"></a><a class="link" href="AssociativeIncidenceGraph.html#associative_incidence_graph.models" title="Models">Models</a>
+</h2></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="zeta_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">zeta_grid_graph</span></code></a>
+<span class="special">*</span> <a href="bitset_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bitset_grid_graph</span></code></a>
+<span class="special">*</span> <a href="btrnc_cubic_hcomb_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bitruncated_cubic_honeycomb_graph</span></code></a>
+<span class="special">*</span> <a href="upsilon_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">upsilon_grid_graph</span></code></a>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: November 04, 2012 at 23:15:22 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

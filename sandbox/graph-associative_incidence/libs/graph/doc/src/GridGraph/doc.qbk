@@ -1,0 +1,185 @@
+[article Grid Graph
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Runtime_Complexity__ [@http://en.wikipedia.org/wiki/Amortized_analysis Runtime Complexity]]
+[def __Associative_Incidence_Graph__ [@AssociativeIncidenceGraph.html [*Associative Incidence Graph]]]
+[def _typeof_ [@boost:doc/html/typeof/refe.html BOOST_TYPEOF]]
+[def _initialized_value_ [@boost:libs/utility/value_init.htm#initialized_value boost::initialized_value]]
+[def _graph_traits_ [@boost:libs/graph/doc/graph_traits.html boost::graph_traits]]
+[def _edge_key_trait_ [@edge_key_trait.html boost::edge_key_trait]]
+[def _vertex_dimension_trait_ [@vertex_dimension_trait.html boost::vertex_dimension_trait]]
+[def _vertex_coordinate_trait_ [@vertex_coordinate_trait.html boost::vertex_coordinate_trait]]
+[def __zeta_grid_graph__ [@zeta_grid_graph.html `boost::zeta_grid_graph`]]
+[def __bitset_grid_graph__ [@bitset_grid_graph.html `boost::bitset_grid_graph`]]
+[def __bitruncated_cubic_honeycomb_graph__ [@btrnc_cubic_hcomb_graph.html `boost::bitruncated_cubic_honeycomb_graph`]]
+[def __upsilon_grid_graph__ [@upsilon_grid_graph.html `boost::upsilon_grid_graph`]]
+
+[section Description]
+Models of this concept represent grid structures by matching their vertices to
+the corresponding grid points.  Only vertices that are next to each other
+according to the grid structure have out-edges to and from each other.
+[endsect]
+
+[section Refinement of]
+__Associative_Incidence_Graph__
+[endsect]
+
+[variablelist Notation
+    [[`Graph`][A type that models the [*Grid Graph] concept.]]
+    [[`const_graph`][An object of type `Graph const&`.]]
+    [
+        [`v`]
+        [
+            An object of type [^_graph_traits_<Graph>::vertex_descriptor]
+            `const&`.
+        ]
+    ]
+    [[`key`][An object of type [^_edge_key_trait_<Graph>::type] `const&`.]]
+    [
+        [`dimension`]
+        [
+            An object of type [^_vertex_dimension_trait_<Graph>::type]
+            `const&`.
+        ]
+    ]
+    [[`distance`][An unsigned integral type.]]
+]
+
+[section:types Associated Types]
+Two new types are introduced.
+
+[table
+    [[Name][Expression][Description][Requirements]]
+    [
+        [Vertex dimension type]
+        [``
+            _vertex_dimension_trait_<Graph>::type
+        ``]
+        [The type by which a vertex is indexable.]
+        [Model-specific.]
+    ]
+    [
+        [Vertex coordinate type]
+        [``
+            _vertex_coordinate_trait_<Graph>::type
+        ``]
+        [The type of each coordinate of a vertex.]
+        [Model-specific.]
+    ]
+]
+
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Associative_Incidence_Graph__
+concept, the following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Dimension count]
+        [``
+            const_graph.dimensions()
+        ``]
+        [``
+            _vertex_dimension_trait_<Graph>::type
+        ``]
+        [Returns the number of dimensions that the graph straddles.]
+        [Constant]
+    ]
+    [
+        [Dimension length]
+        [``
+            const_graph.length(dimension)
+        ``]
+        [An unsigned integer type.]
+        [
+            Returns the number of vertices lying on a grid line running along
+            the specified dimension.
+        ]
+        [Constant]
+    ]
+    [
+        [Dimension wraparound query]
+        [``
+            const_graph.wrapped(dimension)
+        ``]
+        [`bool`]
+        [
+            Returns `true` if two vertices on opposite ends of a grid line
+            running along the specified dimension are adjacent to each other,
+            `false` otherwise.  A two-dimensional grid is considered a
+            *cylinder* if it wraps around exactly one dimension, or a *torus*
+            if it wraps around both dimensions.
+        ]
+        [Constant]
+    ]
+    [
+        [Vertex coordinate]
+        [``
+            v[dimension]
+        ``]
+        [``
+            _vertex_coordinate_trait_<Graph>::type
+        ``]
+        [
+            Returns the coordinate of the vertex at the specified dimension.
+            Prerequisite: `0 <= dimension < const_graph.dimensions()`
+        ]
+        [Amortized constant with respect to the number of dimensions]
+    ]
+    [
+        [Next vertex]
+        [``
+            const_graph.next(v, key, distance)
+        ``]
+        [``
+            _graph_traits_<Graph>::vertex_descriptor
+        ``]
+        [
+            Equivalent to, but more efficient than:
+        ``
+            _graph_traits_<Graph>::vertex_descriptor u = v;
+
+            for (
+                _typeof_(distance) d = _initialized_value_;
+                d < distance;
+                ++d
+            )
+            {
+                u = const_graph.next(u, key);
+            }
+
+            return u;
+        ``
+        ]
+        [
+            Linear with respect to the out-degree of `v`; amortized constant
+            with respect to `distance`
+        ]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __zeta_grid_graph__
+  * __bitset_grid_graph__
+  * __bitruncated_cubic_honeycomb_graph__
+  * __upsilon_grid_graph__
+
+[endsect]
+

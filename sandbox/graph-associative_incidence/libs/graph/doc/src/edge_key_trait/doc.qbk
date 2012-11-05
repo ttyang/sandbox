@@ -1,0 +1,32 @@
+[article edge_key_trait
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Associative_Incidence_Graph__ [@AssociativeIncidenceGraph.html [*Associative Incidence Graph]]]
+[def __boost_graph_edge_key_trait_hpp__ [@../../../boost/graph/edge_key_trait.hpp boost/graph/edge_key_trait.hpp]]
+
+[import ../../../../../boost/graph/edge_key_trait.hpp]
+
+[section Synopsis]
+[reference__edge_key_trait]
+[endsect]
+
+[section Description]
+This metafunction returns the edge key type of `Graph` if it models the
+__Associative_Incidence_Graph__ concept, or `void` if it does not.  Specialize
+this metafunction for your custom graph type if you're designing it to be an
+__Associative_Incidence_Graph__.
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_edge_key_trait_hpp__>
+``
+[endsect]
+

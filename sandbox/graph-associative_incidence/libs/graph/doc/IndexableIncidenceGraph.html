@@ -1,0 +1,191 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Indexable Incidence Graph</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="IndexableIncidenceGraph.html" title="Indexable Incidence Graph">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="indexable_incidence_graph"></a>Indexable Incidence Graph</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="indexable_incidence_graph.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="IndexableIncidenceGraph.html#indexable_incidence_graph.description">Description</a></span></dt>
+<dt><span class="section"><a href="IndexableIncidenceGraph.html#indexable_incidence_graph.refinement_of">Refinement of</a></span></dt>
+<dt><span class="section"><a href="IndexableIncidenceGraph.html#indexable_incidence_graph.types">Associated Types</a></span></dt>
+<dt><span class="section"><a href="IndexableIncidenceGraph.html#indexable_incidence_graph.expressions">Valid Expressions
+    and Semantics</a></span></dt>
+<dt><span class="section"><a href="IndexableIncidenceGraph.html#indexable_incidence_graph.models">Models</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexable_incidence_graph.description"></a><a class="link" href="IndexableIncidenceGraph.html#indexable_incidence_graph.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      Models of this concept provide indexed-based access to their out-edges.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexable_incidence_graph.refinement_of"></a><a class="link" href="IndexableIncidenceGraph.html#indexable_incidence_graph.refinement_of" title="Refinement of">Refinement of</a>
+</h2></div></div></div>
+<p>
+      <a href="http://www.boost.org/libs/graph/doc/IncidenceGraph.html" target="_top"><span class="bold"><strong>Incidence
+      Graph</strong></span></a>
+    </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl class="variablelist">
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Graph</span></code></span></dt>
+<dd><p>
+          A type that models the <span class="bold"><strong>Indexable Incidence Graph</strong></span>
+          concept.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">graph</span></code></span></dt>
+<dd><p>
+          An object of type <code class="computeroutput"><span class="identifier">Graph</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">const_graph</span></code></span></dt>
+<dd><p>
+          An object of type <code class="computeroutput"><span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">v</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a>&lt;Graph&gt;::vertex_descriptor</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">index</span></code></span></dt>
+<dd><p>
+          An object of type <code class="literal"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a>&lt;Graph&gt;::degree_size_type</code>
+          <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>.
+        </p></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexable_incidence_graph.types"></a><a class="link" href="IndexableIncidenceGraph.html#indexable_incidence_graph.types" title="Associated Types">Associated Types</a>
+</h2></div></div></div>
+<p>
+      None beyond those defined by the <a href="http://www.boost.org/libs/graph/doc/IncidenceGraph.html" target="_top"><span class="bold"><strong>Incidence Graph</strong></span></a> concept.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexable_incidence_graph.expressions"></a><a class="link" href="IndexableIncidenceGraph.html#indexable_incidence_graph.expressions" title="Valid Expressions and Semantics">Valid Expressions
+    and Semantics</a>
+</h2></div></div></div>
+<p>
+      In addition to the expressions defined in the <a href="http://www.boost.org/libs/graph/doc/IncidenceGraph.html" target="_top"><span class="bold"><strong>Incidence Graph</strong></span></a> concept, the following expressions
+      must be valid.
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Expression
+              </p>
+            </th>
+<th>
+              <p>
+                Return Type
+              </p>
+            </th>
+<th>
+              <p>
+                Semantics
+              </p>
+            </th>
+<th>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                Complexity</a>
+              </p>
+            </th>
+</tr></thead>
+<tbody><tr>
+<td>
+              <p>
+                Indexed out-edge access
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">out_edge_at</span><span class="special">(</span><span class="identifier">v</span><span class="special">,</span> <span class="identifier">index</span><span class="special">,</span> <span class="identifier">const_graph</span><span class="special">)</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">boost::graph_traits</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Returns the out-edge associated with <code class="computeroutput"><span class="identifier">v</span></code>
+                and <code class="computeroutput"><span class="identifier">index</span></code>.
+              </p>
+            </td>
+<td>
+              <p>
+                Linear with respect to the out-degree of <code class="computeroutput"><span class="identifier">v</span></code>
+              </p>
+            </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="indexable_incidence_graph.models"></a><a class="link" href="IndexableIncidenceGraph.html#indexable_incidence_graph.models" title="Models">Models</a>
+</h2></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="http://www.boost.org/libs/graph/doc/grid_graph.html" target="_top">boost::grid_graph</a>
+<span class="special">*</span> <a href="zeta_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">zeta_grid_graph</span></code></a>
+<span class="special">*</span> <a href="bitset_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bitset_grid_graph</span></code></a>
+<span class="special">*</span> <a href="upsilon_grid_graph.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">upsilon_grid_graph</span></code></a>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: November 04, 2012 at 23:54:10 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

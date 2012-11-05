@@ -1,0 +1,85 @@
+[article Indexable Incidence Graph
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Runtime_Complexity__ [@http://en.wikipedia.org/wiki/Amortized_analysis Runtime Complexity]]
+[def __Incidence_Graph__ [@boost:libs/graph/doc/IncidenceGraph.html [*Incidence Graph]]]
+[def _graph_traits_ [@boost:libs/graph/doc/graph_traits.html boost::graph_traits]]
+[def __grid_graph__ [@boost:libs/graph/doc/grid_graph.html boost::grid_graph]]
+[def __zeta_grid_graph__ [@zeta_grid_graph.html `boost::zeta_grid_graph`]]
+[def __bitset_grid_graph__ [@bitset_grid_graph.html `boost::bitset_grid_graph`]]
+[def __upsilon_grid_graph__ [@upsilon_grid_graph.html `boost::upsilon_grid_graph`]]
+
+[section Description]
+Models of this concept provide indexed-based access to their out-edges.
+[endsect]
+
+[section Refinement of]
+__Incidence_Graph__
+[endsect]
+
+[variablelist Notation
+    [[`Graph`][A type that models the [*Indexable Incidence Graph] concept.]]
+    [[`graph`][An object of type `Graph`.]]
+    [[`const_graph`][An object of type `Graph const&`.]]
+    [
+        [`v`]
+        [
+            An object of type [^_graph_traits_<Graph>::vertex_descriptor]
+            `const&`.
+        ]
+    ]
+    [
+        [`index`]
+        [
+            An object of type [^_graph_traits_<Graph>::degree_size_type]
+            `const&`.
+        ]
+    ]
+]
+
+[section:types Associated Types]
+None beyond those defined by the __Incidence_Graph__ concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Incidence_Graph__ concept, the
+following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Indexed out-edge access]
+        [``
+            boost::out_edge_at(v, index, const_graph)
+        ``]
+        [``
+            _graph_traits_<Graph>::edge_descriptor
+        ``]
+        [Returns the out-edge associated with `v` and `index`.]
+        [Linear with respect to the out-degree of `v`]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __grid_graph__
+  * __zeta_grid_graph__
+  * __bitset_grid_graph__
+  * __upsilon_grid_graph__
+
+[endsect]
+

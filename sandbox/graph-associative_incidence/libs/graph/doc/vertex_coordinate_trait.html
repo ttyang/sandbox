@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>vertex_coordinate_trait</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="vertex_coordinate_trait.html" title="vertex_coordinate_trait">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="vertex_coordinate_trait"></a>vertex_coordinate_trait</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="vertex_coordinate_trait.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="vertex_coordinate_trait.html#vertex_coordinate_trait.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="vertex_coordinate_trait.html#vertex_coordinate_trait.description">Description</a></span></dt>
+<dt><span class="section"><a href="vertex_coordinate_trait.html#vertex_coordinate_trait.definition">Where Defined</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="vertex_coordinate_trait.synopsis"></a><a class="link" href="vertex_coordinate_trait.html#vertex_coordinate_trait.synopsis" title="Synopsis">Synopsis</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">vertex_coordinate_trait</span>
+    <span class="special">{</span>
+        <span class="keyword">typedef</span> <span class="keyword">void</span> <span class="identifier">type</span><span class="special">;</span>
+    <span class="special">};</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="vertex_coordinate_trait.description"></a><a class="link" href="vertex_coordinate_trait.html#vertex_coordinate_trait.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      This metafunction returns the vertex coordinate type of <code class="computeroutput"><span class="identifier">Graph</span></code>
+      if it models the <a href="GridGraph.html" target="_top"><span class="bold"><strong>Grid Graph</strong></span></a>
+      concept, or <code class="computeroutput"><span class="keyword">void</span></code> if it does not.
+      Specialize this metafunction for your custom graph type if you're designing
+      it to be a <a href="GridGraph.html" target="_top"><span class="bold"><strong>Grid Graph</strong></span></a>.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="vertex_coordinate_trait.definition"></a><a class="link" href="vertex_coordinate_trait.html#vertex_coordinate_trait.definition" title="Where Defined">Where Defined</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/vertex_coordinate_trait.hpp" target="_top">boost/graph/vertex_coordinate_trait.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: November 05, 2012 at 06:35:20 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

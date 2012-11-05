@@ -1,0 +1,228 @@
+// Copyright (C) 2012 Cromwell D. Enage
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
+#include <boost/mpl/size_t.hpp>
+#include <boost/graph/bitset_grid_graph.hpp>
+#include <boost/test/minimal.hpp>
+#include "assoc_incidence_graph.hpp"
+
+int test_main(int argc, char** argv)
+{
+    boost::bitset_grid_graph<boost::mpl::size_t<4> > graph;
+
+    test_indices_and_incidence(graph);
+    test_edge_list(graph);
+
+    // Verify structure.
+    BOOST_CHECK(16 == boost::num_vertices(graph));
+    BOOST_CHECK(4 == boost::num_edge_keys(graph));
+    BOOST_CHECK(64 == boost::num_edges(graph));
+
+    test_vertex(0, graph, false, false, false, false);
+    test_vertex(1, graph, true, false, false, false);
+    test_vertex(2, graph, false, true, false, false);
+    test_vertex(3, graph, true, true, false, false);
+    test_vertex(4, graph, false, false, true, false);
+    test_vertex(5, graph, true, false, true, false);
+    test_vertex(6, graph, false, true, true, false);
+    test_vertex(7, graph, true, true, true, false);
+    test_vertex(8, graph, false, false, false, true);
+    test_vertex(9, graph, true, false, false, true);
+    test_vertex(10, graph, false, true, false, true);
+    test_vertex(11, graph, true, true, false, true);
+    test_vertex(12, graph, false, false, true, true);
+    test_vertex(13, graph, true, false, true, true);
+    test_vertex(14, graph, false, true, true, true);
+    test_vertex(15, graph, true, true, true, true);
+
+    test_edge(0, 1, graph, true);
+    test_edge(0, 2, graph, true);
+    test_edge(0, 3, graph, false);
+    test_edge(0, 4, graph, true);
+    test_edge(0, 5, graph, false);
+    test_edge(0, 6, graph, false);
+    test_edge(0, 7, graph, false);
+    test_edge(0, 8, graph, true);
+    test_edge(0, 9, graph, false);
+    test_edge(0, 10, graph, false);
+    test_edge(0, 11, graph, false);
+    test_edge(0, 12, graph, false);
+    test_edge(0, 13, graph, false);
+    test_edge(0, 14, graph, false);
+    test_edge(0, 15, graph, false);
+    test_edge(1, 2, graph, false);
+    test_edge(1, 3, graph, true);
+    test_edge(1, 4, graph, false);
+    test_edge(1, 5, graph, true);
+    test_edge(1, 6, graph, false);
+    test_edge(1, 7, graph, false);
+    test_edge(1, 8, graph, false);
+    test_edge(1, 9, graph, true);
+    test_edge(1, 10, graph, false);
+    test_edge(1, 11, graph, false);
+    test_edge(1, 12, graph, false);
+    test_edge(1, 13, graph, false);
+    test_edge(1, 14, graph, false);
+    test_edge(1, 15, graph, false);
+    test_edge(2, 3, graph, true);
+    test_edge(2, 4, graph, false);
+    test_edge(2, 5, graph, false);
+    test_edge(2, 6, graph, true);
+    test_edge(2, 7, graph, false);
+    test_edge(2, 8, graph, false);
+    test_edge(2, 9, graph, false);
+    test_edge(2, 10, graph, true);
+    test_edge(2, 11, graph, false);
+    test_edge(2, 12, graph, false);
+    test_edge(2, 13, graph, false);
+    test_edge(2, 14, graph, false);
+    test_edge(2, 15, graph, false);
+    test_edge(3, 4, graph, false);
+    test_edge(3, 5, graph, false);
+    test_edge(3, 6, graph, false);
+    test_edge(3, 7, graph, true);
+    test_edge(3, 8, graph, false);
+    test_edge(3, 9, graph, false);
+    test_edge(3, 10, graph, false);
+    test_edge(3, 11, graph, true);
+    test_edge(3, 12, graph, false);
+    test_edge(3, 13, graph, false);
+    test_edge(3, 14, graph, false);
+    test_edge(3, 15, graph, false);
+    test_edge(4, 5, graph, true);
+    test_edge(4, 6, graph, true);
+    test_edge(4, 7, graph, false);
+    test_edge(4, 8, graph, false);
+    test_edge(4, 9, graph, false);
+    test_edge(4, 10, graph, false);
+    test_edge(4, 11, graph, false);
+    test_edge(4, 12, graph, true);
+    test_edge(4, 13, graph, false);
+    test_edge(4, 14, graph, false);
+    test_edge(4, 15, graph, false);
+    test_edge(5, 6, graph, false);
+    test_edge(5, 7, graph, true);
+    test_edge(5, 8, graph, false);
+    test_edge(5, 9, graph, false);
+    test_edge(5, 10, graph, false);
+    test_edge(5, 11, graph, false);
+    test_edge(5, 12, graph, false);
+    test_edge(5, 13, graph, true);
+    test_edge(5, 14, graph, false);
+    test_edge(5, 15, graph, false);
+    test_edge(6, 7, graph, true);
+    test_edge(6, 8, graph, false);
+    test_edge(6, 9, graph, false);
+    test_edge(6, 10, graph, false);
+    test_edge(6, 11, graph, false);
+    test_edge(6, 12, graph, false);
+    test_edge(6, 13, graph, false);
+    test_edge(6, 14, graph, true);
+    test_edge(6, 15, graph, false);
+    test_edge(7, 8, graph, false);
+    test_edge(7, 9, graph, false);
+    test_edge(7, 10, graph, false);
+    test_edge(7, 11, graph, false);
+    test_edge(7, 12, graph, false);
+    test_edge(7, 13, graph, false);
+    test_edge(7, 14, graph, false);
+    test_edge(7, 15, graph, true);
+    test_edge(8, 9, graph, true);
+    test_edge(8, 10, graph, true);
+    test_edge(8, 11, graph, false);
+    test_edge(8, 12, graph, true);
+    test_edge(8, 13, graph, false);
+    test_edge(8, 14, graph, false);
+    test_edge(8, 15, graph, false);
+    test_edge(9, 10, graph, false);
+    test_edge(9, 11, graph, true);
+    test_edge(9, 12, graph, false);
+    test_edge(9, 13, graph, true);
+    test_edge(9, 14, graph, false);
+    test_edge(9, 15, graph, false);
+    test_edge(10, 11, graph, true);
+    test_edge(10, 12, graph, false);
+    test_edge(10, 13, graph, false);
+    test_edge(10, 14, graph, true);
+    test_edge(10, 15, graph, false);
+    test_edge(11, 12, graph, false);
+    test_edge(11, 13, graph, false);
+    test_edge(11, 14, graph, false);
+    test_edge(11, 15, graph, true);
+    test_edge(12, 13, graph, true);
+    test_edge(12, 14, graph, true);
+    test_edge(12, 15, graph, false);
+    test_edge(13, 14, graph, false);
+    test_edge(13, 15, graph, true);
+    test_edge(14, 15, graph, true);
+
+    test_next_previous(0, 0, graph, 1, 1);
+    test_next_previous(0, 1, graph, 2, 2);
+    test_next_previous(0, 2, graph, 4, 4);
+    test_next_previous(0, 3, graph, 8, 8);
+    test_next_previous(1, 0, graph, 0, 0);
+    test_next_previous(1, 1, graph, 3, 3);
+    test_next_previous(1, 2, graph, 5, 5);
+    test_next_previous(1, 3, graph, 9, 9);
+    test_next_previous(2, 0, graph, 3, 3);
+    test_next_previous(2, 1, graph, 0, 0);
+    test_next_previous(2, 2, graph, 6, 6);
+    test_next_previous(2, 3, graph, 10, 10);
+    test_next_previous(3, 0, graph, 2, 2);
+    test_next_previous(3, 1, graph, 1, 1);
+    test_next_previous(3, 2, graph, 7, 7);
+    test_next_previous(3, 3, graph, 11, 11);
+    test_next_previous(4, 0, graph, 5, 5);
+    test_next_previous(4, 1, graph, 6, 6);
+    test_next_previous(4, 2, graph, 0, 0);
+    test_next_previous(4, 3, graph, 12, 12);
+    test_next_previous(5, 0, graph, 4, 4);
+    test_next_previous(5, 1, graph, 7, 7);
+    test_next_previous(5, 2, graph, 1, 1);
+    test_next_previous(5, 3, graph, 13, 13);
+    test_next_previous(6, 0, graph, 7, 7);
+    test_next_previous(6, 1, graph, 4, 4);
+    test_next_previous(6, 2, graph, 2, 2);
+    test_next_previous(6, 3, graph, 14, 14);
+    test_next_previous(7, 0, graph, 6, 6);
+    test_next_previous(7, 1, graph, 5, 5);
+    test_next_previous(7, 2, graph, 3, 3);
+    test_next_previous(7, 3, graph, 15, 15);
+    test_next_previous(8, 0, graph, 9, 9);
+    test_next_previous(8, 1, graph, 10, 10);
+    test_next_previous(8, 2, graph, 12, 12);
+    test_next_previous(8, 3, graph, 0, 0);
+    test_next_previous(9, 0, graph, 8, 8);
+    test_next_previous(9, 1, graph, 11, 11);
+    test_next_previous(9, 2, graph, 13, 13);
+    test_next_previous(9, 3, graph, 1, 1);
+    test_next_previous(10, 0, graph, 11, 11);
+    test_next_previous(10, 1, graph, 8, 8);
+    test_next_previous(10, 2, graph, 14, 14);
+    test_next_previous(10, 3, graph, 2, 2);
+    test_next_previous(11, 0, graph, 10, 10);
+    test_next_previous(11, 1, graph, 9, 9);
+    test_next_previous(11, 2, graph, 15, 15);
+    test_next_previous(11, 3, graph, 3, 3);
+    test_next_previous(12, 0, graph, 13, 13);
+    test_next_previous(12, 1, graph, 14, 14);
+    test_next_previous(12, 2, graph, 8, 8);
+    test_next_previous(12, 3, graph, 4, 4);
+    test_next_previous(13, 0, graph, 12, 12);
+    test_next_previous(13, 1, graph, 15, 15);
+    test_next_previous(13, 2, graph, 9, 9);
+    test_next_previous(13, 3, graph, 5, 5);
+    test_next_previous(14, 0, graph, 15, 15);
+    test_next_previous(14, 1, graph, 12, 12);
+    test_next_previous(14, 2, graph, 10, 10);
+    test_next_previous(14, 3, graph, 6, 6);
+    test_next_previous(15, 0, graph, 14, 14);
+    test_next_previous(15, 1, graph, 13, 13);
+    test_next_previous(15, 2, graph, 11, 11);
+    test_next_previous(15, 3, graph, 7, 7);
+
+    return 0;
+}
+
