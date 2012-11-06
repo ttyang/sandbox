@@ -42,7 +42,13 @@
 [section Description]
 BGL representation of a multi-dimensional grid whose vertices are bitsets.  Two
 vertices are considered adjacent to each other if their disjunction contains
-exactly one bit on.
+exactly one bit on.  The position of this bit is the edge key that each of the
+adjacent vertices associates with the other.  Therefore, a `bitset_grid_graph`
+has as many edge keys as each vertex has bits; this bit count also represents
+the number of dimensions.
+
+In each dimension, a `bitset_grid_graph` has length `2` (`true` and `false`)
+and wraps around.
 
 This data structure is an *implicit graph*, which means that its vertices and
 edges take up no internal memory.
