@@ -62,29 +62,29 @@ void example()
         ++itr
     )
     {
-        std::size_t const count = itr->get_data().number;
+        std::size_t const count = (*itr).get_data().number;
 
         if (1 < count)
         {
             for (std::size_t i = 0; i < count; ++i)
             {
-                typename DNode::iterator child_itr(itr->emplace(i));
+                typename DNode::iterator child_itr((*itr).emplace(i));
                 typename DNode::const_pointer const_child(&*child_itr);
 
                 BOOST_ASSERT_MSG(
-                    (child_itr->get_parent_ptr() == &*itr)
+                    ((*child_itr).get_parent_ptr() == &*itr)
                   , "Ctor not linking child to parent."
                 );
                 BOOST_ASSERT_MSG(
                     (
-                        child_itr->get_parent_ptr()
+                        (*child_itr).get_parent_ptr()
                      == const_child->get_parent_ptr()
                     )
                   , "Why are these pointers different?"
                 );
 
                 {
-                    typename DNode::iterator c_itr(itr->begin());
+                    typename DNode::iterator c_itr((*itr).begin());
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
                     if (!std::tr1::is_same<Selector,boost::slistS>::value)
@@ -111,7 +111,7 @@ void example()
 
     {
         typename DNode::iterator d_child(
-            (++(++d_root.begin()))->insert(d_root)
+            (*(++(++d_root.begin()))).insert(d_root)
         );
 
         std::cout << "After insert call," << std::endl;
@@ -148,7 +148,7 @@ void example()
         ++itr
     )
     {
-        char digit = itr->get_data()[0];
+        char digit = (*itr).get_data()[0];
 
         if ('1' < digit)
         {
@@ -156,8 +156,8 @@ void example()
 
             while (numchar != '0')
             {
-                typename ANode::iterator child_itr(itr->insert(ANode()));
-                char*& data = child_itr->get_data();
+                typename ANode::iterator child_itr((*itr).insert(ANode()));
+                char*& data = (*child_itr).get_data();
 
                 BOOST_ASSERT_MSG(
                     !data
@@ -167,16 +167,16 @@ void example()
                 data[0] = --numchar;
                 data[1] = '\0';
                 BOOST_ASSERT_MSG(
-                    (child_itr->get_parent_ptr() == &*itr)
+                    ((*child_itr).get_parent_ptr() == &*itr)
                   , "Ctor not linking child to parent."
                 );
                 BOOST_ASSERT_MSG(
-                    (child_itr->get_position() == child_itr)
+                    ((*child_itr).get_position() == child_itr)
                   , "Position iterator incorrect."
                 );
 
                 {
-                    typename ANode::iterator c_itr = itr->begin();
+                    typename ANode::iterator c_itr = (*itr).begin();
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
                     if (!std::tr1::is_same<Selector,boost::slistS>::value)
@@ -196,14 +196,14 @@ void example()
 
     {
         typename ANode::iterator a_child_itr(
-            (++(++a_root.begin()))->emplace()
+            (*(++(++a_root.begin()))).emplace()
         );
 
-        a_child_itr->get_data() = new char[2];
-        a_child_itr->get_data()[0] = '7';
-        a_child_itr->get_data()[1] = '\0';
+        (*a_child_itr).get_data() = new char[2];
+        (*a_child_itr).get_data()[0] = '7';
+        (*a_child_itr).get_data()[1] = '\0';
         BOOST_ASSERT_MSG(
-            (a_child_itr->get_position() == a_child_itr)
+            ((*a_child_itr).get_position() == a_child_itr)
           , "Position iterator incorrect."
         );
         std::cout << "After emplace call," << std::endl;
@@ -222,10 +222,10 @@ void example()
             ++itr
         )
         {
-            delete[] itr->get_data();
+            delete[] (*itr).get_data();
         }
 
-        leaf->clear();
+        (*leaf).clear();
         std::cout << "After clear call," << std::endl;
         showcase_iterators(a_root, show_data<ANode>, show_data_tree());
     }
@@ -239,7 +239,7 @@ void example()
         ++itr
     )
     {
-        delete[] itr->get_data();
+        delete[] (*itr).get_data();
     }
 }
 

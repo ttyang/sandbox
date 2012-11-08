@@ -11,6 +11,7 @@
 #ifndef BOOST_GRAPH_ADJACENCY_LIST_HPP
 #define BOOST_GRAPH_ADJACENCY_LIST_HPP
 
+
 #include <boost/config.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -116,13 +117,7 @@ namespace boost {
       adjacency_list<OutEdgeListS,VertexListS,DirectedS,
                      VertexProperty,EdgeProperty,GraphProperty,EdgeListS>,
       VertexListS, OutEdgeListS, DirectedS,
-#if !defined(BOOST_GRAPH_NO_BUNDLED_PROPERTIES)
-      typename detail::retag_property_list<vertex_bundle_t,
-                                           VertexProperty>::type,
-      typename detail::retag_property_list<edge_bundle_t, EdgeProperty>::type,
-#else
       VertexProperty, EdgeProperty,
-#endif
       GraphProperty, EdgeListS>::type,
       // Support for named vertices
       public graph::maybe_named_graph<
@@ -133,25 +128,14 @@ namespace boost {
         VertexProperty>
   {
       public:
-#if !defined(BOOST_GRAPH_NO_BUNDLED_PROPERTIES)
-    typedef typename graph_detail::graph_prop<GraphProperty>::property graph_property_type;
-    typedef typename graph_detail::graph_prop<GraphProperty>::bundle graph_bundled;
-
-    typedef typename graph_detail::vertex_prop<VertexProperty>::property vertex_property_type;
-    typedef typename graph_detail::vertex_prop<VertexProperty>::bundle vertex_bundled;
-
-    typedef typename graph_detail::edge_prop<EdgeProperty>::property edge_property_type;
-    typedef typename graph_detail::edge_prop<EdgeProperty>::bundle edge_bundled;
-#else
     typedef GraphProperty graph_property_type;
-    typedef no_graph_bundle graph_bundled;
+    typedef typename lookup_one_property<GraphProperty, graph_bundle_t>::type graph_bundled;
 
     typedef VertexProperty vertex_property_type;
-    typedef no_vertex_bundle vertex_bundled;
+    typedef typename lookup_one_property<VertexProperty, vertex_bundle_t>::type vertex_bundled;
 
     typedef EdgeProperty edge_property_type;
-    typedef no_edge_bundle edge_bundled;
-#endif
+    typedef typename lookup_one_property<EdgeProperty, edge_bundle_t>::type edge_bundled;
 
   private:
     typedef adjacency_list self;
@@ -264,20 +248,20 @@ namespace boost {
 #define ADJLIST adjacency_list<OEL,VL,D,VP,EP,GP,EL>
 
   template<ADJLIST_PARAMS, typename Tag, typename Value>
-  inline void set_property(ADJLIST& g, Tag, Value const& value) {
-    get_property_value(*g.m_property, Tag()) = value;
+  inline void set_property(ADJLIST& g, Tag tag, Value const& value) {
+    get_property_value(*g.m_property, tag) = value;
   }
 
   template<ADJLIST_PARAMS, typename Tag>
   inline typename graph_property<ADJLIST, Tag>::type&
-  get_property(ADJLIST& g, Tag) {
-    return get_property_value(*g.m_property, Tag());
+  get_property(ADJLIST& g, Tag tag) {
+    return get_property_value(*g.m_property, tag);
   }
 
   template<ADJLIST_PARAMS, typename Tag>
   inline typename graph_property<ADJLIST, Tag>::type const&
-  get_property(ADJLIST const& g, Tag) {
-    return get_property_value(*g.m_property, Tag());
+  get_property(ADJLIST const& g, Tag tag) {
+    return get_property_value(*g.m_property, tag);
   }
 
   // dwa 09/25/00 - needed to be more explicit so reverse_graph would work.
@@ -306,58 +290,6 @@ namespace boost {
   {
     return e.m_target;
   }
-
-  // Support for bundled properties
-#ifndef BOOST_GRAPH_NO_BUNDLED_PROPERTIES
-  template<typename OutEdgeListS, typename VertexListS, typename DirectedS, typename VertexProperty,
-           typename EdgeProperty, typename GraphProperty, typename EdgeListS, typename T, typename Bundle>
-  inline
-  typename property_map<adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty, EdgeProperty,
-                                       GraphProperty, EdgeListS>, T Bundle::*>::type
-  get(T Bundle::* p, adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty, EdgeProperty,
-                                    GraphProperty, EdgeListS>& g)
-  {
-    typedef typename property_map<adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty,
-                                                 EdgeProperty, GraphProperty, EdgeListS>, T Bundle::*>::type
-      result_type;
-    return result_type(&g, p);
-  }
-
-  template<typename OutEdgeListS, typename VertexListS, typename DirectedS, typename VertexProperty,
-           typename EdgeProperty, typename GraphProperty, typename EdgeListS, typename T, typename Bundle>
-  inline
-  typename property_map<adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty, EdgeProperty,
-                                       GraphProperty, EdgeListS>, T Bundle::*>::const_type
-  get(T Bundle::* p, adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty, EdgeProperty,
-                                    GraphProperty, EdgeListS> const & g)
-  {
-    typedef typename property_map<adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty,
-                                                 EdgeProperty, GraphProperty, EdgeListS>, T Bundle::*>::const_type
-      result_type;
-    return result_type(&g, p);
-  }
-
-  template<typename OutEdgeListS, typename VertexListS, typename DirectedS, typename VertexProperty,
-           typename EdgeProperty, typename GraphProperty, typename EdgeListS, typename T, typename Bundle,
-           typename Key>
-  inline T
-  get(T Bundle::* p, adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty, EdgeProperty,
-                                    GraphProperty, EdgeListS> const & g, const Key& key)
-  {
-    return get(get(p, g), key);
-  }
-
-  template<typename OutEdgeListS, typename VertexListS, typename DirectedS, typename VertexProperty,
-           typename EdgeProperty, typename GraphProperty, typename EdgeListS, typename T, typename Bundle,
-           typename Key>
-  inline void
-  put(T Bundle::* p, adjacency_list<OutEdgeListS, VertexListS, DirectedS, VertexProperty, EdgeProperty,
-                                    GraphProperty, EdgeListS>& g, const Key& key, const T& value)
-  {
-    put(get(p, g), key, value);
-  }
-
-#endif
 
 // Mutability Traits
 template <ADJLIST_PARAMS>

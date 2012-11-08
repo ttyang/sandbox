@@ -19,7 +19,6 @@ void output_char_tallies(std::string const& str, Selector)
             FrequencyTable;
 
     FrequencyTable freq_table;
-    char reverse_counter = 0;
 
     for (std::size_t i = 0; i < str.size(); ++i)
     {

@@ -37,7 +37,7 @@ void
 
     if (p.second)
     {
-        BOOST_CHECK(!strcmp(p.first->c_str(), value));
+        BOOST_CHECK(!strcmp((*p.first).c_str(), value));
         BOOST_CHECK(c.size() == old_size + 1);
     }
     else
@@ -93,7 +93,7 @@ void test_recursive_element(T const& t)
         ++itr
     )
     {
-        BOOST_CHECK(itr->previous_level == &t);
+        BOOST_CHECK((*itr).previous_level == &t);
         test_recursive_element(*itr);
     }
 }
@@ -105,13 +105,13 @@ void test_emplacer_recursive(Emplacer const& emplacer, T& t)
     typename C::size_type old_size = t.next_level.size();
     std::pair<typename C::iterator,bool> p = emplacer(t.next_level);
 
-    p.first->previous_level = &t;
+    (*p.first).previous_level = &t;
     BOOST_CHECK(p.second);
     test_recursive_element(t);
-    BOOST_CHECK(!strcmp(p.first->word.c_str(), ""));
-    BOOST_CHECK(p.first->number == 0);
-    BOOST_CHECK(p.first->letter == '\0');
-    BOOST_CHECK(p.first->flag == false);
+    BOOST_CHECK(!strcmp((*p.first).word.c_str(), ""));
+    BOOST_CHECK((*p.first).number == 0);
+    BOOST_CHECK((*p.first).letter == '\0');
+    BOOST_CHECK((*p.first).flag == false);
     BOOST_CHECK(t.next_level.size() == old_size + 1);
 }
 
@@ -122,13 +122,13 @@ void test_emplacer_recursive(Emplacer const& emplacer, T& t, char const* word)
     typename C::size_type old_size = t.next_level.size();
     std::pair<typename C::iterator,bool> p = emplacer(t.next_level, word);
 
-    p.first->previous_level = &t;
+    (*p.first).previous_level = &t;
     BOOST_CHECK(p.second);
     test_recursive_element(t);
-    BOOST_CHECK(!strcmp(p.first->word.c_str(), word));
-    BOOST_CHECK(p.first->number == 0);
-    BOOST_CHECK(p.first->letter == '\0');
-    BOOST_CHECK(p.first->flag == false);
+    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
+    BOOST_CHECK((*p.first).number == 0);
+    BOOST_CHECK((*p.first).letter == '\0');
+    BOOST_CHECK((*p.first).flag == false);
     BOOST_CHECK(t.next_level.size() == old_size + 1);
 }
 
@@ -145,13 +145,13 @@ void
     typename C::size_type old_size = t.next_level.size();
     std::pair<typename C::iterator,bool> p = emplacer(t.next_level, word, n);
 
-    p.first->previous_level = &t;
+    (*p.first).previous_level = &t;
     BOOST_CHECK(p.second);
     test_recursive_element(t);
-    BOOST_CHECK(!strcmp(p.first->word.c_str(), word));
-    BOOST_CHECK(p.first->number == n);
-    BOOST_CHECK(p.first->letter == '\0');
-    BOOST_CHECK(p.first->flag == false);
+    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
+    BOOST_CHECK((*p.first).number == n);
+    BOOST_CHECK((*p.first).letter == '\0');
+    BOOST_CHECK((*p.first).flag == false);
     BOOST_CHECK(t.next_level.size() == old_size + 1);
 }
 
@@ -174,13 +174,13 @@ void
       , letter
     );
 
-    p.first->previous_level = &t;
+    (*p.first).previous_level = &t;
     BOOST_CHECK(p.second);
     test_recursive_element(t);
-    BOOST_CHECK(!strcmp(p.first->word.c_str(), word));
-    BOOST_CHECK(p.first->number == n);
-    BOOST_CHECK(p.first->letter == letter);
-    BOOST_CHECK(p.first->flag == false);
+    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
+    BOOST_CHECK((*p.first).number == n);
+    BOOST_CHECK((*p.first).letter == letter);
+    BOOST_CHECK((*p.first).flag == false);
     BOOST_CHECK(t.next_level.size() == old_size + 1);
 }
 
@@ -205,13 +205,13 @@ void
       , b
     );
 
-    p.first->previous_level = &t;
+    (*p.first).previous_level = &t;
     BOOST_CHECK(p.second);
     test_recursive_element(t);
-    BOOST_CHECK(!strcmp(p.first->word.c_str(), word));
-    BOOST_CHECK(p.first->number == n);
-    BOOST_CHECK(p.first->letter == letter);
-    BOOST_CHECK(p.first->flag == b);
+    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
+    BOOST_CHECK((*p.first).number == n);
+    BOOST_CHECK((*p.first).letter == letter);
+    BOOST_CHECK((*p.first).flag == b);
     BOOST_CHECK(t.next_level.size() == old_size + 1);
 }
 
@@ -235,6 +235,16 @@ struct test_mri_element<boost::slistS>
         return t.next_level.front();
     }
 };
+
+template <>
+struct test_mri_element<boost::stable_vecS>
+{
+    template <typename T>
+    T& operator()(T& t)
+    {
+        return *(t.next_level.begin() + t.next_level.size() - 1);
+    }
+};
 #endif
 
 template <typename Selector>
@@ -245,19 +255,17 @@ void test_emplace_function_gen_recursive()
 
     test_emplacer_recursive(emplacer, top);
     test_emplacer_recursive(emplacer, top, "sol");
-    test_emplacer_recursive(
-        emplacer
-      , test_mri_element<Selector>()(top)
-      , "sol"
-      , 42
-    );
-    test_emplacer_recursive(
-        emplacer
-      , test_mri_element<Selector>()(top)
-      , "sol"
-      , 42
-      , 'X'
-    );
+
+    {
+        test_recursive_data<Selector>& t = test_mri_element<Selector>()(top);
+        test_emplacer_recursive(emplacer, t, "sol", 42);
+    }
+
+    {
+        test_recursive_data<Selector>& t = test_mri_element<Selector>()(top);
+        test_emplacer_recursive(emplacer, t, "sol", 42, 'X');
+    }
+
     test_emplacer_recursive(emplacer, top, "sol", 42, 'X', true);
 }
 

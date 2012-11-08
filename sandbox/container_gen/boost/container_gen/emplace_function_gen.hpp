@@ -104,7 +104,7 @@ namespace boost { namespace detail {
         template <typename ...Args>
         inline emplace_function_proxy& operator()(Args&& ...args)
         {
-            this->_function(_container, ::boost::forward<Args>(args)...);
+            this->_function(this->_container, ::boost::forward<Args>(args)...);
             return *this;
         }
 #else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -122,7 +122,7 @@ namespace boost { namespace detail {
             )                                                                \
         {                                                                    \
             this->_function(                                                 \
-                _container                                                   \
+                this->_container                                             \
                 BOOST_PP_CAT(BOOST_PP_ENUM_TRAILING_, z)(                    \
                     n                                                        \
                   , BOOST_CONTAINER_PP_PARAM_FORWARD                         \

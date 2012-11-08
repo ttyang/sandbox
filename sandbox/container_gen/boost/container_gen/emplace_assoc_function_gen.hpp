@@ -47,7 +47,11 @@ namespace boost { namespace detail {
         inline emplace_assoc_function_proxy&
             operator()(typename C::key_type const& key, Args&& ...args)
         {
-            this->_function(_container, key, ::boost::forward<Args>(args)...);
+            this->_function(
+                this->_container
+              , key
+              , ::boost::forward<Args>(args)...
+            );
             return *this;
         }
 #else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -66,7 +70,7 @@ namespace boost { namespace detail {
             )                                                                \
         {                                                                    \
             this->_function(                                                 \
-                _container                                                   \
+                this->_container                                             \
               , key                                                          \
                 BOOST_PP_CAT(BOOST_PP_ENUM_TRAILING_, z)(                    \
                     n                                                        \

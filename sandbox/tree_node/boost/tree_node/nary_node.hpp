@@ -383,7 +383,7 @@ namespace boost { namespace tree_node {
 #else
         iterator result(this->_add_child(Derived(child)));
 #endif
-        BOOST_ASSERT(result->_parent == this->get_derived());
+        BOOST_ASSERT((*result)._parent == this->get_derived());
         return result;
     }
 
@@ -394,7 +394,7 @@ namespace boost { namespace tree_node {
         nary_node_base<Derived,T,Selector>::emplace(Args&& ...args)
     {
         iterator result(this->_add_child(::boost::forward<Args>(args)...));
-        BOOST_ASSERT(result->_parent == this->get_derived());
+        BOOST_ASSERT((*result)._parent == this->get_derived());
         return result;
     }
 #else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -419,7 +419,7 @@ namespace boost { namespace tree_node {
               , _                                                            \
             )                                                                \
         );                                                                   \
-        BOOST_ASSERT(result->_parent == this->get_derived());                \
+        BOOST_ASSERT((*result)._parent == this->get_derived());              \
         return result;                                                       \
     }                                                                        \
 //!
@@ -541,8 +541,8 @@ namespace boost { namespace tree_node {
     inline void
         nary_node_base<Derived,T,Selector>::_initialize(iterator& to_child)
     {
-        to_child->_parent = this->get_derived();
-        to_child->on_post_inserted(
+        (*to_child)._parent = this->get_derived();
+        (*to_child).on_post_inserted(
             to_child
           , ::boost::has_stable_iterators_selector<Selector>()
         );
@@ -555,7 +555,7 @@ namespace boost { namespace tree_node {
 
         for (iterator itr = this->begin(); itr != itr_end; ++itr)
         {
-            itr->_parent = this->get_derived();
+            (*itr)._parent = this->get_derived();
         }
     }
 }}  // namespace boost::tree_node
