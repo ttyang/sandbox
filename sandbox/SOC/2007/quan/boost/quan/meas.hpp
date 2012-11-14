@@ -1,9 +1,9 @@
-/*! \file 
+/*! \file
    \brief Class for measurement using uncertain class.
    \details class meas with uncertain type UReal and measurement order & time-stamp.
 */
 
-// meas.hpp 
+// meas.hpp
 // Copyright Paul A. Bristow 2012
 
 #ifndef MEAS_HPP
@@ -21,7 +21,7 @@
   using std::ostream;
   using std::istream;
 #include <string>
-  using std::string;  // date notadate(not_a_date_time);
+  using std::string;  // not_a_date_time
 
 typedef unc<false> uncun; // Uncertain Uncorrelated (the normal case).
 
@@ -30,7 +30,7 @@ typedef unc<false> uncun; // Uncertain Uncorrelated (the normal case).
 */
 
 class Meas : public uncun
-{ 
+{
   friend ostream& operator<< (ostream&, const Meas&);
   friend istream& operator>> (istream&, Meas&);
 
@@ -44,7 +44,7 @@ public:
   //Meas(uncun u, string id = "", int o = -1);
   Meas(const Meas&);   // Copy constructor.
   ~Meas();  // Default destructor.
-  
+
   // Operators.
   Meas& operator= (const Meas& rhs); //!< Assignment operator.
   Meas& abs (const Meas& rhs); // abs assignment operator.
@@ -56,17 +56,17 @@ public:
   bool operator> (const Meas& rhs) const; // Used by greater.
   Meas operator+ (const Meas&) const // Unary +
   { // All members remain unchanged.
-    return *this; 
+    return *this;
   }
   Meas operator- (void) const // Unary -
-  {  // uncun measValue; 
-    Meas m(*this); // copy. 
+  {  // uncun measValue;
+    Meas m(*this); // copy.
     m.value(-m.value()); // Negate only the value.
     return m;
   }
   Meas operator- (void)  // Unary -
-  {  // Avoid copy but cannot be const. 
-    Meas m(*this); // copy. 
+  {  // Avoid copy but cannot be const.
+    Meas m(*this); // copy.
     m.value(-m.value()); // Negate only the value.
     return *this;
   }
@@ -81,7 +81,7 @@ public:
   static bool earlier(const Meas& l, const Meas& r);  // < time.
   static bool greaterU(const Meas& l, const Meas& r); // > uncertain value.
   static bool greater2U(const Meas& l, const Meas& r); // > 2 * uncertain value.
-  static bool equal_toUnc(const Meas& l, const Meas& r); // 
+  static bool equal_toUnc(const Meas& l, const Meas& r); //
   static bool lessAbsM(const Meas& l, const Meas& r); // abs value < abs value.
 
  // Meas Member variables.
@@ -94,12 +94,12 @@ public: // Inconvenient to make private?
   // 3 times, from which order can be calculated,
   // or both order and times given, so may need to be checked for consistency.
 
-  int order_;  // Index from 0 (or 1 perhaps?)  -1 == unknown?
-  // time_t m_time; // Time too as time_t, notaTime if not known.
   boost::posix_time::ptime time_; // Posix time from Boost.Date_time.
+  int order_;  // Index from 0 (or 1 perhaps?)  -1 == unknown?
+
 }; // class Meas
 
-// Output and input operator<< & operator>> 
+// Output and input operator<< & operator>>
 ostream& operator<< (ostream& os, const Meas& m);
 istream& operator>> (istream& is, Meas& m);
 

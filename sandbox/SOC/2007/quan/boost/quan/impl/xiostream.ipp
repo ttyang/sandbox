@@ -33,7 +33,7 @@ std::ios_base& lowercase(std::ios_base& _I)
 // equivalent to out << hex << showbase << uppercase ...
 std::ios_base& hexbase(std::ios_base& _I)
 {
-  _I.setf(std::ios_base::hex | std::ios_base::showbase | std::ios_base::uppercase, // setbits,
+  _I.setf(std::ios_base::hex | std::ios_base::showbase | std::ios_base::uppercase, // set bits,
     std::ios_base::basefield | std::ios_base::showbase | std::ios_base::uppercase); // mask.
   // Care: std::ios_base::basefield); doesn't set showbase & uppercase!
   return _I;
@@ -44,7 +44,7 @@ std::ios_base& hexbase(std::ios_base& _I)
 // Usage:  omanip<int>setw(int);
 template<typename T> class omanip  // Manipulator for ostream.
 {
-  friend std::ostream& operator<< (std::ostream&, const omanip<T>&);
+  // friend std::ostream& operator<< (std::ostream&, const omanip<T>&);
 public:
   omanip(std::ostream&(*f)(std::ostream&, T), T v) : func(f), val(v)
   {
@@ -64,16 +64,15 @@ private:
 // where function is std::ostream& _spaces(std::ostream&, int);
 
 // Global ostream applicator using template oapp instantiated for type int,
-// & initialised with the addresss of function with one int parameter.
+// & initialised with the address of function with one int parameter.
 // Possible to use oapp<int> spaces(_spaces);  which allows << spaces(5) ...
 // but instead spaces, stars & chars done a simpler way, see S Teale p 181-3.
-template<class T> class oapp  // Applicator for ostream.
+template<typename T> class oapp  // Applicator for ostream.
 {
 public:
   oapp(std::ostream&(*f)(std::ostream&, T)) : func(f)
   {
   };
-  //  : func(f) {} added from Watcom version to initialise & define.
   omanip<T> operator()(T v)
   {
     return omanip<T>(func, v);
@@ -83,7 +82,7 @@ private:
 }; // class oapp
 
 // Template Manipulator Inserter <<
-template<class T> std::ostream& operator<< (std::ostream& os, const omanip<T>& m)
+template<typename T> std::ostream& operator<< (std::ostream& os, const omanip<T>& m)
 {
   (*m.func)(os, m.val);
   return os;
@@ -177,8 +176,9 @@ std::ostream& operator<< (std::ostream& os, const setupperbase& s)
   (
      std::ios_base::showbase | std::ios_base::uppercase |
     ( 16 == s.base ? 1 :  // std::ios_base::hex :std::ios_base::oct;
-       8 == s.base ? std::ios_base::oct : std::ios_base::dec) ,  // default dec if not 8 or 16
-    std::ios_base::basefield | std::ios_base::showbase | std::ios_base::uppercase )  // mask
+       8 == s.base ? std::ios_base::oct : std::ios_base::dec),
+          // default dec if not 8 or 16
+      std::ios_base::basefield | std::ios_base::showbase | std::ios_base::uppercase )  // mask
     );
   return os;
 } // std::ostream& operator<< (std::ostream& os, const setupperbase& s)
