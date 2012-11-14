@@ -304,9 +304,7 @@ class text_style
   friend bool operator== (const text_style&, const text_style&);
   friend bool operator!= (const text_style&, const text_style&);
 
-  public: // temporary for experimental gil
-
-//private:
+  public: // Or private?
   int font_size_; //!< Font size (SVG units, default pixels).
   std::string font_family_; //!< Font family, examples: "Arial", "Times New Roman", "Verdana", "Lucida Sans Unicode".
   std::string weight_; //!< Font style, examples: "bold", "normal".
@@ -325,8 +323,8 @@ public:
 
   text_style& font_size(unsigned int i);
   text_style& font_family(const std::string& s);
-  text_style& font_style(const std::string& s);
   text_style& font_weight(const std::string& s);
+  text_style& font_style(const std::string& s);
   text_style& font_stretch(const std::string& s);
   text_style& font_decoration(const std::string& s);
   // text_style& font_variant(const std::string& s); // Not implemented,
@@ -351,8 +349,8 @@ public:
   text_style::text_style( //!< Constructor to allow all text style (font etc) to be set.
     int size, //!< Font size.
     const std::string& font, //!< Default for browser is sans with Firefox & IE but serif with Opera.
-    const std::string& style, //!< font-style: normal
     const std::string& weight, //!< font weight "normal"
+    const std::string& style, //!< font-style: normal
     const std::string& stretch, //!< font-stretch: normal
     const std::string& decoration) //!< No decoration.
   : // Constructor.
@@ -1215,7 +1213,7 @@ public:
     //! For X-axis -1 = bottom, 0 = false = on Y-axis, +1 = top. Default -1 below bottom of plot window.
     //! 0 = false puts the ticks and their labels on the X or Y axis line which may be in the middle of the plot.
     //! For 1D the default overrides the constructor default of -1 below, to tick and value label the X-axis.
-    //! For 2D the default is left at -1, to use bottom and left of plot window to ticka nd value label X and Y-axis.
+    //! For 2D the default is left at -1, to use bottom and left of plot window to tick and value label X and Y-axis.
 
     text_style value_label_style_; //!< text style (font, size...) for value labels.
 

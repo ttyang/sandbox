@@ -267,7 +267,7 @@ public:
 
 public:
 
-  svg_1d_plot::svg_1d_plot(); //! Constructor of a 1-D plot.
+  svg_1d_plot(); //! Constructor of a 1-D plot.
   void set_ids(); //! Set the XML ids for various layers of the plot.
   void calculate_plot_window(); //! Calculate the position of the plot window.
   void calculate_transform(); //! Calculate transform form euclidian to svg coordinate.
@@ -290,7 +290,7 @@ public:
   svg_1d_plot_series& plot(const T& container, const std::string& title = "");
   template <typename T>
   svg_1d_plot_series& plot(const T& begin, const T& end, const std::string& title = "");
- 
+
   template <typename T, typename U>
   svg_1d_plot_series& plot(const T& container, const std::string& title = "", U functor = boost::svg::detail::double_1d_convert());
   template <typename T, typename U>

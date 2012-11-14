@@ -2,7 +2,7 @@
     \brief Demonstration of some 2D plot features.
     \details including showing values with uncertainty information as 'plus minus' and degrees of freedom estimates.
     \author Jacob Voytko and Paul A. Bristow
-    \date Mar 2009
+    \date Mar 2009, 2012
 */
 
 // Copyright Jacob Voytko 2007
@@ -112,7 +112,7 @@ the order of data values is important.
   pair<double, double> double_pair; // double X and Y
   double_pair = make_pair(double(-2.234), double(-8.76));
   cout << "make_pair(double(-2.234), double(-8.76)) = " << double_pair << endl;
-  
+
   uncun u1(1.23, 0.56F, 7); // For an X value.
   cout << "u1 = " << u1 << endl; // u1 = 1.23+-0.056 (7)
   uncun u2(3.45, 0.67F, 9); // For a Y value.
@@ -123,7 +123,7 @@ the order of data values is important.
   data1.insert(mp1); // u1, u2 = 1.23+-0.056 (7), 2.345+-0.067 (9)
   data1.insert(make_pair(uncun(4.1, 0.4F, 7), uncun(3.1, 0.3F, 18))); //
   data1.insert(make_pair(uncun(-2.234, 0.03F, 7), uncun(-8.76, 0.9F, 9)));
-  
+
   /*
 `Make very sure you don't forget either uncun(...) like this
 `data1.insert(make_pair((-2.234, 0.12F, 7),(-8.76, 0.56F, 9)));`
@@ -239,10 +239,10 @@ Output :
   -2.23, -8.8
   1.2, 3.5
   4.10, 3.100
-  
+
   No limits checks: x_min = -2.234, x_max = 4.1, y_min = -8.76, y_max = 3.45
-  
-  
+
+
   axes_on true
   background_border_width 2
   background_border_color RGB(255,255,0)
@@ -250,13 +250,13 @@ Output :
   image_border_margin() 3
   image_border_width() 2
   coord_precision 3
-  copyright_date  
-  copyright_holder 
-  description 
+  copyright_date
+  copyright_holder
+  description
   document_title ""
   x_size 500
   image y_size 400
-  image_filename 
+  image_filename
   legend_on false
   legend_place 2
   legend_top_left -1, -1, legend_bottom_right -1, -1
@@ -265,7 +265,7 @@ Output :
   legend_color blank
   legend_title ""
   legend_title_font_size 14
-  legend_font_weight 
+  legend_font_weight
   legend_width 0
   legend_lines true
   limit points stroke color RGB(119,136,153)
@@ -289,13 +289,13 @@ Output :
   title ""
   title_color blank
   title_font_alignment 2
-  title_font_decoration 
+  title_font_decoration
   title_font_family Verdana
   title_font_rotation 0
   title_font_size 18
-  title_font_stretch 
-  title_font_style 
-  title_font_weight 
+  title_font_stretch
+  title_font_style
+  title_font_weight
   x_values_on false
   x_values_font_size 16
   x_values_font_family Times New Roman
@@ -323,7 +323,7 @@ Output :
   x_label_color blank
   x_label_font_family Verdana
   x_label_font_size 14
-  x_label_units 
+  x_label_units
   x_label_units_on false
   x_major_labels_side left
   x_major_label_rotation 0
@@ -353,9 +353,9 @@ Output :
   x_plusminus_color RGB(0,255,255)
   x_df_on true
   x_df_color RGB(255,0,255)
-  x_prefix 
-  x_separator 
-  x_suffix 
+  x_prefix
+  x_separator
+  x_suffix
   xy_values_on true
   y_label_on "true"
   y_label_axis distance (km)
@@ -370,7 +370,7 @@ Output :
   y_label_font_family Verdana
   y_label_font_size 14
   y_label_on true
-  y_label_units 
+  y_label_units
   y_label_units_on false
   y_label_width 0
   y_major_grid_on false
@@ -390,7 +390,7 @@ Output :
   y_minor_tick_length 2
   y_minor_tick_width 1
   y_range() -10, 5
-  y_num_minor_ticks 
+  y_num_minor_ticks
   y_ticks_left_on true
   y_ticks_right_on false
   y_ticks_on_window_or_axis left

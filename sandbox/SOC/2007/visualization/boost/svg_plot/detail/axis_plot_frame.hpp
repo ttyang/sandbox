@@ -583,16 +583,7 @@ namespace boost
           Derived& three_sd_color(const svg_color&); //!< Set the color for three standard deviation (~99% confidence) ellipse fill.
           svg_color three_sd_color(); //!< \return Color for three standard deviation (~99% confidence) ellipse fill.
 
-          //// Stylesheet.
-          // Removed for now to avoid compile warning in Spirit.
-
-          //Derived& load_stylesheet(const std::string& file)
-          //{
-          //  derived().image_.load_stylesheet(file);
-          //  return derived();
-          //}
-
-          //// Image info (& identical const version).
+          // Image info (& identical const version).
 
           //svg& get_svg()
           //{
