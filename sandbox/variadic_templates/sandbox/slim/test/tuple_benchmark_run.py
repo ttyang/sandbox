@@ -1,87 +1,80 @@
-#!/usr/bin/python3.1
-from tuple_benchmark_domain import *
+#!/usr/bin/env python
+"""
+Run compilers on programs while recording resources usage.
+"""
+from __future__ import print_function 
+from compiler_map import COMPILER_MAP
+from tuple_benchmark_tags import TAG_TUPLE
+import sys
+from datetime import datetime
 import subprocess
-import collections
 
-def measure_time(compiler_exe, compiler_args, measure_out):
-  compile_cmd=compiler_exe+compiler_args
-  time_format='"user:%U system:%S elapsed:%e"'
-  measure_cmd='time --format '+time_format+' '+compile_cmd
-  print(":measure_cmd=",measure_cmd)
-  rc=subprocess.call(
-      measure_cmd
-    , shell=True
-    , stdout=measure_out
-    , stderr=subprocess.STDOUT
-    )
-  print(":rc=",rc)
+from tuple_benchmark_domain import *
+import compiler_guage
 
-def measure_ftime(compiler_exe, compiler_args, measure_out):
-  measure_cmd=compiler_exe+" -ftime-report "+compiler_args
-  print(":measure_cmd=",measure_cmd)
-  rc=subprocess.call(
-      measure_cmd
-    , shell=True
-    , stdout=measure_out
-    , stderr=subprocess.STDOUT
-    )
-  print(":rc=",rc)
-
-if __name__ == '__main__':
-  tuple_min_size=10
-  tuple_max_size=40
-  tuple_del_size=10
+def main(argv):
+  result = None
+  #print("argv=",argv)
+  if len(argv)>1:
+    benchmark_suffix=argv[1]
+  else:
+    benchmark_suffix="mini"
+  benchmark_presuffix="tuple.benchmark."+benchmark_suffix
+  benchmark_basename=benchmark_presuffix+".cpp"
+  #print("benchmark_basename=",benchmark_basename)
   boost_root="/home/evansl/prog_dev/boost-svn/ro/boost_1_49_0"
-  compiler_map={}
+  impl_map_inc={}#implementation key -> -I include flags to compiler
   if False:
-    compiler_map["gcc4_8"]=(
-           "/home/evansl/download/gcc/4.8-20120923/install/bin/g++"
-         , "-std=gnu++11"
-         )
+    impl_map_inc["horizontal"]=\
+        ""\
+      #
+  if False:
+    impl_map_inc["vertical"]=\
+        " -I"+boost_root\
+      #
   if True:
-    compiler_map["clangxx"]=(
-           "/home/evansl/download/llvm/svn/build/Release/bin/clang"
-         , "-std=c++11 -cxx-isystem /home/evansl/download/llvm/svn/llvm/projects/libcxx/include"
-         )
-  impl_map_hpp={}#implementation key -> implementation include .hpp file.
-  impl_map_hpp["horizontal"]="tuple_impl_horizontal.hpp"
-  impl_map_hpp["vertical"  ]="tuple_impl_vertical.hpp"
-  impl_map_hpp["bcon12_horizontal"]="tuple_impl_bcon12_horizontal.hpp"
-  impl_map_hpp["bcon12_vertical"  ]="tuple_impl_bcon12_vertical.hpp"
-  #impl_map_hpp["std"       ]="tuple_impl_std.hpp"
-  #impl_map_hpp["compstor"  ]="tuple_impl_compstor.hpp"
-  impl_map_inc=collections.defaultdict(lambda:"")#implementation key -> -I include flags to compiler
-  impl_map_inc["vertical"  ]=\
-      " -I"+boost_root\
-    #
-  impl_map_inc["bcon12_vertical"  ]=\
-      " -I"+boost_root\
-    #
-  impl_map_inc["compstor"  ]=\
-      " -I"+boost_root\
-    + " -I"+boost_root+"/sandbox/rw/variadic_templates"\
-    #
+    impl_map_inc["bcon12_horizontal"]=\
+        ""\
+      #
+  if True:
+    impl_map_inc["bcon12_vertical"]=\
+        " -I"+boost_root\
+      #
+  if False:
+    impl_map_inc["compstor"]=\
+        " -I"+boost_root\
+      + " -I"+boost_root+"/sandbox/rw/variadic_templates"\
+      #
+  if False:
+    impl_map_inc["std"]=\
+        ""\
+      #
+  tuple_min_size=5
+  tuple_max_size=5
+  tuple_del_size=5
   name_domain=[
-      [ 'compiler', compilers(compiler_map.keys())]
-    , [ 'TUPLE_IMPL', impls(impl_map_hpp.keys())]
+      [ 'compiler', compilers(COMPILER_MAP.keys())]
+    , [ 'TUPLE_IMPL', impls(impl_map_inc.keys())]
     , [ 'TUPLE_SIZE', sizes(range(tuple_min_size,tuple_max_size+1,tuple_del_size))]
-    , [ 'LAST_LESS', last(4,tuple_del_size)]
-    , [ 'TUPLE_CHUNK', chunk()]
+    , [ 'TUPLE_UNROLL_MAX', unroll_max()]
     ]
-  domain=product_dep(
+  if benchmark_suffix == "mini" :
+    name_domain.append( [ 'LAST_LESS', last(4,tuple_del_size)])
+  else:
+    name_domain.append( [ 'TREE_DEPTH', tree_depth(2,2,1)])
+  domains=product_dep(
     map(lambda t: t[1], name_domain)
     )
-  measures={
-      'time'  : measure_time
-    , 'ftime' : measure_ftime
-    }
-  measure_key='time'
-  benchmark="tuple.benchmark.mini"
-  measure_out=open(benchmark+"."+measure_key+".txt",mode='w')
-  for compiler_name in compiler_map.keys():
-    (compiler_exe,compiler_flags)=compiler_map[compiler_name]
-    print("compiler=",compiler_name,file=measure_out)
-    print("version={",file=measure_out)
+  guage=compiler_guage.guage_time()
+  measure_key=guage.__class__.__name__
+  dtfmt=datetime.now().isoformat('_')
+  dtfmt="_"
+  measure_out=open(benchmark_presuffix+"."+measure_key+"@"+dtfmt+".txt",mode='w')
+  print(TAG_TUPLE.compilers+"[",file=measure_out)
+  for compiler_name in COMPILER_MAP.keys():
+    (compiler_exe,compiler_flags)=COMPILER_MAP[compiler_name]
+    print("compiler_name:",compiler_name,file=measure_out)
+    print(TAG_TUPLE.version+"[",file=measure_out)
     measure_out.flush()
     rc=subprocess.call(
         compiler_exe+" -v"
@@ -90,32 +83,38 @@ if __name__ == '__main__':
       , stderr=subprocess.STDOUT
       )
     if compiler_name == 'clangxx':
-      print("compiler_exe=",compiler_exe,file=measure_out)
-    print("}",file=measure_out)
-  print(list(map(lambda t: t[0], name_domain)),file=measure_out)
-  for element in domain():
-      print(element,file=measure_out)
-      (compiler_name, impl_name, size, last, chk)=element
-      #print(":compiler_name=",compiler_name,":impl_name=",impl_name,":size=",size,":last=",last)
-      compiler_macros=\
-          " -DTUPLE_IMPL="+impl_map_hpp[impl_name]\
-        + " -DTUPLE_SIZE="+str(size)\
-        + " -DLAST_LESS="+str(last)\
-        + " -DTUPLE_CHUNK="+str(chk)
+      print("compiler_exe:",compiler_exe,file=measure_out)
+    print("]"+TAG_TUPLE.version,file=measure_out)
+  print("]"+TAG_TUPLE.compilers,file=measure_out)
+  domain_names=list(map(lambda t:t[0],name_domain))
+  print(TAG_TUPLE.domain_names,domain_names,sep="",end=TAG_TUPLE.domain_names+"\n",file=measure_out)
+  macro_names=domain_names[1:]
+  for element in domains():
+      print(TAG_TUPLE.domain_values,element,sep="",end=TAG_TUPLE.domain_values+"\n",file=measure_out)
+      compiler_name, macro_vals=element[0], element[1:]
+      #print(":compiler_name=",compiler_name,":macro_vals=",macro_vals)
+      compiler_macros=""
+      for name,value in zip(macro_names,macro_vals):
+        compiler_macros+=" -D"+name+"="+str(value)
       #print(":compiler_macros=",compiler_macros)
-      (compiler_exe,compiler_flags)=compiler_map[compiler_name]
+      (compiler_exe,compiler_flags)=COMPILER_MAP[compiler_name]
       #print(":compiler_exe=",compiler_exe,":compiler_flags=",compiler_flags)
       compiler_args=\
         " -c "\
         + compiler_flags+" "\
         + compiler_macros+" "\
-        + impl_map_inc[impl_name]+" "\
-        + benchmark+".cpp"\
+        + impl_map_inc[macro_vals[0]]+" "\
+        + benchmark_basename\
         #
-      print("{",file=measure_out)
+      print(TAG_TUPLE.range_out+"[",file=measure_out)
       measure_out.flush()
-      measures[measure_key](compiler_exe, compiler_args, measure_out)
-      print("}",file=measure_out)
+      measure_rc=guage.measure(compiler_exe, compiler_args, measure_out)
+      print("]"+TAG_TUPLE.range_out,file=measure_out)
+      if measure_rc != 0:
+        return measure_rc
+  return result
 
-
-
+if __name__ == '__main__':
+    ret = main(sys.argv)
+    if ret is not None:
+        sys.exit(ret)

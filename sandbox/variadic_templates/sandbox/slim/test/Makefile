@@ -2,12 +2,16 @@ MAIN=test
 BENCHMARK=mini
 BENCHMARK=tree_builder
 MAIN=tuple.benchmark.$(BENCHMARK)
-MAIN=tuple.test
+BENCHMARKRUN.which=2012-11-12_13:51:16.064572
+#MAIN=tuple_constexpr.test
 MEASURE=time
 THISFILE=Makefile
 PYTHON=python3.1
+PYTHON=python
 
 HOW=gcc4_8_20120624
+#HOW=gcc4_8v
+HOW=gcc4_8_20121028
 #HOW=clangxx_rel
 DIR.root := $(shell dirup_dir_file.pl $(PWD) root.imk)
 include $(DIR.root)/root.imk
@@ -18,7 +22,7 @@ HOWS=gcc4_8n clangxx
 SLIM_DIR=../slim/include 
 #INCS:= -I$(SLIM_DIR) $(INCS)
 
-BFLAGS=-DTUPLE_SIZE=4 -DLAST_LESS=2 -DTUPLE_IMPL=tuple_impl_bcon12_vertical.hpp -DTUPLE_CHUNK=4
+BFLAGS=-DTUPLE_SIZE=4 -DLAST_LESS=2 -DTUPLE_IMPL=vertical -DTUPLE_CHUNK=4
 BFNAME:=$(shell ./flags2filename.pl -S $(BFLAGS))
 PROF_BASE=$(MAIN).$(HOW).$(BFNAME)
 COMPILER.clangxx_ins-rt=$(PATH.llvm.top)/llvm/projects/compiler-rt
@@ -142,6 +146,23 @@ nest_loop:
 echo:
 	@echo "SHELL="$(SHELL)
 
+.PHONY: benchmark_domain
+benchmark_domain:
+	$(PYTHON) tuple_benchmark_domain.py
+
 .PHONY: benchmark_run
 benchmark_run:
-	$(PYTHON) tuple_benchmark_run.py
+	$(PYTHON) tuple_benchmark_run.py $(BENCHMARK)
+
+.PHONY: parse
+parse:
+	$(PYTHON) tuple_benchmark_parserange.py tuple.benchmark.tree_builder.guage_time@$(BENCHMARKRUN.which).txt
+
+.PHONY: tags
+tags:
+	python tuple_benchmark_tags.py
+
+.PHONY: plot
+plot:
+	$(PYTHON) tuple_benchmark_plot.py domain_range.pkl
+

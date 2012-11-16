@@ -16,8 +16,9 @@
 //    when TUPLE_TEST_IMPL == TUPLE_TEST_VERTICAL:
 //      This method uses the boost preprocessor to generate
 //      member variables for the tuple elements:
-//        HI tI;
+//        HI hI;
 //      where I=0...N-1, where N is the size of the tuple.
+//      and HI, i=1...N-1 are the tuple template args.
 //    when TUPLE_TEST_IMPL == TUPLE_TEST_HORIZONTAL:
 //      This method uses multiple inheritance of the
 //      tuple elements "paired" with a key in a 
@@ -28,12 +29,7 @@
 //        HI element<int_key<I>,HI>::a;
 //
 
-template<int Index>
-struct int_key //key's (or indices) to values stored in tuple.
-{
-};
-
-#include BOOST_PP_STRINGIZE(TUPLE_IMPL)
+#include BOOST_PP_STRINGIZE(tuple_impl.TUPLE_IMPL.hpp)
 
 template<int Value>
 struct int_value //values stored in tuple
@@ -54,11 +50,12 @@ struct mk_tuple_col_row<I,J,0, Args...>
 	typedef tuple_bench<Args...> type;
 };
 
-//#define TRACE_MAIN
+#define TRACE_MAIN
 #if defined(TRACE_BENCHMARK)||defined(TRACE_MAIN)
   #include <iostream>
 #endif
 
+#include "./int_key.hpp"
 template<int I,int J=0>
 struct test_row
 {
@@ -146,14 +143,14 @@ int main()
 {
     
   #ifdef TRACE_MAIN
-    std::cout<<"TUPLE_TEST_IMPL="<<TUPLE_TEST_IMPL<<"\n";
+    std::cout<<"TUPLE_IMPL="<<BOOST_PP_STRINGIZE(TUPLE_IMPL)<<"\n";
     std::cout<<"TUPLE_SIZE="<<TUPLE_SIZE<<"\n";
     std::cout<<"LAST_ROW="<<LAST_ROW<<"\n";
   #endif
 	int const value=test_col<>::exec();
     //The combination of the test_col general and special templates
     //means the above call executes:
-    //  test_row<I>::exec() 
+    //  test_row<I>::exec()
     //for I=0...LAST_COL
   #ifdef TRACE_MAIN    
     std::cout<<"value="<<value<<"\n";

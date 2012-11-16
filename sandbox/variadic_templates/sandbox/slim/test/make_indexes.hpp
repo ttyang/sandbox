@@ -1,5 +1,7 @@
 #ifndef MAKE_INDEXES_HPP_INCLUDED
 #define MAKE_INDEXES_HPP_INCLUDED
+namespace detail
+{
   template<int Max,int... Indices>
   struct make_indexes:
   	make_indexes<Max-1,Max-1,Indices...>
@@ -27,4 +29,6 @@
   {
   	typedef int_indexes<Indices...> type;
   };
+
+}
 #endif
