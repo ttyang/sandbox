@@ -1,13 +1,9 @@
-MAIN=test
-BENCHMARK=mini
-BENCHMARK=tree_builder
+include tuple_benchmark.imk
 MAIN=tuple.benchmark.$(BENCHMARK)
-BENCHMARKRUN.which=2012-11-12_13:51:16.064572
+#MAIN=test
 #MAIN=tuple_constexpr.test
 MEASURE=time
 THISFILE=Makefile
-PYTHON=python3.1
-PYTHON=python
 
 HOW=gcc4_8_20120624
 #HOW=gcc4_8v
@@ -146,23 +142,4 @@ nest_loop:
 echo:
 	@echo "SHELL="$(SHELL)
 
-.PHONY: benchmark_domain
-benchmark_domain:
-	$(PYTHON) tuple_benchmark_domain.py
-
-.PHONY: benchmark_run
-benchmark_run:
-	$(PYTHON) tuple_benchmark_run.py $(BENCHMARK)
-
-.PHONY: parse
-parse:
-	$(PYTHON) tuple_benchmark_parserange.py tuple.benchmark.tree_builder.guage_time@$(BENCHMARKRUN.which).txt
-
-.PHONY: tags
-tags:
-	python tuple_benchmark_tags.py
-
-.PHONY: plot
-plot:
-	$(PYTHON) tuple_benchmark_plot.py domain_range.pkl
 
