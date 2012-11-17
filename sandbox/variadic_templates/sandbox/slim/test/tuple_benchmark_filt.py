@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 ##Purpose:
-##  Read pickle file containing plot data and plot it.
+##  Read pickle file containing performance data
+##  apply filter to it, print filtered data.
 ##===============================================
 from __future__ import print_function 
 import sys, pickle
-import numpy as np
-import matplotlib.pyplot as plt
 from collections import namedtuple
 from print_domain_range import print_domain_range
 

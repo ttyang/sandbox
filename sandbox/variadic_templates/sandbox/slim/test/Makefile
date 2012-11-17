@@ -24,9 +24,9 @@ domain:#prints the domains(inputs) used in brun target.
 parse:#produces domain_range.pkl from $(OUT_BASENAME).txt
 	$(PYTHON) tuple_benchmark_parserange.py $(OUT_BASENAME).txt
 
-.PHONY: plot
-plot: domain_range.pkl#produces filtered output from domain_range.pkl
-	$(PYTHON) tuple_benchmark_plot.py domain_range.pkl
+.PHONY: filt
+filt: domain_range.pkl#produces filtered output from domain_range.pkl
+	$(PYTHON) tuple_benchmark_filt.py domain_range.pkl
 
 .PHONY: show
 show:#shows selected macro values.
