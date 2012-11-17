@@ -11,34 +11,36 @@ import subprocess
 
 from tuple_benchmark_domain import *
 import compiler_guage
-import benchmark_prefix_name
+import benchmark_prefix
+import boost_root
 
 def main(argv):
   """
   Inputs:
-    argv[1] is optional benchmark_suffix to the benchmark main program name.
-    argv[2] is optional run name, used in forming output file name.
+    argv[1] indicates how compiler performance will be measured.
+    argv[2] is optional benchmark_suffix to the benchmark main program name.
+    argv[3] is optional run name, used in forming output file name.
+            This may be useful if several runs are made with same options
+            and maybe some averaging will be done over different runs.
   Outputs:
     output file(name depends on argv, see below) contains performance
-    measurements of the compilation of benchmakr main program.
+    measurements of the compilation of benchmark main program.
   """
   result = None
-  default_suffix="mini"
-  default_run="_"
+  guage_name="guage_time"
+  benchmark_suffix="mini"
+  benchmark_run="_"
   #print("argv=",argv)
   if len(argv)>1:
-    benchmark_suffix=argv[1]
-    if len(argv)>2:
-      benchmark_run=argv[2]
-    else:
-      benchmark_run=default_run
-  else:
-    benchmark_suffix=default_suffix
-    benchmark_run=default_run
-  benchmark_presuffix=benchmark_prefix_name.name()+"."+benchmark_suffix
+    guage_name=argv[1]
+  if len(argv)>2:
+    benchmark_suffix=argv[2]
+  if len(argv)>3:
+    benchmark_run=argv[3]
+  benchmark_presuffix=benchmark_prefix.name()+"."+benchmark_suffix
   benchmark_basename=benchmark_presuffix+".cpp"
   #print("benchmark_basename=",benchmark_basename)
-  boost_root="/home/evansl/prog_dev/boost-svn/ro/boost_1_49_0"
+  boost_root_path=boost_root.path()
   impl_map_inc={}#implementation key -> -I include flags to compiler
   if False:
     impl_map_inc["horizontal"]=\
@@ -46,7 +48,7 @@ def main(argv):
       #
   if False:
     impl_map_inc["vertical"]=\
-        " -I"+boost_root\
+        " -I"+boost_root_path\
       #
   if True:
     impl_map_inc["bcon12_horizontal"]=\
@@ -54,12 +56,12 @@ def main(argv):
       #
   if True:
     impl_map_inc["bcon12_vertical"]=\
-        " -I"+boost_root\
+        " -I"+boost_root_path\
       #
   if False:
     impl_map_inc["compstor"]=\
-        " -I"+boost_root\
-      + " -I"+boost_root+"/sandbox/rw/variadic_templates"\
+        " -I"+boost_root_path\
+      + " -I"+boost_root_path+"/sandbox/rw/variadic_templates"\
       #
   if False:
     impl_map_inc["std"]=\
@@ -74,6 +76,10 @@ def main(argv):
     , [ 'TUPLE_SIZE', sizes(range(tuple_min_size,tuple_max_size+1,tuple_del_size))]
     , [ 'TUPLE_UNROLL_MAX', unroll_max()]
     ]
+  guage_map=\
+    { 'guage_time':compiler_guage.guage_time()
+    , 'guage_ftime':compiler_guage.guage_ftime()
+    }
   if benchmark_suffix == "mini" :
     name_domain.append( [ 'LAST_LESS', last(4,tuple_del_size)])
   else:
@@ -81,9 +87,8 @@ def main(argv):
   domains=product_dep(
     map(lambda t: t[1], name_domain)
     )
-  guage=compiler_guage.guage_time()
-  measure_key=guage.__class__.__name__
-  measure_out=open(benchmark_presuffix+"."+measure_key+"@"+benchmark_run+".txt",mode='w')
+  guage_fun=guage_map[guage_name]
+  measure_out=open(benchmark_presuffix+"."+guage_name+"@"+benchmark_run+".txt",mode='w')
   print(TAG_TUPLE.compilers+"[",file=measure_out)
   for compiler_name in COMPILER_MAP.keys():
     (compiler_exe,compiler_flags)=COMPILER_MAP[compiler_name]
@@ -122,7 +127,7 @@ def main(argv):
         #
       print(TAG_TUPLE.range_out+"[",file=measure_out)
       measure_out.flush()
-      measure_rc=guage.measure(compiler_exe, compiler_args, measure_out)
+      measure_rc=guage_fun.measure(compiler_exe, compiler_args, measure_out)
       print("]"+TAG_TUPLE.range_out,file=measure_out)
       if measure_rc != 0:
         return measure_rc

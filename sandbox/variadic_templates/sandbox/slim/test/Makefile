@@ -1,17 +1,17 @@
-BENCHMARK.which=mini
-BENCHMARK.which=tree_builder
+BENCHMARK.suffix=mini
+BENCHMARK.suffix=tree_builder
 TIMEFMT=%Y-%m-%d_%T_%N
 #TIMESTAMP.value=_
 TIMESTAMP.value?=$(shell date +$(TIMEFMT))
 GUAGE=guage_time
 BENCHMARK.prefix=$(shell python benchmark_prefix_name.py)
-MAIN=$(BENCHMARK.prefix).$(BENCHMARK.which)
+MAIN=$(BENCHMARK.prefix).$(BENCHMARK.suffix)
 MEASURED=$(MAIN).$(GUAGE)@$(TIMESTAMP.value)
 PYTHON=python
 
 .PHONY: brun
 brun:#produces $(MEASURED).txt from $(MAIN).cpp
-	$(PYTHON) tuple_benchmark_run.py $(BENCHMARK.which) $(TIMESTAMP.value)
+	$(PYTHON) tuple_benchmark_run.py $(GUAGE) $(BENCHMARK.suffix) $(TIMESTAMP.value)
 
 .PHONY: domain
 domain:
