@@ -11,7 +11,7 @@ import subprocess
 
 from tuple_benchmark_domain import *
 import compiler_guage
-import benchmark_prefix
+import benchmark_filenames
 import boost_root
 
 def main(argv):
@@ -37,9 +37,10 @@ def main(argv):
     benchmark_suffix=argv[2]
   if len(argv)>3:
     benchmark_run=argv[3]
-  benchmark_presuffix=benchmark_prefix.name()+"."+benchmark_suffix
-  benchmark_basename=benchmark_presuffix+".cpp"
-  #print("benchmark_basename=",benchmark_basename)
+  benchmark_basename_ext\
+    = benchmark_filenames.src_basename(benchmark_suffix)\
+    + ".cpp"
+  #print("benchmark_basename_ext=",benchmark_basename_ext)
   boost_root_path=boost_root.path()
   impl_map_inc={}#implementation key -> -I include flags to compiler
   if False:
@@ -88,7 +89,15 @@ def main(argv):
     map(lambda t: t[1], name_domain)
     )
   guage_fun=guage_map[guage_name]
-  measure_out=open(benchmark_presuffix+"."+guage_name+"@"+benchmark_run+".txt",mode='w')
+  measure_out=\
+    open\
+    ( benchmark_filenames.out_basename\
+      ( benchmark_suffix
+      , guage_name
+      , benchmark_run
+      ) + ".txt"
+    , mode='w'
+    )
   print(TAG_TUPLE.compilers+"[",file=measure_out)
   for compiler_name in COMPILER_MAP.keys():
     (compiler_exe,compiler_flags)=COMPILER_MAP[compiler_name]
@@ -123,7 +132,7 @@ def main(argv):
         + compiler_flags+" "\
         + compiler_macros+" "\
         + impl_map_inc[macro_vals[0]]+" "\
-        + benchmark_basename\
+        + benchmark_basename_ext\
         #
       print(TAG_TUPLE.range_out+"[",file=measure_out)
       measure_out.flush()
