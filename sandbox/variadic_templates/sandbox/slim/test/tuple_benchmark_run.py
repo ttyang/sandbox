@@ -11,15 +11,31 @@ import subprocess
 
 from tuple_benchmark_domain import *
 import compiler_guage
+import benchmark_prefix_name
 
 def main(argv):
+  """
+  Inputs:
+    argv[1] is optional benchmark_suffix to the benchmark main program name.
+    argv[2] is optional run name, used in forming output file name.
+  Outputs:
+    output file(name depends on argv, see below) contains performance
+    measurements of the compilation of benchmakr main program.
+  """
   result = None
+  default_suffix="mini"
+  default_run="_"
   #print("argv=",argv)
   if len(argv)>1:
     benchmark_suffix=argv[1]
+    if len(argv)>2:
+      benchmark_run=argv[2]
+    else:
+      benchmark_run=default_run
   else:
-    benchmark_suffix="mini"
-  benchmark_presuffix="tuple.benchmark."+benchmark_suffix
+    benchmark_suffix=default_suffix
+    benchmark_run=default_run
+  benchmark_presuffix=benchmark_prefix_name.name()+"."+benchmark_suffix
   benchmark_basename=benchmark_presuffix+".cpp"
   #print("benchmark_basename=",benchmark_basename)
   boost_root="/home/evansl/prog_dev/boost-svn/ro/boost_1_49_0"
@@ -67,9 +83,7 @@ def main(argv):
     )
   guage=compiler_guage.guage_time()
   measure_key=guage.__class__.__name__
-  dtfmt=datetime.now().isoformat('_')
-  dtfmt="_"
-  measure_out=open(benchmark_presuffix+"."+measure_key+"@"+dtfmt+".txt",mode='w')
+  measure_out=open(benchmark_presuffix+"."+measure_key+"@"+benchmark_run+".txt",mode='w')
   print(TAG_TUPLE.compilers+"[",file=measure_out)
   for compiler_name in COMPILER_MAP.keys():
     (compiler_exe,compiler_flags)=COMPILER_MAP[compiler_name]
