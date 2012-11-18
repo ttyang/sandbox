@@ -46,7 +46,7 @@
 #include <boost/multiprecision/tommath.hpp>
 #include <boost/multiprecision/rational_adapter.hpp>
 #endif
-#if defined(TEST_CPP_INT)
+#if defined(TEST_CPP_INT) || defined(TEST_CPP_INT_RATIONAL)
 #include <boost/multiprecision/cpp_int.hpp>
 #endif
 
@@ -197,7 +197,7 @@ struct tester
    {
       stopwatch<boost::chrono::high_resolution_clock> w;
       for(unsigned i = 0; i < b.size(); ++i)
-         a[i] = b[i].str();
+         a[i].assign(b[i].str());
       return boost::chrono::duration_cast<boost::chrono::duration<double> >(w.elapsed()).count();
    }
    double test_str()
@@ -329,6 +329,16 @@ struct tester
       {
          for(unsigned i = 0; i < b.size(); ++i)
             a[i] = gcd(b[i], c[i]);
+      }
+      return boost::chrono::duration_cast<boost::chrono::duration<double> >(w.elapsed()).count();
+   }
+   double test_powm()
+   {
+      stopwatch<boost::chrono::high_resolution_clock> w;
+      for(unsigned i = 0; i < 25; ++i)
+      {
+         for(unsigned i = 0; i < b.size(); ++i)
+            a[i] = powm(b[i], b[i] / 2, c[i]);
       }
       return boost::chrono::duration_cast<boost::chrono::duration<double> >(w.elapsed()).count();
    }
@@ -522,7 +532,7 @@ private:
       val = frexp(val, &e);
 
       typedef typename T::backend_type::exponent_type e_type;
-      static boost::random::uniform_int_distribution<e_type> ui(0, std::numeric_limits<T>::max_exponent - 10);
+      static boost::random::uniform_int_distribution<e_type> ui(-30, 30);
       return ldexp(val, static_cast<int>(ui(gen)));
    }
    T generate_random(const boost::mpl::int_<boost::multiprecision::number_kind_integer>&)
@@ -629,7 +639,7 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::map<int, 
 
 void report_result(const char* cat, const char* type, const char* op, unsigned precision, double time)
 {
-   std::cout << std::left << std::setw(15) << type << std::setw(10) << precision << std::setw(5) << op << time << std::endl;
+   std::cout << std::left << std::setw(15) << type << std::setw(10) << precision << std::setw(35) << op << time << std::endl;
    result_table[cat][op][type][precision] = time;
 }
 
@@ -650,6 +660,7 @@ void test_int_ops(tester<Number, N>& t, const char* type, unsigned precision, co
    report_result(cat, type, "&(int)", precision, t.test_and_int());
    report_result(cat, type, "^(int)", precision, t.test_xor_int());
    report_result(cat, type, "gcd", precision, t.test_gcd());
+   report_result(cat, type, "powm", precision, t.test_powm());
 }
 template <class Number, int N, class U>
 void test_int_ops(tester<Number, N>& t, const char* type, unsigned precision, const U&)
@@ -687,14 +698,14 @@ void test(const char* type, unsigned precision)
    report_result(cat, type, "construct(unsigned long long)", precision, t.test_construct_unsigned_ll());
    test_int_ops(t, type, precision, typename boost::multiprecision::number_category<Number>::type());
    // Hetero ops:
-   report_result(cat, type, "+", precision, t.template test_add_hetero<unsigned long long>());
-   report_result(cat, type, "-", precision, t.template test_subtract_hetero<unsigned long long>());
-   report_result(cat, type, "*", precision, t.template test_multiply_hetero<unsigned long long>());
-   report_result(cat, type, "/", precision, t.template test_divide_hetero<unsigned long long>());
-   report_result(cat, type, "+", precision, t.template test_inplace_add_hetero<unsigned long long>());
-   report_result(cat, type, "-", precision, t.template test_inplace_subtract_hetero<unsigned long long>());
-   report_result(cat, type, "*", precision, t.template test_inplace_multiply_hetero<unsigned long long>());
-   report_result(cat, type, "/", precision, t.template test_inplace_divide_hetero<unsigned long long>());
+   report_result(cat, type, "+(unsigned long long)", precision, t.template test_add_hetero<unsigned long long>());
+   report_result(cat, type, "-(unsigned long long)", precision, t.template test_subtract_hetero<unsigned long long>());
+   report_result(cat, type, "*(unsigned long long)", precision, t.template test_multiply_hetero<unsigned long long>());
+   report_result(cat, type, "/(unsigned long long)", precision, t.template test_divide_hetero<unsigned long long>());
+   report_result(cat, type, "+=(unsigned long long)", precision, t.template test_inplace_add_hetero<unsigned long long>());
+   report_result(cat, type, "-=(unsigned long long)", precision, t.template test_inplace_subtract_hetero<unsigned long long>());
+   report_result(cat, type, "*=(unsigned long long)", precision, t.template test_inplace_multiply_hetero<unsigned long long>());
+   report_result(cat, type, "/=(unsigned long long)", precision, t.template test_inplace_divide_hetero<unsigned long long>());
 }
 
 void quickbook_results()
@@ -738,7 +749,7 @@ void quickbook_results()
                precision_iterator l = k->second.begin();
                std::advance(l, m);
                if(best_times[m] > l->second)
-                  best_times[m] = l->second;
+                  best_times[m] = l->second ? l->second : best_times[m];
             }
          }
 
@@ -786,12 +797,12 @@ int main()
    test<boost::multiprecision::mpz_int>("gmp_int", 1024);
 #endif
 #ifdef TEST_CPP_INT
-   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<64, false, void>, false > >("cpp_int(unsigned, fixed)", 64);
-   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<64, true, void>, false > >("cpp_int(fixed)", 64);
-   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<128, true, void>, false > >("cpp_int(fixed)", 128);
-   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<256, true, void>, false > >("cpp_int(fixed)", 256);
-   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<512, true, void>, false > >("cpp_int(fixed)", 512);
-   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<1024, true, void>, false > >("cpp_int(fixed)", 1024);
+   //test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<64, 64, boost::multiprecision::unsigned_magnitude, boost::multiprecision::unchecked, void>, boost::multiprecision::et_off> >("cpp_int(unsigned, fixed)", 64);
+   //test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<64, 64, boost::multiprecision::signed_magnitude, boost::multiprecision::unchecked, void>, boost::multiprecision::et_off> >("cpp_int(fixed)", 64);
+   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<128, 128, boost::multiprecision::signed_magnitude, boost::multiprecision::unchecked, void>, boost::multiprecision::et_off> >("cpp_int(fixed)", 128);
+   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<256, 256, boost::multiprecision::signed_magnitude, boost::multiprecision::unchecked, void>, boost::multiprecision::et_off> >("cpp_int(fixed)", 256);
+   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<512, 512, boost::multiprecision::signed_magnitude, boost::multiprecision::unchecked, void>, boost::multiprecision::et_off> >("cpp_int(fixed)", 512);
+   test<boost::multiprecision::number<boost::multiprecision::cpp_int_backend<1024, 1024, boost::multiprecision::signed_magnitude, boost::multiprecision::unchecked, void>, boost::multiprecision::et_off> >("cpp_int(fixed)", 1024);
 
    test<boost::multiprecision::cpp_int>("cpp_int", 128);
    test<boost::multiprecision::cpp_int>("cpp_int", 256);

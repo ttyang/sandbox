@@ -68,6 +68,7 @@ void * realloc_func(void * p, size_t old, size_t n)
    return (*realloc_func_ptr)(p, old, n);
 }
 
+#ifdef TEST_MPZ
 boost::chrono::duration<double> test_miller_rabin_gmp()
 {
    using namespace boost::random;
@@ -84,6 +85,7 @@ boost::chrono::duration<double> test_miller_rabin_gmp()
    }
    return c.elapsed();
 }
+#endif
 
 std::map<std::string, double> results;
 double min_time = (std::numeric_limits<double>::max)();
@@ -101,11 +103,13 @@ boost::chrono::duration<double> test_miller_rabin(const char* name)
    // we get false positives.
    //
    mt19937 gen2;
+   unsigned result_count = 0;
 
    for(unsigned i = 0; i < 1000; ++i)
    {
       IntType n = gen();
-      miller_rabin_test(n, 25, gen2);
+      if(boost::multiprecision::miller_rabin_test(n, 25, gen2))
+         ++result_count;
    }
    boost::chrono::duration<double> t = c.elapsed();
    double d = t.count();
@@ -113,12 +117,13 @@ boost::chrono::duration<double> test_miller_rabin(const char* name)
       min_time = d;
    results[name] = d;
    std::cout << "Time for " << std::setw(30) << std::left << name << " = " << d << std::endl;
+   std::cout << "Number of primes found = " << result_count << std::endl;
    return t;
 }
 
 void generate_quickbook()
 {
-   std::cout << "[table\n";
+   std::cout << "[table\n[[Integer Type][Relative Performance (Actual time in parenthesis)]]\n";
 
    std::map<std::string, double>::const_iterator i(results.begin()), j(results.end());
 
@@ -143,6 +148,7 @@ int main()
    test_miller_rabin<number<cpp_int_backend<512> > >("cpp_int (512-bit cache)");
    test_miller_rabin<number<cpp_int_backend<1024> > >("cpp_int (1024-bit cache)");
    test_miller_rabin<int1024_t>("int1024_t");
+   test_miller_rabin<checked_int1024_t>("checked_int1024_t");
 #endif
 #ifdef TEST_MPZ
    test_miller_rabin<number<gmp_int, et_off> >("mpz_int (no Expression templates)");
@@ -153,8 +159,6 @@ int main()
    test_miller_rabin<number<boost::multiprecision::tommath_int, et_off> >("tom_int (no Expression templates)");
    test_miller_rabin<boost::multiprecision::tom_int>("tom_int");
 #endif
-   mp_get_memory_functions(&alloc_func_ptr, &realloc_func_ptr, &free_func_ptr);
-   mp_set_memory_functions(&alloc_func, &realloc_func, &free_func);
 
    generate_quickbook();
 

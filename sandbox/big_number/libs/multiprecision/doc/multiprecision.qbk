@@ -288,10 +288,10 @@ dramatic as the reduction in number of temporaries would suggest.  For example i
 we see the following typical results for polynomial execution:
 
 [table Evaluation of Order 6 Polynomial.
-[[Library][Relative Time][Relative number of memory allocations]]
-[[number][1.0 (0.00793s)][1.0 (2996 total)]]
-[[[mpfr_class]][1.2 (0.00931s)][4.3 (12976 total)]]
-[[[mpreal]][1.9 (0.0148s)][9.3 (27947 total)]]
+[[Library]         [Relative Time]   [Relative number of memory allocations]]
+[[number]          [1.0 (0.00957s)]  [1.0 (2996 total)]]
+[[[mpfr_class]]    [1.1 (0.0102s)]   [4.3 (12976 total)]]
+[[[mpreal]]        [1.6 (0.0151s)]   [9.3 (27947 total)]]
 ]
 
 As you can see, the execution time increases a lot more slowly than the number of memory allocations.  There are 
@@ -314,21 +314,21 @@ again, all are using [mpfr] to carry out the underlying arithmetic, and all are 
 (50 decimal digits):
 
 [table Evaluation of Boost.Math's Bessel function test data
-[[Library][Relative Time][Relative Number of Memory Allocations]]
-[[mpfr_float_50]                            [1.0 (5.66s)] [1.0 (1611963)]]
+[[Library]                                  [Relative Time] [Relative Number of Memory Allocations]]
+[[mpfr_float_50]                            [1.0 (5.78s)]   [1.0 (1611963)]]
 [[number<mpfr_float_backend<50>, et_off>[br](but with rvalue reference support)]   
-                                            [1.10 (6.25s)][2.64 (4260868)]]
-[[[mpfr_class]]                             [1.09 (6.16s)][2.45 (3948316)]]
-[[[mpreal]]                                 [1.65 (9.34s)][8.21 (13226029)]]
+                                            [1.1 (6.29s)]   [2.64 (4260868)]]
+[[[mpfr_class]]                             [1.1 (6.28s)]   [2.45 (3948316)]]
+[[[mpreal]]                                 [1.65 (9.54s)]  [8.21 (13226029)]]
 ]
 
 [table Evaluation of Boost.Math's Non-Central T distribution test data
 [[Library][Relative Time][Relative Number of Memory Allocations]]
-[[number]                                   [1.0 (257s)][1.0 (127710873)]]
+[[number]                                   [1.0 (263s)][1.0 (127710873)]]
 [[number<mpfr_float_backend<50>, et_off>[br](but with rvalue reference support)]   
-                                            [1.0 (257s)][1.2 (156797871)]]
-[[[mpfr_class]]                             [1.1 (280s)][2.1 (268336640)]]
-[[[mpreal]]                                 [1.4 (363s)][3.6 (466960653)]]
+                                            [1.0 (260s)][1.2 (156797871)]]
+[[[mpfr_class]]                             [1.1 (287s)][2.1 (268336640)]]
+[[[mpreal]]                                 [1.5 (389s)][3.6 (466960653)]]
 ]
 
 The above results were generated on Win32 compiling with Visual C++ 2010, all optimizations on (/Ox),
@@ -2669,6 +2669,41 @@ in point of fact this naming convention shouldn't be necessary, but rather works
 
 [section:perf Performance Comparison]
 
+[section:overhead The Overhead in the Number Class Wrapper]
+
+Using a simple [@../../performance/arithmetic_backend.hpp backend class] that wraps any built in arithmetic type
+we can measure the overhead involved in wrapping a type inside the `number` frontend, and the effect that turning
+on expression templates has.  The following table compares the performance between `double` and a `double` wrapped
+inside class `number`:
+
+[table
+[[Type][Bessel Function Evaluation][Non-Central T Evaluation]]
+[[`double`]                                       [[*1.0 (0.016s)]]  [[*1.0] (0.46s)]]
+[[`number<arithmetic_backend<double>, et_off>`]   [1.2 (0.019s)]     [[*1.0](0.46s)]]
+[[`number<arithmetic_backend<double>, et_on>`]    [1.2 (0.019s)]     [1.7 (0.79s)]]
+]
+
+As you can see whether there is an overhead, and how large it is depends on the actual situation,
+but the overhead is in any cases small.  Expression templates generally add a greater overhead the
+more complex the expression becomes due to the logic of figuring out how to best unpack and evaluate
+the expression, but of course this is also the situation where you save more temporaries.  For a 
+"trivial" backend like this, saving temporaries has no benefit, but for larger types it becomes
+a bigger win.
+
+The following table compares arithmetic using either `long long` or `number<arithmetic_backend<long long> >`
+for the [@../../performance/voronoi_perfromance.cpp voronoi-diagram builder test]:
+
+[table
+[[Type][Relative time]]
+[[`long long`][[*1.0](0.0823s)]]
+[[`number<arithmetic_backend<long long>, et_off>`][1.05 (0.0875s)]]
+]
+
+This test involves mainly creating a lot of temporaries and performing a small amount of arithmetic on them,
+with very little difference in performance between the native and "wrapped" types.
+
+[endsect]
+
 [section:realworld Floating Point Real World Tests]
 
 These tests test the total time taken to execute all of Boost.Math's test cases for these functions.
@@ -2683,53 +2718,80 @@ Windows Vista machine.
 
 [table Bessel Function Performance
 [[Library][50 Decimal Digits][100 Decimal Digits]]
-[[mpfr_float][[*1.0] (6.472s)][1.193 (10.154s)]]
-[[mpf_float][1.801 (11.662s)][[*1.0](8.511s)]]
-[[cpp_dec_float][3.13 (20.285s)][2.46 (21.019s)]]
-[[[mpfr_class]][1.001 (6.480s)][1.15(9.805s)]]
-[[[mpreal]][1.542 (9.981s)][1.61 (13.702s)]]
+[[mpfr_float]        [1.2 (5.78s)]    [1.2 (9.56s)]]
+[[static_mpfr_float] [1.1 (5.47s)]    [1.1 (9.09s)]]
+[[mpf_float]         [[*1.0] (4.82s)] [[*1.0](8.07s)]]
+[[cpp_dec_float]     [1.8 (8.54s)]    [2.6 (20.66s)]]
+[[[mpfr_class]]      [1.3 (6.28s)]    [1.2(10.06s)]]
+[[[mpreal]]          [2.0 (9.54s)]    [1.7 (14.08s)]]
 ]
 
 [table Non-Central T Distribution Performance
-[[Library][50 Decimal Digits][100 Decimal Digits]]
-[[mpfr_float][1.308 (258.09s)][1.30 (516.74s)]]
-[[mpf_float][[*1.0] (197.30s)][[*1.0](397.30s)]]
-[[cpp_dec_float][1.695 (334.50s)][2.68 (1064.53s)]]
-[[[mpfr_class]][1.35 (266.39s)][1.323 (525.74s)]]
-[[[mpreal]][1.75 (346.64s)][1.635 (649.94s)]]
+[[Library][50 Decimal Digits]]
+[[mpfr_float]            [1.3 (263.27s)]]
+[[static_mpfr_float]     [1.2 (232.88s)]]
+[[mpf_float]             [[*1.0] (195.73s)]]
+[[cpp_dec_float]         [1.9 (366.38s)]]
+[[[mpfr_class]]          [1.5 (286.94s)]]
+[[[mpreal]]              [2.0 (388.70s)]]
 ]
 
 [endsect]
 
 [section:int_real_world Integer Real World Tests]
 
-These [@../../performance/miller_rabin_performance.cpp tests] measure the time taken to generate 1000 128-bit 
-random numbers and test for primality using the Miller Rabin test.
-
 Test code was compiled with Microsoft Visual Studio 2010 with all optimisations
 turned on (/Ox), and used MPIR-2.3.0 and [tommath]-0.42.0.  The tests were run on 32-bit
 Windows Vista machine.
 
+The first set of [@../../performance/voronoi_performance.cpp tests] measure the times taken to
+execute the multiprecision part of the Voronoi-diagram builder from Boost.Polygon.  The tests
+mainly create a large number of temporaries "just in case" multiprecision arithmetic is required,
+for comparison, also included in the tests is Boost.Polygon's own partial-multiprecision integer
+type which was custom written for this specific task:
+
 [table
-[[Integer Type][Relative (and Absolute) Times]]
-[[mpz_int][1.08279(0.370326s)]]
-[[mpz_int (no Expression templates)][1.1702(0.400222s)]]
-[[cpp_int][1.3612(0.465547s)]]
-[[cpp_int (no Expression templates)][1.33286(0.455854s)]]
-[[cpp_int (64-bit cache)][1.33134(0.455333s)]]
-[[cpp_int (256-bit cache)][1.29367(0.442451s)]]
-[[cpp_int (512-bit cache)][1.08821(0.37218s)]]
-[[cpp_int (1024-bit cache)][1.07902(0.369037s)]]
-[[int1024_t][1.02616(0.35096s)]]
-[[int1024_t (no Expression templates)][1(0.342011s)]]
-[[tom_int][3.74233(1.27992s)]]
-[[tom_int (no Expression templates)][3.97646(1.35999s)]]
+[[Integer Type][Relative Performance (Actual time in parenthesis)]]
+[[polygon::detail::extended_int][1(0.138831s)]]
+[[int256_t][1.19247(0.165551s)]]
+[[int512_t][1.23301(0.17118s)]]
+[[int1024_t][1.21463(0.168628s)]]
+[[checked_int256_t][1.31711(0.182855s)]]
+[[checked_int512_t][1.57413(0.218538s)]]
+[[checked_int1024_t][1.36992(0.190187s)]]
+[[cpp_int][1.63244(0.226632s)]]
+[[mpz_int][5.42511(0.753172s)]]
+[[tom_int][29.0793(4.03709s)]]
+]
+
+Note how for this use case, any dynamic allocation is a performance killer.
+
+The next [@../../performance/miller_rabin_performance.cpp tests] measure the time taken to generate 1000 128-bit 
+random numbers and test for primality using the Miller Rabin test.  This is primarily a test of modular-exponentiation
+since that is the rate limiting step:
+
+[table
+[[Integer Type][Relative Performance (Actual time in parenthesis)]]
+[[cpp_int][5.25827(0.379597s)]]
+[[cpp_int (no Expression templates)][5.15675(0.372268s)]]
+[[cpp_int (128-bit cache)][5.10882(0.368808s)]]
+[[cpp_int (256-bit cache)][5.50623(0.397497s)]]
+[[cpp_int (512-bit cache)][4.82257(0.348144s)]]
+[[cpp_int (1024-bit cache)][5.00053(0.360991s)]]
+[[int1024_t][4.37589(0.315897s)]]
+[[checked_int1024_t][4.52396(0.326587s)]]
+[[mpz_int][1(0.0721905s)]]
+[[mpz_int (no Expression templates)][1.0248(0.0739806s)]]
+[[tom_int][2.60673(0.188181s)]]
+[[tom_int (no Expression templates)][2.64997(0.191303s)]]
 ]
 
 It's interesting to note that expression templates have little effect here - perhaps because the actual expressions involved
 are relatively trivial in this case - so the time taken for multiplication and division tends to dominate.  Also note
 how increasing the internal cache size used by `cpp_int` is quite effective in this case in cutting out memory allocations
-altogether - cutting about a third off the total runtime.
+altogether - cutting about a third off the total runtime.  Finally the much quicker times from GMP and tommath are down to their
+much better modular-exponentiation algorithms (GMP's is about 5x faster).  That's an issue which needs to be addressed
+in a future release for __cpp_int.
 
 [endsect]
 
@@ -2747,60 +2809,126 @@ turned on (/Ox), and used MPIR-2.3.0 and [mpfr]-3.0.0.  The tests were run on 32
 Windows Vista machine.
 
 [table Operator +
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][[*1] (0.02382s)][[*1] (0.0294619s)][[*1] (0.058466s)]]
-[[gmp_float][4.55086 (0.108402s)][3.86443 (0.113853s)][2.6241 (0.15342s)]]
-[[mpfr_float][2.52036 (0.060035s)][2.1833 (0.0643242s)][1.37736 (0.0805287s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.0575156s)][[*1] (0.0740086s)][[*1] (0.219073s)]]
+[[gmp_float][2.45065 (0.14095s)][2.01398 (0.149052s)][1.09608 (0.240122s)]]
+[[mpfr_float][2.6001 (0.149546s)][2.12079 (0.156957s)][1.09078 (0.23896s)]]
 ]
 [table Operator +(int)
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][1.56759 (0.0527023s)][1.74629 (0.0618102s)][1.68077 (0.105927s)]]
-[[gmp_float][[*1] (0.0336201s)][[*1] (0.0353951s)][[*1] (0.0630232s)]]
-[[mpfr_float][3.14875 (0.105861s)][3.15499 (0.111671s)][1.92831 (0.121528s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][1.46115 (0.0855392s)][2.60353 (0.114398s)][3.62562 (0.264905s)]]
+[[gmp_float][[*1] (0.0585424s)][[*1] (0.0439398s)][[*1] (0.0730648s)]]
+[[mpfr_float][2.40441 (0.14076s)][3.2877 (0.144461s)][2.40379 (0.175632s)]]
+]
+[table Operator +(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.118146s)][[*1] (0.144714s)][[*1] (0.315639s)]]
+[[gmp_float][4.5555 (0.538213s)][3.83096 (0.554395s)][1.95079 (0.615745s)]]
+[[mpfr_float][5.74477 (0.678719s)][4.85295 (0.702291s)][2.70354 (0.853342s)]]
+]
+[table Operator +=(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.101188s)][[*1] (0.122394s)][[*1] (0.251975s)]]
+[[gmp_float][5.199 (0.526079s)][4.39327 (0.537712s)][2.42151 (0.610159s)]]
+[[mpfr_float][6.08318 (0.615547s)][5.18525 (0.634645s)][3.1022 (0.781677s)]]
 ]
 [table Operator -
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][[*1] (0.0265783s)][[*1] (0.031465s)][[*1] (0.0619405s)]]
-[[gmp_float][4.66954 (0.124108s)][3.72645 (0.117253s)][2.67536 (0.165713s)]]
-[[mpfr_float][2.7909 (0.0741774s)][2.48557 (0.0782083s)][1.50944 (0.0934957s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.0895163s)][[*1] (0.129248s)][1.5088 (0.374512s)]]
+[[gmp_float][1.72566 (0.154474s)][1.22567 (0.158415s)][[*1] (0.248219s)]]
+[[mpfr_float][1.83764 (0.164499s)][1.34284 (0.173559s)][1.00226 (0.248781s)]]
 ]
 [table Operator -(int)
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][[*1] (0.0577674s)][[*1] (0.0633795s)][[*1] (0.11146s)]]
-[[gmp_float][2.31811 (0.133911s)][2.07251 (0.131355s)][1.67161 (0.186319s)]]
-[[mpfr_float][2.45081 (0.141577s)][2.29174 (0.145249s)][1.395 (0.155487s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.105285s)][[*1] (0.142741s)][[*1] (0.278718s)]]
+[[gmp_float][2.34437 (0.246828s)][1.28814 (0.183871s)][1.00731 (0.280754s)]]
+[[mpfr_float][2.8032 (0.295136s)][2.09178 (0.298582s)][1.25213 (0.34899s)]]
+]
+[table Operator -(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.13719s)][[*1] (0.184428s)][[*1] (0.344212s)]]
+[[gmp_float][4.0804 (0.559791s)][3.06776 (0.565781s)][2.07736 (0.715053s)]]
+[[mpfr_float][5.10114 (0.699828s)][3.88684 (0.716843s)][2.50074 (0.860784s)]]
+]
+[table Operator -=(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.100984s)][[*1] (0.123148s)][[*1] (0.246181s)]]
+[[gmp_float][5.68353 (0.573944s)][4.68636 (0.577116s)][2.6958 (0.663655s)]]
+[[mpfr_float][6.19738 (0.625834s)][5.18544 (0.638577s)][3.18738 (0.784673s)]]
 ]
 [table Operator *
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][1.07276 (0.287898s)][1.47724 (0.584569s)][1.55145 (5.09969s)]]
-[[gmp_float][[*1] (0.268372s)][[*1] (0.395718s)][[*1] (3.28705s)]]
-[[mpfr_float][1.27302 (0.341642s)][1.17649 (0.465557s)][1.14029 (3.7482s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][1.03667 (0.284251s)][1.30576 (0.536527s)][1.44686 (4.81057s)]]
+[[gmp_float][[*1] (0.274196s)][[*1] (0.410891s)][[*1] (3.32484s)]]
+[[mpfr_float][1.24537 (0.341477s)][1.15785 (0.475749s)][1.1796 (3.92199s)]]
 ]
 [table Operator *(int)
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][2.89945 (0.11959s)][4.56335 (0.197945s)][9.03602 (0.742044s)]]
-[[gmp_float][[*1] (0.0412457s)][[*1] (0.0433772s)][[*1] (0.0821206s)]]
-[[mpfr_float][3.6951 (0.152407s)][3.71977 (0.161353s)][3.30958 (0.271785s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][3.97453 (0.240262s)][9.91222 (0.463473s)][50.7926 (4.36527s)]]
+[[gmp_float][[*1] (0.0604505s)][[*1] (0.0467577s)][[*1] (0.0859431s)]]
+[[mpfr_float][2.56974 (0.155342s)][3.56312 (0.166603s)][3.22964 (0.277565s)]]
+]
+[table Operator *(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.331877s)][1.01058 (0.586122s)][6.688 (4.7931s)]]
+[[gmp_float][1.72433 (0.572266s)][[*1] (0.579987s)][[*1] (0.716672s)]]
+[[mpfr_float][2.5553 (0.848047s)][1.74987 (1.0149s)][1.80403 (1.2929s)]]
+]
+[table Operator *=(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.321397s)][1.00772 (0.574887s)][6.65946 (4.7468s)]]
+[[gmp_float][1.77419 (0.570218s)][[*1] (0.570482s)][[*1] (0.712791s)]]
+[[mpfr_float][2.62172 (0.842611s)][1.77691 (1.01369s)][1.77511 (1.26528s)]]
 ]
 [table Operator /
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][3.24327 (4.00108s)][5.00532 (8.12985s)][6.79566 (54.2796s)]]
-[[gmp_float][[*1] (1.23366s)][[*1] (1.62424s)][[*1] (7.9874s)]]
-[[mpfr_float][1.32521 (1.63486s)][1.38967 (2.25716s)][1.72413 (13.7713s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][2.96096 (4.00777s)][4.53244 (7.86435s)][6.11936 (51.5509s)]]
+[[gmp_float][[*1] (1.35354s)][[*1] (1.73512s)][[*1] (8.42422s)]]
+[[mpfr_float][1.30002 (1.75963s)][1.39045 (2.41261s)][1.66762 (14.0484s)]]
 ]
 [table Operator /(int)
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][1.45093 (0.253675s)][1.83306 (0.419569s)][2.3644 (1.64187s)]]
-[[gmp_float][[*1] (0.174836s)][[*1] (0.22889s)][[*1] (0.694411s)]]
-[[mpfr_float][1.16731 (0.204088s)][1.13211 (0.259127s)][1.02031 (0.708513s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][8.60726 (1.8181s)][15.4122 (3.67479s)][34.5119 (24.729s)]]
+[[gmp_float][1.24394 (0.262756s)][[*1] (0.238433s)][[*1] (0.716536s)]]
+[[mpfr_float][[*1] (0.211229s)][1.12178 (0.26747s)][1.02237 (0.732562s)]]
+]
+[table Operator /(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][2.10976 (1.97569s)][3.73601 (3.9133s)][11.3085 (25.4533s)]]
+[[gmp_float][[*1] (0.936452s)][[*1] (1.04746s)][[*1] (2.25081s)]]
+[[mpfr_float][1.3423 (1.257s)][1.51575 (1.58768s)][3.31513 (7.46175s)]]
+]
+[table Operator /=(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][2.17401 (1.96883s)][3.79591 (3.8965s)][11.2328 (25.2606s)]]
+[[gmp_float][[*1] (0.905621s)][[*1] (1.0265s)][[*1] (2.24882s)]]
+[[mpfr_float][1.37953 (1.24933s)][1.53073 (1.57129s)][3.30546 (7.43339s)]]
+]
+[table Operator construct
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.00929804s)][[*1] (0.0268321s)][[*1] (0.0310685s)]]
+[[gmp_float][30.8781 (0.287106s)][7.59969 (0.203916s)][6.51873 (0.202527s)]]
+[[mpfr_float][23.5296 (0.218779s)][8.11058 (0.217624s)][7.16325 (0.222552s)]]
+]
+[table Operator construct(unsigned)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.0603971s)][[*1] (0.0735485s)][[*1] (0.116464s)]]
+[[gmp_float][3.91573 (0.236498s)][2.88171 (0.211945s)][1.81075 (0.210887s)]]
+[[mpfr_float][4.90052 (0.295977s)][4.01118 (0.295017s)][2.62005 (0.305141s)]]
+]
+[table Operator construct(unsigned long long)
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][[*1] (0.0610288s)][[*1] (0.0759005s)][[*1] (0.118511s)]]
+[[gmp_float][8.26247 (0.504249s)][6.69042 (0.507806s)][4.32819 (0.51294s)]]
+[[mpfr_float][10.1593 (0.620013s)][8.45884 (0.64203s)][5.51472 (0.653557s)]]
 ]
 [table Operator str
-[[Backend][50 Decimal Digits][100 Decimal Digits][500 Decimal Digits]]
-[[cpp_dec_float][1.4585 (0.0188303s)][1.55515 (0.03172s)][[*1] (0.131962s)]]
-[[gmp_float][[*1] (0.0129107s)][[*1] (0.0203967s)][1.04632 (0.138075s)]]
-[[mpfr_float][2.19015 (0.0282764s)][1.84679 (0.0376683s)][1.20295 (0.158743s)]]
+[[Backend][50 Bits][100 Bits][500 Bits]]
+[[cpp_dec_float][2.95848 (0.0223061s)][3.33461 (0.033471s)][3.0159 (0.132732s)]]
+[[gmp_float][[*1] (0.00753971s)][[*1] (0.0100374s)][[*1] (0.0440106s)]]
+[[mpfr_float][1.25424 (0.00945658s)][1.24943 (0.012541s)][1.09428 (0.0481601s)]]
 ]
-]
+
 [endsect]
 
 [section:integer_performance Integer Algorithm Perfomance]
@@ -2820,144 +2948,222 @@ Linux x86_64 results are broadly similar, except that libtommath performs much b
 
 [table Operator +
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.24574 (0.0270133s)][1.09665 (0.0352319s)][1.25708 (0.0524047s)][1.31488 (0.08777s)]]
-[[cpp_int(fixed)][1.05787 (0.0229394s)][[*1] (0.0321268s)][1.16171 (0.0484289s)][1.24017 (0.0827832s)]]
-[[gmp_int][2.08016 (0.0451073s)][1.33792 (0.042983s)][1.19676 (0.0498904s)][[*1] (0.0667514s)]]
-[[tommath_int][[*1] (0.0216845s)][1.07779 (0.0346258s)][[*1] (0.0416877s)][1.06344 (0.0709863s)]]
+[[cpp_int][1.22306 (0.0279933s)][1.15878 (0.038341s)][1.24006 (0.0562258s)][1.32055 (0.0925091s)]]
+[[cpp_int(fixed)][1.56093 (0.0357264s)][1.71757 (0.05683s)][1.66497 (0.0754916s)][1.70376 (0.119354s)]]
+[[gmp_int][1.98788 (0.0454986s)][1.37882 (0.0456216s)][1.14898 (0.0520959s)][[*1] (0.0700532s)]]
+[[tommath_int][[*1] (0.022888s)][[*1] (0.0330875s)][[*1] (0.0453411s)][1.07021 (0.074972s)]]
 ]
 [table Operator +(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.46244 (0.0202077s)][1.20665 (0.0238576s)][1.17647 (0.0258293s)][1.12424 (0.0317931s)]]
-[[cpp_int(fixed)][[*1] (0.0138178s)][[*1] (0.0197719s)][[*1] (0.0219548s)][[*1] (0.0282796s)]]
-[[gmp_int][2.15321 (0.0297527s)][2.09834 (0.041488s)][2.89935 (0.0636546s)][3.70262 (0.104709s)]]
-[[tommath_int][17.1419 (0.236864s)][12.9762 (0.256563s)][12.3275 (0.270648s)][10.7373 (0.303648s)]]
+[[cpp_int][[*1] (0.0162581s)][[*1] (0.0196602s)][[*1] (0.0305476s)][[*1] (0.0421105s)]]
+[[cpp_int(fixed)][1.3852 (0.0225207s)][1.84835 (0.036339s)][1.6111 (0.0492153s)][1.63014 (0.068646s)]]
+[[gmp_int][1.95525 (0.0317886s)][2.2217 (0.0436791s)][2.21508 (0.0676653s)][2.58759 (0.108965s)]]
+[[tommath_int][13.603 (0.221158s)][11.5797 (0.227659s)][7.86674 (0.24031s)][6.36923 (0.268212s)]]
+]
+[table Operator +(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0269712s)][[*1] (0.0296213s)][[*1] (0.0380242s)][[*1] (0.045841s)]]
+[[cpp_int(fixed)][1.38342 (0.0373126s)][1.51165 (0.0447769s)][1.54533 (0.05876s)][1.3971 (0.0640443s)]]
+[[gmp_int][26.7163 (0.72057s)][24.0631 (0.712781s)][19.6009 (0.745307s)][17.6547 (0.809308s)]]
+[[tommath_int][19.7493 (0.532664s)][18.2944 (0.541905s)][14.9127 (0.567043s)][12.9059 (0.591619s)]]
+]
+[table Operator +=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][1.16166 (0.020334s)][1.15312 (0.0204789s)][1.21086 (0.0216179s)][1.28088 (0.0229569s)]]
+[[cpp_int(fixed)][[*1] (0.0175043s)][[*1] (0.0177595s)][[*1] (0.0178534s)][[*1] (0.0179228s)]]
+[[gmp_int][39.0852 (0.684159s)][38.7246 (0.68773s)][38.2555 (0.68299s)][37.6736 (0.675217s)]]
+[[tommath_int][30.5872 (0.535408s)][29.371 (0.521614s)][30.3387 (0.541648s)][31.8346 (0.570565s)]]
 ]
 [table Operator -
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.15385 (0.029665s)][1.08217 (0.0369886s)][1.05882 (0.051534s)][1.12132 (0.0822725s)]]
-[[cpp_int(fixed)][[*1] (0.0257095s)][[*1] (0.0341801s)][[*1] (0.0486711s)][1.08659 (0.0797242s)]]
-[[gmp_int][1.56685 (0.040283s)][1.32917 (0.0454312s)][1.06917 (0.0520378s)][[*1] (0.0733708s)]]
-[[tommath_int][1.059 (0.0272264s)][1.16974 (0.0399818s)][1.01303 (0.0493054s)][1.03375 (0.0758472s)]]
+[[cpp_int][1.12975 (0.0308979s)][[*1] (0.0392305s)][1.05392 (0.0543957s)][1.18166 (0.0860767s)]]
+[[cpp_int(fixed)][1.36853 (0.0374283s)][1.45987 (0.0572717s)][1.44606 (0.0746349s)][1.55935 (0.11359s)]]
+[[gmp_int][1.53173 (0.0418917s)][1.17956 (0.0462749s)][1.13609 (0.0586365s)][[*1] (0.0728442s)]]
+[[tommath_int][[*1] (0.0273493s)][1.07293 (0.0420917s)][[*1] (0.0516126s)][1.0985 (0.0800191s)]]
 ]
 [table Operator -(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.51665 (0.0157196s)][1.31513 (0.0200533s)][1.29599 (0.0235066s)][1.21534 (0.0266136s)]]
-[[cpp_int(fixed)][[*1] (0.0103647s)][[*1] (0.0152482s)][[*1] (0.018138s)][[*1] (0.021898s)]]
-[[gmp_int][2.7938 (0.0289568s)][2.55493 (0.038958s)][3.12248 (0.0566356s)][4.48855 (0.0982904s)]]
-[[tommath_int][20.8695 (0.216305s)][15.0705 (0.229797s)][13.4093 (0.243217s)][12.2599 (0.268468s)]]
+[[cpp_int][[*1] (0.0146171s)][[*1] (0.0172176s)][[*1] (0.023655s)][[*1] (0.0313105s)]]
+[[cpp_int(fixed)][1.49086 (0.021792s)][1.94917 (0.03356s)][1.89657 (0.0448632s)][1.82658 (0.057191s)]]
+[[gmp_int][2.16301 (0.0316169s)][2.55059 (0.0439151s)][2.67983 (0.0633913s)][3.27949 (0.102682s)]]
+[[tommath_int][14.0691 (0.20565s)][12.527 (0.215684s)][9.43355 (0.22315s)][7.64671 (0.239422s)]]
+]
+[table Operator -(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0265242s)][[*1] (0.0295275s)][[*1] (0.0377737s)][[*1] (0.0450106s)]]
+[[cpp_int(fixed)][1.2627 (0.033492s)][1.47472 (0.0435449s)][1.47468 (0.055704s)][1.40667 (0.0633151s)]]
+[[gmp_int][26.0595 (0.691208s)][23.3957 (0.690817s)][18.9344 (0.715223s)][16.9593 (0.763349s)]]
+[[tommath_int][19.26 (0.510855s)][17.6236 (0.52038s)][13.9134 (0.52556s)][12.2359 (0.550746s)]]
+]
+[table Operator -=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][1.28589 (0.0210146s)][1.3505 (0.0222463s)][1.34427 (0.0237863s)][1.22787 (0.0230902s)]]
+[[cpp_int(fixed)][[*1] (0.0163425s)][[*1] (0.0164727s)][[*1] (0.0176946s)][[*1] (0.0188051s)]]
+[[gmp_int][41.0201 (0.670371s)][41.4726 (0.683165s)][37.9503 (0.671514s)][35.6021 (0.669502s)]]
+[[tommath_int][32.6952 (0.534322s)][31.4882 (0.518695s)][29.3988 (0.5202s)][29.1175 (0.547558s)]]
 ]
 [table Operator *
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.29504 (0.0731032s)][1.55431 (0.196132s)][1.4363 (0.656569s)][1.63701 (2.47859s)]]
-[[cpp_int(fixed)][[*1] (0.0564485s)][1.16604 (0.147138s)][[*1] (0.457124s)][[*1] (1.5141s)]]
-[[gmp_int][1.19574 (0.0674975s)][[*1] (0.126186s)][1.16627 (0.53313s)][1.02906 (1.5581s)]]
-[[tommath_int][1.97229 (0.111333s)][2.67087 (0.337027s)][2.13031 (0.973817s)][2.05869 (3.11706s)]]
+[[cpp_int][1.13172 (0.0766099s)][1.59509 (0.20993s)][1.40998 (0.70643s)][1.70758 (2.66895s)]]
+[[cpp_int(fixed)][[*1] (0.067693s)][1.27132 (0.167319s)][[*1] (0.50102s)][[*1] (1.563s)]]
+[[gmp_int][1.01718 (0.0688559s)][[*1] (0.13161s)][1.13221 (0.567258s)][1.02292 (1.59883s)]]
+[[tommath_int][1.6793 (0.113677s)][2.66959 (0.351345s)][2.01091 (1.00751s)][2.05812 (3.21684s)]]
 ]
 [table Operator *(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.34609 (0.030315s)][1.57086 (0.0407838s)][1.60154 (0.0542267s)][1.67808 (0.0804984s)]]
-[[cpp_int(fixed)][1.29783 (0.0292279s)][1.58263 (0.0410894s)][1.61543 (0.054697s)][1.66841 (0.0800346s)]]
-[[gmp_int][[*1] (0.0225207s)][[*1] (0.0259628s)][[*1] (0.033859s)][[*1] (0.0479706s)]]
-[[tommath_int][12.4278 (0.279882s)][11.9045 (0.309074s)][10.5973 (0.358813s)][9.47384 (0.454466s)]]
+[[cpp_int][[*1] (0.0228822s)][1.19988 (0.0332404s)][1.13882 (0.0416226s)][1.2711 (0.0665655s)]]
+[[cpp_int(fixed)][1.33157 (0.0304692s)][1.6546 (0.0458376s)][1.72684 (0.063114s)][1.83178 (0.0959269s)]]
+[[gmp_int][1.00858 (0.0230786s)][[*1] (0.0277032s)][[*1] (0.0365488s)][[*1] (0.0523682s)]]
+[[tommath_int][10.8491 (0.248252s)][9.88511 (0.273849s)][8.95509 (0.327298s)][8.04172 (0.421131s)]]
+]
+[table Operator *(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0574926s)][[*1] (0.0876613s)][[*1] (0.146194s)][[*1] (0.258556s)]]
+[[cpp_int(fixed)][1.12247 (0.0645337s)][1.24471 (0.109113s)][1.19748 (0.175065s)][1.17442 (0.303653s)]]
+[[gmp_int][12.271 (0.705488s)][8.23054 (0.7215s)][5.28668 (0.772883s)][3.09816 (0.801047s)]]
+[[tommath_int][10.2751 (0.590743s)][7.36707 (0.645807s)][4.88979 (0.71486s)][3.43724 (0.888719s)]]
+]
+[table Operator *=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][114.922 (7.57662s)][70.5882 (7.61458s)][44.3157 (7.67791s)][26.2881 (7.81595s)]]
+[[cpp_int(fixed)][[*1] (0.0659286s)][[*1] (0.107873s)][[*1] (0.173255s)][[*1] (0.297319s)]]
+[[gmp_int][47.9828 (3.16344s)][29.4972 (3.18196s)][18.1719 (3.14838s)][10.6941 (3.17956s)]]
+[[tommath_int][284.199 (18.7368s)][173.129 (18.676s)][109.052 (18.8938s)][64.5866 (19.2028s)]]
 ]
 [table Operator /
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][2.86387 (0.593314s)][2.18375 (0.69965s)][1.72571 (0.918294s)][1.39251 (1.33801s)]]
-[[cpp_int(fixed)][[*1] (0.207172s)][[*1] (0.320389s)][[*1] (0.532127s)][[*1] (0.960856s)]]
-[[gmp_int][3.89115 (0.806137s)][2.87573 (0.921352s)][1.96635 (1.04635s)][1.29618 (1.24544s)]]
-[[tommath_int][11.9483 (2.47535s)][9.35941 (2.99865s)][8.79014 (4.67747s)][11.8316 (11.3684s)]]
+[[cpp_int][2.71618 (0.616086s)][2.09988 (0.737246s)][1.65898 (0.94343s)][1.49441 (1.44418s)]]
+[[cpp_int(fixed)][[*1] (0.226821s)][[*1] (0.35109s)][[*1] (0.56868s)][[*1] (0.966385s)]]
+[[gmp_int][3.82134 (0.866761s)][2.75998 (0.969001s)][1.93226 (1.09884s)][1.34132 (1.29623s)]]
+[[tommath_int][13.2978 (3.01622s)][11.3314 (3.97833s)][9.94138 (5.65347s)][13.3423 (12.8938s)]]
 ]
 [table Operator /(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][5.77003 (0.313196s)][4.38067 (0.431864s)][3.55054 (0.634559s)][2.97898 (1.03205s)]]
-[[cpp_int(fixed)][2.48952 (0.135131s)][2.59188 (0.255519s)][2.56716 (0.458808s)][2.52368 (0.874313s)]]
-[[gmp_int][[*1] (0.0542797s)][[*1] (0.0985842s)][[*1] (0.178722s)][[*1] (0.346443s)]]
-[[tommath_int][31.6477 (1.71783s)][22.8727 (2.25489s)][19.9248 (3.56101s)][24.3266 (8.42779s)]]
+[[cpp_int][4.15094 (0.23911s)][3.57962 (0.356615s)][3.11624 (0.578256s)][2.82967 (1.00414s)]]
+[[cpp_int(fixed)][2.42806 (0.139865s)][2.54164 (0.253208s)][2.43025 (0.450962s)][2.37209 (0.841768s)]]
+[[gmp_int][[*1] (0.0576038s)][[*1] (0.0996238s)][[*1] (0.185562s)][[*1] (0.354863s)]]
+[[tommath_int][36.3133 (2.09179s)][28.2731 (2.81668s)][21.8589 (4.05618s)][25.8061 (9.15762s)]]
+]
+[table Operator /(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][1.53953 (0.716927s)][1.40156 (1.65075s)][2.59584 (3.57744s)][4.58524 (8.3789s)]]
+[[cpp_int(fixed)][[*1] (0.465679s)][1.09556 (1.29034s)][2.2858 (3.15016s)][4.40115 (8.0425s)]]
+[[gmp_int][2.25405 (1.04967s)][[*1] (1.17779s)][[*1] (1.37814s)][[*1] (1.82736s)]]
+[[tommath_int][5.03884 (2.34648s)][2.63459 (3.103s)][3.67287 (5.06174s)][6.77479 (12.38s)]]
+]
+[table Operator /=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][1.78744 (0.0586752s)][1.74065 (0.0616578s)][1.66814 (0.0740436s)][1.36231 (0.126362s)]]
+[[cpp_int(fixed)][[*1] (0.0328264s)][[*1] (0.0354222s)][[*1] (0.0443871s)][[*1] (0.0927553s)]]
+[[gmp_int][21.2392 (0.697207s)][19.3517 (0.68548s)][15.2936 (0.678837s)][7.37138 (0.683734s)]]
+[[tommath_int][32.8142 (1.07717s)][30.5556 (1.08235s)][24.7236 (1.09741s)][12.4072 (1.15084s)]]
 ]
 [table Operator %
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.9813 (0.357541s)][1.55667 (0.460146s)][1.35341 (0.681144s)][1.19906 (1.10138s)]]
-[[cpp_int(fixed)][[*1] (0.180457s)][[*1] (0.295597s)][[*1] (0.503278s)][[*1] (0.918538s)]]
-[[gmp_int][3.50213 (0.631985s)][2.33312 (0.689662s)][1.57264 (0.791475s)][1.07795 (0.99014s)]]
-[[tommath_int][12.2393 (2.20868s)][10.1123 (2.98915s)][9.46676 (4.76442s)][12.1795 (11.1873s)]]
+[[cpp_int][1.86833 (0.37472s)][1.43076 (0.491332s)][1.30757 (0.708055s)][1.2528 (1.15842s)]]
+[[cpp_int(fixed)][[*1] (0.200565s)][[*1] (0.343407s)][[*1] (0.541503s)][[*1] (0.924662s)]]
+[[gmp_int][3.22603 (0.647027s)][2.08249 (0.715143s)][1.5148 (0.82027s)][1.09519 (1.01268s)]]
+[[tommath_int][15.4642 (3.10158s)][11.5534 (3.9675s)][10.5164 (5.69467s)][13.8962 (12.8493s)]]
 ]
 [table Operator %(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.88485 (0.105552s)][2.00194 (0.203711s)][2.08202 (0.380096s)][2.12794 (0.752068s)]]
-[[cpp_int(fixed)][1.7474 (0.0978544s)][1.88457 (0.191768s)][2.0306 (0.37071s)][2.0851 (0.736929s)]]
-[[gmp_int][[*1] (0.0560001s)][[*1] (0.101757s)][[*1] (0.182561s)][[*1] (0.353426s)]]
-[[tommath_int][30.4466 (1.70501s)][22.2997 (2.26915s)][19.6199 (3.58184s)][24.0694 (8.50676s)]]
+[[cpp_int][1.80079 (0.106617s)][1.96413 (0.207216s)][2.09096 (0.395682s)][2.14767 (0.776873s)]]
+[[cpp_int(fixed)][1.73532 (0.10274s)][1.92036 (0.202599s)][2.02172 (0.382579s)][2.07328 (0.749963s)]]
+[[gmp_int][[*1] (0.0592053s)][[*1] (0.1055s)][[*1] (0.189234s)][[*1] (0.361727s)]]
+[[tommath_int][35.6993 (2.11359s)][25.3086 (2.67007s)][21.2701 (4.02504s)][25.8662 (9.3565s)]]
 ]
-[table Operator <<
+[table Operator construct
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.20362 (0.0224696s)][1.08555 (0.0294403s)][[*1] (0.0360516s)][1.07177 (0.0523935s)]]
-[[cpp_int(fixed)][[*1] (0.0186683s)][[*1] (0.0271201s)][1.02126 (0.036818s)][[*1] (0.0488848s)]]
-[[gmp_int][1.36706 (0.0255207s)][1.12042 (0.0303858s)][1.24359 (0.0448335s)][1.40143 (0.0685085s)]]
-[[tommath_int][2.09357 (0.0390833s)][2.4569 (0.0666312s)][2.63592 (0.0950291s)][3.43638 (0.167987s)]]
+[[cpp_int][1.17135 (0.00274853s)][[*1] (0.00275161s)][[*1] (0.00275161s)][[*1] (0.00344359s)]]
+[[cpp_int(fixed)][[*1] (0.00234646s)][1.54518 (0.00425173s)][2.2494 (0.00618947s)][1.73247 (0.00596591s)]]
+[[gmp_int][85.6802 (0.201045s)][72.6635 (0.199941s)][78.1286 (0.214979s)][58.3553 (0.200952s)]]
+[[tommath_int][87.9831 (0.206449s)][74.8522 (0.205964s)][74.8918 (0.206073s)][63.4572 (0.218521s)]]
 ]
-[table Operator >>
+[table Operator construct(unsigned)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.33649 (0.0210319s)][1.12919 (0.0266135s)][1.10413 (0.0307184s)][1.09267 (0.0399373s)]]
-[[cpp_int(fixed)][[*1] (0.0157367s)][[*1] (0.0235686s)][[*1] (0.0278214s)][1.05198 (0.0384501s)]]
-[[gmp_int][1.72135 (0.0270884s)][1.2078 (0.0284661s)][1.16066 (0.0322912s)][[*1] (0.0365503s)]]
-[[tommath_int][15.4381 (0.242945s)][11.8797 (0.279987s)][10.9043 (0.303374s)][14.0762 (0.514491s)]]
+[[cpp_int][1.43934 (0.00268554s)][[*1] (0.00286887s)][[*1] (0.00283465s)][[*1] (0.00290638s)]]
+[[cpp_int(fixed)][[*1] (0.00186581s)][1.7597 (0.00504834s)][2.07419 (0.00587959s)][1.89871 (0.00551837s)]]
+[[gmp_int][125.861 (0.234832s)][72.7068 (0.208586s)][75.5147 (0.214058s)][71.2679 (0.207131s)]]
+[[tommath_int][240.568 (0.448854s)][155.552 (0.446257s)][157.598 (0.446734s)][160.728 (0.467137s)]]
 ]
-[table Operator &
+[table Operator construct(unsigned long long)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.65829 (0.0314059s)][1.42198 (0.0390384s)][1.48578 (0.0498903s)][1.51243 (0.0770342s)]]
-[[cpp_int(fixed)][[*1] (0.0189387s)][[*1] (0.0274536s)][[*1] (0.0335786s)][[*1] (0.0509341s)]]
-[[gmp_int][2.80248 (0.0530755s)][2.39752 (0.0658206s)][2.66009 (0.089322s)][2.73942 (0.13953s)]]
-[[tommath_int][6.95432 (0.131706s)][5.4059 (0.148412s)][4.56887 (0.153417s)][6.5696 (0.334616s)]]
-]
-[table Operator &(int)
-[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.63285 (0.0472296s)][1.43344 (0.0588492s)][1.33141 (0.0724386s)][1.21353 (0.104144s)]]
-[[cpp_int(fixed)][[*1] (0.0289247s)][[*1] (0.0410546s)][[*1] (0.0544075s)][[*1] (0.0858187s)]]
-[[gmp_int][5.24478 (0.151704s)][3.81907 (0.15679s)][2.77979 (0.151242s)][1.84209 (0.158086s)]]
-[[tommath_int][11.7257 (0.339163s)][8.6379 (0.354625s)][6.90411 (0.375636s)][7.63253 (0.655013s)]]
-]
-[table Operator ^
-[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.39325 (0.0297525s)][1.28821 (0.0385005s)][1.18843 (0.0492426s)][1.07724 (0.0758668s)]]
-[[cpp_int(fixed)][[*1] (0.0213547s)][[*1] (0.0298868s)][[*1] (0.041435s)][[*1] (0.070427s)]]
-[[gmp_int][2.28582 (0.048813s)][2.03478 (0.0608129s)][2.05655 (0.0852131s)][1.92381 (0.135488s)]]
-[[tommath_int][6.17078 (0.131775s)][4.8567 (0.145151s)][3.64659 (0.151097s)][4.78192 (0.336776s)]]
-]
-[table Operator ^(int)
-[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.89396 (0.0383127s)][1.64269 (0.043417s)][1.5386 (0.0477162s)][1.32247 (0.0568053s)]]
-[[cpp_int(fixed)][[*1] (0.0202288s)][[*1] (0.0264305s)][[*1] (0.0310128s)][[*1] (0.0429539s)]]
-[[gmp_int][7.01953 (0.141997s)][5.47513 (0.14471s)][4.6627 (0.144603s)][3.59601 (0.154463s)]]
-[[tommath_int][16.2706 (0.329134s)][12.9494 (0.342258s)][11.3305 (0.35139s)][14.1712 (0.608709s)]]
-]
-[table Operator |
-[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.34742 (0.0296944s)][1.25923 (0.0384846s)][1.20517 (0.0493908s)][1.10536 (0.0761343s)]]
-[[cpp_int(fixed)][[*1] (0.0220379s)][[*1] (0.030562s)][[*1] (0.0409823s)][[*1] (0.0688775s)]]
-[[gmp_int][2.14429 (0.0472558s)][1.95901 (0.0598712s)][2.07584 (0.0850728s)][1.94265 (0.133805s)]]
-[[tommath_int][5.98286 (0.13185s)][4.65705 (0.142329s)][3.85812 (0.158115s)][4.81524 (0.331662s)]]
-]
-[table Operator |(int)
-[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.40808 (0.0389721s)][1.65035 (0.0437872s)][1.51667 (0.0466144s)][1.37806 (0.0582842s)]]
-[[cpp_int(fixed)][[*1] (0.0276775s)][[*1] (0.026532s)][[*1] (0.0307348s)][[*1] (0.0422945s)]]
-[[gmp_int][5.31451 (0.147092s)][5.37333 (0.142565s)][4.86508 (0.149527s)][3.74364 (0.158335s)]]
-[[tommath_int][11.9312 (0.330226s)][12.943 (0.343403s)][11.4457 (0.35178s)][14.4462 (0.610997s)]]
-]
-[table Operator gcd
-[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.82514 (4.45586s)][1.75955 (10.1748s)][1.87025 (25.23s)][2.11453 (68.8556s)]]
-[[cpp_int(fixed)][1.57965 (3.85654s)][1.67404 (9.68027s)][1.8405 (24.8287s)][2.27588 (74.1096s)]]
-[[gmp_int][[*1] (2.44138s)][[*1] (5.78259s)][[*1] (13.4902s)][[*1] (32.5631s)]]
-[[tommath_int][5.01357 (12.24s)][4.38161 (25.337s)][4.08681 (55.1319s)][4.01045 (130.593s)]]
+[[cpp_int][2.3528 (0.00771495s)][1.61678 (0.00717424s)][1.12087 (0.00715985s)][1.2104 (0.0078878s)]]
+[[cpp_int(fixed)][[*1] (0.00327905s)][[*1] (0.00443737s)][[*1] (0.00638775s)][[*1] (0.00651668s)]]
+[[gmp_int][222.775 (0.730489s)][165.447 (0.734148s)][114.708 (0.732725s)][112.162 (0.730926s)]]
+[[tommath_int][215.962 (0.70815s)][157.945 (0.700858s)][109.582 (0.699985s)][111.909 (0.729275s)]]
 ]
 [table Operator str
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_int][1.46421 (0.00195137s)][1.21669 (0.00319216s)][1.25041 (0.00765237s)][1.53339 (0.0218096s)]]
-[[cpp_int(fixed)][[*1] (0.00133271s)][[*1] (0.00262366s)][1.0109 (0.00618661s)][1.24429 (0.0176978s)]]
-[[gmp_int][1.7777 (0.00236916s)][1.27408 (0.00334274s)][[*1] (0.00611991s)][[*1] (0.0142232s)]]
-[[tommath_int][11.9797 (0.0159654s)][18.3349 (0.0481046s)][18.3681 (0.112411s)][25.0355 (0.356085s)]]
+[[cpp_int][1.46938 (0.00196575s)][1.37205 (0.00331355s)][1.5689 (0.00862952s)][1.57176 (0.0237239s)]]
+[[cpp_int(fixed)][[*1] (0.00133781s)][[*1] (0.00241504s)][[*1] (0.00550035s)][1.20619 (0.0182059s)]]
+[[gmp_int][1.65482 (0.00221383s)][1.38972 (0.00335622s)][1.13845 (0.0062619s)][[*1] (0.0150938s)]]
+[[tommath_int][13.9845 (0.0187087s)][18.3179 (0.0442384s)][23.3489 (0.128427s)][25.3273 (0.382285s)]]
 ]
+[table Operator gcd
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][2.03241 (5.06795s)][1.89904 (11.3002s)][1.99735 (27.4027s)][2.20708 (73.7574s)]]
+[[cpp_int(fixed)][1.67874 (4.18605s)][1.70044 (10.1184s)][1.96475 (26.9554s)][2.28347 (76.31s)]]
+[[gmp_int][[*1] (2.49357s)][[*1] (5.95047s)][[*1] (13.7195s)][[*1] (33.4185s)]]
+[[tommath_int][5.01832 (12.5135s)][4.41659 (26.2808s)][4.08042 (55.9814s)][3.97901 (132.972s)]]
+]
+[table Operator &
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][1.00344 (0.0315529s)][[*1] (0.0426295s)][[*1] (0.0543214s)][1.06624 (0.0835064s)]]
+[[cpp_int(fixed)][[*1] (0.0314446s)][1.0808 (0.046074s)][1.06116 (0.0576436s)][[*1] (0.0783186s)]]
+[[gmp_int][1.78372 (0.0560885s)][1.58661 (0.0676363s)][1.5738 (0.0854908s)][1.83409 (0.143644s)]]
+[[tommath_int][4.08054 (0.128311s)][3.50852 (0.149567s)][2.88826 (0.156894s)][4.45879 (0.349206s)]]
+]
+[table Operator &(int)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0367605s)][[*1] (0.0485394s)][[*1] (0.0650023s)][[*1] (0.099751s)]]
+[[cpp_int(fixed)][1.00324 (0.0368795s)][1.06734 (0.0518081s)][1.05192 (0.0683771s)][1.05296 (0.105034s)]]
+[[gmp_int][4.00058 (0.147063s)][3.02928 (0.147039s)][2.22221 (0.144449s)][1.45749 (0.145386s)]]
+[[tommath_int][8.83732 (0.324864s)][6.95191 (0.337442s)][5.42556 (0.352674s)][6.10829 (0.609309s)]]
+]
+[table Operator |
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0312723s)][[*1] (0.0428385s)][[*1] (0.0528083s)][[*1] (0.0827344s)]]
+[[cpp_int(fixed)][1.0311 (0.0322449s)][1.20267 (0.0515207s)][1.27028 (0.0670814s)][1.19432 (0.0988112s)]]
+[[gmp_int][1.55273 (0.0485576s)][1.4656 (0.0627839s)][1.66721 (0.0880424s)][1.67004 (0.13817s)]]
+[[tommath_int][4.15311 (0.129877s)][3.39008 (0.145226s)][2.88739 (0.152478s)][4.20575 (0.34796s)]]
+]
+[table Operator |(int)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][1.01685 (0.030066s)][[*1] (0.0360965s)][[*1] (0.0402109s)][[*1] (0.0527074s)]]
+[[cpp_int(fixed)][[*1] (0.0295677s)][1.50234 (0.0542292s)][1.52609 (0.0613656s)][1.37526 (0.0724863s)]]
+[[gmp_int][4.84414 (0.14323s)][3.99297 (0.144132s)][3.85375 (0.154963s)][2.91129 (0.153447s)]]
+[[tommath_int][10.8218 (0.319975s)][9.05203 (0.326747s)][8.32597 (0.334795s)][10.948 (0.577039s)]]
+]
+[table Operator ^
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0311003s)][[*1] (0.0430909s)][[*1] (0.0530915s)][[*1] (0.0842599s)]]
+[[cpp_int(fixed)][1.04721 (0.0325686s)][1.18557 (0.0510874s)][1.25714 (0.0667433s)][1.14462 (0.0964459s)]]
+[[gmp_int][1.59277 (0.0495356s)][1.47967 (0.0637601s)][1.73243 (0.0919772s)][1.68499 (0.141977s)]]
+[[tommath_int][4.17425 (0.12982s)][3.41013 (0.146946s)][2.8988 (0.153902s)][4.17074 (0.351426s)]]
+]
+[table Operator ^(int)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0290428s)][[*1] (0.0360261s)][[*1] (0.0409722s)][[*1] (0.0541785s)]]
+[[cpp_int(fixed)][1.01484 (0.0294736s)][1.4898 (0.0536716s)][1.34782 (0.0552234s)][1.35054 (0.0731703s)]]
+[[gmp_int][4.94574 (0.143638s)][4.05569 (0.146111s)][3.65257 (0.149654s)][2.89039 (0.156597s)]]
+[[tommath_int][10.8939 (0.316389s)][9.21322 (0.331916s)][8.17995 (0.335151s)][10.6902 (0.579178s)]]
+]
+[table Operator <<
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0253777s)][1.04239 (0.034484s)][[*1] (0.0420979s)][[*1] (0.0623485s)]]
+[[cpp_int(fixed)][1.05039 (0.0266563s)][1.40679 (0.0465388s)][1.34077 (0.0564434s)][1.20319 (0.0750171s)]]
+[[gmp_int][1.0359 (0.0262888s)][[*1] (0.0330815s)][1.1625 (0.0489388s)][1.16511 (0.0726428s)]]
+[[tommath_int][1.65904 (0.0421025s)][2.11201 (0.0698686s)][2.36727 (0.0996572s)][2.701 (0.168403s)]]
+]
+[table Operator >>
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_int][[*1] (0.0221035s)][1.0337 (0.0313761s)][1.03419 (0.0355718s)][1.20366 (0.0453508s)]]
+[[cpp_int(fixed)][1.1036 (0.0243933s)][1.12323 (0.0340936s)][1.40181 (0.0482162s)][1.69985 (0.0640463s)]]
+[[gmp_int][1.30456 (0.0288354s)][[*1] (0.0303532s)][[*1] (0.0343958s)][[*1] (0.0376776s)]]
+[[tommath_int][10.5766 (0.233779s)][9.0959 (0.27609s)][8.6249 (0.29666s)][13.6818 (0.515498s)]]
+]
+
 [endsect]
 
 [section:rational_performance Rational Type Perfomance]
@@ -2975,49 +3181,105 @@ Windows Vista machine.
 
 [table Operator +
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][5.91758 (18.1263s)][6.60754 (44.1182s)][6.65334 (103.169s)][6.44717 (244.055s)]]
-[[mpq_rational][[*1] (3.06312s)][[*1] (6.67695s)][[*1] (15.5064s)][[*1] (37.8546s)]]
+[[cpp_rational][5.89417 (18.4116s)][6.87256 (47.4698s)][6.65008 (107.715s)][6.53801 (256.244s)]]
+[[mpq_rational][[*1] (3.1237s)][[*1] (6.90715s)][[*1] (16.1975s)][[*1] (39.1929s)]]
 ]
 [table Operator +(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][3.98512 (2.67249s)][4.24335 (3.04309s)][4.65009 (3.83046s)][5.45832 (5.08346s)]]
-[[mpq_rational][[*1] (0.670618s)][[*1] (0.717144s)][[*1] (0.823739s)][[*1] (0.931322s)]]
+[[cpp_rational][3.62367 (2.46488s)][4.18291 (2.94603s)][4.726 (3.74866s)][6.1388 (5.56817s)]]
+[[mpq_rational][[*1] (0.680215s)][[*1] (0.704303s)][[*1] (0.7932s)][[*1] (0.907046s)]]
+]
+[table Operator +(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][1.1527 (2.6378s)][1.31751 (3.09863s)][1.58996 (4.00714s)][2.15642 (5.75702s)]]
+[[mpq_rational][[*1] (2.28837s)][[*1] (2.35189s)][[*1] (2.52028s)][[*1] (2.66971s)]]
+]
+[table Operator +=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][1.18436 (2.7059s)][1.32279 (3.11099s)][1.61398 (4.05389s)][2.20048 (5.84623s)]]
+[[mpq_rational][[*1] (2.2847s)][[*1] (2.35183s)][[*1] (2.51174s)][[*1] (2.6568s)]]
 ]
 [table Operator -
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][5.91504 (18.2374s)][6.55676 (43.8659s)][6.66239 (103.481s)][6.47224 (244.887s)]]
-[[mpq_rational][[*1] (3.08322s)][[*1] (6.69018s)][[*1] (15.5321s)][[*1] (37.8365s)]]
+[[cpp_rational][5.81893 (18.3457s)][6.82209 (47.1928s)][6.64143 (107.498s)][6.51362 (255.137s)]]
+[[mpq_rational][[*1] (3.15277s)][[*1] (6.91765s)][[*1] (16.1859s)][[*1] (39.1698s)]]
 ]
 [table Operator -(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][3.96173 (2.66785s)][4.36532 (3.09023s)][4.59363 (3.74494s)][5.43075 (5.09156s)]]
-[[mpq_rational][[*1] (0.673405s)][[*1] (0.707904s)][[*1] (0.815246s)][[*1] (0.937541s)]]
+[[cpp_rational][3.72441 (2.48756s)][4.27663 (2.98713s)][4.62109 (3.72114s)][6.17605 (5.56503s)]]
+[[mpq_rational][[*1] (0.667908s)][[*1] (0.698479s)][[*1] (0.805252s)][[*1] (0.901066s)]]
+]
+[table Operator -(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][1.15627 (2.63239s)][1.32096 (3.12092s)][1.61044 (4.00106s)][2.19378 (5.7644s)]]
+[[mpq_rational][[*1] (2.27663s)][[*1] (2.36262s)][[*1] (2.48445s)][[*1] (2.62761s)]]
+]
+[table Operator -=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][1.1984 (2.73444s)][1.34141 (3.15698s)][1.64159 (4.06997s)][2.23017 (5.88108s)]]
+[[mpq_rational][[*1] (2.28174s)][[*1] (2.35348s)][[*1] (2.47929s)][[*1] (2.63706s)]]
 ]
 [table Operator *
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][5.59286 (32.3559s)][6.54125 (82.4247s)][6.8815 (197.198s)][6.84066 (473.057s)]]
-[[mpq_rational][[*1] (5.78521s)][[*1] (12.6008s)][[*1] (28.6562s)][[*1] (69.1537s)]]
+[[cpp_rational][5.4306 (32.5882s)][6.91805 (89.9436s)][6.94556 (207.307s)][6.88704 (492.151s)]]
+[[mpq_rational][[*1] (6.00084s)][[*1] (13.0013s)][[*1] (29.8475s)][[*1] (71.4604s)]]
 ]
 [table Operator *(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][2.70193 (3.1466s)][3.10134 (3.79056s)][3.659 (4.93935s)][4.61372 (6.89845s)]]
-[[mpq_rational][[*1] (1.16457s)][[*1] (1.22223s)][[*1] (1.34992s)][[*1] (1.4952s)]]
+[[cpp_rational][2.12892 (2.51376s)][2.47245 (3.07841s)][2.86832 (3.93619s)][3.94086 (6.02565s)]]
+[[mpq_rational][[*1] (1.18077s)][[*1] (1.24508s)][[*1] (1.3723s)][[*1] (1.52902s)]]
+]
+[table Operator *(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][1.32254 (5.43565s)][1.56078 (6.73163s)][1.97701 (9.32522s)][2.85404 (15.1573s)]]
+[[mpq_rational][[*1] (4.11002s)][[*1] (4.313s)][[*1] (4.71682s)][[*1] (5.31082s)]]
+]
+[table Operator *=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][6.29806 (58.1188s)][6.30556 (59.5076s)][6.3385 (62.1007s)][6.55345 (67.6905s)]]
+[[mpq_rational][[*1] (9.22804s)][[*1] (9.43733s)][[*1] (9.79739s)][[*1] (10.329s)]]
 ]
 [table Operator /
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][4.36846 (63.9498s)][5.52565 (145.045s)][6.18331 (328.069s)][6.49822 (784.806s)]]
-[[mpq_rational][[*1] (14.639s)][[*1] (26.2494s)][[*1] (53.0571s)][[*1] (120.772s)]]
+[[cpp_rational][4.4269 (66.8031s)][6.40103 (173.527s)][6.32347 (348.193s)][6.61148 (824.063s)]]
+[[mpq_rational][[*1] (15.0903s)][[*1] (27.1093s)][[*1] (55.0637s)][[*1] (124.641s)]]
 ]
 [table Operator /(int)
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][2.26643 (3.13785s)][2.57125 (3.76931s)][3.20872 (5.06758s)][4.02177 (7.17803s)]]
-[[mpq_rational][[*1] (1.38449s)][[*1] (1.46594s)][[*1] (1.57931s)][[*1] (1.78479s)]]
+[[cpp_rational][1.78772 (2.50984s)][2.10623 (3.10606s)][2.46986 (3.99358s)][3.37428 (5.96678s)]]
+[[mpq_rational][[*1] (1.40393s)][[*1] (1.4747s)][[*1] (1.61693s)][[*1] (1.76831s)]]
+]
+[table Operator /(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][1.29695 (5.45454s)][1.55248 (6.85353s)][1.93237 (9.28765s)][2.75211 (14.8541s)]]
+[[mpq_rational][[*1] (4.20568s)][[*1] (4.41458s)][[*1] (4.80635s)][[*1] (5.39734s)]]
+]
+[table Operator /=(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][6.19401 (58.4278s)][6.20135 (59.643s)][6.21327 (62.0338s)][6.40576 (67.6778s)]]
+[[mpq_rational][[*1] (9.43295s)][[*1] (9.61774s)][[*1] (9.98407s)][[*1] (10.5652s)]]
+]
+[table Operator construct
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][[*1] (0.00978288s)][[*1] (0.0100574s)][[*1] (0.0101393s)][[*1] (0.0101847s)]]
+[[mpq_rational][39.1516 (0.383015s)][38.3523 (0.385725s)][37.5812 (0.381048s)][37.6007 (0.382953s)]]
+]
+[table Operator construct(unsigned)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][[*1] (0.0548151s)][[*1] (0.0557542s)][[*1] (0.055825s)][[*1] (0.0552808s)]]
+[[mpq_rational][7.21073 (0.395257s)][7.1016 (0.395944s)][7.02046 (0.391917s)][7.16881 (0.396297s)]]
+]
+[table Operator construct(unsigned long long)
+[[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
+[[cpp_rational][[*1] (0.0605156s)][[*1] (0.0616657s)][[*1] (0.0592056s)][[*1] (0.0603081s)]]
+[[mpq_rational][35.1604 (2.12775s)][34.7575 (2.14335s)][35.7232 (2.11502s)][35.0437 (2.11342s)]]
 ]
 [table Operator str
 [[Backend][128 Bits][256 Bits][512 Bits][1024 Bits]]
-[[cpp_rational][5.40493 (0.0199393s)][8.55089 (0.0511907s)][9.91026 (0.118839s)][9.93546 (0.285367s)]]
-[[mpq_rational][[*1] (0.00368909s)][[*1] (0.00598659s)][[*1] (0.0119915s)][[*1] (0.028722s)]]
+[[cpp_rational][5.48898 (0.0208949s)][8.49668 (0.0546688s)][10.107 (0.121897s)][10.5339 (0.310584s)]]
+[[mpq_rational][[*1] (0.0038067s)][[*1] (0.00643413s)][[*1] (0.0120606s)][[*1] (0.0294843s)]]
 ]
+
 [endsect]
 
 [endsect]

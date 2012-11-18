@@ -144,10 +144,10 @@ typename enable_if_c<number_category<I>::value == number_kind_integer, bool>::ty
 #endif
    typedef I number_type;
 
+   if(bit_test(n, 0) == 0)
+      return false;  // n is even
    if(n <= 227)
       return detail::is_small_prime(detail::cast_to_unsigned(n));
-   if((n & 1) == 0)
-      return false;
 
    if(!detail::check_small_factors(n))
       return false;
@@ -177,10 +177,14 @@ typename enable_if_c<number_category<I>::value == number_kind_integer, bool>::ty
       unsigned j = 0;
       while(true)
       {
-         if((y == nm1) || ((y == 1) && (j == 0)))
+         if(y == nm1)
             break;
          if(y == 1)
+         {
+            if(j == 0)
+               break;
             return false; // test failed
+         }
          if(++j == k)
             return false; // failed
          y = powm(y, 2, n);

@@ -579,6 +579,15 @@ inline void eval_lcm(tommath_int& result, const tommath_int& a, const tommath_in
 {
    detail::check_tommath_result(mp_lcm(const_cast< ::mp_int*>(&a.data()), const_cast< ::mp_int*>(&b.data()), const_cast< ::mp_int*>(&result.data())));
 }
+inline void eval_powm(tommath_int& result, const tommath_int& base, const tommath_int& p, const tommath_int& m)
+{
+   if(eval_get_sign(p) < 0)
+   {
+      BOOST_THROW_EXCEPTION(std::runtime_error("powm requires a positive exponent."));
+   }
+   detail::check_tommath_result(mp_exptmod(const_cast< ::mp_int*>(&base.data()), const_cast< ::mp_int*>(&p.data()), const_cast< ::mp_int*>(&m.data()), &result.data()));
+}
+
 
 inline void eval_qr(const tommath_int& x, const tommath_int& y, 
    tommath_int& q, tommath_int& r)

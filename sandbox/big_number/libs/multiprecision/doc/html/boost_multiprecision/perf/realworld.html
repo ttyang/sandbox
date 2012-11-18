@@ -6,12 +6,12 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Multiprecision">
 <link rel="up" href="../perf.html" title="Performance Comparison">
-<link rel="prev" href="../perf.html" title="Performance Comparison">
+<link rel="prev" href="overhead.html" title="The Overhead in the Number Class Wrapper">
 <link rel="next" href="int_real_world.html" title="Integer Real World Tests">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <div class="spirit-nav">
-<a accesskey="p" href="../perf.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../perf.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="int_real_world.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="overhead.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../perf.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="int_real_world.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section boost_multiprecision_perf_realworld">
 <div class="titlepage"><div><div><h3 class="title">
@@ -66,12 +66,29 @@
               </td>
 <td>
                 <p>
-                  <span class="bold"><strong>1.0</strong></span> (6.472s)
+                  1.2 (5.78s)
                 </p>
               </td>
 <td>
                 <p>
-                  1.193 (10.154s)
+                  1.2 (9.56s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  static_mpfr_float
+                </p>
+              </td>
+<td>
+                <p>
+                  1.1 (5.47s)
+                </p>
+              </td>
+<td>
+                <p>
+                  1.1 (9.09s)
                 </p>
               </td>
 </tr>
@@ -83,12 +100,12 @@
               </td>
 <td>
                 <p>
-                  1.801 (11.662s)
+                  <span class="bold"><strong>1.0</strong></span> (4.82s)
                 </p>
               </td>
 <td>
                 <p>
-                  <span class="bold"><strong>1.0</strong></span>(8.511s)
+                  <span class="bold"><strong>1.0</strong></span>(8.07s)
                 </p>
               </td>
 </tr>
@@ -100,12 +117,12 @@
               </td>
 <td>
                 <p>
-                  3.13 (20.285s)
+                  1.8 (8.54s)
                 </p>
               </td>
 <td>
                 <p>
-                  2.46 (21.019s)
+                  2.6 (20.66s)
                 </p>
               </td>
 </tr>
@@ -117,12 +134,12 @@
               </td>
 <td>
                 <p>
-                  1.001 (6.480s)
+                  1.3 (6.28s)
                 </p>
               </td>
 <td>
                 <p>
-                  1.15(9.805s)
+                  1.2(10.06s)
                 </p>
               </td>
 </tr>
@@ -134,12 +151,12 @@
               </td>
 <td>
                 <p>
-                  1.542 (9.981s)
+                  2.0 (9.54s)
                 </p>
               </td>
 <td>
                 <p>
-                  1.61 (13.702s)
+                  1.7 (14.08s)
                 </p>
               </td>
 </tr>
@@ -150,7 +167,6 @@
 <a name="boost_multiprecision.perf.realworld.non_central_t_distribution_performance"></a><p class="title"><b>Table&#160;1.9.&#160;Non-Central T Distribution Performance</b></p>
 <div class="table-contents"><table class="table" summary="Non-Central T Distribution Performance">
 <colgroup>
-<col>
 <col>
 <col>
 </colgroup>
@@ -165,11 +181,6 @@
                   50 Decimal Digits
                 </p>
               </th>
-<th>
-                <p>
-                  100 Decimal Digits
-                </p>
-              </th>
 </tr></thead>
 <tbody>
 <tr>
@@ -180,12 +191,19 @@
               </td>
 <td>
                 <p>
-                  1.308 (258.09s)
+                  1.3 (263.27s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  static_mpfr_float
                 </p>
               </td>
 <td>
                 <p>
-                  1.30 (516.74s)
+                  1.2 (232.88s)
                 </p>
               </td>
 </tr>
@@ -197,12 +215,7 @@
               </td>
 <td>
                 <p>
-                  <span class="bold"><strong>1.0</strong></span> (197.30s)
-                </p>
-              </td>
-<td>
-                <p>
-                  <span class="bold"><strong>1.0</strong></span>(397.30s)
+                  <span class="bold"><strong>1.0</strong></span> (195.73s)
                 </p>
               </td>
 </tr>
@@ -214,12 +227,7 @@
               </td>
 <td>
                 <p>
-                  1.695 (334.50s)
-                </p>
-              </td>
-<td>
-                <p>
-                  2.68 (1064.53s)
+                  1.9 (366.38s)
                 </p>
               </td>
 </tr>
@@ -231,12 +239,7 @@
               </td>
 <td>
                 <p>
-                  1.35 (266.39s)
-                </p>
-              </td>
-<td>
-                <p>
-                  1.323 (525.74s)
+                  1.5 (286.94s)
                 </p>
               </td>
 </tr>
@@ -248,12 +251,7 @@
               </td>
 <td>
                 <p>
-                  1.75 (346.64s)
-                </p>
-              </td>
-<td>
-                <p>
-                  1.635 (649.94s)
+                  2.0 (388.70s)
                 </p>
               </td>
 </tr>
@@ -272,7 +270,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../perf.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../perf.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="int_real_world.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="overhead.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../perf.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="int_real_world.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

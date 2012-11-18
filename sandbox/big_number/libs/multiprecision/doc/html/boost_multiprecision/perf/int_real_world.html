@@ -19,14 +19,17 @@
       World Tests</a>
 </h3></div></div></div>
 <p>
-        These <a href="../../../../performance/miller_rabin_performance.cpp" target="_top">tests</a>
-        measure the time taken to generate 1000 128-bit random numbers and test for
-        primality using the Miller Rabin test.
-      </p>
-<p>
         Test code was compiled with Microsoft Visual Studio 2010 with all optimisations
         turned on (/Ox), and used MPIR-2.3.0 and <a href="http://libtom.org/?page=features&amp;newsitems=5&amp;whatfile=ltm" target="_top">libtommath</a>-0.42.0.
         The tests were run on 32-bit Windows Vista machine.
+      </p>
+<p>
+        The first set of <a href="../../../../performance/voronoi_performance.cpp" target="_top">tests</a>
+        measure the times taken to execute the multiprecision part of the Voronoi-diagram
+        builder from Boost.Polygon. The tests mainly create a large number of temporaries
+        "just in case" multiprecision arithmetic is required, for comparison,
+        also included in the tests is Boost.Polygon's own partial-multiprecision
+        integer type which was custom written for this specific task:
       </p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -41,7 +44,7 @@
               </th>
 <th>
                 <p>
-                  Relative (and Absolute) Times
+                  Relative Performance (Actual time in parenthesis)
                 </p>
               </th>
 </tr></thead>
@@ -49,96 +52,36 @@
 <tr>
 <td>
                 <p>
-                  mpz_int
+                  polygon::detail::extended_int
                 </p>
               </td>
 <td>
                 <p>
-                  1.08279(0.370326s)
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  mpz_int (no Expression templates)
-                </p>
-              </td>
-<td>
-                <p>
-                  1.1702(0.400222s)
+                  1(0.138831s)
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  cpp_int
+                  int256_t
                 </p>
               </td>
 <td>
                 <p>
-                  1.3612(0.465547s)
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  cpp_int (no Expression templates)
-                </p>
-              </td>
-<td>
-                <p>
-                  1.33286(0.455854s)
+                  1.19247(0.165551s)
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  cpp_int (64-bit cache)
+                  int512_t
                 </p>
               </td>
 <td>
                 <p>
-                  1.33134(0.455333s)
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  cpp_int (256-bit cache)
-                </p>
-              </td>
-<td>
-                <p>
-                  1.29367(0.442451s)
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  cpp_int (512-bit cache)
-                </p>
-              </td>
-<td>
-                <p>
-                  1.08821(0.37218s)
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  cpp_int (1024-bit cache)
-                </p>
-              </td>
-<td>
-                <p>
-                  1.07902(0.369037s)
+                  1.23301(0.17118s)
                 </p>
               </td>
 </tr>
@@ -150,19 +93,67 @@
               </td>
 <td>
                 <p>
-                  1.02616(0.35096s)
+                  1.21463(0.168628s)
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  int1024_t (no Expression templates)
+                  checked_int256_t
                 </p>
               </td>
 <td>
                 <p>
-                  1(0.342011s)
+                  1.31711(0.182855s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  checked_int512_t
+                </p>
+              </td>
+<td>
+                <p>
+                  1.57413(0.218538s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  checked_int1024_t
+                </p>
+              </td>
+<td>
+                <p>
+                  1.36992(0.190187s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  cpp_int
+                </p>
+              </td>
+<td>
+                <p>
+                  1.63244(0.226632s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  mpz_int
+                </p>
+              </td>
+<td>
+                <p>
+                  5.42511(0.753172s)
                 </p>
               </td>
 </tr>
@@ -174,7 +165,168 @@
               </td>
 <td>
                 <p>
-                  3.74233(1.27992s)
+                  29.0793(4.03709s)
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+        Note how for this use case, any dynamic allocation is a performance killer.
+      </p>
+<p>
+        The next <a href="../../../../performance/miller_rabin_performance.cpp" target="_top">tests</a>
+        measure the time taken to generate 1000 128-bit random numbers and test for
+        primality using the Miller Rabin test. This is primarily a test of modular-exponentiation
+        since that is the rate limiting step:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Integer Type
+                </p>
+              </th>
+<th>
+                <p>
+                  Relative Performance (Actual time in parenthesis)
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  cpp_int
+                </p>
+              </td>
+<td>
+                <p>
+                  5.25827(0.379597s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  cpp_int (no Expression templates)
+                </p>
+              </td>
+<td>
+                <p>
+                  5.15675(0.372268s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  cpp_int (128-bit cache)
+                </p>
+              </td>
+<td>
+                <p>
+                  5.10882(0.368808s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  cpp_int (256-bit cache)
+                </p>
+              </td>
+<td>
+                <p>
+                  5.50623(0.397497s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  cpp_int (512-bit cache)
+                </p>
+              </td>
+<td>
+                <p>
+                  4.82257(0.348144s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  cpp_int (1024-bit cache)
+                </p>
+              </td>
+<td>
+                <p>
+                  5.00053(0.360991s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  int1024_t
+                </p>
+              </td>
+<td>
+                <p>
+                  4.37589(0.315897s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  checked_int1024_t
+                </p>
+              </td>
+<td>
+                <p>
+                  4.52396(0.326587s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  mpz_int
+                </p>
+              </td>
+<td>
+                <p>
+                  1(0.0721905s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  mpz_int (no Expression templates)
+                </p>
+              </td>
+<td>
+                <p>
+                  1.0248(0.0739806s)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  tom_int
+                </p>
+              </td>
+<td>
+                <p>
+                  2.60673(0.188181s)
                 </p>
               </td>
 </tr>
@@ -186,7 +338,7 @@
               </td>
 <td>
                 <p>
-                  3.97646(1.35999s)
+                  2.64997(0.191303s)
                 </p>
               </td>
 </tr>
@@ -198,7 +350,10 @@
         in this case - so the time taken for multiplication and division tends to
         dominate. Also note how increasing the internal cache size used by <code class="computeroutput"><span class="identifier">cpp_int</span></code> is quite effective in this case
         in cutting out memory allocations altogether - cutting about a third off
-        the total runtime.
+        the total runtime. Finally the much quicker times from GMP and tommath are
+        down to their much better modular-exponentiation algorithms (GMP's is about
+        5x faster). That's an issue which needs to be addressed in a future release
+        for <a class="link" href="../tut/ints/cpp_int.html" title="cpp_int">cpp_int</a>.
       </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

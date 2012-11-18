@@ -39,6 +39,8 @@ struct arithmetic_backend
    }
    template <class A>
    arithmetic_backend(const A& o, const typename enable_if<is_arithmetic<A> >::type* = 0) : m_value(o) {}
+   template <class A>
+   arithmetic_backend(const arithmetic_backend<A>& o) : m_value(o.data()) {}
    arithmetic_backend& operator = (const arithmetic_backend& o)
    {
       m_value = o.m_value;
@@ -48,6 +50,12 @@ struct arithmetic_backend
    typename enable_if<is_arithmetic<A>, arithmetic_backend&>::type operator = (A i)
    {
       m_value = i;
+      return *this;
+   }
+   template <class A>
+   arithmetic_backend& operator = (const arithmetic_backend<A>& i)
+   {
+      m_value = i.data();
       return *this;
    }
    arithmetic_backend& operator = (const char* s)
@@ -506,6 +514,21 @@ using boost::multiprecision::backends::arithmetic_backend;
 
 template <class Arithmetic>
 struct number_category<arithmetic_backend<Arithmetic> > : public mpl::int_<is_integral<Arithmetic>::value ? number_kind_integer : number_kind_floating_point>{};
+
+namespace detail{
+
+template<class Arithmetic, boost::multiprecision::expression_template_option ET>
+struct double_precision_type<number<arithmetic_backend<Arithmetic>, ET> >
+{
+   typedef number<arithmetic_backend<typename double_precision_type<Arithmetic>::type>, ET> type;
+};
+template<>
+struct double_precision_type<arithmetic_backend<boost::int32_t> >
+{
+   typedef arithmetic_backend<boost::int64_t> type;
+};
+
+}
 
 }} // namespaces
 

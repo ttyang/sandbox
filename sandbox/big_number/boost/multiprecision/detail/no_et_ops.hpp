@@ -15,7 +15,7 @@ namespace multiprecision{
 // NOTE: these operators have to be defined after the methods in default_ops.hpp.
 //
 template <class B>
-inline number<B, et_off> operator - (const number<B, et_off>& v) 
+BOOST_FORCEINLINE number<B, et_off> operator - (const number<B, et_off>& v) 
 {
    BOOST_STATIC_ASSERT_MSG(is_signed_number<B>::value, "Negating an unsigned type results in ill-defined behavior.");
    number<B, et_off> result(v);
@@ -23,7 +23,7 @@ inline number<B, et_off> operator - (const number<B, et_off>& v)
    return BOOST_MP_MOVE(result); 
 }
 template <class B>
-inline number<B, et_off> operator ~ (const number<B, et_off>& v) 
+BOOST_FORCEINLINE number<B, et_off> operator ~ (const number<B, et_off>& v) 
 {
    number<B, et_off> result;
    eval_complement(result.backend(), v.backend());
@@ -33,7 +33,7 @@ inline number<B, et_off> operator ~ (const number<B, et_off>& v)
 // Addition:
 //
 template <class B>
-inline number<B, et_off> operator + (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator + (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_add;
@@ -41,7 +41,7 @@ inline number<B, et_off> operator + (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator + (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -50,7 +50,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator + (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -62,7 +62,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Subtraction:
 //
 template <class B>
-inline number<B, et_off> operator - (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator - (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_subtract;
@@ -70,7 +70,7 @@ inline number<B, et_off> operator - (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator - (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -79,7 +79,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator - (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -91,7 +91,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Multiply:
 //
 template <class B>
-inline number<B, et_off> operator * (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator * (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_multiply;
@@ -99,7 +99,7 @@ inline number<B, et_off> operator * (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator * (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -108,7 +108,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator * (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -120,7 +120,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // divide:
 //
 template <class B>
-inline number<B, et_off> operator / (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator / (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_divide;
@@ -128,7 +128,7 @@ inline number<B, et_off> operator / (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator / (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -137,7 +137,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator / (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -149,7 +149,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // modulus:
 //
 template <class B>
-inline number<B, et_off> operator % (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator % (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_modulus;
@@ -157,7 +157,7 @@ inline number<B, et_off> operator % (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator % (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -166,7 +166,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator % (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -178,7 +178,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Bitwise or:
 //
 template <class B>
-inline number<B, et_off> operator | (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator | (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_bitwise_or;
@@ -186,7 +186,7 @@ inline number<B, et_off> operator | (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator | (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -195,7 +195,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator | (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -207,7 +207,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Bitwise xor:
 //
 template <class B>
-inline number<B, et_off> operator ^ (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator ^ (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_bitwise_xor;
@@ -215,7 +215,7 @@ inline number<B, et_off> operator ^ (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator ^ (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -224,7 +224,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator ^ (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -236,7 +236,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Bitwise and:
 //
 template <class B>
-inline number<B, et_off> operator & (const number<B, et_off>& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator & (const number<B, et_off>& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
    using default_ops::eval_bitwise_and;
@@ -244,7 +244,7 @@ inline number<B, et_off> operator & (const number<B, et_off>& a, const number<B,
    return BOOST_MP_MOVE(result);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator & (const number<B, et_off>& a, const V& b)
 {
    number<B, et_off> result;
@@ -253,7 +253,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return BOOST_MP_MOVE(result);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator & (const V& a, const number<B, et_off>& b)
 {
    number<B, et_off> result;
@@ -265,7 +265,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // shifts:
 //
 template <class B, class I>
-inline typename enable_if<is_integral<I>, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_integral<I>, number<B, et_off> >::type
    operator << (const number<B, et_off>& a, const I& b)
 {
    number<B, et_off> result(a);
@@ -275,7 +275,7 @@ inline typename enable_if<is_integral<I>, number<B, et_off> >::type
    return BOOST_MP_MOVE(result);
 }
 template <class B, class I>
-inline typename enable_if<is_integral<I>, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_integral<I>, number<B, et_off> >::type
    operator >> (const number<B, et_off>& a, const I& b)
 {
    number<B, et_off> result(a);
@@ -298,14 +298,14 @@ inline typename enable_if<is_integral<I>, number<B, et_off> >::type
 // semantics help a great deal in return by value, so performance is still pretty good...
 //
 template <class B>
-inline number<B, et_off> operator - (number<B, et_off>&& v) 
+BOOST_FORCEINLINE number<B, et_off> operator - (number<B, et_off>&& v) 
 {
    BOOST_STATIC_ASSERT_MSG(is_signed_number<B>::value, "Negating an unsigned type results in ill-defined behavior.");
    v.backend().negate();
    return static_cast<number<B, et_off>&&>(v); 
 }
 template <class B>
-inline number<B, et_off> operator ~ (number<B, et_off>&& v) 
+BOOST_FORCEINLINE number<B, et_off> operator ~ (number<B, et_off>&& v) 
 {
    eval_complement(v.backend(), v.backend());
    return static_cast<number<B, et_off>&&>(v); 
@@ -314,28 +314,28 @@ inline number<B, et_off> operator ~ (number<B, et_off>&& v)
 // Addition:
 //
 template <class B>
-inline number<B, et_off> operator + (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator + (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_add;
    eval_add(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B>
-inline number<B, et_off> operator + (const number<B, et_off>& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator + (const number<B, et_off>& a, number<B, et_off>&& b)
 {
    using default_ops::eval_add;
    eval_add(b.backend(), a.backend());
    return static_cast<number<B, et_off>&&>(b);
 }
 template <class B>
-inline number<B, et_off> operator + (number<B, et_off>&& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator + (number<B, et_off>&& a, number<B, et_off>&& b)
 {
    using default_ops::eval_add;
    eval_add(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator + (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_add;
@@ -343,7 +343,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator + (const V& a, number<B, et_off>&& b)
 {
    using default_ops::eval_add;
@@ -354,14 +354,14 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Subtraction:
 //
 template <class B>
-inline number<B, et_off> operator - (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator - (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_subtract;
    eval_subtract(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B>
-inline typename enable_if<is_signed_number<B>, number<B, et_off> >::type operator - (const number<B, et_off>& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE typename enable_if<is_signed_number<B>, number<B, et_off> >::type operator - (const number<B, et_off>& a, number<B, et_off>&& b)
 {
    using default_ops::eval_subtract;
    eval_subtract(b.backend(), a.backend());
@@ -369,14 +369,14 @@ inline typename enable_if<is_signed_number<B>, number<B, et_off> >::type operato
    return static_cast<number<B, et_off>&&>(b);
 }
 template <class B>
-inline number<B, et_off> operator - (number<B, et_off>&& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator - (number<B, et_off>&& a, number<B, et_off>&& b)
 {
    using default_ops::eval_subtract;
    eval_subtract(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator - (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_subtract;
@@ -384,7 +384,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class V, class B>
-inline typename enable_if_c<(is_compatible_arithmetic_type<V, number<B, et_off> >::value && is_signed_number<B>::value), number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if_c<(is_compatible_arithmetic_type<V, number<B, et_off> >::value && is_signed_number<B>::value), number<B, et_off> >::type
    operator - (const V& a, number<B, et_off>&& b)
 {
    using default_ops::eval_subtract;
@@ -396,28 +396,28 @@ inline typename enable_if_c<(is_compatible_arithmetic_type<V, number<B, et_off> 
 // Multiply:
 //
 template <class B>
-inline number<B, et_off> operator * (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator * (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_multiply;
    eval_multiply(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B>
-inline number<B, et_off> operator * (const number<B, et_off>& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator * (const number<B, et_off>& a, number<B, et_off>&& b)
 {
    using default_ops::eval_multiply;
    eval_multiply(b.backend(), a.backend());
    return static_cast<number<B, et_off>&&>(b);
 }
 template <class B>
-inline number<B, et_off> operator * (number<B, et_off>&& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator * (number<B, et_off>&& a, number<B, et_off>&& b)
 {
    using default_ops::eval_multiply;
    eval_multiply(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator * (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_multiply;
@@ -425,7 +425,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator * (const V& a, number<B, et_off>&& b)
 {
    using default_ops::eval_multiply;
@@ -436,14 +436,14 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // divide:
 //
 template <class B>
-inline number<B, et_off> operator / (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator / (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_divide;
    eval_divide(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator / (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_divide;
@@ -454,14 +454,14 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // modulus:
 //
 template <class B>
-inline number<B, et_off> operator % (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator % (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_modulus;
    eval_modulus(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator % (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_modulus;
@@ -472,28 +472,28 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Bitwise or:
 //
 template <class B>
-inline number<B, et_off> operator | (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator | (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_bitwise_or;
    eval_bitwise_or(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B>
-inline number<B, et_off> operator | (const number<B, et_off>& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator | (const number<B, et_off>& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_or;
    eval_bitwise_or(b.backend(), a.backend());
    return static_cast<number<B, et_off>&&>(b);
 }
 template <class B>
-inline number<B, et_off> operator | (number<B, et_off>&& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator | (number<B, et_off>&& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_or;
    eval_bitwise_or(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator | (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_bitwise_or;
@@ -501,7 +501,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator | (const V& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_or;
@@ -512,28 +512,28 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Bitwise xor:
 //
 template <class B>
-inline number<B, et_off> operator ^ (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator ^ (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_bitwise_xor;
    eval_bitwise_xor(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B>
-inline number<B, et_off> operator ^ (const number<B, et_off>& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator ^ (const number<B, et_off>& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_xor;
    eval_bitwise_xor(b.backend(), a.backend());
    return static_cast<number<B, et_off>&&>(b);
 }
 template <class B>
-inline number<B, et_off> operator ^ (number<B, et_off>&& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator ^ (number<B, et_off>&& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_xor;
    eval_bitwise_xor(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator ^ (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_bitwise_xor;
@@ -541,7 +541,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator ^ (const V& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_xor;
@@ -552,28 +552,28 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // Bitwise and:
 //
 template <class B>
-inline number<B, et_off> operator & (number<B, et_off>&& a, const number<B, et_off>& b)
+BOOST_FORCEINLINE number<B, et_off> operator & (number<B, et_off>&& a, const number<B, et_off>& b)
 {
    using default_ops::eval_bitwise_and;
    eval_bitwise_and(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B>
-inline number<B, et_off> operator & (const number<B, et_off>& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator & (const number<B, et_off>& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_and;
    eval_bitwise_and(b.backend(), a.backend());
    return static_cast<number<B, et_off>&&>(b);
 }
 template <class B>
-inline number<B, et_off> operator & (number<B, et_off>&& a, number<B, et_off>&& b)
+BOOST_FORCEINLINE number<B, et_off> operator & (number<B, et_off>&& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_and;
    eval_bitwise_and(a.backend(), b.backend());
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class V>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator & (number<B, et_off>&& a, const V& b)
 {
    using default_ops::eval_bitwise_and;
@@ -581,7 +581,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class V, class B>
-inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, number<B, et_off> >::type
    operator & (const V& a, number<B, et_off>&& b)
 {
    using default_ops::eval_bitwise_and;
@@ -592,7 +592,7 @@ inline typename enable_if<is_compatible_arithmetic_type<V, number<B, et_off> >, 
 // shifts:
 //
 template <class B, class I>
-inline typename enable_if<is_integral<I>, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_integral<I>, number<B, et_off> >::type
    operator << (number<B, et_off>&& a, const I& b)
 {
    using default_ops::eval_left_shift;
@@ -600,7 +600,7 @@ inline typename enable_if<is_integral<I>, number<B, et_off> >::type
    return static_cast<number<B, et_off>&&>(a);
 }
 template <class B, class I>
-inline typename enable_if<is_integral<I>, number<B, et_off> >::type
+BOOST_FORCEINLINE typename enable_if<is_integral<I>, number<B, et_off> >::type
    operator >> (number<B, et_off>&& a, const I& b)
 {
    using default_ops::eval_right_shift;
