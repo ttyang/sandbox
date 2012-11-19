@@ -11,7 +11,7 @@ import subprocess
 
 from tuple_benchmark_domain import *
 import compiler_guage
-import benchmark_filenames
+import tuple_benchmark_filenames
 import boost_root
 
 def main(argv):
@@ -27,20 +27,22 @@ def main(argv):
     measurements of the compilation of benchmark main program.
   """
   result = None
-  guage_name="guage_time"
+  #set defaults for argv[1..3]
   benchmark_suffix="mini"
+  guage_name="guage_time"
   benchmark_run="_"
   #print("argv=",argv)
-  if len(argv)>1:
-    guage_name=argv[1]
-  if len(argv)>2:
-    benchmark_suffix=argv[2]
-  if len(argv)>3:
-    benchmark_run=argv[3]
-  benchmark_basename_ext\
-    = benchmark_filenames.src_basename(benchmark_suffix)\
-    + ".cpp"
-  #print("benchmark_basename_ext=",benchmark_basename_ext)
+  iarg=1
+  if len(argv)>=iarg:
+    benchmark_suffix=argv[iarg]
+  iarg+=1
+  if len(argv)>=iarg:
+    guage_name=argv[iarg]
+  iarg+=1
+  if len(argv)>=iarg:
+    benchmark_run=argv[iarg]
+  src_filename=tuple_benchmark_filenames.src_filename(benchmark_suffix)
+  #print("src_filename=",src_filename)
   boost_root_path=boost_root.path()
   impl_map_inc={}#implementation key -> -I include flags to compiler
   if False:
@@ -68,8 +70,8 @@ def main(argv):
     impl_map_inc["std"]=\
         ""\
       #
-  tuple_min_size=5
-  tuple_max_size=5
+  tuple_min_size=10
+  tuple_max_size=15
   tuple_del_size=5
   name_domain=[
       [ 'compiler', compilers(COMPILER_MAP.keys())]
@@ -84,41 +86,46 @@ def main(argv):
   if benchmark_suffix == "mini" :
     name_domain.append( [ 'LAST_LESS', last(4,tuple_del_size)])
   else:
-    name_domain.append( [ 'TREE_DEPTH', tree_depth(2,2,1)])
+    name_domain.append( [ 'TREE_DEPTH', tree_depth(2,4,1)])
   domains=product_dep(
     map(lambda t: t[1], name_domain)
     )
   guage_fun=guage_map[guage_name]
-  measure_out=\
+  run_fileobj=\
     open\
-    ( benchmark_filenames.out_basename\
-      ( benchmark_suffix
+    ( tuple_benchmark_filenames.out_filename\
+      ( 'run'
+      , benchmark_suffix
       , guage_name
       , benchmark_run
-      ) + ".txt"
+      )
     , mode='w'
     )
-  print(TAG_TUPLE.compilers+"[",file=measure_out)
+  print(TAG_TUPLE.compilers+"[",file=run_fileobj)
   for compiler_name in COMPILER_MAP.keys():
     (compiler_exe,compiler_flags)=COMPILER_MAP[compiler_name]
-    print("compiler_name:",compiler_name,file=measure_out)
-    print(TAG_TUPLE.version+"[",file=measure_out)
-    measure_out.flush()
+    print("compiler_name:",compiler_name,file=run_fileobj)
+    print(TAG_TUPLE.version+"[",file=run_fileobj)
+    run_fileobj.flush()
     rc=subprocess.call(
         compiler_exe+" -v"
       , shell=True
-      , stdout=measure_out
+      , stdout=run_fileobj
       , stderr=subprocess.STDOUT
       )
     if compiler_name == 'clangxx':
-      print("compiler_exe:",compiler_exe,file=measure_out)
-    print("]"+TAG_TUPLE.version,file=measure_out)
-  print("]"+TAG_TUPLE.compilers,file=measure_out)
+      print("compiler_exe:",compiler_exe,file=run_fileobj)
+    print("]"+TAG_TUPLE.version,file=run_fileobj)
+  print("]"+TAG_TUPLE.compilers,file=run_fileobj)
   domain_names=list(map(lambda t:t[0],name_domain))
-  print(TAG_TUPLE.domain_names,domain_names,sep="",end=TAG_TUPLE.domain_names+"\n",file=measure_out)
+  print(TAG_TUPLE.domain_names
+    , domain_names,sep="", end=TAG_TUPLE.domain_names+"\n"
+    , file=run_fileobj)
   macro_names=domain_names[1:]
   for element in domains():
-      print(TAG_TUPLE.domain_values,element,sep="",end=TAG_TUPLE.domain_values+"\n",file=measure_out)
+      print(TAG_TUPLE.domain_values
+        , element, sep="", end=TAG_TUPLE.domain_values+"\n"
+        , file=run_fileobj)
       compiler_name, macro_vals=element[0], element[1:]
       #print(":compiler_name=",compiler_name,":macro_vals=",macro_vals)
       compiler_macros=""
@@ -132,14 +139,14 @@ def main(argv):
         + compiler_flags+" "\
         + compiler_macros+" "\
         + impl_map_inc[macro_vals[0]]+" "\
-        + benchmark_basename_ext\
+        + src_filename\
         #
-      print(TAG_TUPLE.range_out+"[",file=measure_out)
-      measure_out.flush()
-      measure_rc=guage_fun.measure(compiler_exe, compiler_args, measure_out)
-      print("]"+TAG_TUPLE.range_out,file=measure_out)
-      if measure_rc != 0:
-        return measure_rc
+      print(TAG_TUPLE.range_out+"[",file=run_fileobj)
+      run_fileobj.flush()
+      run_rc=guage_fun.measure(compiler_exe, compiler_args, run_fileobj)
+      print("]"+TAG_TUPLE.range_out,file=run_fileobj)
+      if run_rc != 0:
+        return run_rc
   return result
 
 if __name__ == '__main__':

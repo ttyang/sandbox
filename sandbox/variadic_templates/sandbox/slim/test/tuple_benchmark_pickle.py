@@ -7,6 +7,7 @@ from __future__ import print_function
 import sys, re, pickle
 from tuple_benchmark_tags import TAG_TUPLE
 from print_domain_range import print_domain_range
+import tuple_benchmark_filenames
 
 debug_print=0
 
@@ -70,7 +71,7 @@ def main(argv):
     line_count+=1
     found=end_compilers.search(line_str)
     if debug_print:
-      print(":line=",line_str,end="")
+      print(":line[",line_count,"]=",line_str,sep="",end="")
       print(":found=",found)
     if found:
       break
@@ -78,6 +79,12 @@ def main(argv):
   line_count+=1
   domain_names_re=re.compile("^"+TAG_TUPLE.domain_names+"(\[.*\])"+TAG_TUPLE.domain_names+"$")
   found=domain_names_re.search(line_str)
+  if debug_print:
+    print(":line[",line_count,"]=",line_str,sep="",end="")
+    print(":found=",found)
+  if not found:
+    print("*** on line",line_count,"expected '"+TAG_TUPLE.domain_names+"' but found:"+line_str)
+    return 1
   domain_names_lst=eval(found.group(1))
   range_parser=parse_range_time()
   print(":domain_names_lst=",domain_names_lst)
@@ -91,7 +98,7 @@ def main(argv):
     #Body of this loop appends next tuple of(list_of(domain_values),list_of(range_values))
     line_count+=1
     if debug_print:
-      print(":line[",line_count,"]=",line_str,end="")
+      print(":line[",line_count,"]=",line_str,sep="",end="")
     found=domain_values_re.search(line_str)
     if not found:
       print("*** on line",line_count,"expected '"+TAG_TUPLE.domain_values+"' but found:"+line_str)
@@ -114,7 +121,13 @@ def main(argv):
     #^appends tuple_of(list_of(domain_values),list_of(range_values))
   #}for line_str in run_fle_inp:
   print_domain_range(domain_range_values)
-  domain_range_out=open('domain_range.pkl','wb')
+  run_file_pat="^(.*)\."+tuple_benchmark_filenames.run_ext()+"$"
+  find_basename=re.compile(run_file_pat)
+  run_file_found=find_basename.search(argv[1])
+  basename=run_file_found.group(1)
+  #print(":basename=",basename)
+  pkl_filename=basename+"."+tuple_benchmark_filenames.pkl_ext()
+  domain_range_out=open(pkl_filename,'wb')
   pickle.dump((domain_names_lst,range_names_lst,domain_range_values),domain_range_out)
   domain_range_out.close()
   return result

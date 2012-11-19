@@ -25,7 +25,9 @@ def main(argv):
   #print("domain_indices=",d_ndx)
   filt_dr=filter\
     ( lambda (d_lst,r_lst)
-      :   d_lst[d_ndx.compiler] == 'gcc4_8'
+      :   (  d_lst[d_ndx.compiler] == 'gcc4_8' 
+          or d_lst[d_ndx.compiler] == 'clangxx' 
+          )
       and d_lst[d_ndx.TUPLE_SIZE] == 15
     , domain_range_values
     )
