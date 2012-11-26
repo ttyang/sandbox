@@ -136,6 +136,7 @@ inline bool pair_is_limit(std::pair<const Meas, unc<correlated> > a)
 } // namespace boost
 
 // Defines :
+/*
 bool boost::svg::detail::limit_max(double); // true if max or +infinity.
 bool boost::svg::detail::limit_min(double); // true if min, denorm_min or -infinity.
 bool boost::svg::detail::limit_NaN(double); // true if NaN.
@@ -145,5 +146,5 @@ bool boost::svg::detail::pair_is_limit(std::pair<const double, double>); // x an
 
 template <bool correlated>
 bool boost::svg::detail::pair_is_limit(std::pair<const unc<correlated>, unc<correlated> >); // x and/or y not a proper data value!
-
+*/
 #endif // BOOST_SVG_NUMERIC_LIMITS_HANDLING_DETAIL_HPP

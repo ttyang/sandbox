@@ -115,8 +115,8 @@ namespace boost
           adjust_limits(x, y); // In case either hits max, min, infinity or NaN.
         }
 
-        template <class Derived>
-        void axis_plot_frame<Derived>::transform_point(double& x, double& y);
+        //template <class Derived>
+       // void axis_plot_frame<Derived>::transform_point(double& x, double& y);
         // Protected Member Functions Definitions in axis_plot_frame.ipp:
         // TODO do we need to adjust_limit(x); // In case hits max, min, infinity or NaN?
         // This implies that user's choice of X-axis range is wrong?
@@ -1091,7 +1091,7 @@ namespace boost
               and putting them just above, or sitting on, the X-axis is much clearer.
               For 2-D plots, the symbol center should, of course, be centered exactly on x, y.
               circle and ellipse are naturally centered on the point.
-              for rect x and y half_size offset centers square on the point.
+              for rectangle x and y half_size offset centers square on the point.
               But symbols are in a rectangular box and the offset is different for x & y
               even assuming that the symbol is centered in the rectangle.
               the vertical and horizontal ticks are deliberately offset above the axes.
@@ -1108,6 +1108,9 @@ namespace boost
 
             switch(sty.shape_) // from enum point_shape none, round, square, point, egg
             {
+            case none:
+              break;
+
             case circlet:
               g_ptr.circle(x, y, (int)half_size);
               break;
@@ -1119,6 +1122,7 @@ namespace boost
             case square:
               g_ptr.rect(x - half_size, y - half_size, size, size);
               break;
+
             case egg:
               g_ptr.ellipse(x, y, half_size, size * 2.); // Tall thin egg!
               break;
@@ -1178,12 +1182,14 @@ namespace boost
               // horizontal_line is pretty useless for 1-D because the horizontal line is on the X-axis.
               break;
             case symbol:
-              g_ptr.text(x, y + half_size, sty.symbols(), sty.style(), center_align, horizontal); // symbol(s), size and centre.
+              g_ptr.text(x, y + half_size, sty.symbols(), sty.style(), center_align, horizontal); // symbol(s), size and center.
 
               // Unicode symbols that work on most browsers are listed at
               // boost\math\libs\math\doc\sf_and_dist\html4_symbols.qbk,
               // http://www.htmlhelp.com/reference/html40/entities/symbols.html
               // and  http://www.alanwood.net/demos/ent4_frame.html
+              // Geometric shapes http://www.unicode.org/charts/PDF/Unicode-3.2/U32-25A0.pdf
+              // Misc symbols http://www.unicode.org/charts/PDF/U2600.pdf
               // The Unicode value in decimal 9830 or hex x2666 must be prefixed with & and terminated with ;
               // for example &x2666; for xml
               // and then enveloped with "" to convert to a std::string, for example: "&#x2666;" for diamond.
@@ -1225,6 +1231,15 @@ namespace boost
               // Last point puts the bottom tip of the triangle on the X-axis (may not be wanted for 2-D).
               }
               break;
+            case triangle: // Pointing up triangle.
+               g_ptr.text(x, y , "&#x25B2;", sty.symbols_style_, center_align, horizontal);
+                 // Also could use &#x25BC for pointing down triangle, and
+                 // &#x25B4 for small up-pointing triangle and &#x25BE for small down triangle.
+               break;
+             case star:
+               g_ptr.text(x, y , "&#x2605;", sty.symbols_style_, center_align, horizontal);
+               break;
+
             case cross: // Not X.
               g_ptr.line(x, y + size, x , y - size); // line up & down from axis,
               g_ptr.line(x, y - size, x + size, y ); // & line left & right from axis.
@@ -1240,7 +1255,7 @@ namespace boost
           void draw_plot_point_value(double x, double y, g_element& g_ptr, value_style& val_style, plot_point_style& point_style, unc<false> uvalue)
              Write one data point (X or Y) value as a string, for example "1.23e-2",
              near the data point marker.
-             Unecessary e, +, \& leading exponent zeros may optionally be stripped,
+             Unnecessary e, +, \& leading exponent zeros may optionally be stripped,
              and the position and rotation controlled.
              std_dev estimate, typically standard deviation
              (approximately half conventional 95% confidence "plus or minus")

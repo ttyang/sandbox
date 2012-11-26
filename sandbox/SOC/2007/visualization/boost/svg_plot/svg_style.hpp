@@ -701,7 +701,6 @@ enum point_shape
   club, //!< Club playing card shape.
   spade, //!< Spade playing card shape.
   asterisk, //!< Asterix as * symbol
-  x, //!< letter x
   cross, //!< cross
   symbol /*!< Unicode symbol including letters, digits, greek & 'squiggles'.
   \verbatim
@@ -731,7 +730,7 @@ public:
   //! Caution: not all Unicode symbols are output by all browsers!\n
   //! Example: U2721 is Star of David or hexagram,
   //! see http://en.wikipedia.org/wiki/Hexagram, symbols("&#x2721;")
-  //! Positioning of symbols (especially > 1 symbols) may be inprecise.
+  //! Positioning of symbols (especially > 1 symbols) may be imprecise.
 
   text_style symbols_style_; //!< font, size, decoration of symbols.
   bool show_x_value_; //!< If true, show the X value like "1.2" near the point. (If both true, then show both X and Y as a pair like "1.2, 3.4".)

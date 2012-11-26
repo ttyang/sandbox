@@ -351,7 +351,7 @@ namespace boost
      // axis_plot_frame.hpp contains functions common to 1 and 2-D.
 
    // private:
-  public: 
+  public:
       // Member data names conventionally end with _,
       // for example: border_margin_,
       // and set & get accessor functions are named without _ suffix,
@@ -962,16 +962,14 @@ my_plot.background_color(ghostwhite) // Whole image.
         { // Want a vertical Y-axis line, so check if range includes zero, so axes intersect,
           // and y_axis_ is svg coordinate of X-axis (usually x = 0).
           // If not fix axis to left (or right) of the plot window.
-          if ((y_axis_position_ == left) // All X values definitely > zero.
+          if (y_axis_position_ == left) // All X values definitely > zero.
              //&& !(y_ticks_.ticks_on_window_or_on_axis_ < 0) // & not already at left.
-             )
           { // Y-axis will not intersect X -axis, so put Y-axis line on plot window.
             y_axis_.axis_ = plot_left_; // Y-axis to left,
             //plot_left_ += 2 * y_label_info_.font_size(); // with a space.
           }
-          else if ((y_axis_position_ == right) // All X values definitely < zero.
+          else if (y_axis_position_ == right) // All X values definitely < zero.
             //&& !(y_ticks_.ticks_on_window_or_on_axis_ > 0) // & not already at right.
-            )
           {
             y_axis_.axis_ = plot_right_; // Y-axis to right of plot window,
           }
@@ -2298,14 +2296,14 @@ my_plot.background_color(ghostwhite) // Whole image.
       // declarations including defaults for parameters (except containers, of course).
       template <typename T>
       svg_2d_plot_series& plot(const T& container, const std::string& title = "");
-      
+
       template <typename T, typename U>
       svg_2d_plot_series& plot(const T& container, const std::string& title = "",
         U functor = boost::svg::detail::pair_double_2d_convert() );
-      
+
       template <typename T>
       svg_2d_plot_series& plot(const T& begin, const T& end, const std::string& title = "");
-      
+
       template <typename T, typename U>
       svg_2d_plot_series& plot(const T& begin, const T& end, const std::string& title = "",
         U functor = boost::svg::detail::pair_double_2d_convert() );
@@ -3272,9 +3270,9 @@ my_2d_plot.plot(&my_data[1], &my_data[], "my_data 1 to 3"); // Add part of data 
       boost::make_transform_iterator(end, boost::svg::detail::unc_1d_convert() ), // Ys
       title)
     );
-     
+
 #endif // _MSC_VER
-    
+
     return serieses_[serieses_.size() - 1]; //! \return Reference to data series just added to make chainable.
   } // plot(const T& begin, const T& end, const std::string& title = "")
 
