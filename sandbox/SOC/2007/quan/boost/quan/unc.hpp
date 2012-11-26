@@ -1,4 +1,4 @@
-/*! \file 
+/*! \file
    \brief Class for simple Propagation of Uncertainties according to a pure Gaussian model.
 
     \details Based on code by Evan Manning (manning@alumni.caltech.edu)
@@ -19,7 +19,7 @@ This is the standalone Doxygen main page of the proposed Boost.Quan library.
 
 This library provides a collection of classes and functions for handling uncertain reals.
 
-Uncertainty as standard deviation and degrees of freedom are 
+Uncertainty as standard deviation and degrees of freedom are
 propagated through calculations using the uncertain type,
 and are input and output including the uncertainty estimates.
 
@@ -181,7 +181,7 @@ void unc_input(double& mean,  // mean (central or most probable) value.
 // template<typename correlated> std::istream& operator>> (std::istream& is, const unc<false>& u);
 // friend istream& operator>> (istream& is, UReal<correlated>& u)
 
-template <typename Type> inline Type sqr(const Type& a); 
+template <typename Type> inline Type sqr(const Type& a);
 template <typename Type> inline Type cube(const Type& a);
 template <typename Type> inline Type pow4(const Type& a);
 
@@ -192,7 +192,7 @@ template <typename Type>
 inline Type pow4(const Type& a)
 {
   return (Type)(a * a * a * a);
-} 
+}
 
 template <typename Type> inline Type sqrtSumSqrs (const Type& a, const Type& b);
 template <typename Type>
@@ -236,7 +236,7 @@ void setUncDefaults(std::ios_base& os); // Set I=Unc class defaults for stream o
 
  //! 16 type bits used by unc uncTypes. Bit set = 1 means a positive attribute.
 enum unc_types
-{  
+{
   VALUE_ZERO = 1 << 0, //!< bit zero = 1 means value is zero.
   //! (Too near zero to allow relsd = sd /mean.)
   //! A few times std::numeric_limits<float>::min() may be a suitable limit?
@@ -289,7 +289,7 @@ enum uncertainflags
   //! by fixed factor SetScale and << scale ...
   //! power10 in range -max to +max.
   autoScaled = 1 << 2,  //!< bit 2: auto = 1  with << autoscale ...
-  plusMinus = 1 << 3, /*!< bit 3 = 1 means add +/- uncertainty 
+  plusMinus = 1 << 3, /*!< bit 3 = 1 means add +/- uncertainty
   Usage: `std::cout << plusminus << u;`
   */
   addSISymbol = 1 << 4,  //!< bit 4 = 1, add suffix SI symbol G, M, k, m, u, n, p ...
@@ -345,7 +345,7 @@ std::ios_base& autouncsigdigits(std::ios_base&);  //!< Calculate stdDev sig digi
 std::ios_base& uncsigdigits(std::ios_base&); //!< Use stdDev sigDigits stored with << useSetUncSigDigits(2) ...
 std::ios_base& adddegfree(std::ios_base&);  //!< Add degrees of freedom as (99).
 std::ios_base& nodegfree(std::ios_base&);  //!< Do not add degrees of freedom to output of value.
-// 
+//
 std::ios_base& addlimits(std::ios_base&);  //!< Add lower and upper limits a 0.95 > 1.00 > 1.05.
 std::ios_base& nolimits(std::ios_base&);  //!< Do not add lower and upper limits.
 
@@ -384,7 +384,7 @@ class setConfidence;  //!< Set acceptable loss due to rounding.
 
 // Operator declarations, classes defined below, with constructors in unc.ipp.
 std::ostream operator<< (std::ostream, const showUncFlags&);
-std::ostream operator<< (std::ostream, const setAllUncFlags&); 
+std::ostream operator<< (std::ostream, const setAllUncFlags&);
 std::istream operator>> (std::istream, const setAllUncFlags&);
 std::ostream operator<< (std::ostream, const setUncFlags&);
 std::istream operator>> (std::istream, const setUncFlags&);
@@ -551,7 +551,7 @@ class setRoundingLoss
 public:
   setRoundingLoss(double);// eps) : setRoundingLoss(eps) {}  // Constructor
   // Initialisation means setRoundingLoss = epsilon
-  //protected: 
+  //protected:
   double roundingloss_; // Set by constructor.
 }; // class setRoundingLoss
 
@@ -565,7 +565,7 @@ class setConfidence
 public:
   setConfidence(double);// alpha) : setConfidence(alpha) {}  // Constructor
   // Initialisation means setConfidence = alpha
-  //protected: 
+  //protected:
   double confidence_; // Set by constructor.
 }; // class setConfidence
 
@@ -595,7 +595,7 @@ class unc : public std::char_traits<char>
 
 //#pragma warning (disable : 4520) //!< 'unc<1>' : multiple default constructors specified.
   // This is by design so that it is possible construct from integer or double.
-  // Doubtful if this is necessary or useful?  
+  // Doubtful if this is necessary or useful?
 public:
   /*! \note It is convenient to use 64-bit floating-point value
      (so even really accurate values like weights are OK),
@@ -633,7 +633,7 @@ public:
   // Member functions to get & value, stdDev, degfree & uncTypes.
   //! \return Central estimate of value of uncertain type.
   double value()
-  { 
+  {
     return value_;
   }
   //! \return Estimate of uncertainty as standard deviation of value of uncertain type.
@@ -708,7 +708,7 @@ public:
      so behaves like a normal double.
      Normal conversion from double to unc.
      (See also constructor from integer which alone sets integer flag.)
-    */ 
+    */
   unc(
     // Default values: exact zero? with no uncertainty, 1 observation.
     const double val,  //  = 0., // also const int = 0.
@@ -792,7 +792,7 @@ public:
           degFree_ = 0;  // Override any degfree provided.
           // This indicates a programmer logic error!
         }
-      } // 
+      } //
     } // unc finite check
 #ifdef UNC_CD_TRACE
     {
@@ -803,7 +803,7 @@ public:
     }
 #endif
   };  // unc constructor from double.
- 
+
   // A specific constructor from int (as well as double) leads to this warning.
   // #pragma warning (disable : 4520) //!< 'unc<1>' : multiple default constructors specified.
 
@@ -1018,7 +1018,7 @@ public:
     return *this;
   }
 
-  operator value_type() const 
+  operator value_type() const
   {
     return value_;
   }
@@ -1130,7 +1130,7 @@ public:
     {// rational / rational is still rational.
       unctypes_ &= ud.unctypes_;
     }
-    if (ud.unctypes_ & VALUE_ZERO != 0)
+    if ((ud.unctypes_ & VALUE_ZERO) != 0)
     { // Avoid divide by zero, unless both zero!
       value_ = (value_ != 0.) ? INFINITY : 0.;
     }
@@ -1190,7 +1190,7 @@ public:
   friend std::ostream& operator<< (std::ostream& os, const unc<is_correlated>& val)
   {
     boost::io::ios_precision_saver precision_saver(os);
-    boost::io::ios_flags_saver flags_saver(os); 
+    boost::io::ios_flags_saver flags_saver(os);
     // Changes are restored on destruction.
     std::ostringstream oss; // Build up string.
     oss.flags(os.flags()); // Copy flags to restore TODO not needed?).
@@ -1207,7 +1207,7 @@ public:
       \var bool isNoisyDigit
       \brief Add an extra 'noisy' guard digit to reduce risk of information loss.
     */
-    bool isNoisyDigit;  //!<  
+    bool isNoisyDigit;  //!<
     bool isDegFree;  //!<  Append degrees of freedom.
     bool isPlusMinus; //!< Uncertainty as +/- is required too (but ignore if value is exact or integer).
     bool isUppercase; //!< Exponential format is, for example, 1E6 else 1e6.
@@ -1260,8 +1260,8 @@ public:
     isShowPos = static_cast<bool>(iosFlags & std::ios_base::showpos);
     // Show + sign always.
 
-    // Get print format requirements from unc flags. 
-    long& uncFlags = os.iword(uncFlagsIndex); //  
+    // Get print format requirements from unc flags.
+    long& uncFlags = os.iword(uncFlagsIndex); //
     isPlusMinus = static_cast<bool>(uncFlags & plusMinus); // `<< plusminus`
     isNoisyDigit = static_cast<bool>(uncFlags & noisyDigit); // `<< addNoisyDigit`
     isConfidenceInterval = static_cast<bool>(uncFlags & limits); // `<< addlimits`
@@ -1300,7 +1300,7 @@ public:
     }
     //! Confidence or alpha to compute confidence interval is similarly scaled.
     //! Usage: `out << confidence(0.01) << ...` means 1 - confidence = 99% confidence.
- //!   double confidence = os.iword(conf) / 1000.;  // `<< confidence(0.05)` aka 95% 
+ //!   double confidence = os.iword(conf) / 1000.;  // `<< confidence(0.05)` aka 95%
 
     //int round_m(double epsilon = 0.01, double unc = 0., unsigned int uncsigdigits = 2, distribution_type distrib = gaussian);
     //void out_confidence_interval(std::pair<double, double> ci, int m, std::ostream& os = std::cout);
@@ -1324,7 +1324,7 @@ public:
     int max_digits10 = std::numeric_limits<double>::digits10 * 3010/10000;
     // std::numeric_limits<double>::max_digits10))
     if (boost::math::isfinite(mean))
-    { 
+    {
       if(isSetSigDigits)
       { // Use explicit number of digits of precision.
         long& sigDigits = os.iword(setSigDigitsIndex);
@@ -1337,8 +1337,8 @@ public:
       else
       { // Use uncertainty to control digits of precision.
         if (mean == 0)
-        { // isValueZero = true; 
-          if ((uncertainty == 0.F) )
+        { // isValueZero = true;
+          if (uncertainty == 0.F )
           { // Is exact integer zero, so not rounded, and no decimal point.
             oss << "0";
           }
@@ -1348,7 +1348,7 @@ public:
           }
           else
           { // Inexact zero.
-            int m = round_m(epsilon, uncertainty, 2, distrib); 
+            int m = round_m(epsilon, uncertainty, 2, distrib);
             if (isNoisyDigit)
             { // Move rounding digit to one less significant position.
               m--;
@@ -1418,10 +1418,10 @@ public:
       // Or could leave as native output, but MSVC format is ugly.
     } // Mean
 
-    if (isPlusMinus && !(unc_flags & VALUE_INTEGER)) 
+    if (isPlusMinus && !(unc_flags & VALUE_INTEGER))
     { // Want estimate of uncertainty.
       if (isfinite(uncertainty))
-      { 
+      {
         if (uncertainty == 0.F)
         { // Special case short version.
           oss << " +/-0";
@@ -1432,7 +1432,7 @@ public:
           // Default is round to 2 sig digit - ISO rule.
           if (uncSigDigits <= 0)
           { // Automatically choose uncSigDigits based on degrees of freedom.
-            // Passed negative values through to allow 
+            // Passed negative values through to allow
             // an auto mode for w < 0 that chooses from degrees of freedom,
             // From table H page 457 in Oliver & Goldsmith, confidence interval
             // of standard deviation is about +/- 20% at 10 degrees of freedom,
@@ -1446,7 +1446,7 @@ public:
             {
               uncSigDigits = 2;
             }
-            else 
+            else
             { // degFree in common range 1 to 10.
               // Choose between 1 and 2 digits based on 1st digit of uncertainty.
               // Would be too big a step if most significant digit was 1 or 2.
@@ -1466,7 +1466,7 @@ public:
               }
             }
           }
-        
+
          if (unc_flags & UNC_NOPLUS)
           {
             oss << " +0/-";
@@ -1481,14 +1481,14 @@ public:
           }
           //oss.unsetf(std::ios_base::scientific);
           oss << std::noshowpos  // Prefixed by " +/-" so never add +.
-            << std::fixed // << std::noscientific 
+            << std::fixed // << std::noscientific
             << std::showpoint
             << std::setprecision(uncSigDigits); // switches to e format :-(
           //double unc_rounded = round_sig(uncertainty, uncSigDigits);
           //oss << unc_rounded;
            //std::string round_f<FPT>(FPT v, int sigdigits);
          std::string s = round_f<float>(uncertainty, uncSigDigits);
-          oss << s; 
+          oss << s;
         }
       }
       else
@@ -1509,7 +1509,7 @@ public:
       if (boost::math::isfinite(mean) && boost::math::isfinite(uncertainty) && degFree >= 1)
       { // Possible to compute confidence limits or interval in < > angle brackets.
         std::streamsize osp = os.precision();
-        oss.precision(4); // 
+        oss.precision(4); //
         //std::pair<double, double> conf_interval(double mean, double unc, double df = 1., double alpha = 0.05, distribution_type distrib = gaussian);
         double alpha = os.iword(confidenceIndex) / 1.e6; // Pick up and unscale alpha.
         double epsilon = os.iword(roundingLossIndex) / 1.e3; // Pick up and rounding loss and unscale.
@@ -1521,7 +1521,7 @@ public:
         std::pair<double, double> ci  = conf_interval(mean, uncertainty, degFree, alpha, distrib);
         int m = round_m(epsilon, uncertainty, uncSigDigits, distrib);
         using boost::lexical_cast;
-        oss << " <" 
+        oss << " <"
             << lexical_cast<double>(round_ms(ci.first, m-1)) << ", "
             << lexical_cast<double>(round_ms(ci.second, m-1))
             << ">";
@@ -1867,10 +1867,10 @@ public:
   // uncertainty_, value_, degrees of freedom and unc type.
 
   // These are duplicates.
-  
+
   double mean(void) const {return value_;}
 
-  float deviation(void) const {return uncertainty_;}  // 
+  float deviation(void) const {return uncertainty_;}  //
 
   unsigned short int degFree(void) const {return degFree_;}
 
@@ -1924,14 +1924,14 @@ public:
     }
     return retval;
   }
-  
+
   // Predicate Comparison functions.
   // Should be global to allow leftmost argument to use implicit type conversion
   // according to Scott Meyers, Effective C++ Item 19 p 68 - 71.
   // But these are member functions and seem to work OK.
   // Note MUST be static bool.
 
-  static bool lessU(const unc<is_correlated>& l, const unc<is_correlated>& r) 
+  static bool lessU(const unc<is_correlated>& l, const unc<is_correlated>& r)
   { // less using Comparison criterion including ONE standard deviation.
     // (Comparison is possibly different for correlated case but not implemented yet).
     double lhi = (l.value_ + l.uncertainty_);  // Upper confidence limit of left.
@@ -1947,16 +1947,16 @@ public:
         << space << ((isLess) ? " < " : " >= ")
         // << (r.value_ - r.uncertainty_) == rlo
         << space << rlo << space << rlo + hypot(l.uncertainty_, r.uncertainty_) // tol
-        << space << r.value_ 
-        << space << tol 
-        << space << diff 
+        << space << r.value_
+        << space << tol
+        << space << diff
         << std::endl;
     }
     return isLess;
-  } // bool lessU(const unc<is_correlated>& l, const unc<is_correlated>& r) 
+  } // bool lessU(const unc<is_correlated>& l, const unc<is_correlated>& r)
 
 
-  static bool lessU2(const unc<is_correlated>& l, const unc<is_correlated>& r) 
+  static bool lessU2(const unc<is_correlated>& l, const unc<is_correlated>& r)
   { // less using Comparison criterion including TWO standard deviations.
     // (Comparison is possibly different for correlated case but not implemented yet).
     double lhi = (l.value_ + l.uncertainty_ + l.uncertainty_ );  // Upper confidence limit of left.
@@ -1972,31 +1972,31 @@ public:
         << space << ((isLess) ? " < " : " >= ")
         // << (r.value_ - r.uncertainty_ * 2) == rlo
         << space << rlo << space << rlo + tol
-        << space << r.value_ 
-        << space << tol 
-        << space << diff 
+        << space << r.value_
+        << space << tol
+        << space << diff
         << std::endl;
     }
     return isLess;
   } // bool lessU2(const unc<is_correlated>& l, const unc<is_correlated>& r)
 
-  static bool moreU(const unc<is_correlated>& l, const unc<is_correlated>& r) 
+  static bool moreU(const unc<is_correlated>& l, const unc<is_correlated>& r)
   { // less using Comparison criterion within ONE standard deviation.
     // Comparison is possibly different for correlated case but not implemented yet.
-    return l.value_ - l.uncertainty_ > r.value_ + r.uncertainty_; // Values with uncertainty. 
+    return l.value_ - l.uncertainty_ > r.value_ + r.uncertainty_; // Values with uncertainty.
   } // bool moreU
 
-  static bool equalU(const unc<is_correlated>& l, const unc<is_correlated>& r) 
+  static bool equalU(const unc<is_correlated>& l, const unc<is_correlated>& r)
   { // less using Comparison criterion outside ONE standard deviation.
     // Comparison is possibly different for correlated case but not implemented yet.
-    return !((l.value_ - l.uncertainty_ > r.value_ + r.uncertainty_) // > 
+    return !((l.value_ - l.uncertainty_ > r.value_ + r.uncertainty_) // >
      || (l.value_ + l.uncertainty_ < r.value_ - r.uncertainty_)); // <
   } // bool equalU
 
-  static bool equalU2(const unc<is_correlated>& l, const unc<is_correlated>& r) 
+  static bool equalU2(const unc<is_correlated>& l, const unc<is_correlated>& r)
   { // less using Comparison criterion outside TWO standard deviations.
     // Comparison is possibly different for correlated case but not implemented yet.
-    return !((l.value_ - l.uncertainty_ - l.uncertainty_> r.value_ + r.uncertainty_ + r.uncertainty_) // > 
+    return !((l.value_ - l.uncertainty_ - l.uncertainty_> r.value_ + r.uncertainty_ + r.uncertainty_) // >
      || (l.value_ + l.uncertainty_ + l.uncertainty_ < r.value_ - r.uncertainty_ - r.uncertainty_)); // <
   } // bool equalU2
 
@@ -2062,7 +2062,7 @@ std::pair<double, double> values_of(std::pair<T, T> up)
 namespace std
 { // Fudge until MSVC becomes compliant.
   template<typename Type> inline
-    Type abs(const Type& a) 
+    Type abs(const Type& a)
   { // Should be std::abs but is NOT in cstdlib - only provides global ::abs.
     return Type((a < Type(0)) ? -a : a);
   }
