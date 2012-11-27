@@ -1,12 +1,12 @@
 """
-Classes for measuring the performance of a compiler
+Classes for measuring the performance of a command
 """
 import abc
 import subprocess
 
 class guage_abstract:
     """
-    Abstract class for measuring compiler performance.
+    Abstract class for measuring command performance.
     """
     __metaclass__=abc.ABCMeta
 
@@ -18,27 +18,35 @@ class guage_abstract:
         pass
 
     @abc.abstractmethod
-    def measure(self,compiler_exe, compiler_args, measure_out):
+    def measure(self,command_exe, command_args, measure_out):
         """
         Measure the performance of 
-          compiler, compiler_exe,
-          with args, compiler_args,
+          command, command_exe,
+          with args, command_args,
           while appending the measurements on file, measure_out.
         """
         pass
+
+import time_cmd_name_codes
 
 class guage_time(guage_abstract):
     """
     Concrete class using system time function for measuring performance.
     """
 
-    def names():
-        return ["user","system","elapsed"]
+    def __init__( self, measured=time_cmd_name_codes.lst_names()):
+        self.measured=measured
+        self.format=reduce\
+                    ( lambda fmt,name: fmt+name+"["+time_cmd_name_codes.fmtcode(name)+"]"
+                    , measured
+                    , ""
+                    )
+    def names(self):
+        return self.measured
 
-    def measure(self, compiler_exe, compiler_args, measure_out):
-        compile_cmd=compiler_exe+compiler_args
-        time_format='"user:%U system:%S elapsed:%e"'
-        measure_cmd='time --format '+time_format+' '+compile_cmd
+    def measure(self, command_exe, command_args, measure_out):
+        compile_cmd=command_exe+command_args
+        measure_cmd='time --format '+self.format+' '+compile_cmd
         print(":measure_cmd=",measure_cmd)
         if True:
           rc=subprocess.call(
@@ -53,14 +61,15 @@ class guage_time(guage_abstract):
 
 class guage_ftime(guage_abstract):
     """
-    Concrete class using -ftime-report compiler flag for measuring performance.
+    Concrete class using -ftime-report command flag for measuring performance.
+    This, of course, requires the command to take the -ftime-report flag.
     """
 
     def names():
         return []
 
-    def measure(self, compiler_exe, compiler_args, measure_out):
-        measure_cmd=compiler_exe+" -ftime-report "+compiler_args
+    def measure(self, command_exe, command_args, measure_out):
+        measure_cmd=command_exe+" -ftime-report "+command_args
         print(":measure_cmd=",measure_cmd)
         if True:
           rc=subprocess.call(

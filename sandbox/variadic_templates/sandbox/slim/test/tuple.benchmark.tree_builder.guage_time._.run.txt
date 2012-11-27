@@ -18,99 +18,68 @@ compiler_exe: /home/evansl/download/llvm/svn/build/Release/bin/clang
 ]version
 ]compilers
 domain_names['compiler', 'TUPLE_IMPL', 'TUPLE_SIZE', 'TUPLE_UNROLL_MAX', 'TREE_DEPTH']domain_names
-domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 2]domain_values
-range_out[
-user:0.77 system:0.07 elapsed:0.97
-]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 3]domain_values
-range_out[
-user:0.79 system:0.18 elapsed:0.95
-]range_out
+range_how['guage_time', 'UserTime', 'SystemTime', 'ElapsedTime', 'MajorPageFaults', 'MaxResidentSetSize', 'Swaps', 'ContextSwitches']range_how
 domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 4]domain_values
 range_out[
-user:0.97 system:0.13 elapsed:1.08
+UserTime[1.29]SystemTime[0.23]ElapsedTime[3.67]MajorPageFaults[32112]MaxResidentSetSize[241856]Swaps[0]ContextSwitches[381]
 ]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 2]domain_values
+domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 5]domain_values
 range_out[
-user:0.82 system:0.09 elapsed:0.89
+UserTime[1.21]SystemTime[0.12]ElapsedTime[1.35]MajorPageFaults[8]MaxResidentSetSize[268256]Swaps[0]ContextSwitches[6]
 ]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 3]domain_values
+domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 6]domain_values
 range_out[
-user:1.10 system:0.09 elapsed:1.17
+UserTime[1.35]SystemTime[0.11]ElapsedTime[1.55]MajorPageFaults[56]MaxResidentSetSize[295232]Swaps[0]ContextSwitches[12]
+]range_out
+domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 7]domain_values
+range_out[
+UserTime[1.58]SystemTime[0.18]ElapsedTime[1.89]MajorPageFaults[200]MaxResidentSetSize[322864]Swaps[0]ContextSwitches[12]
 ]range_out
 domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 4]domain_values
 range_out[
-user:1.31 system:0.15 elapsed:1.44
+UserTime[1.33]SystemTime[0.15]ElapsedTime[1.46]MajorPageFaults[0]MaxResidentSetSize[295968]Swaps[0]ContextSwitches[5]
 ]range_out
-domain_values['gcc4_8', 'bcon12_vertical', 10, 10, 2]domain_values
+domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 5]domain_values
 range_out[
-user:0.62 system:0.09 elapsed:0.69
+UserTime[1.56]SystemTime[0.20]ElapsedTime[1.76]MajorPageFaults[48]MaxResidentSetSize[336928]Swaps[0]ContextSwitches[6]
 ]range_out
-domain_values['gcc4_8', 'bcon12_vertical', 10, 10, 3]domain_values
+domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 6]domain_values
 range_out[
-user:0.65 system:0.13 elapsed:0.76
+UserTime[1.96]SystemTime[0.18]ElapsedTime[2.15]MajorPageFaults[0]MaxResidentSetSize[378496]Swaps[0]ContextSwitches[56]
 ]range_out
-domain_values['gcc4_8', 'bcon12_vertical', 10, 10, 4]domain_values
+domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 7]domain_values
 range_out[
-user:0.72 system:0.14 elapsed:0.83
-]range_out
-domain_values['gcc4_8', 'bcon12_vertical', 15, 10, 2]domain_values
-range_out[
-user:0.78 system:0.05 elapsed:0.81
-]range_out
-domain_values['gcc4_8', 'bcon12_vertical', 15, 10, 3]domain_values
-range_out[
-user:0.83 system:0.14 elapsed:0.95
-]range_out
-domain_values['gcc4_8', 'bcon12_vertical', 15, 10, 4]domain_values
-range_out[
-user:0.94 system:0.15 elapsed:1.07
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 10, -1, 2]domain_values
-range_out[
-user:0.51 system:0.07 elapsed:0.57
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 10, -1, 3]domain_values
-range_out[
-user:0.59 system:0.06 elapsed:0.64
+UserTime[2.34]SystemTime[0.18]ElapsedTime[2.64]MajorPageFaults[32]MaxResidentSetSize[421168]Swaps[0]ContextSwitches[7]
 ]range_out
 domain_values['clangxx', 'bcon12_horizontal', 10, -1, 4]domain_values
 range_out[
-user:0.78 system:0.09 elapsed:0.86
+UserTime[1.13]SystemTime[0.11]ElapsedTime[2.72]MajorPageFaults[27608]MaxResidentSetSize[146608]Swaps[0]ContextSwitches[228]
 ]range_out
-domain_values['clangxx', 'bcon12_horizontal', 15, -1, 2]domain_values
+domain_values['clangxx', 'bcon12_horizontal', 10, -1, 5]domain_values
 range_out[
-user:0.57 system:0.07 elapsed:0.63
+UserTime[2.48]SystemTime[0.05]ElapsedTime[2.53]MajorPageFaults[0]MaxResidentSetSize[159296]Swaps[0]ContextSwitches[4]
 ]range_out
-domain_values['clangxx', 'bcon12_horizontal', 15, -1, 3]domain_values
+domain_values['clangxx', 'bcon12_horizontal', 10, -1, 6]domain_values
 range_out[
-user:0.77 system:0.03 elapsed:0.79
+UserTime[16.85]SystemTime[0.08]ElapsedTime[17.36]MajorPageFaults[0]MaxResidentSetSize[170368]Swaps[0]ContextSwitches[3]
+]range_out
+domain_values['clangxx', 'bcon12_horizontal', 10, -1, 7]domain_values
+range_out[
+UserTime[160.33]SystemTime[0.27]ElapsedTime[160.60]MajorPageFaults[0]MaxResidentSetSize[182624]Swaps[0]ContextSwitches[3]
 ]range_out
 domain_values['clangxx', 'bcon12_horizontal', 15, -1, 4]domain_values
 range_out[
-user:1.55 system:0.08 elapsed:1.61
+UserTime[1.58]SystemTime[0.05]ElapsedTime[1.62]MajorPageFaults[0]MaxResidentSetSize[169664]Swaps[0]ContextSwitches[4]
 ]range_out
-domain_values['clangxx', 'bcon12_vertical', 10, 10, 2]domain_values
+domain_values['clangxx', 'bcon12_horizontal', 15, -1, 5]domain_values
 range_out[
-user:0.53 system:0.04 elapsed:0.56
+UserTime[12.53]SystemTime[0.06]ElapsedTime[12.58]MajorPageFaults[0]MaxResidentSetSize[187472]Swaps[0]ContextSwitches[3]
 ]range_out
-domain_values['clangxx', 'bcon12_vertical', 10, 10, 3]domain_values
+domain_values['clangxx', 'bcon12_horizontal', 15, -1, 6]domain_values
 range_out[
-user:0.52 system:0.08 elapsed:0.59
+UserTime[173.84]SystemTime[0.30]ElapsedTime[174.20]MajorPageFaults[24]MaxResidentSetSize[207792]Swaps[0]ContextSwitches[6]
 ]range_out
-domain_values['clangxx', 'bcon12_vertical', 10, 10, 4]domain_values
+domain_values['clangxx', 'bcon12_horizontal', 15, -1, 7]domain_values
 range_out[
-user:0.59 system:0.05 elapsed:0.63
-]range_out
-domain_values['clangxx', 'bcon12_vertical', 15, 10, 2]domain_values
-range_out[
-user:1.16 system:0.03 elapsed:1.18
-]range_out
-domain_values['clangxx', 'bcon12_vertical', 15, 10, 3]domain_values
-range_out[
-user:10.55 system:0.17 elapsed:10.72
-]range_out
-domain_values['clangxx', 'bcon12_vertical', 15, 10, 4]domain_values
-range_out[
-user:158.27 system:2.15 elapsed:160.45
+UserTime[2592.81]SystemTime[0.63]ElapsedTime[2593.48]MajorPageFaults[0]MaxResidentSetSize[229648]Swaps[0]ContextSwitches[3]
 ]range_out

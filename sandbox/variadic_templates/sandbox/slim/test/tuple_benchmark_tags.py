@@ -7,6 +7,7 @@ tag_names=\
   , 'version'
   , 'domain_names'
   , 'domain_values'
+  , 'range_how'
   , 'range_out'
   ]
 tag_tuple=namedtuple\

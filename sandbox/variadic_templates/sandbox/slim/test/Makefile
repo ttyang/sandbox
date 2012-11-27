@@ -26,7 +26,7 @@ FILT_PY=tuple_benchmark_filt.py
 
 %.$(OUT_SUFFIX).$(RUN_EXT): %.$(SRC_EXT) $(DOM_PY) $(RUN_PY)
 	#runs compiler on $<, recording preformance in $@
-	$(PYTHON) tuple_benchmark_run.py $(BENCHMARK.suffix) $(GUAGE) $(RUN_ID)
+	$(PYTHON) tuple_benchmark_run.py $(BENCHMARK.suffix) $(RUN_ID) $(GUAGE)
 
 .PHONY: domain
 domain: #prints the domains(inputs) used in $(RUN_FILENAME) target.

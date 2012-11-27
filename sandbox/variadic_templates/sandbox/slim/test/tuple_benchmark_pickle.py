@@ -23,7 +23,7 @@ class parse_range_abstract:
     def parse(range_str):
       """
       range_str is a string output from compiler performance measurement.
-      This method turns that into a list or range values 
+      This method turns that into a list of range values 
       which are then returned.
       """
       pass
@@ -34,16 +34,9 @@ class parse_range_time:
     made with system time command.
     """
 
-    def __init__(self):
-        self.range_names=['user','system','elapsed']
-        range_values_pat\
-            ="^"\
-            +self.range_names[0]\
-            +":(.*) "\
-            +self.range_names[1]\
-            +":(.*) "\
-            +self.range_names[2]\
-            +":(.*)$"
+    def __init__(self,names):
+        self.range_names=names
+        range_values_pat=reduce(lambda pat,name: pat+name+"\[(.*)\]",names,"^")+"$"
         self.range_values_re=re.compile(range_values_pat)
 
     def names(self):
@@ -77,19 +70,36 @@ def main(argv):
       break
   line_str=run_file_inp.next()
   line_count+=1
-  domain_names_re=re.compile("^"+TAG_TUPLE.domain_names+"(\[.*\])"+TAG_TUPLE.domain_names+"$")
+  domain_names_pat="^"+TAG_TUPLE.domain_names+"(\[.*\])"+TAG_TUPLE.domain_names+"$"
+  domain_names_re=re.compile(domain_names_pat)
   found=domain_names_re.search(line_str)
   if debug_print:
     print(":line[",line_count,"]=",line_str,sep="",end="")
     print(":found=",found)
   if not found:
-    print("*** on line",line_count,"expected '"+TAG_TUPLE.domain_names+"' but found:"+line_str)
+    print("*** on line",line_count,"expected '"+domain_names_pat+"' but found:"+line_str)
     return 1
   domain_names_lst=eval(found.group(1))
-  range_parser=parse_range_time()
   print(":domain_names_lst=",domain_names_lst)
-  range_names_lst=range_parser.names()
+  line_str=run_file_inp.next()
+  line_count+=1
+  range_how_pat="^"+TAG_TUPLE.range_how+"(\[.*\])"+TAG_TUPLE.range_how+"$"
+  range_how_re=re.compile(range_how_pat)
+  found=range_how_re.search(line_str)
+  if debug_print:
+    print(":line[",line_count,"]=",line_str,sep="",end="")
+    print(":found=",found)
+  if not found:
+    print("*** on line",line_count,"expected '"+range_how_pat+"' but found:"+line_str)
+    return 1
+  range_how_lst=eval(found.group(1))
+  range_how_ok="guage_time"
+  if range_how_lst[0] != range_how_ok:
+      print("*** on line",line_count,"found range_how=",range_how_lst[0],".")
+      print("    However, can only pickle when range_how=",range_how_ok,".")
+  range_names_lst=range_how_lst[1:]
   print(":range_names_lst=",range_names_lst)
+  range_parser=parse_range_time(range_names_lst)
   end_range=re.compile(".*]"+TAG_TUPLE.range_out+"$")
   domain_values_pat="^"+TAG_TUPLE.domain_values+"(\[.*\])"+TAG_TUPLE.domain_values
   domain_values_re=re.compile(domain_values_pat)
@@ -101,7 +111,7 @@ def main(argv):
       print(":line[",line_count,"]=",line_str,sep="",end="")
     found=domain_values_re.search(line_str)
     if not found:
-      print("*** on line",line_count,"expected '"+TAG_TUPLE.domain_values+"' but found:"+line_str)
+      print("*** on line",line_count,"expected '"+domain_values_pat+"' but found:"+line_str)
       return 1
     domain_values_lst=eval(found.group(1))#list_of(domain_values)
     line_str=run_file_inp.next()#should be 'range_out['

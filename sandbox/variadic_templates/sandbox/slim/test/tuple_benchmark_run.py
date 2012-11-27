@@ -10,7 +10,7 @@ from datetime import datetime
 import subprocess
 
 from tuple_benchmark_domain import *
-import compiler_guage
+import command_guage
 import tuple_benchmark_filenames
 import boost_root
 
@@ -37,10 +37,10 @@ def main(argv):
     benchmark_suffix=argv[iarg]
   iarg+=1
   if len(argv)>=iarg:
-    guage_name=argv[iarg]
+    benchmark_run=argv[iarg]
   iarg+=1
   if len(argv)>=iarg:
-    benchmark_run=argv[iarg]
+    guage_spec=argv[iarg:]
   src_filename=tuple_benchmark_filenames.src_filename(benchmark_suffix)
   #print("src_filename=",src_filename)
   boost_root_path=boost_root.path()
@@ -57,7 +57,7 @@ def main(argv):
     impl_map_inc["bcon12_horizontal"]=\
         ""\
       #
-  if True:
+  if False:
     impl_map_inc["bcon12_vertical"]=\
         " -I"+boost_root_path\
       #
@@ -79,18 +79,19 @@ def main(argv):
     , [ 'TUPLE_SIZE', sizes(range(tuple_min_size,tuple_max_size+1,tuple_del_size))]
     , [ 'TUPLE_UNROLL_MAX', unroll_max()]
     ]
-  guage_map=\
-    { 'guage_time':compiler_guage.guage_time()
-    , 'guage_ftime':compiler_guage.guage_ftime()
-    }
   if benchmark_suffix == "mini" :
     name_domain.append( [ 'LAST_LESS', last(4,tuple_del_size)])
   else:
-    name_domain.append( [ 'TREE_DEPTH', tree_depth(2,4,1)])
+    name_domain.append( [ 'TREE_DEPTH', tree_depth(4,7,1)])
   domains=product_dep(
     map(lambda t: t[1], name_domain)
     )
-  guage_fun=guage_map[guage_name]
+  guage_class='command_guage.'+guage_spec[0]
+  guage_args=reduce(lambda args,arg:args+", "+arg, guage_spec[1:], "")
+  guage_args='('+guage_args[1:]+')'
+  guage_eval=guage_class+guage_args
+  guage_obj=eval(guage_eval)
+  guage_how=[guage_spec[0]]+guage_obj.names()
   run_fileobj=\
     open\
     ( tuple_benchmark_filenames.out_filename\
@@ -121,6 +122,7 @@ def main(argv):
   print(TAG_TUPLE.domain_names
     , domain_names,sep="", end=TAG_TUPLE.domain_names+"\n"
     , file=run_fileobj)
+  print(TAG_TUPLE.range_how,guage_how,TAG_TUPLE.range_how,sep="",file=run_fileobj)
   macro_names=domain_names[1:]
   for element in domains():
       print(TAG_TUPLE.domain_values
@@ -143,7 +145,7 @@ def main(argv):
         #
       print(TAG_TUPLE.range_out+"[",file=run_fileobj)
       run_fileobj.flush()
-      run_rc=guage_fun.measure(compiler_exe, compiler_args, run_fileobj)
+      run_rc=guage_obj.measure(compiler_exe, compiler_args, run_fileobj)
       print("]"+TAG_TUPLE.range_out,file=run_fileobj)
       if run_rc != 0:
         return run_rc

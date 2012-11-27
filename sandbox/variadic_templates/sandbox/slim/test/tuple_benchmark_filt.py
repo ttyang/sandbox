@@ -28,7 +28,7 @@ def main(argv):
       :   (  d_lst[d_ndx.compiler] == 'gcc4_8' 
           or d_lst[d_ndx.compiler] == 'clangxx' 
           )
-      and d_lst[d_ndx.TUPLE_SIZE] == 15
+      and d_lst[d_ndx.TUPLE_SIZE] == 10
     , domain_range_values
     )
   print(":filt_dr=")
