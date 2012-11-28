@@ -6,13 +6,13 @@ from __future__ import print_function
 #mapping of name of measurement to format code for measurement 
 #in --format argument to system time command.
 TUPLE_NAME_CODES=\
-    ( ('UserTime','%U')
-    , ('SystemTime','%S')
-    , ('ElapsedTime','%e')
-    , ('MajorPageFaults', '%I')
-    , ('MaxResidentSetSize', '%M')
-    , ('Swaps', '%W')
-    , ('ContextSwitches', '%w')
+    ( ('UserTime', ('%U',float))
+    , ('SystemTime', ('%S',float))
+    , ('ElapsedTime', ('%e',float))
+    , ('MajorPageFaults', ('%I',long))
+    , ('MaxResidentSetSize', ('%M',long))
+    , ('Swaps', ('%W',long))
+    , ('ContextSwitches', ('%w',long))
     )
 
 DICT_NAME_CODE=dict(TUPLE_NAME_CODES)
@@ -23,7 +23,11 @@ def lst_names():
 
 def fmtcode(name):
     """the format code for name"""
-    return DICT_NAME_CODE[name]
+    return DICT_NAME_CODE[name][0]
+
+def convert_str(name,str):
+    """Convert str into value appropriate for name"""
+    return DICT_NAME_CODE[name][1](str)
 
 if __name__ == '__main__':
     print(":DICT_NAME_CODE=",DICT_NAME_CODE)

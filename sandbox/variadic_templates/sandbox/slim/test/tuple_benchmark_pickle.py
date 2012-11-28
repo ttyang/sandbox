@@ -28,6 +28,7 @@ class parse_range_abstract:
       """
       pass
   
+import time_cmd_name_codes
 class parse_range_time:
     """
     Concrete for parsing output from compiler performance measurement
@@ -45,9 +46,12 @@ class parse_range_time:
     def parse(self,range_values_str):
         found=self.range_values_re.search(range_values_str)
         range_values_lst=[]
+        #print(":range_names=",self.range_names)
         n=len(self.range_names)
-        for i in range(1,1+n):
-            range_val=float(found.group(i))
+        for i in range(n):
+            str_val=found.group(i+1)
+            #print(":i=",i,":str_val=",str_val)
+            range_val=time_cmd_name_codes.convert_str(self.range_names[i],str_val)
             range_values_lst.append(range_val)
         return range_values_lst
 

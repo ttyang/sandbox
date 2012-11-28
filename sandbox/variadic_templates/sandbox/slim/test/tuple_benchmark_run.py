@@ -71,7 +71,7 @@ def main(argv):
         ""\
       #
   tuple_min_size=10
-  tuple_max_size=15
+  tuple_max_size=10
   tuple_del_size=5
   name_domain=[
       [ 'compiler', compilers(COMPILER_MAP.keys())]
@@ -82,7 +82,7 @@ def main(argv):
   if benchmark_suffix == "mini" :
     name_domain.append( [ 'LAST_LESS', last(4,tuple_del_size)])
   else:
-    name_domain.append( [ 'TREE_DEPTH', tree_depth(4,7,1)])
+    name_domain.append( [ 'TREE_DEPTH', tree_depth(2,3,1)])
   domains=product_dep(
     map(lambda t: t[1], name_domain)
     )

@@ -19,67 +19,19 @@ compiler_exe: /home/evansl/download/llvm/svn/build/Release/bin/clang
 ]compilers
 domain_names['compiler', 'TUPLE_IMPL', 'TUPLE_SIZE', 'TUPLE_UNROLL_MAX', 'TREE_DEPTH']domain_names
 range_how['guage_time', 'UserTime', 'SystemTime', 'ElapsedTime', 'MajorPageFaults', 'MaxResidentSetSize', 'Swaps', 'ContextSwitches']range_how
-domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 4]domain_values
+domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 2]domain_values
 range_out[
-UserTime[1.29]SystemTime[0.23]ElapsedTime[3.67]MajorPageFaults[32112]MaxResidentSetSize[241856]Swaps[0]ContextSwitches[381]
+UserTime[0.56]SystemTime[0.07]ElapsedTime[0.63]MajorPageFaults[64]MaxResidentSetSize[140704]Swaps[0]ContextSwitches[13]
 ]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 5]domain_values
+domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 3]domain_values
 range_out[
-UserTime[1.21]SystemTime[0.12]ElapsedTime[1.35]MajorPageFaults[8]MaxResidentSetSize[268256]Swaps[0]ContextSwitches[6]
+UserTime[0.65]SystemTime[0.05]ElapsedTime[0.68]MajorPageFaults[0]MaxResidentSetSize[165408]Swaps[0]ContextSwitches[6]
 ]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 6]domain_values
+domain_values['clangxx', 'bcon12_horizontal', 10, -1, 2]domain_values
 range_out[
-UserTime[1.35]SystemTime[0.11]ElapsedTime[1.55]MajorPageFaults[56]MaxResidentSetSize[295232]Swaps[0]ContextSwitches[12]
+UserTime[0.38]SystemTime[0.05]ElapsedTime[0.45]MajorPageFaults[24]MaxResidentSetSize[108016]Swaps[0]ContextSwitches[6]
 ]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 10, -1, 7]domain_values
+domain_values['clangxx', 'bcon12_horizontal', 10, -1, 3]domain_values
 range_out[
-UserTime[1.58]SystemTime[0.18]ElapsedTime[1.89]MajorPageFaults[200]MaxResidentSetSize[322864]Swaps[0]ContextSwitches[12]
-]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 4]domain_values
-range_out[
-UserTime[1.33]SystemTime[0.15]ElapsedTime[1.46]MajorPageFaults[0]MaxResidentSetSize[295968]Swaps[0]ContextSwitches[5]
-]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 5]domain_values
-range_out[
-UserTime[1.56]SystemTime[0.20]ElapsedTime[1.76]MajorPageFaults[48]MaxResidentSetSize[336928]Swaps[0]ContextSwitches[6]
-]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 6]domain_values
-range_out[
-UserTime[1.96]SystemTime[0.18]ElapsedTime[2.15]MajorPageFaults[0]MaxResidentSetSize[378496]Swaps[0]ContextSwitches[56]
-]range_out
-domain_values['gcc4_8', 'bcon12_horizontal', 15, -1, 7]domain_values
-range_out[
-UserTime[2.34]SystemTime[0.18]ElapsedTime[2.64]MajorPageFaults[32]MaxResidentSetSize[421168]Swaps[0]ContextSwitches[7]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 10, -1, 4]domain_values
-range_out[
-UserTime[1.13]SystemTime[0.11]ElapsedTime[2.72]MajorPageFaults[27608]MaxResidentSetSize[146608]Swaps[0]ContextSwitches[228]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 10, -1, 5]domain_values
-range_out[
-UserTime[2.48]SystemTime[0.05]ElapsedTime[2.53]MajorPageFaults[0]MaxResidentSetSize[159296]Swaps[0]ContextSwitches[4]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 10, -1, 6]domain_values
-range_out[
-UserTime[16.85]SystemTime[0.08]ElapsedTime[17.36]MajorPageFaults[0]MaxResidentSetSize[170368]Swaps[0]ContextSwitches[3]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 10, -1, 7]domain_values
-range_out[
-UserTime[160.33]SystemTime[0.27]ElapsedTime[160.60]MajorPageFaults[0]MaxResidentSetSize[182624]Swaps[0]ContextSwitches[3]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 15, -1, 4]domain_values
-range_out[
-UserTime[1.58]SystemTime[0.05]ElapsedTime[1.62]MajorPageFaults[0]MaxResidentSetSize[169664]Swaps[0]ContextSwitches[4]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 15, -1, 5]domain_values
-range_out[
-UserTime[12.53]SystemTime[0.06]ElapsedTime[12.58]MajorPageFaults[0]MaxResidentSetSize[187472]Swaps[0]ContextSwitches[3]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 15, -1, 6]domain_values
-range_out[
-UserTime[173.84]SystemTime[0.30]ElapsedTime[174.20]MajorPageFaults[24]MaxResidentSetSize[207792]Swaps[0]ContextSwitches[6]
-]range_out
-domain_values['clangxx', 'bcon12_horizontal', 15, -1, 7]domain_values
-range_out[
-UserTime[2592.81]SystemTime[0.63]ElapsedTime[2593.48]MajorPageFaults[0]MaxResidentSetSize[229648]Swaps[0]ContextSwitches[3]
+UserTime[0.46]SystemTime[0.04]ElapsedTime[0.49]MajorPageFaults[0]MaxResidentSetSize[117424]Swaps[0]ContextSwitches[3]
 ]range_out
