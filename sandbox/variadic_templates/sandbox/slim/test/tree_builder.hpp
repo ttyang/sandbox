@@ -20,20 +20,58 @@
 #endif
 
 #ifndef TREE_DEPTH
-#define TREE_DEPTH 5
+#define TREE_DEPTH 2
 #endif
 
-template<int I>
+  template
+  < int Depth//tree depth
+  , int Index//index of tuple element (used in get<Index>(tuple))
+  >
+struct node_tag
+  /**@brief
+   *  A 'tag' to put into tree node showing at what
+   *  depth it's located in the tree, and what child
+   *  the node is in it's parent's node.
+   */
+{
+};
+
+  template
+  < int Depth
+  , int Index
+  , typename Children
+  >
+  using 
+tree_node
+  =tuple_bench<node_tag<Depth,Index>,Children>
+  ;
+  template
+  < int Depth
+  , int Index
+  , typename Children
+  >
+  tree_node<Depth,Index,Children>
+make_node
+  ( Children&& t
+  )
+  {
+      return ::make_tuple
+        ( node_tag<Depth,Index>()
+        , static_cast<Children&&>(t)
+        );
+  }
+
+template<int Depth>
 struct tree_builder
 {
-    #define M0(Z, N, D) ::make_tuple( static_cast<T &&>(t), std::integral_constant<int, N>())
-    #define M1(Z, N, D) auto BOOST_PP_CAT(tmp, N) = ::get<N>(res);
+    #define M0(Z, Index, D) ::make_node<Depth,Index>(static_cast<T &&>(t))
+    #define M1(Z, Index, D) auto BOOST_PP_CAT(tmp, Index) = ::get<Index>(res);
 
     template<typename T>
     static auto make_tree(T &&t)
-      -> decltype(tree_builder<I+1>::make_tree(::make_tuple(BOOST_PP_ENUM(TUPLE_SIZE, M0, ~))))
+      -> decltype(tree_builder<Depth+1>::make_tree(::make_tuple(BOOST_PP_ENUM(TUPLE_SIZE, M0, ~))))
     {
-        auto res = tree_builder<I+1>::make_tree(::make_tuple(BOOST_PP_ENUM(TUPLE_SIZE, M0, ~)));
+        auto res = tree_builder<Depth+1>::make_tree(::make_tuple(BOOST_PP_ENUM(TUPLE_SIZE, M0, ~)));
         // Get each element of the tuple.
         BOOST_PP_REPEAT(TUPLE_SIZE, M1, ~)
         return res;
@@ -44,7 +82,7 @@ struct tree_builder
 };
 
 template<>
-struct tree_builder<TREE_DEPTH+1>
+struct tree_builder<TREE_DEPTH>
 {
     template<typename T>
     static T make_tree(T &&t)

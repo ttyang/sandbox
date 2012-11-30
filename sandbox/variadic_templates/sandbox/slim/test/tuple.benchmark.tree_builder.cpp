@@ -12,11 +12,13 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 #include "./tree_builder.hpp"
+template<unsigned I>
+struct leaf
+{};
+
 int main()
 {
-    char sz[] = "hello";
-    tuple_bench<int, char(&)[6]> x = ::make_tuple(1, std::ref(sz));
-    auto y = tree_builder<1>::make_tree(::make_tuple(1, "hello", 3.14, 'a', x));
+    auto y = tree_builder<1>::make_tree(::make_tuple(leaf<100>(),leaf<101>(),leaf<102>()));
     return 0;
 }
 

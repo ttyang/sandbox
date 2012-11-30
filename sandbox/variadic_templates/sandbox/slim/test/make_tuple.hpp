@@ -1,11 +1,13 @@
 #ifndef MAKE_TUPLE_INCLUDE_HPP
 #define MAKE_TUPLE_INCLUDE_HPP
-#include <boost/preprocessor/stringize.hpp>
-#ifndef TUPLE_IMPL
-  #define TUPLE_IMPL bcon12_vertical
+#ifndef TUPLE_TEMPLATED_CTOR
+  #define TUPLE_TEMPLATED_CTOR 1
 #endif
+#ifndef TUPLE_IMPL
+  #define TUPLE_IMPL bcon12_horizontal
+#endif
+#include <boost/preprocessor/stringize.hpp>
 #include BOOST_PP_STRINGIZE(tuple_impl.TUPLE_IMPL.hpp)
-#if TUPLE_BENCH_TEMPLATED_CTOR == 1
 //Acknowlegements:
 //  The following code was adapted from part of the code in:
 //    https://github.com/ericniebler/home/blob/master/src/tuple/unrolled_tuple.hpp
@@ -39,10 +41,16 @@ namespace detail
 ///////////////////////////////////////////////////////////////////////////////
 // make_tuple
   template<typename ...T>
-  tuple_bench<detail::as_tuple_element<T>...> 
+    inline
+  tuple_bench<detail::as_tuple_element<T>...>
 make_tuple(T &&...t)
 {
-    return {t...};
+    typedef tuple_bench<detail::as_tuple_element<T>...> tuple_t;
+#if TUPLE_TEMPLATED_CTOR == 1
+    tuple_t a_tuple(static_cast<T &&>(t)...);
+#else
+    tuple_t a_tuple;
+#endif//TUPLE_TEMPLATED_CTOR == 1
+    return a_tuple;
 }
-#endif//TUPLE_BENCH_TEMPLATED_CTOR == 1
 #endif

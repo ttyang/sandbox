@@ -73,6 +73,21 @@ class tree_depth(object):
     else:
       return [2]
 
+class templated_ctor_flag(object):
+  "TUPLE_TEMPLATED_CTOR macro values(only used in tree_builder benchmark)"
+  def __init__(self, start=0, finish=1):
+    self.start=max(0,start)
+    self.finish=min(finish,1)
+  def __call__(self,xs):
+    if True:
+      return range(
+          self.start
+        , self.finish+1
+        , 1
+        )
+    else:
+      return [0,1]
+
 if __name__ == '__main__':
   tuple_max_size=8
   tuple_min_size=4
@@ -83,6 +98,7 @@ if __name__ == '__main__':
     , sizes(range(tuple_min_size,tuple_max_size+1,tuple_del_size))
     , last(tuple_min_size,tuple_del_size)
     , unroll_max()
+    , templated_ctor_flag()
     ])
   for element in domain():
       print(element)

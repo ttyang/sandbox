@@ -9,6 +9,7 @@
 //      To enable reuse in other code using #include's.
 //
 //=====================================================
+#include <type_traits>
 
 // C++11 eliminates the need for macros! Oh, wait ...
 #define RETURN(...) -> decltype(__VA_ARGS__) { return __VA_ARGS__; }

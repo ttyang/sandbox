@@ -3,16 +3,38 @@
 Run compilers on programs while recording resources usage.
 """
 from __future__ import print_function 
-from compiler_map import COMPILER_MAP
-from tuple_benchmark_tags import TAG_TUPLE
 import sys
-from datetime import datetime
 import subprocess
 
 from tuple_benchmark_domain import *
+from compiler_map import COMPILER_MAP
+from tuple_benchmark_tags import TAG_TUPLE
 import command_guage
 import tuple_benchmark_filenames
 import boost_root
+
+BOOST_ROOT_PATH=boost_root.path()
+
+IMPL_MAP_INC={}#implementation key -> -I include flags to compiler
+IMPL_MAP_INC["horizontal"]=\
+    ""\
+  #
+IMPL_MAP_INC["vertical"]=\
+    " -I"+BOOST_ROOT_PATH\
+  #
+IMPL_MAP_INC["bcon12_horizontal"]=\
+    " -I"+BOOST_ROOT_PATH\
+  #
+IMPL_MAP_INC["bcon12_vertical"]=\
+    " -I"+BOOST_ROOT_PATH\
+  #
+IMPL_MAP_INC["compstor"]=\
+    " -I"+BOOST_ROOT_PATH\
+  + " -I"+BOOST_ROOT_PATH+"/sandbox/rw/variadic_templates"\
+  #
+IMPL_MAP_INC["std"]=\
+    ""\
+  #
 
 def main(argv):
   """
@@ -43,46 +65,24 @@ def main(argv):
     guage_spec=argv[iarg:]
   src_filename=tuple_benchmark_filenames.src_filename(benchmark_suffix)
   #print("src_filename=",src_filename)
-  boost_root_path=boost_root.path()
-  impl_map_inc={}#implementation key -> -I include flags to compiler
-  if False:
-    impl_map_inc["horizontal"]=\
-        ""\
-      #
-  if False:
-    impl_map_inc["vertical"]=\
-        " -I"+boost_root_path\
-      #
-  if True:
-    impl_map_inc["bcon12_horizontal"]=\
-        ""\
-      #
-  if False:
-    impl_map_inc["bcon12_vertical"]=\
-        " -I"+boost_root_path\
-      #
-  if False:
-    impl_map_inc["compstor"]=\
-        " -I"+boost_root_path\
-      + " -I"+boost_root_path+"/sandbox/rw/variadic_templates"\
-      #
-  if False:
-    impl_map_inc["std"]=\
-        ""\
-      #
-  tuple_min_size=10
-  tuple_max_size=10
-  tuple_del_size=5
+  #[Define Domains.
+  compiler_domain=['gcc4_8','clangxx']
+  impl_domain=['bcon12_horizontal','bcon12_vertical']
+  tuple_size_domain_min=15
+  tuple_size_domain_max=15
+  tuple_size_domain_del=5
   name_domain=[
-      [ 'compiler', compilers(COMPILER_MAP.keys())]
-    , [ 'TUPLE_IMPL', impls(impl_map_inc.keys())]
-    , [ 'TUPLE_SIZE', sizes(range(tuple_min_size,tuple_max_size+1,tuple_del_size))]
+      [ 'compiler', compilers(compiler_domain)]
+    , [ 'TUPLE_IMPL', impls(impl_domain)]
+    , [ 'TUPLE_SIZE', sizes(range(tuple_size_domain_min,tuple_size_domain_max+1,tuple_size_domain_del))]
     , [ 'TUPLE_UNROLL_MAX', unroll_max()]
     ]
   if benchmark_suffix == "mini" :
-    name_domain.append( [ 'LAST_LESS', last(4,tuple_del_size)])
+    name_domain.append( [ 'LAST_LESS', last(4,tuple_size_domain_del)])
   else:
-    name_domain.append( [ 'TREE_DEPTH', tree_depth(2,3,1)])
+    name_domain.append( [ 'TREE_DEPTH', tree_depth(4,5,1)])
+    name_domain.append( [ 'TUPLE_TEMPLATED_CTOR', templated_ctor_flag(0,1)])
+  #]Define Domains.
   domains=product_dep(
     map(lambda t: t[1], name_domain)
     )
@@ -140,7 +140,7 @@ def main(argv):
         " -c "\
         + compiler_flags+" "\
         + compiler_macros+" "\
-        + impl_map_inc[macro_vals[0]]+" "\
+        + IMPL_MAP_INC[macro_vals[0]]+" "\
         + src_filename\
         #
       print(TAG_TUPLE.range_out+"[",file=run_fileobj)
