@@ -5,7 +5,7 @@ from __future__ import print_function
 
 def print_domain_range(domain_range):
   for domain_vals,range_vals in domain_range:
-    print(":domain=",domain_vals)
+    print(":domain=",domain_vals,sep="")
     #The reason for not using print("...",range_vals) instead
     #of the following is that the float values printed have
     #many decimal places.  For some strange reason, printing
