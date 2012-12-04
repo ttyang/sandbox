@@ -16,10 +16,10 @@
 #if defined (_MSC_VER)
 #  pragma warning(disable : 4267) //  '=' : conversion from 'size_t' to 'unsigned int'
 // in spirit
-#  pragma warning(disable : 4310) //  cast truncates constant value
-#  pragma warning(disable : 4512) //  assignment operator could not be generated
-#  pragma warning(disable : 4702) //  unreachable code
-#  pragma warning(disable : 4701) //  potentially uninitialized local variable 'old_iph' used
+#  pragma warning(disable : 4310) //  Cast truncates constant value.
+#  pragma warning(disable : 4512) //  Assignment operator could not be generated.
+#  pragma warning(disable : 4702) //  Unreachable code.
+#  pragma warning(disable : 4701) //  Potentially uninitialized local variable 'old_iph' used.
 #  pragma warning(disable : 4996) //  Deprecated.
 #endif
 
@@ -125,17 +125,17 @@ BOOST_AUTO_TEST_CASE( test1 )
 
   // Test the svg_element class.
 
-  svg_1d_plot my_plot;
-  // Check the default image sizes:
-  BOOST_CHECK_EQUAL(my_plot.x_size(), 500U);
-  BOOST_CHECK_EQUAL(my_plot.y_size(), 200U);
+  //svg_1d_plot my_plot;
+  //// Check the default image sizes:
+  //BOOST_CHECK_EQUAL(my_plot.x_size(), 500U);
+  //BOOST_CHECK_EQUAL(my_plot.y_size(), 200U);
 
-  my_plot.size(200U, 100U);
-  BOOST_CHECK_EQUAL(my_plot.x_size(), 200U);
-  my_plot.size(500U, 100U); // update x
-  BOOST_CHECK_EQUAL(my_plot.x_size(), 500U); // & check
-  my_plot.size(500U, 300U); // update y
-  BOOST_CHECK_EQUAL(my_plot.y_size(), 300U); // & check
+  //my_plot.size(200U, 100U);
+  //BOOST_CHECK_EQUAL(my_plot.x_size(), 200U);
+  //my_plot.size(500U, 100U); // update x
+  //BOOST_CHECK_EQUAL(my_plot.x_size(), 500U); // & check
+  //my_plot.size(500U, 300U); // update y
+  //BOOST_CHECK_EQUAL(my_plot.y_size(), 300U); // & check
 
  // // cout <<  my_plot.x_size() << endl; // 500
   //BOOST_CHECK_EQUAL(my_plot.x_size(), 500U);

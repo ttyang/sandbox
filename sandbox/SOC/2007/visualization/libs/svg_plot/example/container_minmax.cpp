@@ -171,7 +171,7 @@ pair<double, double> s(iter begin, iter end) // Data series to plot.
 template <class T> // T an STL container: for example: array<float>, vector<double> ...
 pair<double, double> s(const T& container) // Data series to plot.
 {
-  pair<T::const_iterator, typename T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
+  pair<typename T::const_iterator, typename T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
   cout << "minmax_elements " << *result.first << ' ' << *result.second << endl;
   std::pair<double, double > minmax; // Convert type of container T to double.
   minmax.first = *result.first;
@@ -179,7 +179,7 @@ pair<double, double> s(const T& container) // Data series to plot.
   return minmax; // pair<double, double>
 } // template <class T> int s  T an STL container: array, vector ...
 
-template <class T> // T an STL container: array, vector ...
+template <typename T> // T an STL container: array, vector ...
 std::pair<double, double> scale(const T& container) // Container Data series
 {
   //typedef typename <const T& >::const_iterator container_iterator;

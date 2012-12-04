@@ -8,7 +8,7 @@
     \author Paul A. Bristow
     \date 20 Feb 2009
 */
-// Copyright Paul A Bristow 2007
+// Copyright Paul A Bristow 2007, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -26,48 +26,49 @@
 #endif
 
 #include <boost/svg_plot/svg.hpp>
-  using boost::svg::svg;
-  using boost::svg::g_element;
-  using boost::svg::rect_element;
+  //using boost::svg::svg;
+  //using boost::svg::g_element;
+  //using boost::svg::rect_element;
 
 #include <boost/svg_plot/svg_fwd.hpp>
-
-  using namespace boost::svg;
-  // Is most convenient because otherwise all the colors used must be specified thus:
-  using boost::svg::black;
-  using boost::svg::white;
-  using boost::svg::red;
-  using boost::svg::blue;
+  //using namespace boost::svg;
+  //// Is most convenient because otherwise all the colors used must be specified thus:
+  //using boost::svg::black;
+  //using boost::svg::white;
+  //using boost::svg::red;
+  //using boost::svg::blue;
   // ... which may get tedious!
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
-  using std::boolalpha;
+  //using std::cout;
+  //using std::endl;
+  //using std::boolalpha;
 
 #include <vector>
   using std::vector;
 
 #include <string>
-  using std::string;
+//  using std::string;
 
 #include <boost/array.hpp>
-  using boost::array;
+//  using boost::array;
+  
+using namespace boost::svg;
 
-void symb(array<const poly_path_point, 6> shape, const poly_path_point position, const poly_path_point size, g_element& g)
+void symb(boost::array<const poly_path_point, 6> shape, const poly_path_point position, const poly_path_point size, g_element& g)
 {
-  vector<poly_path_point> shaped;
-  for(array<const poly_path_point, 6>::iterator i = shape.begin(); i != shape.end(); ++i)
+  std::vector<poly_path_point> shaped;
+  for(boost::array<const poly_path_point, 6>::iterator i = shape.begin(); i != shape.end(); ++i)
   {
     poly_path_point p = (*i);
     p.x *= size.x;
     p.y *= size.y;
     p.x += position.x;
     p.y += position.y;
-    std::cout << p << endl;
+    std::cout << p << std::endl;
     shaped.push_back(p);
   }
-  cout << endl;
+  std::cout << std::endl;
   // Can't return ref to shape because goes out of scope :-(
   g.push_back(new polygon_element(shaped, true) );
   return; // reference to g_element just added.
@@ -75,6 +76,24 @@ void symb(array<const poly_path_point, 6> shape, const poly_path_point position,
 
 int main()
 {
+  using std::cout;
+  using std::endl;
+  using std::boolalpha;
+
+  // Is most convenient because otherwise all the colors used must be specified thus:
+  using boost::svg::black;
+  using boost::svg::white;
+  using boost::svg::red;
+  using boost::svg::blue;
+  // ... which may get tedious!
+
+  using boost::svg::svg;
+  using boost::svg::g_element;
+  using boost::svg::rect_element;
+
+  using boost::array;
+   
+
   svg my_svg;
 
   cout << "Initial my_svg.document_size() " << my_svg.document_size() << endl; // == 0

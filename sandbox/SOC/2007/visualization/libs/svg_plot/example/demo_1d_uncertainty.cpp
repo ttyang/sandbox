@@ -1,11 +1,12 @@
-/*! \file demo_1d_uncertainty.cpp
+/*! \file
     \brief Simple plot of uncertainty of 1D data.
     \details An example to demonstrate simple 1D plot using two vectors,
      including showing values with uncertainty information as
      "plus minus" and degrees of freedom estimates.
-    \author Paul A. Bristow cpp
-    \date Mar 2009
+    \author Paul A. Bristow
 */
+
+// demo_1d_uncertainty.cpp
 
 // Copyright Paul A Bristow 2009, 2012
 
@@ -25,7 +26,7 @@
 /*`First we need a few includes to use Boost.Plot:
 */
 #include <boost/quan/unc.hpp>
-//#include <boost/quan/unc_init.hpp>
+
 // using boost::quan::unc; // Holds value and uncertainty formation.
 #include <boost/svg_plot/detail/functors.hpp>
 //  using boost::svg::detail::unc_1d_convert;
@@ -33,7 +34,7 @@
 using namespace boost::svg;
 
 #include <boost/svg_plot/show_1d_settings.hpp>
-void boost::svg::show_1d_plot_settings(svg_1d_plot&);
+//void boost::svg::show_1d_plot_settings(svg_1d_plot&);
 
 #include <iostream>
 // using std::cout;
@@ -161,8 +162,8 @@ demo_1d_uncertainty.cpp
 Linking...
 Embedding manifest...
 Autorun j:\Cpp\SVG\debug\demo_1d_uncertainty.exe
-3.1�0.02 (8)  4.2�0.01 (14)
-2.1�0.001 (30)  7.8�0.0025 (21)  3.4�0.03 6.9
+3.1?0.02 (8)  4.2?0.01 (14)
+2.1?0.001 (30)  7.8?0.0025 (21)  3.4?0.03 6.9
 Build Time 0:03
 //] [/demo_1d_uncertainty_output]
 */

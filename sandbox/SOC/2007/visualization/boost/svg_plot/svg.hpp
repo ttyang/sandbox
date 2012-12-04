@@ -391,17 +391,17 @@ public:
     y_size_(400), //!< Y-axis of the whole SVG image (default SVG units, default pixels).
     title_document_(""),  //!< This is a SVG document title, not a plot title.
     image_desc_(""), //!< Information about the SVG image, for example, the program that created it.
-    author_(""), //!< Author of image (defaults to the copyright holder).
     holder_copyright_(""),  //!< Name of copyright holder.
     date_copyright_(""), //!<  Date of copyright claim.
+    author_(""), //!< Author of image (defaults to the copyright holder).
     css_(""), //!< Stylesheet filename.
     filename_(""), //!< Name of file to which SVG XML has been written is embedded in the file as an XML comment (if written only to an ostream, filename will not appear in comment).
-    is_license_(false), //!< If true, license text is written as comment in SVG XML. (Default is no license).
     is_boost_license_(false), //!< If true, Boost license text is written as comment in SVG XML. (Default is no license). Suggested strings for license permission are "permits", "requires", or "prohibits", or "".
+    is_license_(false), //!< If true, license text is written as comment in SVG XML. (Default is no license).
     reproduction_("permits"), //!< Default license permits reproduction.
-    distribution_("permits"), //!< Default license permits distribution.
     attribution_("requires"), //!< Default license requires attribution.
     commercialuse_("permits"), //<! Default license permits commerical use.
+    distribution_("permits"), //!< Default license permits distribution.
     derivative_works_("permits"), //!< Default license permits derivative works.
     coord_precision_(3) //!< 3 decimal digits precision is enough for 1 in 1000 resolution: suits small image use. Higher precision (4, 5 or 6) will be needed for larger images, but increase the SVG XML file size, especially if there are very many data values.
   { // Default constructor.

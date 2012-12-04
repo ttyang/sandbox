@@ -164,6 +164,7 @@ std::ostream& operator<< (std::ostream& os, const chars& s)
   return os;
 }
 
+/*
 // Manipulator to set specified base and to show base letter O or X uppercase.
 // Usage: out << setupperbase(16) ...
 setupperbase::setupperbase(int b) : base(b)
@@ -182,7 +183,7 @@ std::ostream& operator<< (std::ostream& os, const setupperbase& s)
     );
   return os;
 } // std::ostream& operator<< (std::ostream& os, const setupperbase& s)
-
+*/
 void outIOstates(std::ios_base::iostate rdState, std::ostream& os, const char* term)
 { // Usages:
   // Default logs cout iostate to cerr, for example "IOstate: good", or "IOstate: fail"

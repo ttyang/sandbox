@@ -2,38 +2,64 @@
 
 # Runs SVG Plot examples
 
-# Copyright 2009 Paul A. Bristow.
+# Copyright 2009, 2012 Paul A. Bristow.
 
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-# bring in the rules for testing
+# Bring in the rules for testing.
 import testing ;
+import path ;
+import modules ;
+import os ;
+
+if [ os.name ] = NT
+{
+  
+}
+
+echo "Building SVGplot examples." ;
+
 
 project
-    : requirements
+    :  requirements
+      <define>BOOST_ALL_NO_LIB # Avoid using 'libboost_math_c99-vc100-mt-gd-1_53.lib'. 
+      #  GCC
+      <toolset>gcc:<cxxflags>-w # Inhibit all warning messages.     
       <toolset>gcc:<cxxflags>-Wno-missing-braces
-      <toolset>darwin:<cxxflags>-Wno-missing-braces
-      <toolset>acc:<cxxflags>+W2068,2461,2236,4070
-      <toolset>intel:<cxxflags>-Qwd264,239
+      #<toolset>gcc:<cxxflags>-std=c++0x
+      # Darwin
+      #<toolset>darwin:<cxxflags>-Wno-missing-braces
+      #<toolset>acc:<cxxflags>+W2068,2461,2236,4070
+      #<toolset>intel:<cxxflags>-Qwd264,239
+      #  Clang
+      <toolset>clang:<cxxflags>-w # Inhibit all warning messages. 
+      <toolset>clang:<cxxflags>-fpermissive
+      #<toolset>clang:<cxxflags>-Wno-reorder
+      #<toolset>clang:<cxxflags>-Wno-unused-variable
+      #<toolset>clang:<link>static 
+      #  MSVC
+      #<toolset>msvc:<link>static      
       <toolset>msvc:<warnings>all
-      <toolset>msvc:<asynch-exceptions>on
-      <toolset>msvc:<cxxflags>/wd4800 # forcing value to bool 'true' or 'false'
+      #<toolset>msvc:<asynch-exceptions>on
+      <toolset>msvc:<cxxflags>/wd4800 # Forcing value to bool 'true' or 'false'
       <toolset>msvc:<cxxflags>/wd4996 # Deprecated.
-      <toolset>msvc:<cxxflags>/wd4512 # assignment operator could not be generated.
-      <toolset>msvc:<cxxflags>/wd4610
-      <toolset>msvc:<cxxflags>/wd4510
-      <toolset>msvc:<cxxflags>/wd4127
-      <toolset>msvc:<cxxflags>/wd4701
-      <toolset>msvc:<cxxflags>/wd4127 # expression is constant.
-      <toolset>msvc:<cxxflags>/wd4305
-      <toolset>msvc:<cxxflags>/wd4503 # decorated name length exceeded, name was truncated.
-      <toolset>msvc:<cxxflags>/wd4180 # qualifier applied to function type has no meaning; ignored.
-      <include>../../..
-      <include>$(boost_root)
-    ;
+      <toolset>msvc:<cxxflags>/wd4512 # Assignment operator could not be generated.
+      #<toolset>msvc:<cxxflags>/wd4610 # 
+      #<toolset>msvc:<cxxflags>/wd4510 #
+      #<toolset>msvc:<cxxflags>/wd4701 #
+      <toolset>msvc:<cxxflags>/wd4127 # Expression is constant.
+      #<toolset>msvc:<cxxflags>/wd4305 #
+      #<toolset>msvc:<cxxflags>/wd4503 # Decorated name length exceeded, name was truncated.
+      #<toolset>msvc:<cxxflags>/wd4180 # Qualifier applied to function type has no meaning; ignored.
 
-run 1d_full_layout.cpp ;
+      <include>../../../ # boost-sandbox/SOC/2007/visualization
+      <include>../../../../../../../ # boost-trunk
+      <include>../../../..//quan/ # boost-sandbox/SOC/2007/quan
+    ;
+    
+
+run 1d_full_layout.cpp ; 
 run 1d_simple_style.cpp ;
 run 1d_x_external.cpp ;
 run 1d_x_grid.cpp ;
@@ -83,7 +109,7 @@ run demo_svg_tspan.cpp ; # Demonstration of tspan commands.
 run svg_colors.cpp ;
 run svg_test.cpp ;
 run svg_test_boxplot.cpp ;
-run demo_fp_compare.cpp ;  #
+#run demo_fp_compare.cpp ;  #
 
 #run test_1d_color_consistency.cpp ;
 #run test_legend_place.cpp ;
@@ -94,7 +120,6 @@ run demo_fp_compare.cpp ;  #
 #run test_sci.cpp ;
 #run test_unc.cpp ;
 #run test_unc_pair.cpp ;
-
 #run default_1d_plot.cpp ;
 #run default_2d_plot.cpp ;
 #run test_axis_scaling.cpp ;

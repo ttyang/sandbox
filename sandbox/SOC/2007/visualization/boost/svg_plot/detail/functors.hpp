@@ -111,11 +111,11 @@ class pair_double_2d_convert
 public:
     typedef std::pair<double, double> result_type; //!< result type is a pair (X and Y) of doubles.
 
-    double i; //!< Start value.
+    double i; //!< Current value, 1st set by start(double i0).
 
-    void start(double i)
+    void start(double i0)
     { //! Set a start value.
-      i = i;
+      i = i0;
     }
 
      //! Convert a pair of X and Y (whose types can be converted to double values) to a pair of doubles.
@@ -143,11 +143,11 @@ class pair_unc_2d_convert
 public:
     typedef std::pair<unc<correlated>, unc<correlated> > result_type; //!< result type is pair of uncertain values.
 
-    unc<correlated> i; //!< Start uncertain value.
+    unc<correlated> i;  //!< Current uncertaint value, 1st set by start(double i0).
 
-    void start(unc<correlated> i)
+    void start(unc<correlated> i0)
     { //!< Set a start value.
-       i = i;
+       i = i0;
     }
 
     //!< \tparam T type convertible to double.
@@ -176,11 +176,11 @@ public:
     typedef std::pair<Meas, unc<correlated> > result_type;
     //!< result type is pair of uncertain values.
 
-    Meas i; //!< Start Meas (uncun + datetime etc) value.
+    Meas i; //!< Current Meas (uncun + datetime etc) value.
 
-    void start(Meas i)
+    void start(Meas i0)
     { //!< Set a start value.
-       i = i;
+       i = i0;
     }
 
     //!< \tparam T type convertible to double.

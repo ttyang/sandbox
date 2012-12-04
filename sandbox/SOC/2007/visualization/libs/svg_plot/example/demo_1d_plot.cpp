@@ -33,7 +33,7 @@
   using boost::svg::svg_1d_plot;
 
 #include <boost/svg_plot/show_1d_settings.hpp>
- void boost::svg::show_1d_plot_settings(svg_1d_plot&);
+// void boost::svg::show_1d_plot_settings(svg_1d_plot&);
 
 #include <boost/svg_plot/svg_fwd.hpp> // forward declarations.
 // for testing its correctness.

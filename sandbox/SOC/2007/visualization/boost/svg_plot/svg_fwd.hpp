@@ -7,7 +7,7 @@
 */
 
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2007, 2008
+// Copyright Paul A. Bristow 2007, 2008, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -52,7 +52,8 @@ svg_style& stroke_width(unsigned int width);
 // \detail\svg_style.hpp
 
 using boost::svg::detail::plot_doc_structure;
-enum plot_doc_structure;
+
+// enum plot_doc_structure; // ISO C++ forbids forward references to 'enum' types
 
 // svg.hpp
 // Chainable set and get member functions for:

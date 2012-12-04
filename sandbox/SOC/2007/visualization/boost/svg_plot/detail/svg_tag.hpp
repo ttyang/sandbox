@@ -5,11 +5,12 @@
       svg_tag.hpp defines all classes that can occur in the SVG parse tree.
 
    \author Jacob Voytko and Paul A. Bristow
-   \date Mar 2009
 */
 
+// svg_tag.hpp
+
 // Copyright Jacob Voytko 2007, 2008
-// Copyright Paul A Bristow 2007, 2008, 2009
+// Copyright Paul A Bristow 2007, 2008, 2009, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -234,7 +235,7 @@ namespace svg
         /details Straight line from SVG location (x1, y1) to (x2, y2).
 
     */
-  public: //temporary for experimental gil
+  public: 
 //  private:
     double x1_; //!< Line from (x1_, x2_) to (y1_, y2_)
     double x2_; //!< Line from (x1_, x2_) to (y1_, y2_)
@@ -243,7 +244,7 @@ namespace svg
 
   public:
     line_element(double x1, double y1, double x2,  double y2)
-      :   x1_(x1), y1_(y1),  x2_(x2), y2_(y2)
+      :   x1_(x1), x2_(x2),  y1_(y1), y2_(y2)
     { //! Constructor assigning all line_element private data.
     }
 
@@ -254,7 +255,7 @@ namespace svg
                  const std::string& id_name = "",
                  const std::string& class_name = "",
                  const std::string& clip_name = "")
-                : x1_(x1), y1_(y1), x2_(x2), y2_(y2),
+                : x1_(x1), x2_(x2), y1_(y1), y2_(y2),
                   svg_element(style_info, id_name, class_name, clip_name)
     { //! Constructor assigning all line_element private data,
       //! and also inherited svg_element data.
@@ -278,12 +279,12 @@ namespace svg
     */
   public: //temporary for experimental gil
 //  private:
-    double x1_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_)
-    double x2_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_)
-    double y1_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_)
-    double y2_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_)
-    double x3_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_)
-    double y3_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_)
+    double x1_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_).
+    double x2_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_).
+    double y1_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_).
+    double y2_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_).
+    double x3_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_).
+    double y3_; //!< Quadratic curved line from (x1_, y1_) control point (x2_, y2_) to (y3_, y3_).
 
   public:
     // bool fill; now inherited from parent svg class.
@@ -300,7 +301,7 @@ namespace svg
                  const std::string& id_name="",
                  const std::string& class_name="",
                  const std::string& clip_name = "")
-                : x1_(x1), y1_(y1), x2_(x2), y2_(y2), x3_(x3), y3_(y3),
+                : x1_(x1),x2_(x2),  y1_(y1), y2_(y2), x3_(x3), y3_(y3),
                   svg_element(style_info, id_name, class_name, clip_name)
     { //!< Quadratic curved line constructor, including svg_element info.
     }
@@ -357,8 +358,9 @@ namespace svg
                  const std::string& id_name,
                  const std::string& class_name,
                  const std::string& clip_name)
-      : x_(x), y_(y), width_(w), height_(h),
-        svg_element(style_info, id_name, class_name, clip_name)
+      :
+        svg_element(style_info, id_name, class_name, clip_name),
+        x_(x), y_(y), width_(w), height_(h)
     { //! Constructor defines all private data (inherites info from svg_element).
     }
 
@@ -452,8 +454,9 @@ namespace svg
                  const std::string& class_name="",
                  const std::string& clip_name=""
                  )
-      : x(x), y(y), radius(radius),
-        svg_element(style_info, id_name, class_name, clip_name)
+      :
+        x(x), y(y),
+        svg_element(style_info, id_name, class_name, clip_name), radius(radius)
     { //! Constructor defines all private data.
     }
 
@@ -502,8 +505,9 @@ namespace svg
       const std::string& id_name="", //!< ID of group, for example: PLOT_X_TICKS_VALUES.
       const std::string& class_name="", //!< Name of SVG class, for example: "grid_style".
       const std::string& clip_name="") //!< name of clip path.
-      : cx_(cx), cy_(cy), rx_(rx), ry_(ry), rotate_(0.),
-        svg_element(style_info, id_name, class_name, clip_name)
+      : 
+        svg_element(style_info, id_name, class_name, clip_name),
+          cx_(cx), cy_(cy), rx_(rx), ry_(ry), rotate_(0.)
     { //!< Constructor sets ellipse and its style (defaults define all private data).
     }
     ellipse_element(
@@ -514,8 +518,9 @@ namespace svg
         const std::string& class_name = "", //!< Name of SVG class."grid_style"
         const std::string& clip_name = "") //!< name of clip path.
       : cx_(cx), cy_(cy), rx_(4), ry_(8), // 4 and 8 are the same defaults used above.
-        rotate_(0.), // Horizontal.
-        svg_element(style_info, id_name, class_name, clip_name)
+        
+        svg_element(style_info, id_name, class_name, clip_name),
+        rotate_(0.) // Horizontal.
     {  //!< Constructor that also includes style, id, class and clip.
     }
 
@@ -606,10 +611,10 @@ private:
 public:
   tspan_element(const std::string& text, //!< Text string to display.
     const text_style& style = no_style) //!< Text style (font).
-    :
-    x_(0), y_(0), dx_(0), dy_(0), rotate_(0), text_length_(0),
+  :
     use_x_(false), use_y_(false), use_text_length_(false),
-    style_(style), text_parent(text)
+    text_parent(text), style_(style),
+    x_(0), y_(0), dx_(0), dy_(0), rotate_(0), text_length_(0)
   { //! Construct tspan element (with all defaults except text string).
   }
 
@@ -893,10 +898,11 @@ public:
 
 tspan_element::tspan_element(const tspan_element& rhs)
     :
-    x_(rhs.x_), y_(rhs.y_), dx_(rhs.dx_), dy_(rhs.dy_), rotate_(rhs.rotate_),
     text_length_(rhs.text_length_), use_x_(rhs.use_x_), use_y_(rhs.use_y_),
-    use_text_length_(rhs.use_text_length_), style_(rhs.style_),
-    text_parent(rhs)
+    use_text_length_(rhs.use_text_length_), 
+    text_parent(rhs), style_(rhs.style_),
+    x_(rhs.x_), y_(rhs.y_), dx_(rhs.dx_), dy_(rhs.dy_), rotate_(rhs.rotate_)
+
   { // Separately defined constructor.
   } // tspan_element::tspan_element
 
@@ -1238,7 +1244,8 @@ public:
     } // void write(std::ostream& o_str)
 
     m_path(double x, double y, bool relative = false)
-      : x(x), y(y), path_point(relative)
+      : path_point(relative),
+        x(x), y(y) 
     { //! Construct a move to
     }
   }; // struct m_path
@@ -1284,7 +1291,7 @@ public:
     }
 
     l_path(double x, double y, bool relative = false)
-      : x(x), y(y), path_point(relative)
+      : x(x), path_point(relative), y(y)
     { //! Constructor defines all member variables.
     }
   }; // struct l_path
@@ -1309,7 +1316,7 @@ public:
     }
 
     h_path(double x, bool relative = false)
-    :  x(x), path_point(relative)
+    :  path_point(relative), x(x)
     { //!< Constructor defines all member variables.
     }
   }; // struct h_path
@@ -1334,7 +1341,7 @@ public:
     }
 
     v_path(double y, bool relative = false)
-      : y(y), path_point(relative)
+      :  path_point(relative), y(y)
     { //!< Constructor (defines all member variables).
     }
   }; // struct v_path
@@ -1368,7 +1375,7 @@ public:
 
     c_path(double x1, double y1, double x2, double y2,
             double x, double y, bool relative = false)
-      : x1(x1), y1(y1), x2(x2), y2(y2), x(x), y(y), path_point(relative)
+      : path_point(relative), x1(x1), y1(y1), x2(x2), y2(y2), x(x), y(y)
     { //!< Constructor defines all member variables.
     }
   }; // struct c_path
@@ -1397,7 +1404,7 @@ public:
     }
 
     q_path(double x1, double y1, double x, double y, bool relative = false)
-      : x1(x1), y1(y1), x(x), y(y), path_point(relative)
+      : path_point(relative), x1(x1), y1(y1), x(x), y(y)
     { //! Constructor quadratic Bezier curve.
     }
   }; //struct q_path

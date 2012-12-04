@@ -40,7 +40,7 @@ First some includes to use Boost.Plot
 
 #include <boost/svg_plot/show_1d_settings.hpp>
 // Only needed for showing which settings in use.
- void boost::svg::show_1d_plot_settings(svg_1d_plot&);
+// void boost::svg::show_1d_plot_settings(svg_1d_plot&);
  // (Also provides operator<< for std::pair).
 
 #include <boost/algorithm/minmax.hpp>

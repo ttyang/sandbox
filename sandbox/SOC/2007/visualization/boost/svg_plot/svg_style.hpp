@@ -356,8 +356,8 @@ public:
   : // Constructor.
   font_size_(size),
   font_family_(font),
-  style_(style),
   weight_(weight),
+  style_(style),
   stretch_(stretch),
   decoration_(decoration)
   { // text_style default constructor, defines defaults for all private members.
@@ -1171,8 +1171,8 @@ public:
     dim dim_; //!< X, Y, or None.
     double min_; //!< Minimum x value (Cartesian units).
     double max_; //!< Maximum x value (Cartesian units).
-    double major_interval_; //!< Stride or interval between major x ticks (Cartesian units).
     double minor_interval_; //!< Interval (Cartesian units) between minor ticks.
+    double major_interval_; //!< Stride or interval between major x ticks (Cartesian units).
       // No set function because x_num_minor_ticks_ used to determine this instead,
       // but one could calculate x_minor_interval_.
     unsigned int num_minor_ticks_; //!< number of minor ticks, eg 4 gives major 0, minor 1,2,3,4, major 5 (All units in svg units, default pixels).
@@ -1217,26 +1217,25 @@ public:
     text_style value_label_style_; //!< text style (font, size...) for value labels.
 
      //! Constructor setting several parameters, but providing default values for all member data.
-     ticks_labels_style(
-      dim d = X, //!< X or Y axis (-1 if not assigned yet).
-      const text_style& style = no_style, //!< Default text font style.
-      double max = 10.,  //!< Maximum x value (Cartesian units).
-      double min = -10., //!< Minimum x value (Cartesian units).
-      double major_interval = 2., //!< Interval between major ticks.
-      unsigned int num_minor_ticks = 4) //!< Number of minor ticks between major ticks.
-      : // Constructor.
-      dim_(d),
-      value_label_style_(style),
-      max_(max), min_(min),
-      major_interval_(major_interval),
-      num_minor_ticks_(num_minor_ticks),
-    // Other data can be changed by set functions.
-
+    ticks_labels_style(
+    dim d = X, //!< X or Y axis (-1 if not assigned yet).
+    const text_style& style = no_style, //!< Default text font style.
+    double max = 10.,  //!< Maximum x value (Cartesian units).
+    double min = -10., //!< Minimum x value (Cartesian units).
+    double major_interval = 2., //!< Interval between major ticks.
+    unsigned int num_minor_ticks = 4) //!< Number of minor ticks between major ticks.
+    : // Constructor.
     // Initialize all private data.
+    // Other data can be changed by set functions.
+    dim_(d), // 1 or 2 D
+    min_(min),
+    max_(max),
+    minor_interval_(0), //!< Calculated from x & y_num_minor_ticks_
+    major_interval_(major_interval),
+    num_minor_ticks_(num_minor_ticks),
     // These are the plot defaults.
     // major_interval_(2.), // x stride between major ticks & value label.
     // num_minor_ticks_(4), // suits: major 0, minor 2, 4, 6, 8, major 10
-    minor_interval_(0), //!< Calculated from x & y_num_minor_ticks_
     // but given a value here for safety.
     major_tick_color_(black), // line stroke color.
     major_tick_width_(2),
@@ -1245,8 +1244,8 @@ public:
     minor_tick_width_(1),
     minor_tick_length_(2),
     major_grid_color_(svg_color(200, 220, 255)),
-    minor_grid_color_(svg_color(200, 220, 255)),
     major_grid_width_(1.), // pixels.
+    minor_grid_color_(svg_color(200, 220, 255)),
     minor_grid_width_(0.5), // pixels.
 
     up_ticks_on_(false), // Draw ticks up from horizontal X-axis line.
@@ -1269,10 +1268,11 @@ public:
     label_max_length_(0.), // length (estimated in SVG units) of longest label on axis.
     label_max_space_(0.), // Space (estimated in SVG units) of longest label on axis
     // adjusted for rotation.
-    ticks_on_window_or_on_axis_(-1) // Value labels & ticks on the plot window,
+    ticks_on_window_or_on_axis_(-1), // Value labels & ticks on the plot window,
     // rather than on X or Y-axis.
     // Default -1 means left or bottom of plot window.
-  {
+    value_label_style_(style)
+    {
       if(max_ <= min_)
       { // max_ <= min_.
         throw std::runtime_error("Axis ticks & labels range: max <= min!");
@@ -1719,8 +1719,8 @@ double string_svg_length(const std::string& s, const text_style& style)
   If possible use an actual length, but probably platform and/or browser-dependent,
   else use average char width,
   and deal with Unicode, for example &#x3A9; = greek omega,
-  counting each symbol(s) embedded between & amd ; as one character,
-  and ignore embedded xml like <sub> (not implemented by browsers yet).
+  counting each symbol(s) embedded between & and ; as one character,
+  and ignore embedded xml like <sub> (not implemented by all browsers yet).
   \endverbatim
   \return length of string in SVG units depending on text_style (font size etc).
  */
@@ -1733,19 +1733,19 @@ double string_svg_length(const std::string& s, const text_style& style)
     { // Start of Unicode 'escape sequence'
       in_esc = true;
        while ((*i != ';')
-         && (i != s.end())) // In case mistakenly not terminated.
+         && (i != s.end())) // In case mistakenly not null terminated.
        {
-          i++; // Only count Unicode string as 1 character wide.
+          i++; // Only count a Unicode string like &#x3A9; as 1 character (omega) wide.
        }
        in_esc = false;
     }
     if (*i == '<')
-    {
+    { // Embedded xml like <sub> or <super>.
       in_esc = true;
        while ((*i != '>')
          && (i != s.end())) // In case mistakenly not terminated.
        {
-          i++; // Only count <...>; as NO character wide.
+          // i++; // Only count <...>; as NO characters wide.
        }
        d--;
        in_esc = false;

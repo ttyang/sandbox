@@ -633,7 +633,7 @@ namespace svg
 */
 class svg_boxplot  : public detail::axis_plot_frame<svg_boxplot>
 {
-  friend svg_boxplot_series;
+  friend class svg_boxplot_series;
   friend class detail::axis_plot_frame<svg_boxplot>;
   // axis_plot_frame.hpp contains functions common to 1 and 2-D, and boxplot.
 
@@ -1091,7 +1091,7 @@ public:
       // and x_axis_ is svg coordinate of Y-axis (usually y = 0).
       // If not fix axis to bottom (or top) of the plot window.
       if ((x_axis_position_ == bottom) // All Y values definitely > zero.
-        )// && !(x_ticks_.ticks_on_window_or_on_axis_ < 0) ) // & not already at bottom.
+        && !(x_ticks_.ticks_on_window_or_on_axis_ < 0) ) // & not already at bottom.
       { // y_min_ > 0 so X-axis will not intersect Y-axis, so use plot window.
         x_axis_.axis_ = plot_bottom_; // Put X-axis on bottom.
       }
@@ -1112,14 +1112,14 @@ public:
       // and y_axis_ is svg coordinate of X-axis (usually x = 0).
       // Instead fix axis to left (or right) of the plot window.
       if ((y_axis_position_ == left) // All X values definitely > zero.
-         //&& !(y_ticks_.ticks_on_window_or_on_axis_ < 0) // & not already at left.
+         && !(y_ticks_.ticks_on_window_or_on_axis_ < 0) // & not already at left.
          )
       { // Y-axis will not intersect X -axis, so put Y-axis line on plot window.
         y_axis_.axis_ = plot_left_; // Y-axis to left,
         //plot_left_ += 2 * y_label_info_.font_size(); // with a space.
       }
       else if ((y_axis_position_ == right) // All X values definitely < zero.
-        //&& !(y_ticks_.ticks_on_window_or_on_axis_ > 0) // & not already at right.
+        && !(y_ticks_.ticks_on_window_or_on_axis_ > 0) // & not already at right.
         )
       {
         y_axis_.axis_ = plot_right_; // Y-axis to right of plot window,

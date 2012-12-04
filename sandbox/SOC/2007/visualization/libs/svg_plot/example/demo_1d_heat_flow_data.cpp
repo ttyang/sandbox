@@ -9,11 +9,11 @@
   This data was used in an example in the Boost.Math Library.
 
   \author Paul A Bristow
-  \date Mar 2009
-
 */
 
-// Copyright Paul A Bristow 2008
+// demo_1d_heat_flow_data.cpp
+
+// Copyright Paul A Bristow 2008, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -45,7 +45,7 @@
   using boost::svg::svg_boxplot;
 
 #include <boost/svg_plot/show_1d_settings.hpp>
- void boost::svg::show_1d_plot_settings(svg_1d_plot&);
+// void boost::svg::show_1d_plot_settings(svg_1d_plot&);
 
 #include <iostream> // for debugging.
   using std::cout;
