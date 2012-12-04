@@ -7,6 +7,7 @@
 #define BOOST_GRAPH_ZETA_GRID_GRAPH_FWD_HPP
 
 #include <utility>
+#include <cstddef>
 #include <boost/config.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/properties.hpp>

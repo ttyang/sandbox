@@ -11,6 +11,7 @@
 #include <functional>
 #include <algorithm>
 #include <numeric>
+#include <cstddef>
 
 #include <boost/config.hpp>
 #include <boost/cstdint.hpp>
