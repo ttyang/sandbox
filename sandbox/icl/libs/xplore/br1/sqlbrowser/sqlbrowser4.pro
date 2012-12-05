@@ -3,8 +3,10 @@ TARGET          = sqlbrowser
 
 QT              += sql
 
+INCLUDEPATH     += /cygwin/home/jofa/dev/boost/vsn/boost_1_47_0
 #INCLUDEPATH     += /cygwin/home/jofa/dev/boost/branches/release
-INCLUDEPATH     += C:\NIBuild\3rdparty\boost-1.48.0
+#INCLUDEPATH     += /cygwin/home/jofa/dev/boost_sandbox/icl
+#INCLUDEPATH     += C:\NIBuild\3rdparty\boost-1.48.0
 
 HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     exttableview.h \
@@ -68,6 +70,7 @@ symbian: include($$QT_SOURCE_TREE/demos/symbianpkgrules.pri)
 wince*: {
     DEPLOYMENT_PLUGIN += qsqlite
 }
+
 
 
 

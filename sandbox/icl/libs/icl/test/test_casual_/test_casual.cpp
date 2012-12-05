@@ -7,7 +7,7 @@ Copyright (c) 2008-2009: Joachim Faulhaber
 +-----------------------------------------------------------------------------*/
 #define BOOST_TEST_MODULE icl::casual unit test
 
-#define BOOST_ICL_TEST_CHRONO
+//#define BOOST_ICL_TEST_CHRONO
 
 #include <libs/icl/test/disable_test_warnings.hpp>
 
@@ -25,6 +25,8 @@ Copyright (c) 2008-2009: Joachim Faulhaber
 
 #include <boost/type_traits/is_same.hpp>
 
+#include <boost/algorithm/string.hpp>
+
 #include <boost/icl/gregorian.hpp>
 #include <boost/icl/ptime.hpp>
 
@@ -41,6 +43,34 @@ using namespace unit_test;
 using namespace boost::icl;
 using namespace boost::posix_time;
 using namespace boost::gregorian;
+
+namespace times
+{
+    //http://stackoverflow.com/questions/10732518/converting-stdstring-to-boostposix-timeptime
+
+    boost::posix_time::ptime create_iso(const std::string& timeString)
+    {
+        static time_input_facet* facet = NULL;
+        static std::stringstream timeStream;
+        if(!facet)
+        {
+            facet = new time_input_facet("%Y-%m-%dT%H:%M:%S");
+            timeStream.imbue(std::locale(std::locale::classic(), facet));
+        }
+
+        if (boost::iequals(timeString, "not-a-data-time"))
+            return boost::posix_time::ptime(boost::posix_time::min_date_time);
+        else
+        {
+            boost::posix_time::ptime time;
+            timeStream.clear();
+            timeStream.str(timeString);
+            //timeStream << timeString;
+            timeStream >> time;
+            return time;
+        }
+    }
+}
 
 
 BOOST_AUTO_TEST_CASE(casual)
@@ -70,6 +100,9 @@ BOOST_AUTO_TEST_CASE(casual)
     add_interval( m3, make_pair(interval<int>::right_open(0,6), 1) );
 
     new_show(m3);
+    cout << "-----------------------------\n";
+    cout << times::create_iso("2012-12-04T20:03:00") << endl;
+    cout << "-----------------------------\n";
 
     BOOST_CHECK_EQUAL(true, true);
 }

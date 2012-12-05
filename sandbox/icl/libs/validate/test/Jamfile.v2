@@ -122,10 +122,9 @@ test-suite "validate_itl"
         : : : <define>BOOST_ICL_USE_COMPARE_STD_GREATER
         : test_set_order_gt ]
     
-    #[ run test_map_order_/test_map_order.cpp ../src/gentor/gentorprofile.cpp 
-    #    : : : <define>BOOST_ICL_USE_COMPARE_STD_GREATER
-    #    : test_map_order_gt ]
-    #JODO compiler err: op > ambiguous
+    [ run test_map_order_/test_map_order.cpp ../src/gentor/gentorprofile.cpp 
+        : : : <define>BOOST_ICL_USE_COMPARE_STD_GREATER
+        : test_map_order_gt ]
         
     #[ run test_icl_morphic_/test_icl_morphic.cpp ../src/gentor/gentorprofile.cpp 
     #    : : : <define>BOOST_ICL_USE_COMPARE_STD_GREATER

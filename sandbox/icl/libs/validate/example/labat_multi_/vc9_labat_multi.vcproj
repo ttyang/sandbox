@@ -123,6 +123,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ITL_USE_STATIC_INTERVAL_BORDER_DEFAULTS"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
+				OpenMP="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
@@ -182,11 +183,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\labat_multi_\labat_multi.cpp"
+				RelativePath="..\..\src\gentor\gentorprofile.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\gentor\gentorprofile.cpp"
+				RelativePath="..\labat_multi_\labat_multi.cpp"
 				>
 			</File>
 		</Filter>
