@@ -6,6 +6,7 @@
 from __future__ import print_function 
 import sys, pickle
 from collections import namedtuple
+from enums import enumeration
 from print_domain_range import print_domain_range
 
 def main(argv):
@@ -20,23 +21,28 @@ def main(argv):
   print(":range_names_lst=",range_names_lst)
   #print(":domain_range_values=")
   #print_domain_range(domain_range_values)
-  domain_names_type=namedtuple('domain_names_indices',domain_names_lst)
-  d_ndx=domain_names_type._make(range(len(domain_names_lst)))
-  #print("domain_indices=",d_ndx)
+  d_ndx=enumeration(domain_names_lst).enumerators()
+  print("domain_indices=",d_ndx)
+  filt_fun=lambda (d_lst,r_lst)\
+    : True
   filt_dr=filter\
-    ( lambda (d_lst,r_lst)
-      : d_lst[d_ndx.TREE_DEPTH] == 5
+    ( filt_fun
     , domain_range_values
     )
   if False:
     print(":filt_dr=")
     print_domain_range(filt_dr)
+  sort_fun=lambda (d_lst,r_lst)\
+    : ( d_lst[d_ndx.TUPLE_SIZE]
+      , d_lst[d_ndx.TREE_DEPTH]
+      , d_lst[d_ndx.TUPLE_TEMPLATED_CTOR]
+      , d_lst[d_ndx.iter]
+      , d_lst[d_ndx.TUPLE_IMPL]
+      , d_lst[d_ndx.compiler]
+      )  
   sort_dr=sorted\
     ( filt_dr
-    , key=lambda (d_lst,r_lst)
-      : ( d_lst[d_ndx.compiler]
-        , d_lst[d_ndx.TUPLE_TEMPLATED_CTOR]
-        )
+    , key=sort_fun
     )
   if True:
     print(":sort_dr=")

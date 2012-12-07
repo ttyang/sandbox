@@ -17,4 +17,4 @@ tag_tuple=namedtuple\
 TAG_TUPLE=tag_tuple._make(tag_names)
 
 if __name__ == '__main__':
-    print TAG_TUPLE
+    print(TAG_TUPLE)

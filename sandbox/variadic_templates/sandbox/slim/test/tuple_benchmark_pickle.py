@@ -37,19 +37,17 @@ class parse_range_time:
 
     def __init__(self,names):
         self.range_names=names
-        range_values_pat=reduce(lambda pat,name: pat+name+"\[(.*)\]",names,"^")+"$"
-        self.range_values_re=re.compile(range_values_pat)
 
     def names(self):
         return self.range_names
 
     def parse(self,range_values_str):
-        found=self.range_values_re.search(range_values_str)
-        range_values_lst=[]
+        range_values_lst=range_values_str.split()
         #print(":range_names=",self.range_names)
+        #print(":range_values_lst=",range_values_lst)
         n=len(self.range_names)
         for i in range(n):
-            str_val=found.group(i+1)
+            str_val=range_values_lst[i]
             #print(":i=",i,":str_val=",str_val)
             range_val=time_cmd_name_codes.convert_str(self.range_names[i],str_val)
             range_values_lst.append(range_val)

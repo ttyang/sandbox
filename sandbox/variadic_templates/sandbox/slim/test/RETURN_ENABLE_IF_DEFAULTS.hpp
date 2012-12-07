@@ -9,19 +9,10 @@
 //      To enable reuse in other code using #include's.
 //
 //=====================================================
-#include <type_traits>
-
 // C++11 eliminates the need for macros! Oh, wait ...
 #define RETURN(...) -> decltype(__VA_ARGS__) { return __VA_ARGS__; }
 
-namespace detail_enable_if
-{
-    extern void* enabler;//only used in ENABLE_IF macro.
-}
-
-// New-style enable_if from Matt Calabrese
-#define ENABLE_IF(...) typename std::enable_if<(__VA_ARGS__)>::type *& = detail_enable_if::enabler
-
+#include "./ENABLE_IF.hpp"
 #include "./DEFAULTS.hpp"
 
 #endif

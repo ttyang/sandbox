@@ -9,17 +9,17 @@ TUPLE_NAME_CODES=\
     ( ('UserTime', ('%U',float))
     , ('SystemTime', ('%S',float))
     , ('ElapsedTime', ('%e',float))
-    , ('MajorPageFaults', ('%I',long))
-    , ('MaxResidentSetSize', ('%M',long))
-    , ('Swaps', ('%W',long))
-    , ('ContextSwitches', ('%w',long))
+    , ('MajorPageFaults', ('%I',int))
+    , ('MaxResidentSetSize', ('%M',int))
+    , ('Swaps', ('%W',int))
+    , ('ContextSwitches', ('%w',int))
     )
 
 DICT_NAME_CODE=dict(TUPLE_NAME_CODES)
 
 def lst_names(): 
     """the names in TUPLE_NAME_CODES"""
-    return map(lambda (name,code):name,TUPLE_NAME_CODES)
+    return list(map(lambda name_code:name_code[0],TUPLE_NAME_CODES))
 
 def fmtcode(name):
     """the format code for name"""

@@ -49,10 +49,8 @@ struct tuple_bench<>
 #define INIT(Z, N, D) t ## N(static_cast< U ## N && >( u ## N ))
 #define MEMBERS(Z, N, D) T ## N t ## N;
 
-#define BOOST_PP_LOCAL_MACRO(N)                                     \
-template<BOOST_PP_ENUM_PARAMS(N, typename T)>                       \
-struct tuple_bench<BOOST_PP_ENUM_PARAMS(N, T)>                      \
-{                                                                   \
+#if TUPLE_TEMPLATED_CTOR == 1
+  #define TEMPLATED_TUPLE_CTOR_GEN(N)                               \
     DEFAULTS(tuple_bench)                                           \
                                                                     \
     template<BOOST_PP_ENUM_PARAMS(N, typename U)                    \
@@ -62,6 +60,16 @@ struct tuple_bench<BOOST_PP_ENUM_PARAMS(N, T)>                      \
       : BOOST_PP_ENUM(N, INIT, ~)                                   \
     {}                                                              \
                                                                     \
+  /**/
+#else
+  #define TEMPLATED_TUPLE_CTOR_GEN(N)
+#endif  
+  
+#define BOOST_PP_LOCAL_MACRO(N)                                     \
+template<BOOST_PP_ENUM_PARAMS(N, typename T)>                       \
+struct tuple_bench<BOOST_PP_ENUM_PARAMS(N, T)>                      \
+{                                                                   \
+    TEMPLATED_TUPLE_CTOR_GEN(N)                                     \
     BOOST_PP_REPEAT(N, MEMBERS, ~)                                  \
 };                                                                  \
 /**/
@@ -69,10 +77,13 @@ struct tuple_bench<BOOST_PP_ENUM_PARAMS(N, T)>                      \
 #define BOOST_PP_LOCAL_LIMITS (1, TUPLE_UNROLL_MAX)
 #include BOOST_PP_LOCAL_ITERATE()
 
+#undef TEMPLATED_TUPLE_CTOR_GEN
+
 // A tuple type that can be statically initialized
 template<BOOST_PP_ENUM_PARAMS(TUPLE_UNROLL_MAX, typename T), typename ...Tail>
 struct tuple_bench<BOOST_PP_ENUM_PARAMS(TUPLE_UNROLL_MAX, T), Tail...>
 {
+  #if TUPLE_TEMPLATED_CTOR == 1
     DEFAULTS(tuple_bench)
 
     // Not explicit to allow things like: return {42, "allo"};.
@@ -84,6 +95,7 @@ struct tuple_bench<BOOST_PP_ENUM_PARAMS(TUPLE_UNROLL_MAX, T), Tail...>
       : BOOST_PP_ENUM(TUPLE_UNROLL_MAX, INIT, ~)
       , tail(static_cast<Rest &&>(rest)...) // std::forward is NOT constexpr!
     {}
+  #endif
 
     BOOST_PP_REPEAT(TUPLE_UNROLL_MAX, MEMBERS, ~)
     tuple_bench<Tail...> tail;
@@ -91,7 +103,6 @@ struct tuple_bench<BOOST_PP_ENUM_PARAMS(TUPLE_UNROLL_MAX, T), Tail...>
 
 #undef INIT
 #undef MEMBERS
-#undef DEFAULTS
 
 namespace detail
 {

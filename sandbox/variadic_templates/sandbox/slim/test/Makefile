@@ -1,6 +1,6 @@
 BENCHMARK.suffix=mini
 BENCHMARK.suffix=tree_builder
-GUAGE=guage_time #how to measure the performance (python class in compiler_guage.py)
+GUAGE=guage_time #how to measure the performance (python class in command_guage.py)
 
 TIMEFMT:=%Y%m%d_%H%M%S_%N
 TIMEVAL:=$(shell date +$(TIMEFMT))
@@ -26,7 +26,7 @@ FILT_PY=tuple_benchmark_filt.py
 
 %.$(OUT_SUFFIX).$(RUN_EXT): %.$(SRC_EXT) $(DOM_PY) $(RUN_PY)
 	#runs compiler on $<, recording preformance in $@
-	$(PYTHON) tuple_benchmark_run.py $(BENCHMARK.suffix) $(RUN_ID) $(GUAGE)
+	-python3.1 tuple_benchmark_run.py $(BENCHMARK.suffix) $(RUN_ID) $(GUAGE)
 
 .PHONY: domain
 domain: #prints the domains(inputs) used in $(RUN_FILENAME) target.

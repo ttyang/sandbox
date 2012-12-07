@@ -12,6 +12,9 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 //
+#ifdef TREE_BUILDER_TRACE
+#include <boost/utility/trace_scope.hpp>
+#endif
 #include "./make_tuple.hpp"
 #include <boost/preprocessor/repetition/enum.hpp>
 
@@ -35,7 +38,19 @@ struct node_tag
    */
 {
 };
+#ifdef TREE_BUILDER_TRACE
+  template<int Depth, int Index>
+  std::ostream&
+operator<<
+  ( std::ostream& a_out
+  , node_tag<Depth,Index>const& a_tag
+  )
+  {
+      a_out<<"node_tag<"<<Depth<<", "<<Index<<">";
+      return a_out;
+  }
 
+#endif
   template
   < int Depth
   , int Index
@@ -71,6 +86,11 @@ struct tree_builder
     static auto make_tree(T &&t)
       -> decltype(tree_builder<Depth+1>::make_tree(::make_tuple(BOOST_PP_ENUM(TUPLE_SIZE, M0, ~))))
     {
+      #ifdef TREE_BUILDER_TRACE
+        boost::trace_scope ts(":tree_builder<Depth>::make_tree.");
+        std::cout<<":Depth="<<Depth<<"\n";
+        std::cout<<":t="<<t<<"\n";
+      #endif
         auto res = tree_builder<Depth+1>::make_tree(::make_tuple(BOOST_PP_ENUM(TUPLE_SIZE, M0, ~)));
         // Get each element of the tuple.
         BOOST_PP_REPEAT(TUPLE_SIZE, M1, ~)
@@ -87,6 +107,11 @@ struct tree_builder<TREE_DEPTH>
     template<typename T>
     static T make_tree(T &&t)
     {
+      #ifdef TREE_BUILDER_TRACE
+        boost::trace_scope ts(":tree_builder<TREE_DEPTH>::make_tree.");
+        std::cout<<":TREE_DEPTH="<<TREE_DEPTH<<"\n";
+        std::cout<<":t==res="<<t<<"\n";
+      #endif
         return static_cast<T &&>(t);
     }
 };

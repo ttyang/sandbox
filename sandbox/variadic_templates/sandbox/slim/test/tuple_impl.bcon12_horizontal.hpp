@@ -14,7 +14,11 @@
 
 #include "./make_indexes.hpp"
 
-#include "./RETURN_ENABLE_IF_DEFAULTS.hpp"
+#if TUPLE_TEMPLATED_CTOR == 1
+  #include "./RETURN_ENABLE_IF_DEFAULTS.hpp"
+#else  
+  #include "./ENABLE_IF.hpp"
+#endif
 
 namespace detail
 {
@@ -23,7 +27,13 @@ namespace detail
     template<int I, typename T>
     struct tuple_elem
     {
+      #if TUPLE_TEMPLATED_CTOR == 1
         DEFAULTS(tuple_elem)
+      #else
+        //This #else code allows default CTOR if T not default constructable.
+        static T our_value;
+        tuple_elem():value(our_value){}
+      #endif
 
         template<typename U
           , ENABLE_IF(!std::is_same<U, tuple_elem &>::value)>
@@ -45,9 +55,9 @@ namespace detail
         // can't seem to expand two packs in lock step with unrolling. Huh.
       : tuple_elem<0, H>, tuple_elem<Ints, T>...
     {
+      #if TUPLE_TEMPLATED_CTOR == 1
         DEFAULTS(tuple_impl)
 
-      #if TUPLE_TEMPLATED_CTOR == 1
         template<typename U, typename ...V
           , ENABLE_IF(sizeof...(V) != 0 || !std::is_same<U, tuple_impl &>::value)>
         explicit constexpr tuple_impl(U &&u, V &&...v) // HACK around gcc bug #53036
@@ -98,9 +108,9 @@ struct tuple_bench<H, T...>
     , T...
     >
 {
+  #if TUPLE_TEMPLATED_CTOR == 1
     DEFAULTS(tuple_bench)
   
-  #if TUPLE_TEMPLATED_CTOR == 1
         typedef 
       detail::tuple_impl
       < typename detail::make_indexes<sizeof...(T)+1>::type

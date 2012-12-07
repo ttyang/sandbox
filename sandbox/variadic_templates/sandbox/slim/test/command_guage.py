@@ -28,6 +28,7 @@ class guage_abstract:
         pass
 
 import time_cmd_name_codes
+import functools
 
 class guage_time(guage_abstract):
     """
@@ -36,11 +37,12 @@ class guage_time(guage_abstract):
 
     def __init__( self, measured=time_cmd_name_codes.lst_names()):
         self.measured=measured
-        self.format=reduce\
-                    ( lambda fmt,name: fmt+name+"["+time_cmd_name_codes.fmtcode(name)+"]"
+        self.format=functools.reduce\
+                    ( lambda fmt,name: fmt+" "+time_cmd_name_codes.fmtcode(name)
                     , measured
                     , ""
-                    )
+                    )+"'"#just space delimited values.
+        self.format="'"+self.format[1:]
     def names(self):
         return self.measured
 
@@ -65,7 +67,7 @@ class guage_ftime(guage_abstract):
     This, of course, requires the command to take the -ftime-report flag.
     """
 
-    def names():
+    def names(self):
         return []
 
     def measure(self, command_exe, command_args, measure_out):
