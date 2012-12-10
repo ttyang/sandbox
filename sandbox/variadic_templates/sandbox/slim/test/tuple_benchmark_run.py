@@ -40,14 +40,14 @@ IMPL_MAP_INC["std"]=\
 
 def domain_defs(benchmark_suffix):
   """defines domains used in benchmark"""
-  compiler_domain=['clangxx']
+  compiler_domain=['clangxx_debass']
   niter=1#number of iterations to run with same values for other domains.
   impl_domain=\
     [ 'bcon12_horizontal'
-    #, 'bcon12_vertical'
+    , 'bcon12_vertical'
     ]
   tuple_size_domain_del=5
-  tuple_sizes_domain=range(10,11,tuple_size_domain_del)
+  tuple_sizes_domain=range(10,16,tuple_size_domain_del)
   name_domain=collections.OrderedDict\
     ( ( ('iter', lambda ignore:range(niter))
       , ('compiler', compilers(compiler_domain))
@@ -59,7 +59,7 @@ def domain_defs(benchmark_suffix):
   if benchmark_suffix == "mini" :
     name_domain['LAST_LESS']=lasts(4,tuple_size_domain_del)
   else:
-    name_domain['TREE_DEPTH']=tree_depths(2,4,1)
+    name_domain['TREE_DEPTH']=tree_depths(5,7,1)
     name_domain['TUPLE_TEMPLATED_CTOR']=templated_ctor_flags(1,2)
   domain_names=name_domain.keys()
   indices_type=collections.namedtuple('domain_indices',domain_names)

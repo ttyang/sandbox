@@ -1,6 +1,8 @@
 BENCHMARK.suffix=mini
 BENCHMARK.suffix=tree_builder
-GUAGE=guage_time #how to measure the performance (python class in command_guage.py)
+GUAGE=guage_gprof #how to measure the performance (python class in command_guage.py)
+#GUAGE=guage_time
+GUAGE=guage_heapprof
 
 TIMEFMT:=%Y%m%d_%H%M%S_%N
 TIMEVAL:=$(shell date +$(TIMEFMT))
