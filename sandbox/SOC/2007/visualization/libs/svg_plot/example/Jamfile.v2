@@ -45,6 +45,10 @@ project
       <toolset>msvc:<cxxflags>/wd4800 # Forcing value to bool 'true' or 'false'
       <toolset>msvc:<cxxflags>/wd4996 # Deprecated.
       <toolset>msvc:<cxxflags>/wd4512 # Assignment operator could not be generated.
+       <toolset>msvc:<cxxflags>/wd4245 #  'initializing' : conversion from 'int' to 'unsigned short', signed/unsigned mismatch
+       # needed for \boost/date_time/format_date_parser.hpp(66)
+        <toolset>msvc:<cxxflags>/wd4913 #  user defined binary operator ',' exists but no overload could convert all operands, default built-in binary operator ',' used
+     # needed for  boost/algorithm/minmax_element.hpp(103)
       #<toolset>msvc:<cxxflags>/wd4610 # 
       #<toolset>msvc:<cxxflags>/wd4510 #
       #<toolset>msvc:<cxxflags>/wd4701 #
