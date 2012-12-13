@@ -235,11 +235,11 @@ namespace svg
         /details Straight line from SVG location (x1, y1) to (x2, y2).
 
     */
-  public: 
+  public:
 //  private:
     double x1_; //!< Line from (x1_, x2_) to (y1_, y2_)
-    double x2_; //!< Line from (x1_, x2_) to (y1_, y2_)
     double y1_; //!< Line from (x1_, x2_) to (y1_, y2_)
+    double x2_; //!< Line from (x1_, x2_) to (y1_, y2_)
     double y2_; //!< Line from (x1_, x2_) to (y1_, y2_)
 
   public:
@@ -255,7 +255,7 @@ namespace svg
                  const std::string& id_name = "",
                  const std::string& class_name = "",
                  const std::string& clip_name = "")
-                : x1_(x1), x2_(x2), y1_(y1), y2_(y2),
+                : x1_(x1), y1_(y1), x2_(x2),y2_(y2),
                   svg_element(style_info, id_name, class_name, clip_name)
     { //! Constructor assigning all line_element private data,
       //! and also inherited svg_element data.
@@ -263,7 +263,7 @@ namespace svg
 
     void write(std::ostream& rhs)
     { /*! output line from (x1_, y1_) to (x2_, y2_) by
-       writeing XML SVG command to draw a straight line.
+       writing XML SVG command to draw a straight line.
        */
       /* \verbatim Example: <line x1="5" y1="185" x2="340" y2="185"/> \endverbatim */
       rhs << "<line x1=\"" << x1_ << "\" y1=\"" << y1_
@@ -505,7 +505,7 @@ namespace svg
       const std::string& id_name="", //!< ID of group, for example: PLOT_X_TICKS_VALUES.
       const std::string& class_name="", //!< Name of SVG class, for example: "grid_style".
       const std::string& clip_name="") //!< name of clip path.
-      : 
+      :
         svg_element(style_info, id_name, class_name, clip_name),
           cx_(cx), cy_(cy), rx_(rx), ry_(ry), rotate_(0.)
     { //!< Constructor sets ellipse and its style (defaults define all private data).
@@ -518,7 +518,7 @@ namespace svg
         const std::string& class_name = "", //!< Name of SVG class."grid_style"
         const std::string& clip_name = "") //!< name of clip path.
       : cx_(cx), cy_(cy), rx_(4), ry_(8), // 4 and 8 are the same defaults used above.
-        
+
         svg_element(style_info, id_name, class_name, clip_name),
         rotate_(0.) // Horizontal.
     {  //!< Constructor that also includes style, id, class and clip.
@@ -899,7 +899,7 @@ public:
 tspan_element::tspan_element(const tspan_element& rhs)
     :
     text_length_(rhs.text_length_), use_x_(rhs.use_x_), use_y_(rhs.use_y_),
-    use_text_length_(rhs.use_text_length_), 
+    use_text_length_(rhs.use_text_length_),
     text_parent(rhs), style_(rhs.style_),
     x_(rhs.x_), y_(rhs.y_), dx_(rhs.dx_), dy_(rhs.dy_), rotate_(rhs.rotate_)
 
@@ -1245,7 +1245,7 @@ public:
 
     m_path(double x, double y, bool relative = false)
       : path_point(relative),
-        x(x), y(y) 
+        x(x), y(y)
     { //! Construct a move to
     }
   }; // struct m_path

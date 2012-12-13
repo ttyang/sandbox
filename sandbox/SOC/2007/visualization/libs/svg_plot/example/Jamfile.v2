@@ -27,16 +27,16 @@ project
       #  GCC
       <toolset>gcc:<cxxflags>-w # Inhibit all warning messages.     
       <toolset>gcc:<cxxflags>-Wno-missing-braces
-      #<toolset>gcc:<cxxflags>-std=c++0x
+      <toolset>gcc:<cxxflags>-std=c++11
       # Darwin
       #<toolset>darwin:<cxxflags>-Wno-missing-braces
       #<toolset>acc:<cxxflags>+W2068,2461,2236,4070
       #<toolset>intel:<cxxflags>-Qwd264,239
       #  Clang
-      <toolset>clang:<cxxflags>-w # Inhibit all warning messages. 
-      <toolset>clang:<cxxflags>-fpermissive
-      #<toolset>clang:<cxxflags>-Wno-reorder
-      #<toolset>clang:<cxxflags>-Wno-unused-variable
+      #<toolset>clang:<cxxflags>-w # Inhibit all warning messages. 
+      <toolset>clang:<cxxflags>-std=c++11
+      <toolset>clang:<cxxflags>-Wno-reorder
+      <toolset>clang:<cxxflags>-Wno-unused-variable
       #<toolset>clang:<link>static 
       #  MSVC
       #<toolset>msvc:<link>static      

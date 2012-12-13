@@ -56,11 +56,9 @@ line_style_(black, blank, 2, false, false) // Default line style, black, no fill
   {  // Might be useful to have defaults for begin and end? But unclear how.
     //double temp = *i; // assume type is just double.
     //boost::svg::unc temp = *i; // Assumes unc type.
+    //unc<false> temp = *i; // Should provide double, unc, meas ... type.
     // So use auto to automatically make temp the right type.
-
-    unc<false> temp = *i; // Should provide double, unc, meas ... type.
-// TODO will
-    //auto temp = *i; // Should provide double, unc, meas ... type.
+    auto temp = *i; // Should provide double, unc, meas ... type.
     //std::cout << "typeid(temp).name() = " << typeid(temp).name() << std::endl;
     //   typeid(temp).name() = class Meas
     //   typeid(temp).name() = class boost::svg::unc
@@ -739,7 +737,7 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::s
   return serieses_[serieses_.size() - 1]; // Reference to data series just added.
 } // plot
 
-#ifdef _MSC_VER
+
 template <typename T, typename U>
 /*!
     \tparam T floating-point type of the data (which must be convertible to double).
@@ -764,9 +762,8 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& container, const std::string& tit
   );
   return serieses_[serieses_.size() - 1]; // Reference to data series just added.
 } // plot
-#endif // _MSC_VER
 
-#ifdef _MSC_VER
+
 template <typename T, typename U>
    /*!
       \tparam T floating-point type of the data (which must be convertible to double).
@@ -792,7 +789,7 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::s
   );
   return serieses_[serieses_.size() - 1]; //!< \return Reference to data series just added.
 } // plot
-#endif // _MSC_VER
+
 
 // End Definitions of svg_plot_series Public Member Functions.
 } // namespace svg
