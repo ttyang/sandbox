@@ -490,15 +490,47 @@ void test_exceptions_nd()
 template <typename T, size_t N>
 void test_swap_nd()
 {
-    static_vector<T, N> v;
-    static_vector<T, N/2> s;
+    {
+        static_vector<T, N> v;
+        static_vector<T, N> s;
 
-    for (size_t i = 0 ; i < N ; ++i )
-        v.push_back(T(i));
-    for (size_t i = 0 ; i < N/2 ; ++i )
-        s.push_back(T(i));
-    
-    //TODO
+        for (size_t i = 0 ; i < N ; ++i )
+            v.push_back(T(i));
+        for (size_t i = 0 ; i < N/2 ; ++i )
+            s.push_back(T(i));
+
+        s.swap(v);
+
+        BOOST_CHECK(v.size() == N/2);
+        BOOST_CHECK(s.size() == N);
+        for (size_t i = 0 ; i < N/2 ; ++i )
+            BOOST_CHECK(v[i] == T(i));
+        for (size_t i = 0 ; i < N ; ++i )
+            BOOST_CHECK(s[i] == T(i));
+    }
+    {
+        static_vector<T, N> v;
+        static_vector<T, N/2> s;
+
+        for (size_t i = 0 ; i < N/2 ; ++i )
+            v.push_back(T(i));
+        for (size_t i = 0 ; i < N/3 ; ++i )
+            s.push_back(T(i));
+
+        s.swap(v);
+
+        BOOST_CHECK(v.size() == N/3);
+        BOOST_CHECK(s.size() == N/2);
+        for (size_t i = 0 ; i < N/3 ; ++i )
+            BOOST_CHECK(v[i] == T(i));
+        for (size_t i = 0 ; i < N/2 ; ++i )
+            BOOST_CHECK(s[i] == T(i));
+    }
+    {
+        static_vector<T, N> v(N, T(0));
+        static_vector<T, N/2> s(N/2, T(1));
+        BOOST_CHECK_THROW(s.swap(v), std::bad_alloc);
+    }
 }
 
 int test_main(int, char* [])
@@ -568,6 +600,11 @@ int test_main(int, char* [])
     test_exceptions_nd<int, 10>();
     test_exceptions_nd<value_nd, 10>();
     test_exceptions_nd<counting_value, 10>();
+    BOOST_CHECK(counting_value::count() == 0);
+
+    test_swap_nd<int, 10>();
+    test_swap_nd<value_nd, 10>();
+    test_swap_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
 
     return 0;

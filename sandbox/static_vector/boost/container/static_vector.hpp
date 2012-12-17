@@ -110,8 +110,14 @@ struct error_handling
 
 }} // namespace detail::static_vector
 
-// Eventually size_type_t = typename boost::uint_value_t<Capacity>::least
-// however it will probably be slower
+// TODO
+
+// StoredSizeType needed?
+
+// Should StoredSizeType be typename boost::uint_value_t<Capacity>::least by default?
+// It would probably be slower
+
+// Pass error_handling as a template parameter and implement various ones?
 
 template <typename Value, std::size_t Capacity, typename StoredSizeType = std::size_t>
 class static_vector
@@ -140,14 +146,14 @@ public:
     explicit static_vector(size_type count)
         : m_size(0)
     {
-        resize(count);                                                              // may throw
+        this->resize(count);                                                        // may throw
     }
 
     // strong
     static_vector(size_type count, value_type const& value)
         : m_size(0)
     {
-        resize(count, value);                                                       // may throw
+        this->resize(count, value);                                                 // may throw
     }
 
     // strong
@@ -158,8 +164,8 @@ public:
     }
 
     // strong
-    template <size_t C>
-    static_vector(static_vector<value_type, C> const& other)
+    template <std::size_t C, typename S>
+    static_vector(static_vector<value_type, C, S> const& other)
         : m_size(other.size())
     {
         errh::check_capacity(other.size());                                         // may throw
@@ -173,22 +179,22 @@ public:
         : m_size(0)
     {
         // TODO - add MPL_ASSERT, check if Iterator is really an iterator
-        assign(first, last);                                                        // may throw
+        this->assign(first, last);                                                    // may throw
     }
 
     // basic
     static_vector & operator=(static_vector const& other)
     {
-        assign(other.begin(), other.end());                                         // may throw
+        this->assign(other.begin(), other.end());                                     // may throw
 
         return *this;
     }
 
     // basic
-    template <size_t C>
-    static_vector & operator=(static_vector<value_type, C> const& other)
+    template <std::size_t C, typename S>
+    static_vector & operator=(static_vector<value_type, C, S> const& other)
     {
-        assign(other.begin(), other.end());                                         // may throw
+        this->assign(other.begin(), other.end());                                     // may throw
 
         return *this;
     }
@@ -218,8 +224,38 @@ public:
             for (; other_it != other.end() ; ++it, ++other_it)
                 boost::swap(*it, *other_it);                                         // may throw
             this->uninitialized_copy(it, this->end(), other_it);                     // may throw
-            this->destroy(it, it->end());
+            this->destroy(it, this->end());
             boost::swap(m_size, other.m_size);
+        };
+    }
+
+    // basic
+    template <std::size_t C, typename S>
+    void swap(static_vector<value_type, C, S> & other)
+    {
+        errh::check_capacity(*this, other.size());
+        errh::check_capacity(other, this->size());
+
+        iterator it = this->begin();
+        iterator other_it = other.begin();
+
+        if ( this->size() < other.size() )
+        {
+            for (; it != this->end() ; ++it, ++other_it)
+                boost::swap(*it, *other_it);                                         // may throw
+            iterator other_it_backup = other_it;
+            for (; other_it != other.end() ; ++other_it)
+                this->push_back(*other_it);                                          // may throw
+            other.erase(other_it_backup, other.end());
+        }
+        else
+        {
+            for (; other_it != other.end() ; ++it, ++other_it)
+                boost::swap(*it, *other_it);                                         // may throw
+            iterator it_backup = it;
+            for (; it != this->end() ; ++it)
+                other.push_back(*it);                                                // may throw
+            this->erase(it_backup, this->end());
         }
     }
 
@@ -1159,6 +1195,12 @@ bool operator>= (static_vector<V, C, S> const& x, static_vector<V, C, S> const& 
 
 template<typename V, std::size_t C, typename S>
 inline void swap(static_vector<V, C, S> & x, static_vector<V, C, S> & y)
+{
+    x.swap(y);
+}
+
+template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
+inline void swap(static_vector<V, C1, S1> & x, static_vector<V, C2, S2> & y)
 {
     x.swap(y);
 }
