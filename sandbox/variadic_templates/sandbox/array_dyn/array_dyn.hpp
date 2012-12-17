@@ -196,23 +196,30 @@ array_host
         index_t const axis_size=my_array.size(axis_now);
         bool const is_leaf=axis_now==my_axis_end;
         index_t const axis_stride=my_array.stride(axis_now);
-        for(index_t i=0; i<axis_size; ++i)
+        if(0 == axis_size)
         {
-            a_viz.visit_pre(is_leaf, axis_now, i);
-            if(is_leaf)
-            {
-                a_viz.visit_node(my_array.my_data[offset]);
-            }
-            else
-            {
-                this->accept_off_ax
-                  ( a_viz
-                  , offset
-                  , axis_now+my_axis_dir
-                  );
-            }
-            offset+=axis_stride;
+            a_viz.visit_empty(is_leaf, axis_now);
         }
+        else
+        {//0 < axis_size
+            for(index_t i=0; i<axis_size; ++i)
+            {
+                a_viz.visit_pre(is_leaf, axis_now, i);
+                if(is_leaf)
+                {
+                    a_viz.visit_node(my_array.my_data[offset]);
+                }
+                else
+                {
+                    this->accept_off_ax
+                      ( a_viz
+                      , offset
+                      , axis_now+my_axis_dir
+                      );
+                }
+                offset+=axis_stride;
+            }
+        }//0 < axis_size
         a_viz.visit_post(is_leaf, axis_now);
     }
 };  
@@ -222,31 +229,53 @@ array_host
   >
   struct
 print_array
+  /**@brief
+   *  an instance of Array Visitor (i.e. argument to array_host<Array>::accept)
+   *  where Array is array_dyn<T> for some T.
+   */
 {
       std::ostream&
     my_sout
+      /**@brief
+       *  Where the array_dyn<T> is to be printed.
+       */
+    ;
+      unsigned
+    my_indent
+      /**@brief
+       *  Margin indentation increment.
+       *  Each successive axis of the array_dyn<T> is printed
+       *  at offset that's a multiple of my_indent.
+       *  For example, at axis, Iaxis, indentation is at my_indent*Iaxis.
+       */
     ;
         typedef typename
       array_dyn<T>::index_t
     index_t
     ;
-    print_array(std::ostream& a_sout)
+    print_array(std::ostream& a_sout, unsigned a_indent=2)
     : my_sout(a_sout)
+    , my_indent(a_indent)
     {}
+    
+    void visit_empty( bool is_leaf, index_t axis)
+    {
+        my_sout<<std::left<<std::setw(my_indent)<<"{";
+    }
     
     void visit_pre( bool is_leaf, index_t axis, index_t index)
     {
         if(index==0)
         {
-            my_sout<<"{ ";
+            my_sout<<std::left<<std::setw(my_indent)<<"{";
         }
         else
         {
             if(!is_leaf)
             {
-                my_sout<<std::setw(2*axis)<<"";
+                my_sout<<std::setw(my_indent*axis)<<"";
             }
-            my_sout<<", ";
+            my_sout<<std::left<<std::setw(my_indent)<<",";
         }
     }
     
@@ -259,7 +288,7 @@ print_array
     {
         if(!is_leaf)
         {
-            my_sout<<std::setw(2*axis)<<"";
+            my_sout<<std::setw(my_indent*axis)<<"";
         }
         my_sout<<"}\n";
     }

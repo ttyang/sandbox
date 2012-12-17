@@ -20,7 +20,25 @@ operator<<
       }
       sout<<"}";
       return sout;
-  }  
+  }
+  
+  template
+  < typename Arr
+  >
+  typename Arr::data_t::value_type
+assign_iota
+  ( Arr&arr
+  , typename Arr::data_t::value_type start=0
+  )
+  {
+      unsigned n=arr.my_data.size();
+      typedef typename Arr::data_t::value_type value_t;
+      for( unsigned i=0; i<n; ++i)
+      {
+          arr.my_data[i]=start+value_t(i);
+      }
+      return start+value_t(n);
+   }
 
 int main(void)
 {
@@ -78,26 +96,30 @@ int main(void)
         unsigned dir_op=dir_fwd;
         std::cout<<"********reshape demo***********\n";
         std::cout<<"dir_op="<<dir_op<<"\n";
-        std::vector<unsigned> shape({0,3});
+        std::vector<unsigned> shape({3,0});
         std::cout<<"shape="<<shape<<"\n";
         array_dyn<int> ai(dirs(dir_op),shape);
         unsigned const size=ai.my_data.size();
         std::cout<<"my_data.size()="<<size<<"\n";
-        unsigned const value0=1000;
-        for( unsigned i=0; i<size; ++i)
-        {
-            ai.my_data[i]=value0+i;
-        }
+        assign_iota(ai);
         std::cout<<"ai=\n";
         std::cout<<ai<<".\n";
-        shape[0]=1;
+        shape[1]=1;
         std::cout<<"shape="<<shape<<"\n";
         ai.reshape(shape);
+        assign_iota(ai);
         std::cout<<"ai=\n";
         std::cout<<ai<<".\n";
-        shape[0]=5;
+        shape[1]=5;
         std::cout<<"shape="<<shape<<"\n";
         ai.reshape(shape);
+        assign_iota(ai);
+        std::cout<<"ai=\n";
+        std::cout<<ai<<".\n";
+        shape[0]=0;
+        std::cout<<"shape="<<shape<<"\n";
+        ai.reshape(shape);
+        assign_iota(ai);
         std::cout<<"ai=\n";
         std::cout<<ai<<".\n";
     }
