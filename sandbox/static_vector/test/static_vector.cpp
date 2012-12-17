@@ -483,6 +483,20 @@ void test_exceptions_nd()
     }catch(std::bad_alloc &){}
 }
 
+template <typename T, size_t N>
+void test_swap_nd()
+{
+    static_vector<T, N> v;
+    static_vector<T, N/2> s;
+
+    for (size_t i = 0 ; i < N ; ++i )
+        v.push_back(T(i));
+    for (size_t i = 0 ; i < N/2 ; ++i )
+        s.push_back(T(i));
+    
+    //TODO
+}
+
 int test_main(int, char* [])
 {
     BOOST_CHECK(counting_value::count() == 0);

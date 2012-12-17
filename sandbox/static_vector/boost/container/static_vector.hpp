@@ -1123,6 +1123,49 @@ struct error_handling
 
 }} // namespace detail::static_vector
 
+// comparisons
+template<typename V, std::size_t C, typename S>
+bool operator== (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+{
+    return x.size() == y.size() && std::equal(x.begin(), x.end(), y.begin());
+}
+
+template<typename V, std::size_t C, typename S>
+bool operator< (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+{
+    return std::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
+}
+
+template<typename V, std::size_t C, typename S>
+bool operator!= (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+{
+    return !(x==y);
+}
+
+template<typename V, std::size_t C, typename S>
+bool operator> (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+{
+    return y<x;
+}
+
+template<typename V, std::size_t C, typename S>
+bool operator<= (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+{
+    return !(y<x);
+}
+
+template<typename V, std::size_t C, typename S>
+bool operator>= (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+{
+    return !(x<y);
+}
+
+template<typename V, std::size_t C, typename S>
+inline void swap(static_vector<V, C, S> & x, static_vector<V, C, S> & y)
+{
+    x.swap(y);
+}
+
 }} // namespace boost::container
 
 #endif // BOOST_CONTAINER_STATIC_VECTOR_HPP
