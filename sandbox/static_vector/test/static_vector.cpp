@@ -80,10 +80,12 @@ void test_ctor_nc(size_t n)
     BOOST_CHECK_THROW( s.at(n), std::out_of_range );
     if ( 1 < n )
     {
-        s[0] = T(10);
+        T val10(10);
+        s[0] = val10;
         BOOST_CHECK(T(10) == s[0]);
         BOOST_CHECK(T(10) == s.at(0));
-        s.at(1) = T(20);
+        T val20(20);
+        s.at(1) = val20;
         BOOST_CHECK(T(20) == s[1]);
         BOOST_CHECK(T(20) == s.at(1));
     }
@@ -122,10 +124,12 @@ void test_resize_nc(size_t n)
     BOOST_CHECK_THROW( s.at(n), std::out_of_range );
     if ( 1 < n )
     {
-        s[0] = T(10);
+        T val10(10);
+        s[0] = val10;
         BOOST_CHECK(T(10) == s[0]);
         BOOST_CHECK(T(10) == s.at(0));
-        s.at(1) = T(20);
+        T val20(20);
+        s.at(1) = val20;
         BOOST_CHECK(T(20) == s[1]);
         BOOST_CHECK(T(20) == s.at(1));
     }

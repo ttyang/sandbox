@@ -34,9 +34,79 @@
 namespace boost { namespace container {
 
 // Forward declaration
+template <typename Value, std::size_t Capacity, typename StoredSizeType>
+class static_vector;
+
 namespace detail { namespace static_vector {
 
-struct error_handling;
+struct error_handling
+{
+    template <typename V, std::size_t Capacity, typename S>
+    static void check_capacity(container::static_vector<V, Capacity, S> const&,
+                               typename container::static_vector<V, Capacity, S>::size_type s)
+    {
+        //BOOST_ASSERT_MSG(s <= Capacity, "size can't exceed the capacity");
+        if ( Capacity < s )
+            throw std::bad_alloc();
+    }
+
+    template <typename V, std::size_t C, typename S>
+    static void check_index_throwing(container::static_vector<V, C, S> const& v,
+                                     typename container::static_vector<V, C, S>::size_type i)
+    {
+        if ( v.size() <= i )
+            throw std::out_of_range("index out of bounds");
+    }
+
+    template <typename V, std::size_t C, typename S>
+    static void check_index(container::static_vector<V, C, S> const& v,
+                            typename container::static_vector<V, C, S>::size_type i)
+    {
+        BOOST_ASSERT_MSG(i < v.size(), "index out of bounds");
+    }
+
+    template <typename V, std::size_t C, typename S>
+    static void check_empty(container::static_vector<V, C, S> const& v)
+    {
+        BOOST_ASSERT_MSG(0 < v.size(), "the container is empty");
+    }
+
+    template <typename V, std::size_t C, typename S>
+    static void check_iterator_end_neq(container::static_vector<V, C, S> const& v,
+                                       typename container::static_vector<V, C, S>::const_iterator position)
+    {
+        BOOST_ASSERT_MSG(v.begin() <= position && position < v.end(), "iterator out of bounds");
+
+        /*BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(
+            difference_type dist = std::distance(this->begin(), position);
+        )
+        BOOST_ASSERT_MSG(
+            0 <= dist &&
+            ( sizeof(dist) <= sizeof(m_size) ?
+                (static_cast<size_type>(dist) < m_size) :
+                ( dist < static_cast<difference_type>(m_size))
+            ), "invalid iterator"
+        );*/
+    }
+
+    template <typename V, std::size_t C, typename S>
+    static void check_iterator_end_eq(container::static_vector<V, C, S> const& v,
+                                      typename container::static_vector<V, C, S>::const_iterator position)
+    {
+        BOOST_ASSERT_MSG(v.begin() <= position && position <= v.end(), "iterator out of bounds");
+
+        /*BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(
+            difference_type dist = std::distance(this->begin(), position);
+        )
+        BOOST_ASSERT_MSG(
+        0 <= dist &&
+            ( sizeof(dist) <= sizeof(m_size) ?
+                (static_cast<size_type>(dist) <= m_size) :
+                ( dist <= static_cast<difference_type>(m_size))
+            ), "invalid iterator"
+        );*/
+    }
+};
 
 }} // namespace detail::static_vector
 
@@ -825,7 +895,7 @@ public:
     }
 
     // strong
-    static_vector(size_type count, value_type const& value)
+    static_vector(size_type count, value_type const&)
     {
         errh::check_capacity(*this, count);                                         // may throw
     }
@@ -875,7 +945,7 @@ public:
     }
 
     // strong
-    void resize(size_type count, value_type const& value)
+    void resize(size_type count, value_type const&)
     {
         errh::check_capacity(*this, count);                                         // may throw
     }
@@ -887,7 +957,7 @@ public:
     }
 
     // strong
-    void push_back(value_type const& value)
+    void push_back(value_type const&)
     {
         errh::check_capacity(*this, 1);                                             // may throw
     }
@@ -899,14 +969,14 @@ public:
     }
 
     // basic
-    void insert(iterator position, value_type const& value)
+    void insert(iterator position, value_type const&)
     {
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, 1);                                             // may throw
     }
 
     // basic
-    void insert(iterator position, size_type count, value_type const& value)
+    void insert(iterator position, size_type count, value_type const&)
     {
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, count);                                         // may throw
@@ -914,7 +984,7 @@ public:
 
     // basic
     template <typename Iterator>
-    void insert(iterator position, Iterator first, Iterator last)
+    void insert(iterator, Iterator first, Iterator last)
     {
         // TODO - add MPL_ASSERT, check if Iterator is really an iterator
         typedef typename boost::iterator_traversal<Iterator>::type traversal;
@@ -946,7 +1016,7 @@ public:
     }
 
     // basic
-    void assign(size_type count, value_type const& value)
+    void assign(size_type count, value_type const&)
     {
         errh::check_capacity(*this, count);                                     // may throw
     }
@@ -1049,79 +1119,6 @@ private:
 };
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-
-namespace detail { namespace static_vector {
-
-struct error_handling
-{
-    template <typename V, std::size_t Capacity, typename S>
-    static void check_capacity(container::static_vector<V, Capacity, S> const& v,
-                               typename container::static_vector<V, Capacity, S>::size_type s)
-    {
-        //BOOST_ASSERT_MSG(s <= Capacity, "size can't exceed the capacity");
-        if ( Capacity < s )
-            throw std::bad_alloc();
-    }
-
-    template <typename V, std::size_t C, typename S>
-    static void check_index_throwing(container::static_vector<V, C, S> const& v,
-                                     typename container::static_vector<V, C, S>::size_type i)
-    {
-        if ( v.size() <= i )
-            throw std::out_of_range("index out of bounds");
-    }
-
-    template <typename V, std::size_t C, typename S>
-    static void check_index(container::static_vector<V, C, S> const& v,
-                            typename container::static_vector<V, C, S>::size_type i)
-    {
-        BOOST_ASSERT_MSG(i < v.size(), "index out of bounds");
-    }
-
-    template <typename V, std::size_t C, typename S>
-    static void check_empty(container::static_vector<V, C, S> const& v)
-    {
-        BOOST_ASSERT_MSG(0 < v.size(), "the container is empty");
-    }
-
-    template <typename V, std::size_t C, typename S>
-    static void check_iterator_end_neq(container::static_vector<V, C, S> const& v,
-                                       typename container::static_vector<V, C, S>::const_iterator position)
-    {
-        BOOST_ASSERT_MSG(v.begin() <= position && position < v.end(), "iterator out of bounds");
-
-        /*BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(
-            difference_type dist = std::distance(this->begin(), position);
-        )
-        BOOST_ASSERT_MSG(
-            0 <= dist &&
-            ( sizeof(dist) <= sizeof(m_size) ?
-                (static_cast<size_type>(dist) < m_size) :
-                ( dist < static_cast<difference_type>(m_size))
-            ), "invalid iterator"
-        );*/
-    }
-
-    template <typename V, std::size_t C, typename S>
-    static void check_iterator_end_eq(container::static_vector<V, C, S> const& v,
-                                      typename container::static_vector<V, C, S>::const_iterator position)
-    {
-        BOOST_ASSERT_MSG(v.begin() <= position && position <= v.end(), "iterator out of bounds");
-
-        /*BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(
-            difference_type dist = std::distance(this->begin(), position);
-        )
-        BOOST_ASSERT_MSG(
-        0 <= dist &&
-            ( sizeof(dist) <= sizeof(m_size) ?
-                (static_cast<size_type>(dist) <= m_size) :
-                ( dist <= static_cast<difference_type>(m_size))
-            ), "invalid iterator"
-        );*/
-    }
-};
-
-}} // namespace detail::static_vector
 
 // comparisons
 template<typename V, std::size_t C, typename S>
