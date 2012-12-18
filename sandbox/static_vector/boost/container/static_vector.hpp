@@ -132,7 +132,7 @@ class static_vector
 
 public:
     typedef Value value_type;
-    typedef std::size_t size_type;
+    typedef StoredSizeType size_type;
     typedef std::ptrdiff_t difference_type;
     typedef Value& reference;
     typedef Value const& const_reference;
@@ -212,6 +212,7 @@ public:
     }
 
     // nothrow
+    // swap (note: linear complexity)
     void swap(static_vector & other)
     {
 //        iterator it = this->begin();
@@ -244,6 +245,7 @@ public:
     }
 
     // basic
+    // swap (note: linear complexity)
     template <std::size_t C, typename S>
     void swap(static_vector<value_type, C, S> & other)
     {
@@ -339,6 +341,7 @@ public:
 
         this->uninitialized_fill(this->end(), *(this->end() - 1));              // may throw
         ++m_size; // update end
+        
         if ( position != this->end() )
         {
             // TODO - should following lines check for exception and revert to the old size?
@@ -827,9 +830,7 @@ private:
     void fill_dispatch(value_type * ptr, value_type const& v,
                        boost::true_type const& /*has_trivial_assign*/)
     {
-        // TODO - check if value_type has operator& defined and call this version only if it hasn't
-        const value_type * vptr = &v;
-        ::memcpy(ptr, vptr, sizeof(value_type));
+        ::memcpy(ptr, boost::addressof(v), sizeof(value_type));
     }
 
     template <typename V>
