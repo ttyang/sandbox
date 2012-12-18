@@ -320,7 +320,7 @@ public:
     }
 
     // basic
-    void insert(iterator position, value_type const& value)
+    iterator insert(iterator position, value_type const& value)
     {
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, m_size + 1);                                    // may throw
@@ -339,10 +339,12 @@ public:
             this->move_backward(position, this->end() - 2, this->end() - 1);        // may throw
             this->fill(position, value);                                            // may throw
         }
+
+        return position;
     }
 
     // basic
-    void insert(iterator position, size_type count, value_type const& value)
+    iterator insert(iterator position, size_type count, value_type const& value)
     {
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, m_size + count);                                // may throw
@@ -374,30 +376,36 @@ public:
                 std::fill_n(position, to_move, value);                                          // may throw
             }
         }
+
+        return position;
     }
 
     // basic
     template <typename Iterator>
-    void insert(iterator position, Iterator first, Iterator last)
+    iterator insert(iterator position, Iterator first, Iterator last)
     {
         // TODO - add MPL_ASSERT, check if Iterator is really an iterator
 
         typedef typename boost::iterator_traversal<Iterator>::type traversal;
         this->insert_dispatch(position, first, last, traversal());
+
+        return position;
     }
 
     // basic
-    void erase(iterator position)
+    iterator erase(iterator position)
     {
         errh::check_iterator_end_neq(*this, position);
 
         this->move(position + 1, this->end(), position);                            // may throw
         this->destroy(this->end() - 1);
         --m_size;
+
+        return position;
     }
 
     // basic
-    void erase(iterator first, iterator last)
+    iterator erase(iterator first, iterator last)
     {
         errh::check_iterator_end_eq(*this, first);
         errh::check_iterator_end_eq(*this, last);
@@ -408,6 +416,8 @@ public:
         this->move(last, this->end(), first);                                       // may throw
         this->destroy(this->end() - n, this->end());
         m_size -= n;
+
+        return first;
     }
 
     // basic

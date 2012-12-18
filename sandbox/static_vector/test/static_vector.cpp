@@ -307,6 +307,7 @@ template <typename T, size_t N>
 void test_erase_nd()
 {
     static_vector<T, N> s;
+    typedef typename static_vector<T, N>::iterator It;
     
     for ( size_t i = 0 ; i < N ; ++i )
         s.push_back(T(i));
@@ -316,7 +317,8 @@ void test_erase_nd()
         for ( size_t i = 0 ; i < N ; ++i )
         {
             static_vector<T, N> s1(s);
-            s1.erase(s1.begin() + i);
+            It it = s1.erase(s1.begin() + i);
+            BOOST_CHECK(s1.begin() + i == it);
             BOOST_CHECK(s1.size() == N - 1);
             for ( size_t j = 0 ; j < i ; ++j )
                 BOOST_CHECK(s1[j] == T(j));
@@ -331,7 +333,8 @@ void test_erase_nd()
         {
             static_vector<T, N> s1(s);
             size_t removed = i + n < N ? n : N - i;
-            s1.erase(s1.begin() + i, s1.begin() + i + removed);
+            It it = s1.erase(s1.begin() + i, s1.begin() + i + removed);
+            BOOST_CHECK(s1.begin() + i == it);
             BOOST_CHECK(s1.size() == N - removed);
             for ( size_t j = 0 ; j < i ; ++j )
                 BOOST_CHECK(s1[j] == T(j));
@@ -350,6 +353,8 @@ void test_insert_nd(T const& val)
     std::vector<T> v;
     std::list<T> l;
 
+    typedef typename static_vector<T, N>::iterator It;
+
     for ( size_t i = 0 ; i < h ; ++i )
     {
         s.push_back(T(i));
@@ -363,7 +368,8 @@ void test_insert_nd(T const& val)
         for ( size_t i = 0 ; i <= h ; ++i )
         {
             static_vector<T, N> s1(s);
-            s1.insert(s1.begin() + i, val);
+            It it = s1.insert(s1.begin() + i, val);
+            BOOST_CHECK(s1.begin() + i == it);
             BOOST_CHECK(s1.size() == h+1);
             for ( size_t j = 0 ; j < i ; ++j )
                 BOOST_CHECK(s1[j] == T(j));
@@ -378,7 +384,8 @@ void test_insert_nd(T const& val)
         for ( size_t i = 0 ; i <= h ; ++i )
         {
             static_vector<T, N> s1(s);
-            s1.insert(s1.begin() + i, n, val);
+            It it = s1.insert(s1.begin() + i, n, val);
+            BOOST_CHECK(s1.begin() + i == it);
             BOOST_CHECK(s1.size() == h+n);
             for ( size_t j = 0 ; j < i ; ++j )
                 BOOST_CHECK(s1[j] == T(j));
@@ -394,7 +401,8 @@ void test_insert_nd(T const& val)
         for ( size_t i = 0 ; i <= h ; ++i )
         {
             static_vector<T, N> s1(s);
-            s1.insert(s1.begin() + i, ss.begin(), ss.begin() + n);
+            It it = s1.insert(s1.begin() + i, ss.begin(), ss.begin() + n);
+            BOOST_CHECK(s1.begin() + i == it);
             BOOST_CHECK(s1.size() == h+n);
             for ( size_t j = 0 ; j < i ; ++j )
                 BOOST_CHECK(s1[j] == T(j));
@@ -409,7 +417,8 @@ void test_insert_nd(T const& val)
         for ( size_t i = 0 ; i <= h ; ++i )
         {
             static_vector<T, N> s1(s);
-            s1.insert(s1.begin() + i, v.begin(), v.begin() + n);
+            It it = s1.insert(s1.begin() + i, v.begin(), v.begin() + n);
+            BOOST_CHECK(s1.begin() + i == it);
             BOOST_CHECK(s1.size() == h+n);
             for ( size_t j = 0 ; j < i ; ++j )
                 BOOST_CHECK(s1[j] == T(j));
@@ -426,7 +435,8 @@ void test_insert_nd(T const& val)
             static_vector<T, N> s1(s);
             typename std::list<T>::iterator it = l.begin();
             std::advance(it, n);
-            s1.insert(s1.begin() + i, l.begin(), it);
+            It it1 = s1.insert(s1.begin() + i, l.begin(), it);
+            BOOST_CHECK(s1.begin() + i == it1);
             BOOST_CHECK(s1.size() == h+n);
             for ( size_t j = 0 ; j < i ; ++j )
                 BOOST_CHECK(s1[j] == T(j));
