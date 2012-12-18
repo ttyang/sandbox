@@ -15,9 +15,9 @@
 
 #include <boost/config.hpp>
 #include <boost/swap.hpp>
-
-#include <boost/iterator/reverse_iterator.hpp>
 #include <boost/integer.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
+#include <boost/utility/addressof.hpp>
 
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/if.hpp>
@@ -31,8 +31,6 @@
 #include <boost/type_traits/has_trivial_copy.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/type_traits/has_trivial_destructor.hpp>
-
-#include <boost/utility/addressof.hpp>
 
 namespace boost { namespace container {
 
@@ -112,15 +110,6 @@ struct error_handling
 };
 
 }} // namespace detail::static_vector
-
-// TODO
-
-// StoredSizeType needed?
-
-// Should StoredSizeType be typename boost::uint_value_t<Capacity>::least by default?
-// It would probably be slower
-
-// Pass error_handling as a template parameter and implement various ones?
 
 template <typename Value, std::size_t Capacity, typename StoredSizeType = std::size_t>
 class static_vector
