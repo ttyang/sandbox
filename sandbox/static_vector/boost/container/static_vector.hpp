@@ -122,6 +122,10 @@ struct error_handling
 template <typename Value, std::size_t Capacity, typename StoredSizeType = std::size_t>
 class static_vector
 {
+    typedef boost::aligned_storage<
+        sizeof(Value[Capacity]),
+        boost::alignment_of<Value[Capacity]>::value
+    > aligned_storage_type;
     typedef detail::static_vector::error_handling errh;
 
 public:
@@ -205,28 +209,36 @@ public:
         this->destroy(this->begin(), this->end());
     }
 
-    // basic
+    // nothrow
     void swap(static_vector & other)
     {
-        iterator it = this->begin();
-        iterator other_it = other.begin();
+//        iterator it = this->begin();
+//        iterator other_it = other.begin();
 
-        if ( this->size() < other.size() )
-        {
-            for (; it != this->end() ; ++it, ++other_it)
-                boost::swap(*it, *other_it);                                         // may throw
-            this->uninitialized_copy(other_it, other.end(), it);                     // may throw
-            this->destroy(other_it, other.end());
-            boost::swap(m_size, other.m_size);
-        }
-        else
-        {
-            for (; other_it != other.end() ; ++it, ++other_it)
-                boost::swap(*it, *other_it);                                         // may throw
-            this->uninitialized_copy(it, this->end(), other_it);                     // may throw
-            this->destroy(it, this->end());
-            boost::swap(m_size, other.m_size);
-        };
+//        if ( this->size() < other.size() )
+//        {
+//            for (; it != this->end() ; ++it, ++other_it)
+//                boost::swap(*it, *other_it);                                         // may throw
+//            this->uninitialized_copy(other_it, other.end(), it);                     // may throw
+//            this->destroy(other_it, other.end());
+//            boost::swap(m_size, other.m_size);
+//        }
+//        else
+//        {
+//            for (; other_it != other.end() ; ++it, ++other_it)
+//                boost::swap(*it, *other_it);                                         // may throw
+//            this->uninitialized_copy(it, this->end(), other_it);                     // may throw
+//            this->destroy(it, this->end());
+//            boost::swap(m_size, other.m_size);
+//        };
+
+        // TODO - this may be too big for stack
+        aligned_storage_type temp;
+        Value * temp_ptr = reinterpret_cast<Value*>(temp.address());
+        ::memcpy(temp_ptr, this->data(), sizeof(Value) * this->size());
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.size());
+        ::memcpy(other.data(), temp_ptr, sizeof(Value) * this->size());
+        boost::swap(m_size, other.m_size);
     }
 
     // basic
@@ -906,10 +918,7 @@ private:
         return (reinterpret_cast<const Value*>(m_storage.address()));
     }
 
-    boost::aligned_storage<
-        sizeof(Value[Capacity]),
-        boost::alignment_of<Value[Capacity]>::value
-    > m_storage;
+    aligned_storage_type m_storage;
     StoredSizeType m_size;
 };
 
