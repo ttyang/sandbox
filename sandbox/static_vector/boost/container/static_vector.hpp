@@ -260,18 +260,16 @@ public:
         {
             for (; it != this->end() ; ++it, ++other_it)
                 boost::swap(*it, *other_it);                                         // may throw
-            this->insert(it,other_it,other->end());                                  // may throw
+            this->insert(it, other_it, other.end());                                  // may throw
             other.erase(other_it, other.end());
         }
         else
         {
             for (; other_it != other.end() ; ++it, ++other_it)
                 boost::swap(*it, *other_it);                                         // may throw
-            other->insert(other_it,it,this->end());                                  // may throw
+            other.insert(other_it,it,this->end());                                  // may throw
             this->erase(it, this->end());
         }   
-        
-        boost::swap(m_size, other.m_size);
     }
 
     // strong
@@ -340,13 +338,17 @@ public:
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, m_size + 1);                                    // may throw
 
-        this->uninitialized_fill(this->end(), *(this->end() - 1));              // may throw
-        ++m_size; // update end
-        
-        if ( position != this->end() )
+        if ( position == this->end() )
+        {
+            this->uninitialized_fill(position, value);                              // may throw
+            ++m_size; // update end
+        }
+        else
         {
             // TODO - should following lines check for exception and revert to the old size?
 
+            this->uninitialized_fill(this->end(), *(this->end() - 1));              // may throw
+            ++m_size; // update end
             this->move_backward(position, this->end() - 2, this->end() - 1);        // may throw
             this->fill(position, value);                                            // may throw
         }
