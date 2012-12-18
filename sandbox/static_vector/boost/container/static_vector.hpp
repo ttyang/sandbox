@@ -14,6 +14,7 @@
 #include <stdexcept>
 
 #include <boost/config.hpp>
+#include <boost/swap.hpp>
 
 #include <boost/iterator/reverse_iterator.hpp>
 #include <boost/integer.hpp>
@@ -260,7 +261,7 @@ public:
             for (; it != this->end() ; ++it, ++other_it)
                 boost::swap(*it, *other_it);                                         // may throw
             this->insert(it,other_it,other->end());                                  // may throw
-            other.erase(other_it_backup, other.end());
+            other.erase(other_it, other.end());
         }
         else
         {
