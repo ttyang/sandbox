@@ -31,6 +31,8 @@
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/type_traits/has_trivial_destructor.hpp>
 
+#include <boost/utility/addressof.hpp>
+
 namespace boost { namespace container {
 
 // Forward declaration
@@ -255,20 +257,18 @@ public:
         {
             for (; it != this->end() ; ++it, ++other_it)
                 boost::swap(*it, *other_it);                                         // may throw
-            iterator other_it_backup = other_it;
-            for (; other_it != other.end() ; ++other_it)
-                this->push_back(*other_it);                                          // may throw
+            this->insert(it,other_it,other->end());                                  // may throw
             other.erase(other_it_backup, other.end());
         }
         else
         {
             for (; other_it != other.end() ; ++it, ++other_it)
                 boost::swap(*it, *other_it);                                         // may throw
-            iterator it_backup = it;
-            for (; it != this->end() ; ++it)
-                other.push_back(*it);                                                // may throw
-            this->erase(it_backup, this->end());
-        }
+            other->insert(other_it,it,this->end());                                  // may throw
+            this->erase(it, this->end());
+        }   
+        
+        boost::swap(m_size, other.m_size);
     }
 
     // strong
@@ -337,17 +337,12 @@ public:
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, m_size + 1);                                    // may throw
 
-        if ( position == this->end() )
-        {
-            this->uninitialized_fill(position, value);                              // may throw
-            ++m_size; // update end
-        }
-        else
+        this->uninitialized_fill(this->end(), *(this->end() - 1));              // may throw
+        ++m_size; // update end
+        if ( position != this->end() )
         {
             // TODO - should following lines check for exception and revert to the old size?
 
-            this->uninitialized_fill(this->end(), *(this->end() - 1));              // may throw
-            ++m_size; // update end
             this->move_backward(position, this->end() - 2, this->end() - 1);        // may throw
             this->fill(position, value);                                            // may throw
         }
@@ -772,9 +767,7 @@ private:
     void uninitialized_fill_dispatch(value_type * ptr, value_type const& v,
                                      boost::mpl::bool_<true> const& /*use_memcpy*/)
     {
-        // TODO - check if value_type has operator& defined and call this version only if it hasn't
-        const value_type * vptr = &v;
-        ::memcpy(ptr, vptr, sizeof(value_type));
+        ::memcpy(ptr, boost::addressof(v), sizeof(value_type));
     }
 
     template <typename V>
@@ -918,8 +911,8 @@ private:
         return (reinterpret_cast<const Value*>(m_storage.address()));
     }
 
-    aligned_storage_type m_storage;
     StoredSizeType m_size;
+    aligned_storage_type m_storage;
 };
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
