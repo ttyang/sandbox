@@ -10,6 +10,10 @@
 #include <boost/test/included/test_exec_monitor.hpp>
 #include <boost/test/impl/execution_monitor.ipp>
 
+#include <vector>
+#include <list>
+#include <boost/shared_ptr.hpp>
+
 #include <boost/container/static_vector.hpp>
 
 using namespace boost::container;
@@ -60,6 +64,16 @@ public:
 private:
     static size_t & c() { static size_t co = 0; return co; }
     int aa;
+};
+
+class shptr_value
+{
+    typedef boost::shared_ptr<int> Ptr;
+public:
+    explicit shptr_value(int a = 0) : m_ptr(new int(a)) {}
+    bool operator==(shptr_value const& v) const { return *m_ptr == *(v.m_ptr); }
+private:
+    boost::shared_ptr<int> m_ptr;
 };
 
 template <typename T, size_t N>
@@ -551,71 +565,85 @@ int test_main(int, char* [])
     test_ctor_ndc<value_ndc, 10>();
     test_ctor_ndc<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_ctor_ndc<shptr_value, 10>();
 
     test_ctor_nc<int, 10>(5);
     test_ctor_nc<value_nc, 10>(5);
     test_ctor_nc<counting_value, 10>(5);
     BOOST_CHECK(counting_value::count() == 0);
+    test_ctor_nc<shptr_value, 10>(5);
 
     test_ctor_nd<int, 10>(5, 1);
     test_ctor_nd<value_nd, 10>(5, value_nd(1));
     test_ctor_nd<counting_value, 10>(5, counting_value(1));
     BOOST_CHECK(counting_value::count() == 0);
+    test_ctor_nd<shptr_value, 10>(5, shptr_value(1));
 
     test_resize_nc<int, 10>(5);
     test_resize_nc<value_nc, 10>(5);
     test_resize_nc<counting_value, 10>(5);
     BOOST_CHECK(counting_value::count() == 0);
+    test_resize_nc<shptr_value, 10>(5);
 
     test_resize_nd<int, 10>(5, 1);
     test_resize_nd<value_nd, 10>(5, value_nd(1));
     test_resize_nd<counting_value, 10>(5, counting_value(1));
     BOOST_CHECK(counting_value::count() == 0);
+    test_resize_nd<shptr_value, 10>(5, shptr_value(1));
 
     test_push_back_nd<int, 10>();
     test_push_back_nd<value_nd, 10>();
     test_push_back_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_push_back_nd<shptr_value, 10>();
 
     test_pop_back_nd<int, 10>();
     test_pop_back_nd<value_nd, 10>();
     test_pop_back_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_pop_back_nd<shptr_value, 10>();
 
     test_copy_and_assign_nd<int, 10>(1);
     test_copy_and_assign_nd<value_nd, 10>(value_nd(1));
     test_copy_and_assign_nd<counting_value, 10>(counting_value(1));
     BOOST_CHECK(counting_value::count() == 0);
+    test_copy_and_assign_nd<shptr_value, 10>(shptr_value(1));
 
     test_iterators_nd<int, 10>();
     test_iterators_nd<value_nd, 10>();
     test_iterators_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_iterators_nd<shptr_value, 10>();
 
     test_erase_nd<int, 10>();
     test_erase_nd<value_nd, 10>();
     test_erase_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_erase_nd<shptr_value, 10>();
 
     test_insert_nd<int, 10>(50);
     test_insert_nd<value_nd, 10>(value_nd(50));
     test_insert_nd<counting_value, 10>(counting_value(50));
     BOOST_CHECK(counting_value::count() == 0);
+    test_insert_nd<shptr_value, 10>(shptr_value(50));
 
     test_capacity_0_nd<int>();
     test_capacity_0_nd<value_nd>();
     test_capacity_0_nd<counting_value>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_capacity_0_nd<shptr_value>();
 
     test_exceptions_nd<int, 10>();
     test_exceptions_nd<value_nd, 10>();
     test_exceptions_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_exceptions_nd<shptr_value, 10>();
 
     test_swap_nd<int, 10>();
     test_swap_nd<value_nd, 10>();
     test_swap_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
+    test_swap_nd<shptr_value, 10>();
 
     return 0;
 }
