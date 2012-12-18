@@ -521,10 +521,11 @@ public:
     const_reverse_iterator crend() const { return reverse_iterator(this->begin()); }
 
     // nothrow
-    size_type capacity() const { return Capacity; }
-    size_type max_size() const { return Capacity; }
+    static size_type capacity() { return Capacity; }
+    static size_type max_size() { return Capacity; }
     size_type size() const { return m_size; }
     bool empty() const { return 0 == m_size; }
+    void shrink_to_fit() {}
 
 private:
 
