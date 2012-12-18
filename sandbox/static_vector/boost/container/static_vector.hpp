@@ -125,10 +125,18 @@ struct error_handling
 template <typename Value, std::size_t Capacity, typename StoredSizeType = std::size_t>
 class static_vector
 {
+    BOOST_MPL_ASSERT_MSG(
+        ( boost::is_unsigned<StoredSizeType>::value &&
+          sizeof(typename boost::uint_value_t<Capacity>::least) <= sizeof(StoredSizeType) ),
+        SIZE_TYPE_IS_TOO_SMALL,
+        (static_vector)
+    );
+
     typedef boost::aligned_storage<
         sizeof(Value[Capacity]),
         boost::alignment_of<Value[Capacity]>::value
     > aligned_storage_type;
+
     typedef detail::static_vector::error_handling errh;
 
 public:
@@ -259,7 +267,7 @@ public:
         if ( this->size() < other.size() )
         {
             for (; it != this->end() ; ++it, ++other_it)
-                boost::swap(*it, *other_it);                                         // may throw
+                boost::swap(*it, *other_it);                                          // may throw
             this->insert(it, other_it, other.end());                                  // may throw
             other.erase(other_it, other.end());
         }
@@ -267,7 +275,7 @@ public:
         {
             for (; other_it != other.end() ; ++it, ++other_it)
                 boost::swap(*it, *other_it);                                         // may throw
-            other.insert(other_it,it,this->end());                                  // may throw
+            other.insert(other_it,it,this->end());                                   // may throw
             this->erase(it, this->end());
         }   
     }
