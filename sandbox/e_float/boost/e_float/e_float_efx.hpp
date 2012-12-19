@@ -16,9 +16,23 @@
   #endif
 
   #include <cmath>
+  #include <vector>
   #include <string>
 
   #include <boost/e_float/e_float_base.hpp>
+
+  namespace ef_detail
+  {
+    template <class T, unsigned S>
+    struct dynamic_array : public std::vector<T>
+    {
+      dynamic_array()
+        : std::vector<T>(static_cast<typename std::vector<T>::size_type>(S), static_cast<T>(0)) {}
+
+            T* data()      { return &(*this->begin()); }
+      const T* data()const { return &(*this->begin()); }
+    };
+  }
 
   namespace efx
   {
@@ -49,7 +63,7 @@
 
       static const INT32 ef_elem_mask = static_cast<INT32>(100000000);
 
-      typedef std::tr1::array<UINT32, static_cast<std::size_t>(ef_elem_number)> array_type;
+      typedef ef_detail::dynamic_array<UINT32, static_cast<std::size_t>(ef_elem_number)> array_type;
 
       array_type data;
       INT64      exp;
