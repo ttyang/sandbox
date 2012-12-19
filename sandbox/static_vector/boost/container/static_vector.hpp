@@ -20,7 +20,6 @@
 #include <boost/swap.hpp>
 #include <boost/integer.hpp>
 #include <boost/iterator/reverse_iterator.hpp>
-#include <boost/utility/addressof.hpp>
 
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/if.hpp>
@@ -701,64 +700,15 @@ private:
     {
         namespace sv = detail::static_vector;
         sv::copy(first, last, dst);
-
-        //detail::static_vector::copy(first, last, dst);
-
-        //typedef typename
-        //    mpl::and_<
-        //        has_trivial_assign<value_type>,
-        //        mpl::or_<
-        //            is_same<Iterator, value_type *>,
-        //            is_same<Iterator, const value_type *>
-        //        >
-        //    >::type
-        //use_memcpy;
-        //
-        //copy_dispatch(first, last, dst, use_memcpy());                        // may throw
     }
-
-    //inline static void copy_dispatch(const value_type * first, const value_type * last, value_type * dst,
-    //                   boost::mpl::bool_<true> const& /*use_memcpy*/)
-    //{
-    //    ::memcpy(dst, first, sizeof(value_type) * std::distance(first, last));
-    //}
-
-    //template <typename Iterator>
-    //inline static void copy_dispatch(Iterator first, Iterator last, value_type * dst,
-    //                   boost::mpl::bool_<false> const& /*use_memcpy*/)
-    //{
-    //    std::copy(first, last, dst);                                                // may throw
-    //}
 
     // uninitialized_copy
 
     template <typename Iterator>
     void uninitialized_copy(Iterator first, Iterator last, iterator dst)
     {
-        typedef typename
-            mpl::and_<
-                has_trivial_copy<value_type>,
-                mpl::or_<
-                    is_same<Iterator, value_type *>,
-                    is_same<Iterator, const value_type *>
-                >
-            >::type
-        use_memcpy;
-
-        this->uninitialized_copy_dispatch(first, last, dst, use_memcpy());          // may throw
-    }
-
-    void uninitialized_copy_dispatch(const value_type * first, const value_type * last, value_type * dst,
-                                     boost::mpl::bool_<true> const& /*use_memcpy*/)
-    {
-        ::memcpy(dst, first, sizeof(value_type) * std::distance(first, last));
-    }
-
-    template <typename Iterator>
-    void uninitialized_copy_dispatch(Iterator first, Iterator last, value_type * dst,
-                                     boost::mpl::bool_<false> const& /*use_memcpy*/)
-    {
-        std::uninitialized_copy(first, last, dst);                                  // may throw
+        namespace sv = detail::static_vector;
+        sv::uninitialized_copy(first, last, dst);
     }
 
     // uninitialized_fill
@@ -766,46 +716,16 @@ private:
     template <typename V>
     void uninitialized_fill(iterator dst, V const& v)
     {
-        typedef typename
-            mpl::and_<
-                has_trivial_copy<value_type>,
-                is_same<Value, value_type>
-            >::type
-        use_memcpy;
-
-        uninitialized_fill_dispatch(dst, v, use_memcpy());                         // may throw
-    }
-
-    void uninitialized_fill_dispatch(value_type * ptr, value_type const& v,
-                                     boost::mpl::bool_<true> const& /*use_memcpy*/)
-    {
-        ::memcpy(ptr, boost::addressof(v), sizeof(value_type));
-    }
-
-    template <typename V>
-    void uninitialized_fill_dispatch(value_type * ptr, V const& v,
-                                     boost::mpl::bool_<false> const& /*use_memcpy*/)
-    {
-        new (ptr) value_type(v);                                                    // may throw
+        namespace sv = detail::static_vector;
+        sv::uninitialized_fill(dst, v);
     }
 
     // move
 
     void move(iterator first, iterator last, iterator dst)
     {
-        this->move_dispatch(first, last, dst, has_trivial_assign<value_type>());    // may throw
-    }
-
-    void move_dispatch(value_type * first, value_type * last, value_type * dst,
-        boost::true_type const& /*has_trivial_assign*/)
-    {
-        ::memmove(dst, first, sizeof(value_type) * std::distance(first, last));
-    }
-
-    void move_dispatch(value_type * first, value_type * last, value_type * dst,
-        boost::false_type const& /*has_trivial_assign*/)
-    {
-        std::copy(first, last, dst);                                                // may throw
+        namespace sv = detail::static_vector;
+        sv::move(first, last, dst);
     }
 
     // move_backward

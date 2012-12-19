@@ -38,10 +38,10 @@ size_t test(size_t count)
     for ( size_t i = 0 ; i < sv.capacity() ; ++i)
         sv.push_back(V(i));
 
-    static_vector<V, N> sv2;
     size_t dummy = 0;
     for ( size_t i = 0 ; i < count ; ++i )
     {
+        static_vector<V, N> sv2(sv);
         sv2.assign(sv.begin(), sv.end());
         dummy += sv2[0];
     }
@@ -51,11 +51,7 @@ size_t test(size_t count)
 
 int main()
 {
-#ifdef NDEBUG
-    size_t count = 5000000;
-#else
-    size_t count = 50000;
-#endif
+    size_t count = 2000000;
 
     std::fstream f("foobar.txt", std::ios::in | std::ios::out);
     f >> count;
