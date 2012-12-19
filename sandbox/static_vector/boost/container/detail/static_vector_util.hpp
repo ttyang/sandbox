@@ -25,14 +25,16 @@
 #include <boost/type_traits/has_trivial_copy.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/type_traits/has_trivial_destructor.hpp>
-#include <boost/type_traits/has_nothrow_constructor.hpp>
-#include <boost/type_traits/has_nothrow_copy.hpp>
-#include <boost/type_traits/has_nothrow_assign.hpp>
+//#include <boost/type_traits/has_nothrow_constructor.hpp>
+//#include <boost/type_traits/has_nothrow_copy.hpp>
+//#include <boost/type_traits/has_nothrow_assign.hpp>
 //#include <boost/type_traits/has_nothrow_destructor.hpp>
 
 #include <boost/iterator/iterator_traits.hpp>
 
 namespace boost { namespace container { namespace detail { namespace static_vector {
+
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
 template <typename I, typename O>
 struct are_corresponding_pointers :
@@ -51,21 +53,22 @@ struct are_corresponding_pointers :
 {};
 
 template <typename V>
-inline void copy_dispatch(const V * first, const V * last, V * dst,
+inline V * copy_dispatch(const V * first, const V * last, V * dst,
                           boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
     ::memcpy(dst, first, sizeof(V) * std::distance(first, last));
+    return dst;
 }
 
 template <typename I, typename O>
-inline void copy_dispatch(I first, I last, O dst,
+inline O copy_dispatch(I first, I last, O dst,
                           boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
-    std::copy(first, last, dst);                                                // may throw
+    return std::copy(first, last, dst);                                         // may throw
 }
 
 template <typename I, typename O>
-inline void copy(I first, I last, O dst)
+inline O copy(I first, I last, O dst)
 {
     namespace bm = ::boost::mpl;
     typedef typename
@@ -76,8 +79,18 @@ inline void copy(I first, I last, O dst)
         >
     >::type use_memcpy;
     
-    copy_dispatch(first, last, dst, use_memcpy());                              // may throw
+    return copy_dispatch(first, last, dst, use_memcpy());                       // may throw
 }
+
+#else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+template <typename I, typename O>
+inline O copy(I first, I last, O dst)
+{
+    return std::copy(first, last, dst);
+}
+
+#endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 }}}} // namespace boost::container::detail::static_vector
 
