@@ -10,9 +10,12 @@
 #ifndef BOOST_CONTAINER_STATIC_VECTOR_HPP
 #define BOOST_CONTAINER_STATIC_VECTOR_HPP
 
+#include <boost/container/detail/static_vector_util.hpp>
+
 #include <cstddef>
 #include <stdexcept>
 
+#include <boost/assert.hpp>
 #include <boost/config.hpp>
 #include <boost/swap.hpp>
 #include <boost/integer.hpp>
@@ -24,6 +27,7 @@
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/or.hpp>
 
+#include <boost/type_traits/is_unsigned.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/aligned_storage.hpp>
@@ -693,33 +697,38 @@ private:
     // copy
 
     template <typename Iterator>
-    void copy(Iterator first, Iterator last, iterator dst)
+    inline static void copy(Iterator first, Iterator last, iterator dst)
     {
-        typedef typename
-            mpl::and_<
-                has_trivial_assign<value_type>,
-                mpl::or_<
-                    is_same<Iterator, value_type *>,
-                    is_same<Iterator, const value_type *>
-                >
-            >::type
-        use_memcpy;
-        
-        this->copy_dispatch(first, last, dst, use_memcpy());                        // may throw
+        namespace sv = detail::static_vector;
+        sv::copy(first, last, dst);
+
+        //detail::static_vector::copy(first, last, dst);
+
+        //typedef typename
+        //    mpl::and_<
+        //        has_trivial_assign<value_type>,
+        //        mpl::or_<
+        //            is_same<Iterator, value_type *>,
+        //            is_same<Iterator, const value_type *>
+        //        >
+        //    >::type
+        //use_memcpy;
+        //
+        //copy_dispatch(first, last, dst, use_memcpy());                        // may throw
     }
 
-    void copy_dispatch(const value_type * first, const value_type * last, value_type * dst,
-                       boost::mpl::bool_<true> const& /*use_memcpy*/)
-    {
-        ::memcpy(dst, first, sizeof(value_type) * std::distance(first, last));
-    }
+    //inline static void copy_dispatch(const value_type * first, const value_type * last, value_type * dst,
+    //                   boost::mpl::bool_<true> const& /*use_memcpy*/)
+    //{
+    //    ::memcpy(dst, first, sizeof(value_type) * std::distance(first, last));
+    //}
 
-    template <typename Iterator>
-    void copy_dispatch(Iterator first, Iterator last, value_type * dst,
-                       boost::mpl::bool_<false> const& /*use_memcpy*/)
-    {
-        std::copy(first, last, dst);                                                // may throw
-    }
+    //template <typename Iterator>
+    //inline static void copy_dispatch(Iterator first, Iterator last, value_type * dst,
+    //                   boost::mpl::bool_<false> const& /*use_memcpy*/)
+    //{
+    //    std::copy(first, last, dst);                                                // may throw
+    //}
 
     // uninitialized_copy
 

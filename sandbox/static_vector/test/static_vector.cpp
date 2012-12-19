@@ -7,14 +7,14 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#include <boost/container/static_vector.hpp>
+
 #include <boost/test/included/test_exec_monitor.hpp>
 #include <boost/test/impl/execution_monitor.ipp>
 
 #include <vector>
 #include <list>
 #include <boost/shared_ptr.hpp>
-
-#include <boost/container/static_vector.hpp>
 
 using namespace boost::container;
 
