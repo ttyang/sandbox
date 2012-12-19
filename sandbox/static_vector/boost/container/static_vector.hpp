@@ -715,6 +715,7 @@ private:
 };
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+
 template<typename Value, typename StoredSizeType>
 class static_vector<Value, 0, StoredSizeType>
 {

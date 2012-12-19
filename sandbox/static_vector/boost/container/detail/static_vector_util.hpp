@@ -318,7 +318,7 @@ void construct_dispatch(I first, I last,
     try
     {
         for ( ; it != last ; ++it )
-            new (it) value_type();                                              // may throw
+            new (boost::addressof(*it)) value_type();                           // may throw
     }
     catch(...)
     {
@@ -351,7 +351,7 @@ inline F uninitialized_copy(I first, I last, F dst)
 template <typename I, typename V>
 inline void uninitialized_fill(I pos, V const& v)
 {
-    new (static_cast<void*>(&*pos)) V(v);                                       // may throw
+    new (static_cast<void*>(boost::addressof(*pos))) V(v);                      // may throw
 }
 
 template <typename I, typename O>
@@ -370,6 +370,38 @@ template <typename I, typename V>
 inline void fill(I pos, V const& v)
 {
     *pos = v;                                                                   // may throw
+}
+
+template <typename I>
+void destroy(I first, I last)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    for ( ; first != last ; ++first )
+        first->~value_type();
+}
+
+template <typename I>
+void destroy(I pos)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    pos->~value_type();
+}
+
+template <typename I>
+void construct(I first, I last)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    I it = first;
+    try
+    {
+        for ( ; it != last ; ++it )
+            new (boost::addressof(*it)) value_type();                           // may throw
+    }
+    catch(...)
+    {
+        destroy(first, it);
+        throw;
+    }
 }
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
