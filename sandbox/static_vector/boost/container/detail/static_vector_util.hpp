@@ -158,7 +158,7 @@ void uninitialized_fill(I dst, V const& v)
 
 // move
 
-// TODO use boost::move(I, I, O) instead of copy/assignment
+// TODO use boost::move(I, I, O) instead of copy
 
 template <typename V>
 V * move_dispatch(const V * first, const V * last, V * dst,
@@ -191,6 +191,70 @@ O move(I first, I last, O dst)
     return move_dispatch(first, last, dst, use_memmove());                      // may throw
 }
 
+// move_backward
+
+// TODO use boost::move_backward(I, I, O) instead of copy_backward
+
+template <typename V>
+V * move_backward_dispatch(const V * first, const V * last, V * dst,
+                           boost::mpl::bool_<true> const& /*use_memmove*/)
+{
+    typename std::iterator_traits<V*>::difference_type d = std::distance(first, last);
+    ::memmove(dst - d, first, sizeof(V) * d);
+    return dst - d;
+}
+
+template <typename BDI, typename BDO>
+BDO move_backward_dispatch(BDI first, BDI last, BDO dst,
+                           boost::mpl::bool_<false> const& /*use_memmove*/)
+{
+    return std::copy_backward(first, last, dst);                                // may throw
+}
+
+template <typename BDI, typename BDO>
+BDO move_backward(BDI first, BDI last, BDO dst)
+{
+    typedef typename
+    ::boost::mpl::and_<
+        are_corresponding_pointers<BDI, BDO>,
+        ::boost::has_trivial_assign<
+            typename ::boost::iterator_value<BDO>::type
+        >
+    >::type
+    use_memmove;
+
+    return move_backward_dispatch(first, last, dst, use_memmove());             // may throw
+}
+
+// fill
+
+template <typename V>
+void fill_dispatch(V * ptr, V const& v,
+                   boost::mpl::bool_<true> const& /*use_memcpy*/)
+{
+    ::memcpy(ptr, boost::addressof(v), sizeof(V));
+}
+
+template <typename I, typename V>
+void fill_dispatch(I pos, V const& v,
+                   boost::mpl::bool_<false> const& /*use_memcpy*/)
+{
+    *pos = v;                                                                   // may throw
+}
+
+template <typename I, typename V>
+void fill(I pos, V const& v)
+{
+    typedef typename
+    ::boost::mpl::and_<
+        is_corresponding_value<I, V>,
+        ::boost::has_trivial_assign<V>
+    >::type
+    use_memcpy;
+
+    fill_dispatch(pos, v, use_memcpy());                                        // may throw
+}
+
 #else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 template <typename I, typename O>
@@ -215,6 +279,18 @@ template <typename I, typename O>
 O move(I first, I last, O dst)
 {
     return std::copy(first, last, dst);                                         // may throw
+}
+
+template <typename BDI, typename BDO>
+BDO move_backward(BDI first, BDI last, BDO dst)
+{
+    return std::copy_backward(first, last, dst);                                // may throw
+}
+
+template <typename I, typename V>
+void fill(I pos, V const& v)
+{
+    *pos = v;                                                                   // may throw
 }
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION

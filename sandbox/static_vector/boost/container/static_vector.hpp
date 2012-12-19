@@ -699,7 +699,7 @@ private:
     inline static void copy(Iterator first, Iterator last, iterator dst)
     {
         namespace sv = detail::static_vector;
-        sv::copy(first, last, dst);
+        sv::copy(first, last, dst);                                                         // may throw
     }
 
     // uninitialized_copy
@@ -708,7 +708,7 @@ private:
     void uninitialized_copy(Iterator first, Iterator last, iterator dst)
     {
         namespace sv = detail::static_vector;
-        sv::uninitialized_copy(first, last, dst);
+        sv::uninitialized_copy(first, last, dst);                                           // may throw
     }
 
     // uninitialized_fill
@@ -717,7 +717,7 @@ private:
     void uninitialized_fill(iterator dst, V const& v)
     {
         namespace sv = detail::static_vector;
-        sv::uninitialized_fill(dst, v);
+        sv::uninitialized_fill(dst, v);                                                     // may throw
     }
 
     // move
@@ -725,48 +725,24 @@ private:
     void move(iterator first, iterator last, iterator dst)
     {
         namespace sv = detail::static_vector;
-        sv::move(first, last, dst);
+        sv::move(first, last, dst);                                                         // may throw
     }
 
     // move_backward
 
     void move_backward(iterator first, iterator last, iterator dst)
     {
-        this->move_backward_dispatch(first, last, dst, has_trivial_assign<value_type>());    // may throw
+        namespace sv = detail::static_vector;
+        sv::move_backward(first, last, dst);                                                // may throw
     }
 
-    void move_backward_dispatch(value_type * first, value_type * last, value_type * dst,
-                                boost::true_type const& /*has_trivial_assign*/)
-    {
-        difference_type n = std::distance(first, last);
-        ::memmove(dst - n, first, sizeof(value_type) * n);
-    }
-
-    void move_backward_dispatch(value_type * first, value_type * last, value_type * dst,
-                                boost::false_type const& /*has_trivial_assign*/)
-    {
-        std::copy_backward(first, last, dst);                                                // may throw
-    }
-
-    // uninitialized_fill
+    // fill
 
     template <typename V>
     void fill(iterator dst, V const& v)
     {
-        fill_dispatch(dst, v, has_trivial_assign<value_type>());                            // may throw
-    }
-
-    void fill_dispatch(value_type * ptr, value_type const& v,
-                       boost::true_type const& /*has_trivial_assign*/)
-    {
-        ::memcpy(ptr, boost::addressof(v), sizeof(value_type));
-    }
-
-    template <typename V>
-    void fill_dispatch(value_type * ptr, V const& v,
-                       boost::false_type const& /*has_trivial_assign*/)
-    {
-        *ptr = v;                                                                           // may throw
+        namespace sv = detail::static_vector;
+        sv::fill(dst, v);                                                           // may throw
     }
 
     // destroy
