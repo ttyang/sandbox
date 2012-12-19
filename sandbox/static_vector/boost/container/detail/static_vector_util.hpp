@@ -12,8 +12,10 @@
 #ifndef BOOST_CONTAINER_DETAIL_STATIC_VECTOR_UTIL_HPP
 #define BOOST_CONTAINER_DETAIL_STATIC_VECTOR_UTIL_HPP
 
+#include <cstddef>
 #include <cstring>
 #include <memory>
+#include <limits>
 
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/and.hpp>
@@ -63,7 +65,7 @@ struct is_corresponding_value :
     >
 {};
 
-// copy
+// copy(I, I, O)
 
 template <typename V>
 inline V * copy_dispatch(const V * first, const V * last, V * dst,
@@ -95,7 +97,7 @@ inline O copy(I first, I last, O dst)
     return copy_dispatch(first, last, dst, use_memcpy());                       // may throw
 }
 
-// uninitialized_copy
+// uninitialized_copy(I, I, O)
 
 template <typename V>
 V * uninitialized_copy_dispatch(const V * first, const V * last, V * dst,
@@ -127,7 +129,7 @@ F uninitialized_copy(I first, I last, F dst)
     return uninitialized_copy_dispatch(first, last, dst, use_memcpy());          // may throw
 }
 
-// uninitialized_fill
+// uninitialized_fill(I, V)
 
 template <typename V>
 void uninitialized_fill_dispatch(V * ptr, V const& v,
@@ -140,7 +142,7 @@ template <typename I, typename V>
 void uninitialized_fill_dispatch(I pos, V const& v,
                                  boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
-    new (static_cast<void*>(&*pos)) V(v);                                        // may throw
+    new (static_cast<void*>(boost::addressof(*pos))) V(v);                      // may throw
 }
 
 template <typename I, typename V>
@@ -156,7 +158,7 @@ void uninitialized_fill(I dst, V const& v)
     uninitialized_fill_dispatch(dst, v, use_memcpy());                          // may throw
 }
 
-// move
+// move(I, I, O)
 
 // TODO use boost::move(I, I, O) instead of copy
 
@@ -191,7 +193,7 @@ O move(I first, I last, O dst)
     return move_dispatch(first, last, dst, use_memmove());                      // may throw
 }
 
-// move_backward
+// move_backward(BDI, BDI, BDO)
 
 // TODO use boost::move_backward(I, I, O) instead of copy_backward
 
@@ -226,7 +228,7 @@ BDO move_backward(BDI first, BDI last, BDO dst)
     return move_backward_dispatch(first, last, dst, use_memmove());             // may throw
 }
 
-// fill
+// fill(I, V)
 
 template <typename V>
 void fill_dispatch(V * ptr, V const& v,
@@ -255,6 +257,83 @@ void fill(I pos, V const& v)
     fill_dispatch(pos, v, use_memcpy());                                        // may throw
 }
 
+// destroy(I, I)
+
+template <typename I>
+void destroy_dispatch(I /*first*/, I /*last*/,
+                      boost::true_type const& /*has_trivial_destructor*/)
+{}
+
+template <typename I>
+void destroy_dispatch(I first, I last,
+                      boost::false_type const& /*has_trivial_destructor*/)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    for ( ; first != last ; ++first )
+        first->~value_type();
+}
+
+template <typename I>
+void destroy(I first, I last)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    destroy_dispatch(first, last, has_trivial_destructor<value_type>());
+}
+
+// destroy(I)
+
+template <typename I>
+void destroy_dispatch(I /*pos*/,
+                      boost::true_type const& /*has_trivial_destructor*/)
+{}
+
+template <typename I>
+void destroy_dispatch(I pos,
+                      boost::false_type const& /*has_trivial_destructor*/)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    pos->~value_type();
+}
+
+template <typename I>
+void destroy(I pos)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    destroy_dispatch(pos, has_trivial_destructor<value_type>());
+}
+
+// construct
+
+template <typename I>
+void construct_dispatch(I /*first*/, I /*last*/,
+                        boost::true_type const& /*has_trivial_constructor*/)
+{}
+
+template <typename I>
+void construct_dispatch(I first, I last,
+                        boost::false_type const& /*has_trivial_constructor*/)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    I it = first;
+    try
+    {
+        for ( ; it != last ; ++it )
+            new (it) value_type();                                              // may throw
+    }
+    catch(...)
+    {
+        destroy(first, it);
+        throw;
+    }
+}
+
+template <typename I>
+void construct(I first, I last)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    construct_dispatch(first, last, has_trivial_constructor<value_type>());     // may throw
+}
+
 #else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 template <typename I, typename O>
@@ -264,36 +343,61 @@ inline O copy(I first, I last, O dst)
 }
 
 template <typename I, typename F>
-F uninitialized_copy(I first, I last, F dst)
+inline F uninitialized_copy(I first, I last, F dst)
 {
     return std::uninitialized_copy(first, last, dst);                           // may throw
 }
 
 template <typename I, typename V>
-void uninitialized_fill(I pos, V const& v)
+inline void uninitialized_fill(I pos, V const& v)
 {
     new (static_cast<void*>(&*pos)) V(v);                                       // may throw
 }
 
 template <typename I, typename O>
-O move(I first, I last, O dst)
+inline O move(I first, I last, O dst)
 {
     return std::copy(first, last, dst);                                         // may throw
 }
 
 template <typename BDI, typename BDO>
-BDO move_backward(BDI first, BDI last, BDO dst)
+inline BDO move_backward(BDI first, BDI last, BDO dst)
 {
     return std::copy_backward(first, last, dst);                                // may throw
 }
 
 template <typename I, typename V>
-void fill(I pos, V const& v)
+inline void fill(I pos, V const& v)
 {
     *pos = v;                                                                   // may throw
 }
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+// uninitialized_copy_checked
+
+template <typename I, typename F>
+inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max_count)
+{
+    std::size_t count = 0;
+    F it = dest;
+    try
+    {
+        for ( ; first != last ; ++it, ++first, ++count )
+        {
+            if ( max_count <= count )
+                return (std::numeric_limits<std::size_t>::max)();
+
+            uninitialized_fill(it, *first);                                     // may throw
+        }
+    }
+    catch(...)
+    {
+        destroy(dest, it);
+        throw;
+    }
+    return count;
+}
 
 }}}} // namespace boost::container::detail::static_vector
 

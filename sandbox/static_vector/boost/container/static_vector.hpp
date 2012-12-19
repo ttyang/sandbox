@@ -12,7 +12,6 @@
 
 #include <boost/container/detail/static_vector_util.hpp>
 
-#include <cstddef>
 #include <stdexcept>
 
 #include <boost/assert.hpp>
@@ -46,8 +45,7 @@ namespace detail { namespace static_vector {
 struct error_handling
 {
     template <typename V, std::size_t Capacity, typename S>
-    static void check_capacity(container::static_vector<V, Capacity, S> const&,
-                               typename container::static_vector<V, Capacity, S>::size_type s)
+    static void check_capacity(container::static_vector<V, Capacity, S> const&, std::size_t s)
     {
         //BOOST_ASSERT_MSG(s <= Capacity, "size can't exceed the capacity");
         if ( Capacity < s )
@@ -167,7 +165,8 @@ public:
     static_vector(static_vector const& other)
         : m_size(other.size())
     {
-        this->uninitialized_copy(other.begin(), other.end(), this->begin());        // may throw
+        namespace sv = detail::static_vector;
+        sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
     // strong
@@ -177,7 +176,8 @@ public:
     {
         errh::check_capacity(other.size());                                         // may throw
         
-        this->uninitialized_copy(other.begin(), other.end(), this->begin());        // may throw
+        namespace sv = detail::static_vector;
+        sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
     // strong
@@ -209,13 +209,15 @@ public:
     // nothrow
     ~static_vector()
     {
-        this->destroy(this->begin(), this->end());
+        namespace sv = detail::static_vector;
+        sv::destroy(this->begin(), this->end());
     }
 
     // nothrow
     // swap (note: linear complexity)
     void swap(static_vector & other)
     {
+//        namespace sv = detail::static_vector;
 //        iterator it = this->begin();
 //        iterator other_it = other.begin();
 
@@ -223,16 +225,16 @@ public:
 //        {
 //            for (; it != this->end() ; ++it, ++other_it)
 //                boost::swap(*it, *other_it);                                         // may throw
-//            this->uninitialized_copy(other_it, other.end(), it);                     // may throw
-//            this->destroy(other_it, other.end());
+//            sv::uninitialized_copy(other_it, other.end(), it);                       // may throw
+//            sv::destroy(other_it, other.end());
 //            boost::swap(m_size, other.m_size);
 //        }
 //        else
 //        {
 //            for (; other_it != other.end() ; ++it, ++other_it)
 //                boost::swap(*it, *other_it);                                         // may throw
-//            this->uninitialized_copy(it, this->end(), other_it);                     // may throw
-//            this->destroy(it, this->end());
+//            sv::uninitialized_copy(it, this->end(), other_it);                       // may throw
+//            sv::destroy(it, this->end());
 //            boost::swap(m_size, other.m_size);
 //        };
 
@@ -275,15 +277,17 @@ public:
     // strong
     void resize(size_type count)
     {
+        namespace sv = detail::static_vector;
+
         if ( count < m_size )
         {
-            this->destroy(this->begin() + count, this->end());
+            sv::destroy(this->begin() + count, this->end());
         }
         else
         {
             errh::check_capacity(*this, count);                                     // may throw
 
-            this->construct(this->end(), this->begin() + count);                    // may throw
+            sv::construct(this->end(), this->begin() + count);                      // may throw
         }
         m_size = count; // update end
     }
@@ -293,7 +297,8 @@ public:
     {
         if ( count < m_size )
         {
-            this->destroy(this->begin() + count, this->end());
+            namespace sv = detail::static_vector;
+            sv::destroy(this->begin() + count, this->end());
         }
         else
         {
@@ -315,7 +320,8 @@ public:
     {
         errh::check_capacity(*this, m_size + 1);                                    // may throw
         
-        this->uninitialized_fill(this->end(), value);                               // may throw
+        namespace sv = detail::static_vector;
+        sv::uninitialized_fill(this->end(), value);                                 // may throw
         ++m_size; // update end
     }
 
@@ -325,32 +331,36 @@ public:
         errh::check_empty(*this);
 
         //--m_size; // update end
-        //this->destroy(this->end());
+        //namespace sv = detail::static_vector;
+        //sv::destroy(this->end());
 
         // safer and more intuitive version
-        this->destroy(this->end() - 1);
+        namespace sv = detail::static_vector;
+        sv::destroy(this->end() - 1);
         --m_size; // update end
     }
 
     // basic
     iterator insert(iterator position, value_type const& value)
     {
+        namespace sv = detail::static_vector;
+
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, m_size + 1);                                    // may throw
 
         if ( position == this->end() )
         {
-            this->uninitialized_fill(position, value);                              // may throw
+            sv::uninitialized_fill(position, value);                                // may throw
             ++m_size; // update end
         }
         else
         {
             // TODO - should following lines check for exception and revert to the old size?
 
-            this->uninitialized_fill(this->end(), *(this->end() - 1));              // may throw
+            sv::uninitialized_fill(this->end(), *(this->end() - 1));                // may throw
             ++m_size; // update end
-            this->move_backward(position, this->end() - 2, this->end() - 1);        // may throw
-            this->fill(position, value);                                            // may throw
+            sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
+            sv::fill(position, value);                                              // may throw
         }
 
         return position;
@@ -369,22 +379,24 @@ public:
         }
         else
         {
+            namespace sv = detail::static_vector;
+
             difference_type to_move = std::distance(position, this->end());
             
             // TODO - should following lines check for exception and revert to the old size?
 
             if ( count < static_cast<size_type>(to_move) )
             {
-                this->uninitialized_copy(this->end() - count, this->end(), this->end());        // may throw
+                sv::uninitialized_copy(this->end() - count, this->end(), this->end());          // may throw
                 m_size += count; // update end
-                this->move_backward(position, position + to_move - count, this->end() - count); // may throw
+                sv::move_backward(position, position + to_move - count, this->end() - count);   // may throw
                 std::fill_n(position, count, value);                                            // may throw
             }
             else
             {
                 std::uninitialized_fill(this->end(), position + count, value);                  // may throw
                 m_size += count - to_move; // update end
-                this->uninitialized_copy(position, position + to_move, position + count);       // may throw
+                sv::uninitialized_copy(position, position + to_move, position + count);         // may throw
                 m_size += to_move; // update end
                 std::fill_n(position, to_move, value);                                          // may throw
             }
@@ -408,10 +420,12 @@ public:
     // basic
     iterator erase(iterator position)
     {
+        namespace sv = detail::static_vector;
+
         errh::check_iterator_end_neq(*this, position);
 
-        this->move(position + 1, this->end(), position);                            // may throw
-        this->destroy(this->end() - 1);
+        sv::move(position + 1, this->end(), position);                              // may throw
+        sv::destroy(this->end() - 1);
         --m_size;
 
         return position;
@@ -420,14 +434,16 @@ public:
     // basic
     iterator erase(iterator first, iterator last)
     {
+        namespace sv = detail::static_vector;
+
         errh::check_iterator_end_eq(*this, first);
         errh::check_iterator_end_eq(*this, last);
         
         difference_type n = std::distance(first, last);
         //BOOST_ASSERT_MSG(0 <= n, "invalid range");
 
-        this->move(last, this->end(), first);                                       // may throw
-        this->destroy(this->end() - n, this->end());
+        sv::move(last, this->end(), first);                                         // may throw
+        sv::destroy(this->end() - n, this->end());
         m_size -= n;
 
         return first;
@@ -448,8 +464,10 @@ public:
     {
         if ( count < m_size )
         {
+            namespace sv = detail::static_vector;
+
             std::fill_n(this->begin(), count, value);
-            this->destroy(this->begin() + count, this->end());
+            sv::destroy(this->begin() + count, this->end());
         }
         else
         {
@@ -464,7 +482,8 @@ public:
     // nothrow
     void clear()
     {
-        this->destroy(this->begin(), this->end());
+        namespace sv = detail::static_vector;
+        sv::destroy(this->begin(), this->end());
         m_size = 0; // update end
     }
 
@@ -559,13 +578,16 @@ private:
     {
         errh::check_iterator_end_eq(*this, position);
         
-        difference_type count = std::distance(first, last);
+        typename boost::iterator_difference<Iterator>::type
+            count = std::distance(first, last);
 
         errh::check_capacity(*this, m_size + count);                                             // may throw
 
         if ( position == this->end() )
         {
-            this->uninitialized_copy(first, last, position);                                    // may throw
+            namespace sv = detail::static_vector;
+
+            sv::uninitialized_copy(first, last, position);                                      // may throw
             m_size += count; // update end
         }
         else
@@ -581,16 +603,19 @@ private:
 
         if ( position == this->end() )
         {
-            std::pair<bool, size_type> copy_data =
-                this->uninitialized_copy_checked(first, last, position, std::distance(position, this->begin() + Capacity)); // may throw
-            
-            errh::check_capacity(*this, copy_data.first ? m_size + copy_data.second : Capacity + 1);    // may throw
+            namespace sv = detail::static_vector;
 
-            m_size += copy_data.second;
+            std::ptrdiff_t d = std::distance(position, this->begin() + Capacity);
+            std::size_t count = sv::uninitialized_copy_s(first, last, position, d);                     // may throw
+            
+            errh::check_capacity(*this, count <= static_cast<std::size_t>(d) ? m_size + count : Capacity + 1);  // may throw
+
+            m_size += count;
         }
         else
         {
-            difference_type count = std::distance(first, last);
+            typename boost::iterator_difference<Iterator>::type
+                count = std::distance(first, last);
             
             errh::check_capacity(*this, m_size + count);                                                // may throw
 
@@ -601,27 +626,29 @@ private:
     template <typename Iterator>
     void insert_in_the_middle(iterator position, Iterator first, Iterator last, difference_type count)
     {
+        namespace sv = detail::static_vector;
+
         difference_type to_move = std::distance(position, this->end());
 
         // TODO - should following lines check for exception and revert to the old size?
 
         if ( count < to_move )
         {
-            this->uninitialized_copy(this->end() - count, this->end(), this->end());            // may throw
+            sv::uninitialized_copy(this->end() - count, this->end(), this->end());              // may throw
             m_size += count; // update end
-            this->move_backward(position, position + to_move - count, this->end() - count);     // may throw
-            this->copy(first, last, position);                                                  // may throw
+            sv::move_backward(position, position + to_move - count, this->end() - count);       // may throw
+            sv::copy(first, last, position);                                                    // may throw
         }
         else
         {
             Iterator middle_iter = first;
             std::advance(middle_iter, to_move);
 
-            this->uninitialized_copy(middle_iter, last, this->end());                           // may throw
+            sv::uninitialized_copy(middle_iter, last, this->end());                             // may throw
             m_size += count - to_move; // update end
-            this->uninitialized_copy(position, position + to_move, position + count);           // may throw
+            sv::uninitialized_copy(position, position + to_move, position + count);             // may throw
             m_size += to_move; // update end
-            this->copy(first, middle_iter, position) ;                                          // may throw
+            sv::copy(first, middle_iter, position) ;                                            // may throw
         }
     }
 
@@ -630,20 +657,23 @@ private:
     template <typename Iterator>
     void assign_dispatch(Iterator first, Iterator last, boost::random_access_traversal_tag const& /*not_random_access*/)
     {
-        size_type s = std::distance(first, last);
+        namespace sv = detail::static_vector;
 
-        errh::check_capacity(*this, s);                                              // may throw
+        typename boost::iterator_difference<Iterator>::type
+            s = std::distance(first, last);
 
-        if ( m_size <= s )
+        errh::check_capacity(*this, s);                                                 // may throw
+
+        if ( m_size <= static_cast<size_type>(s) )
         {
-            this->copy(first, first + m_size, this->begin());                        // may throw
+            sv::copy(first, first + m_size, this->begin());                             // may throw
             // TODO - perform uninitialized_copy first?
-            this->uninitialized_copy(first + m_size, last, this->end());             // may throw
+            sv::uninitialized_copy(first + m_size, last, this->end());                  // may throw
         }
         else
         {
-            this->copy(first, last, this->begin());                                  // may throw
-            this->destroy(this->begin() + s, this->end());
+            sv::copy(first, last, this->begin());                                       // may throw
+            sv::destroy(this->begin() + s, this->end());
         }
         m_size = s; // update end
     }
@@ -651,160 +681,23 @@ private:
     template <typename Iterator, typename Traversal>
     void assign_dispatch(Iterator first, Iterator last, Traversal const& /*not_random_access*/)
     {
+        namespace sv = detail::static_vector;
+
         size_type s = 0;
         iterator it = this->begin();
 
         for ( ; it != this->end() && first != last ; ++it, ++first, ++s )
             *it = *first;                                                                                   // may throw
 
-        this->destroy(it, this->end());
+        sv::destroy(it, this->end());
 
-        std::pair<bool, size_type> copy_data =
-            this->uninitialized_copy_checked(first, last, it, std::distance(it, this->begin() + Capacity)); // may throw
-        s += copy_data.second;
+        std::ptrdiff_t d = std::distance(it, this->begin() + Capacity);
+        std::size_t count = sv::uninitialized_copy_s(first, last, it, d);                                   // may throw
+        s += count;
 
-        errh::check_capacity(*this, copy_data.first ? s : Capacity + 1);                                    // may throw
+        errh::check_capacity(*this, count <= static_cast<std::size_t>(d) ? s : Capacity + 1);               // may throw
 
         m_size = s; // update end
-    }
-
-    // uninitialized_copy_checked
-
-    template <typename Iterator>
-    std::pair<bool, size_type> uninitialized_copy_checked(Iterator first, Iterator last, iterator dest, size_type max_count)
-    {
-        size_type count = 0;
-        iterator it = dest;
-        try
-        {
-            for ( ; first != last ; ++it, ++first, ++count )
-            {
-                if ( max_count <= count )
-                    return std::make_pair(false, count);
-
-                this->uninitialized_fill(it, *first);                              // may throw
-            }
-        }
-        catch(...)
-        {
-            this->destroy(dest, it);
-            throw;
-        }
-        return std::make_pair(true, count);
-    }
-
-    // copy
-
-    template <typename Iterator>
-    inline static void copy(Iterator first, Iterator last, iterator dst)
-    {
-        namespace sv = detail::static_vector;
-        sv::copy(first, last, dst);                                                         // may throw
-    }
-
-    // uninitialized_copy
-
-    template <typename Iterator>
-    void uninitialized_copy(Iterator first, Iterator last, iterator dst)
-    {
-        namespace sv = detail::static_vector;
-        sv::uninitialized_copy(first, last, dst);                                           // may throw
-    }
-
-    // uninitialized_fill
-
-    template <typename V>
-    void uninitialized_fill(iterator dst, V const& v)
-    {
-        namespace sv = detail::static_vector;
-        sv::uninitialized_fill(dst, v);                                                     // may throw
-    }
-
-    // move
-
-    void move(iterator first, iterator last, iterator dst)
-    {
-        namespace sv = detail::static_vector;
-        sv::move(first, last, dst);                                                         // may throw
-    }
-
-    // move_backward
-
-    void move_backward(iterator first, iterator last, iterator dst)
-    {
-        namespace sv = detail::static_vector;
-        sv::move_backward(first, last, dst);                                                // may throw
-    }
-
-    // fill
-
-    template <typename V>
-    void fill(iterator dst, V const& v)
-    {
-        namespace sv = detail::static_vector;
-        sv::fill(dst, v);                                                           // may throw
-    }
-
-    // destroy
-
-    void destroy(iterator first, iterator last)
-    {
-        this->destroy_dispatch(first, last, has_trivial_destructor<value_type>());
-    }
-
-    void destroy_dispatch(value_type * /*first*/, value_type * /*last*/,
-                          boost::true_type const& /*has_trivial_destructor*/)
-    {}
-
-    void destroy_dispatch(value_type * first, value_type * last,
-                          boost::false_type const& /*has_trivial_destructor*/)
-    {
-        for ( ; first != last ; ++first )
-            first->~value_type();
-    }
-
-    // destroy
-
-    void destroy(iterator it)
-    {
-        this->destroy_dispatch(it, has_trivial_destructor<value_type>());
-    }
-
-    void destroy_dispatch(value_type * /*ptr*/,
-                          boost::true_type const& /*has_trivial_destructor*/)
-    {}
-
-    void destroy_dispatch(value_type * ptr,
-                          boost::false_type const& /*has_trivial_destructor*/)
-    {
-        ptr->~value_type();
-    }
-
-    // construct
-
-    void construct(iterator first, iterator last)
-    {
-        this->construct_dispatch(first, last, has_trivial_constructor<value_type>());   // may throw
-    }
-
-    void construct_dispatch(value_type * /*first*/, value_type * /*last*/,
-                            boost::true_type const& /*has_trivial_constructor*/)
-    {}
-
-    void construct_dispatch(value_type * first, value_type * last,
-                            boost::false_type const& /*has_trivial_constructor*/)
-    {
-        value_type * it = first;
-        try
-        {
-            for ( ; it != last ; ++it )
-                new (it) value_type();                                                  // may throw
-        }
-        catch(...)
-        {
-            this->destroy(first, it);
-            throw;
-        }
     }
 
     Value * ptr()
