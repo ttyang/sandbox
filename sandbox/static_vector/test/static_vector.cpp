@@ -18,6 +18,8 @@
 
 #include <vector>
 #include <list>
+#include <boost/container/vector.hpp>
+#include <boost/container/stable_vector.hpp>
 #include <boost/shared_ptr.hpp>
 #include "movable.hpp"
 
@@ -278,18 +280,39 @@ void test_compare_ranges(It1 first1, It1 last1, It2 first2, It2 last2)
         BOOST_CHECK(*first1 == *first2);
 }
 
+template <typename T, size_t N, typename C>
+void test_copy_and_assign(C const& c)
+{
+    {
+        static_vector<T, N> s(c.begin(), c.end());
+        BOOST_CHECK(s.size() == c.size());
+        test_compare_ranges(s.begin(), s.end(), c.begin(), c.end());
+    }
+    {
+        static_vector<T, N> s;
+        BOOST_CHECK(0 == s.size());
+        s.assign(c.begin(), c.end());
+        BOOST_CHECK(s.size() == c.size());
+        test_compare_ranges(s.begin(), s.end(), c.begin(), c.end());
+    }
+}
+
 template <typename T, size_t N>
 void test_copy_and_assign_nd(T const& val)
 {
     static_vector<T, N> s;
     std::vector<T> v;
     std::list<T> l;
+    stable_vector<T> bsv;
+    vector<T> bv;
 
     for ( size_t i = 0 ; i < N ; ++i )
     {
         s.push_back(T(i));
         v.push_back(T(i));
         l.push_back(T(i));
+        bsv.push_back(T(i));
+        bv.push_back(T(i));
     }
     // copy ctor
     {
@@ -305,44 +328,14 @@ void test_copy_and_assign_nd(T const& val)
         BOOST_CHECK(s.size() == s1.size());
         test_compare_ranges(s.begin(), s.end(), s1.begin(), s1.end());
     }
-    // ctor(Iter, Iter)
-    {
-        static_vector<T, N> s1(s.begin(), s.end());
-        BOOST_CHECK(s.size() == s1.size());
-        test_compare_ranges(s.begin(), s.end(), s1.begin(), s1.end());
-    }
-    {
-        static_vector<T, N> s1(v.begin(), v.end());
-        BOOST_CHECK(v.size() == s1.size());
-        test_compare_ranges(v.begin(), v.end(), s1.begin(), s1.end());
-    }
-    {
-        static_vector<T, N> s1(l.begin(), l.end());
-        BOOST_CHECK(l.size() == s1.size());
-        test_compare_ranges(l.begin(), l.end(), s1.begin(), s1.end());
-    }
-    // assign(Iter, Iter)
-    {
-        static_vector<T, N> s1;
-        BOOST_CHECK(0 == s1.size());
-        s1.assign(s.begin(), s.end());
-        BOOST_CHECK(s.size() == s1.size());
-        test_compare_ranges(s.begin(), s.end(), s1.begin(), s1.end());
-    }
-    {
-        static_vector<T, N> s1;
-        BOOST_CHECK(0 == s1.size());
-        s1.assign(v.begin(), v.end());
-        BOOST_CHECK(v.size() == s1.size());
-        test_compare_ranges(v.begin(), v.end(), s1.begin(), s1.end());
-    }
-    {
-        static_vector<T, N> s1;
-        BOOST_CHECK(0 == s1.size());
-        s1.assign(l.begin(), l.end());
-        BOOST_CHECK(l.size() == s1.size());
-        test_compare_ranges(l.begin(), l.end(), s1.begin(), s1.end());
-    }
+
+    // ctor(Iter, Iter) and assign(Iter, Iter)
+    test_copy_and_assign<T, N>(s);
+    test_copy_and_assign<T, N>(v);
+    test_copy_and_assign<T, N>(l);
+    test_copy_and_assign<T, N>(bsv);
+    test_copy_and_assign<T, N>(bv);
+
     // assign(N, V)
     {
         static_vector<T, N> s1(s);
@@ -415,6 +408,32 @@ void test_erase_nd()
     }
 }
 
+template <typename T, size_t N, typename SV, typename C>
+void test_insert(SV const& s, C const& c)
+{
+    size_t h = N/2;
+    size_t n = size_t(h/1.5f);
+
+    for ( size_t i = 0 ; i <= h ; ++i )
+    {
+        static_vector<T, N> s1(s);
+
+        typename C::const_iterator it = c.begin();
+        std::advance(it, n);
+        typename static_vector<T, N>::iterator
+            it1 = s1.insert(s1.begin() + i, c.begin(), it);
+
+        BOOST_CHECK(s1.begin() + i == it1);
+        BOOST_CHECK(s1.size() == h+n);
+        for ( size_t j = 0 ; j < i ; ++j )
+            BOOST_CHECK(s1[j] == T(j));
+        for ( size_t j = 0 ; j < n ; ++j )
+            BOOST_CHECK(s1[j+i] == T(100 + j));
+        for ( size_t j = 0 ; j < h-i ; ++j )
+            BOOST_CHECK(s1[j+i+n] == T(j+i));
+    }
+}
+
 template <typename T, size_t N>
 void test_insert_nd(T const& val)
 {
@@ -423,6 +442,8 @@ void test_insert_nd(T const& val)
     static_vector<T, N> s, ss;
     std::vector<T> v;
     std::list<T> l;
+    vector<T> bv;
+    stable_vector<T> bsv;
 
     typedef typename static_vector<T, N>::iterator It;
 
@@ -432,6 +453,8 @@ void test_insert_nd(T const& val)
         ss.push_back(T(100 + i));
         v.push_back(T(100 + i));
         l.push_back(T(100 + i));
+        bv.push_back(T(100 + i));
+        bsv.push_back(T(100 + i));
     }
 
     // insert(pos, val)
@@ -467,56 +490,11 @@ void test_insert_nd(T const& val)
         }        
     }
     // insert(pos, first, last)
-    {
-        size_t n = size_t(h/1.5f);
-        for ( size_t i = 0 ; i <= h ; ++i )
-        {
-            static_vector<T, N> s1(s);
-            It it = s1.insert(s1.begin() + i, ss.begin(), ss.begin() + n);
-            BOOST_CHECK(s1.begin() + i == it);
-            BOOST_CHECK(s1.size() == h+n);
-            for ( size_t j = 0 ; j < i ; ++j )
-                BOOST_CHECK(s1[j] == T(j));
-            for ( size_t j = 0 ; j < n ; ++j )
-                BOOST_CHECK(s1[j+i] == T(100 + j));
-            for ( size_t j = 0 ; j < h-i ; ++j )
-                BOOST_CHECK(s1[j+i+n] == T(j+i));
-        }        
-    }
-    {
-        size_t n = size_t(h/1.5f);
-        for ( size_t i = 0 ; i <= h ; ++i )
-        {
-            static_vector<T, N> s1(s);
-            It it = s1.insert(s1.begin() + i, v.begin(), v.begin() + n);
-            BOOST_CHECK(s1.begin() + i == it);
-            BOOST_CHECK(s1.size() == h+n);
-            for ( size_t j = 0 ; j < i ; ++j )
-                BOOST_CHECK(s1[j] == T(j));
-            for ( size_t j = 0 ; j < n ; ++j )
-                BOOST_CHECK(s1[j+i] == T(100 + j));
-            for ( size_t j = 0 ; j < h-i ; ++j )
-                BOOST_CHECK(s1[j+i+n] == T(j+i));
-        }        
-    }
-    {
-        size_t n = size_t(h/1.5f);
-        for ( size_t i = 0 ; i <= h ; ++i )
-        {
-            static_vector<T, N> s1(s);
-            typename std::list<T>::iterator it = l.begin();
-            std::advance(it, n);
-            It it1 = s1.insert(s1.begin() + i, l.begin(), it);
-            BOOST_CHECK(s1.begin() + i == it1);
-            BOOST_CHECK(s1.size() == h+n);
-            for ( size_t j = 0 ; j < i ; ++j )
-                BOOST_CHECK(s1[j] == T(j));
-            for ( size_t j = 0 ; j < n ; ++j )
-                BOOST_CHECK(s1[j+i] == T(100 + j));
-            for ( size_t j = 0 ; j < h-i ; ++j )
-                BOOST_CHECK(s1[j+i+n] == T(j+i));
-        }        
-    }
+    test_insert<T, N>(s, ss);
+    test_insert<T, N>(s, v);
+    test_insert<T, N>(s, l);
+    test_insert<T, N>(s, bv);
+    test_insert<T, N>(s, bsv);
 }
 
 template <typename T>
