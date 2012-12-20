@@ -60,15 +60,37 @@ struct are_elements_contiguous< container_detail::vector_iterator<Pointer> > : b
 #if defined(_MSC_VER)
 
 template <typename T>
-struct are_elements_contiguous< std::_Vector_const_iterator<T> > : boost::true_type
+struct are_elements_contiguous<
+    std::_Vector_const_iterator<T>
+> : boost::true_type
 {};
 
 template <typename T>
-struct are_elements_contiguous< std::_Vector_iterator<T> > : boost::true_type
+struct are_elements_contiguous<
+    std::_Vector_iterator<T>
+> : boost::true_type
 {};
 
-// TODO - add other iterators implementations
+#elif defined(__GLIBCPP__) || defined(__GLIBCXX__)
 
+template <typename P, typename T, typename A>
+struct are_elements_contiguous<
+    __gnu_cxx::__normal_iterator<P, std::vector<T, A> >
+> : boost::true_type
+{};
+
+#elif defined(_LIBCPP_VERSION)
+
+// TODO - test it first
+
+//template <typename P>
+//struct are_elements_contiguous<
+//    __wrap_iter<P>
+//> : boost::true_type
+//{};
+
+#else
+// TODO - add other iterators implementations
 #endif
 
 template <typename I, typename O>

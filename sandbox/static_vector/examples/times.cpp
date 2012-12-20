@@ -49,6 +49,8 @@ size_t test(size_t count)
     return dummy;
 };
 
+#include <vector>
+
 int main()
 {
     size_t count = 2000000;
