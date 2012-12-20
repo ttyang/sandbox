@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>get_reference</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="get_reference.html" title="get_reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="get_reference"></a>get_reference</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="get_reference.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="get_reference.html#get_reference.func_synopsis">Function Synopsis</a></span></dt>
+<dt><span class="section"><a href="get_reference.html#get_reference.func_desc">Function Description</a></span></dt>
+<dt><span class="section"><a href="get_reference.html#get_reference.definition">Where defined</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="get_reference.func_synopsis"></a><a class="link" href="get_reference.html#get_reference.func_synopsis" title="Function Synopsis">Function Synopsis</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">get_reference</span><span class="special">()</span>
+    <span class="special">{</span>
+        <span class="keyword">return</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;().</span><span class="identifier">get</span><span class="special">();</span>
+    <span class="special">}</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="get_reference.func_desc"></a><a class="link" href="get_reference.html#get_reference.func_desc" title="Function Description">Function Description</a>
+</h2></div></div></div>
+<p>
+      Allows a <a href="http://www.boost.org/doc/html/typeof.refe.html#typeof" target="_top"><code class="computeroutput"><span class="identifier">BOOST_TYPEOF</span></code></a> or <a href="http://www.boost.org/doc/html/typeof.refe.html#typeof" target="_top"><code class="computeroutput"><span class="identifier">BOOST_TYPEOF_TPL</span></code></a> expression to obtain
+      a reference to the specified type without requiring the type to be <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a>.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="get_reference.definition"></a><a class="link" href="get_reference.html#get_reference.definition" title="Where defined">Where defined</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../boost/utility/get_reference.hpp" target="_top">boost/utility/get_reference.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: December 15, 2012 at 20:26:52 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

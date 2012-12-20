@@ -13,7 +13,7 @@
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/aux_/lambda_support.hpp>
 #include <boost/typeof/typeof.hpp>
-#include <boost/detail/function/get_reference.hpp>
+#include <boost/utility/get_reference.hpp>
 #include <boost/detail/metafunction/is_associative_container.hpp>
 #include <boost/detail/metafunction/is_ptr_container.hpp>
 
@@ -24,9 +24,7 @@ namespace boost { namespace detail { namespace metafunction {
       : ::boost::mpl::if_<
             ::std::tr1::is_same<
                 BOOST_TYPEOF_TPL(
-                    T().insert(
-                        ::boost::detail::get_reference<typename T::key_type>()
-                    )
+                    T().insert(::boost::get_reference<typename T::key_type>())
                 )
               , ::std::pair<typename T::iterator,bool>
             >
@@ -41,9 +39,7 @@ namespace boost { namespace detail { namespace metafunction {
       : ::boost::mpl::if_<
             ::std::tr1::is_same<
                 BOOST_TYPEOF_TPL(
-                    T().insert(
-                        &::boost::detail::get_reference<typename T::key_type>()
-                    )
+                    T().insert(&::boost::get_reference<typename T::key_type>())
                 )
               , ::std::pair<typename T::iterator,bool>
             >

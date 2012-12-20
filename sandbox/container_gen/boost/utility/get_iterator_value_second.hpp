@@ -12,7 +12,7 @@
 #include <boost/typeof/typeof.hpp>
 #include <boost/typeof/boost/ref.hpp>
 #include <boost/ptr_container/detail/map_iterator.hpp>
-#include <boost/detail/function/get_reference.hpp>
+#include <boost/utility/get_reference.hpp>
 
 //[reference__get_iterator_value_second_result
 namespace boost {
@@ -20,20 +20,17 @@ namespace boost {
     template <typename IterValue>
     struct get_iterator_value_second_result
     {
-        typedef // implementation_defined
-                //<-
-                typename ::std::tr1::remove_pointer<
+        typedef typename ::std::tr1::remove_pointer<
                     typename ::boost::unwrap_reference<
                         BOOST_TYPEOF_TPL(
                             ::boost::ref(
-                                ::boost::detail::get_reference<
+                                ::boost::get_reference<
                                     IterValue
                                 >().second
                             )
                         )
                     >::type
                 >::type&
-                //->
                 type;
     };
 }  // namespace boost

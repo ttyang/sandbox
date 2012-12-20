@@ -53,6 +53,10 @@ namespace boost {
 //->
 
              public:
+                typedef bool result_type;
+                typedef T const& first_argument_type;
+                typedef T const& second_argument_type;
+
                 inline bool operator()(T const& lhs, T const& rhs) const
                 {
                     return _evaluate(
@@ -106,6 +110,10 @@ namespace boost {
 //->
 
              public:
+                typedef bool result_type;
+                typedef T const& first_argument_type;
+                typedef T const& second_argument_type;
+
                 inline bool operator()(T const& lhs, T const& rhs) const
                 {
                     return _evaluate(
