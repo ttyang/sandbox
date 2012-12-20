@@ -113,6 +113,7 @@ const e_float& ef::sqrt3(void)
 
 const e_float& ef::pi(void)
 {
+/*
   // 1100 digits of pi
   static const std::string str =
     std::string("3.")
@@ -128,8 +129,62 @@ const e_float& ef::pi(void)
   + std::string("5982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989")
   + std::string("3809525720106548586327886593615338182796823030195203530185296899577362259941389124972177528347913152")
   ;
-  
+
   static const e_float val(str.c_str());
+  return val;
+*/
+
+  static bool is_initialized = false;
+  static e_float val_pi;
+
+  if(!is_initialized)
+  {
+    is_initialized = true;
+
+    e_float a(1U);
+    e_float bB(ef::half());
+    e_float s (ef::half());
+    e_float t ("0.375");
+
+    // This loop is designed for a maximum of several million
+    // decimal digits of pi. The index k should reach no higher
+    // than about 25. The decimal precision after 18 iterations
+    // is more than one million digits.
+
+    for(INT32 k = static_cast<INT32>(1); k < static_cast<INT32>(64); k++)
+    {
+      bB      = ef::sqrt(bB);
+      a      += bB;
+      a      /= static_cast<INT32>(2);
+      val_pi  = a;
+      val_pi *= a;
+      bB      = val_pi;
+      bB     -= t;
+      bB     *= static_cast<INT32>(2);
+
+      e_float iterate_term(bB);
+      iterate_term -= val_pi;
+      iterate_term *= static_cast<INT32>(1UL << k);
+      s += iterate_term;
+
+      // Test the significant digits of the current iteration change.
+      // If the amount of the iteration is within the desired precision,
+      // then the calculation is finished.
+      if(ef::fabs(iterate_term) < std::numeric_limits<e_float>::epsilon())
+      {
+        break;
+      }
+
+      t   = val_pi;
+      t  += bB;
+      t  /= static_cast<INT32>(4);
+    }
+
+    val_pi += bB;
+    val_pi *= s.calculate_inv();
+  }
+
+  static const e_float val(val_pi);
   return val;
 }
 
