@@ -59,37 +59,18 @@ private:
 
 class counting_value
 {
+    BOOST_COPYABLE_AND_MOVABLE(counting_value)
+
 public:
     explicit counting_value(int a = 0) : aa(a) { ++c(); }
     counting_value(counting_value const& v) : aa(v.aa) { ++c(); }
-    //counting_value & operator=(counting_value const& v) { aa = v.aa; return *this; }
+    counting_value(BOOST_RV_REF(counting_value) p) : aa(p.aa) { p.aa = 0; ++c(); }                      // Move constructor
+    counting_value& operator=(BOOST_RV_REF(counting_value) p) { aa = p.aa; p.aa = 0; return *this; }    // Move assignment
+    counting_value& operator=(BOOST_COPY_ASSIGN_REF(counting_value) p) { aa = p.aa; return *this; }     // Copy assignment
     ~counting_value() { --c(); }
     bool operator==(counting_value const& v) const { return aa == v.aa; }
     static size_t count() { return c(); }
-    static void init() { c() = 0; }
-    
 
-   counting_value& operator=(BOOST_COPY_ASSIGN_REF(counting_value) p) // Copy assignment
-   {
-      if (this != &p){
-         int tmp_aa = p.aa ? p.aa : 0;
-         aa = tmp_aa;
-      }
-      return *this;
-   }
-
-   //Move semantics...
-   counting_value(BOOST_RV_REF(counting_value) p)            //Move constructor
-      : aa(p.aa) { p.aa = 0; }
-
-   counting_value& operator=(BOOST_RV_REF(counting_value) p) //Move assignment
-   {
-      if (this != &p){
-         aa = p.aa;
-         p.aa = 0;
-      }
-      return *this;
-   }
 private:
     static size_t & c() { static size_t co = 0; return co; }
     int aa;
