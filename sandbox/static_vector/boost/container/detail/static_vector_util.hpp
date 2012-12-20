@@ -35,23 +35,63 @@
 #include <boost/utility/addressof.hpp>
 #include <boost/iterator/iterator_traits.hpp>
 
+// TODO - move this to the other, optional file?
+#include <vector>
+#include <boost/container/vector.hpp>
+
 namespace boost { namespace container { namespace detail { namespace static_vector {
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
+template <typename I>
+struct are_elements_contiguous : boost::is_pointer<I>
+{};
+
+// TODO - move this to the other, optional file?
+
+template <typename Pointer>
+struct are_elements_contiguous< container_detail::vector_const_iterator<Pointer> > : boost::true_type
+{};
+
+template <typename Pointer>
+struct are_elements_contiguous< container_detail::vector_iterator<Pointer> > : boost::true_type
+{};
+
+#if defined(_MSC_VER)
+
+template <typename T>
+struct are_elements_contiguous< std::_Vector_const_iterator<T> > : boost::true_type
+{};
+
+template <typename T>
+struct are_elements_contiguous< std::_Vector_iterator<T> > : boost::true_type
+{};
+
+// TODO - add other iterators implementations
+
+#endif
+
 template <typename I, typename O>
-struct are_corresponding_pointers :
-    ::boost::mpl::and_<
-        ::boost::is_same<
-            ::boost::remove_const<
-                typename ::boost::iterator_value<I>::type
+struct are_corresponding :
+    boost::mpl::and_<
+        boost::is_same<
+            boost::remove_const<
+                typename boost::iterator_value<I>::type
             >,
-            ::boost::remove_const<
-                typename ::boost::iterator_value<O>::type
+            boost::remove_const<
+                typename boost::iterator_value<O>::type
             >
         >,
-        ::boost::is_pointer<I>,
-        ::boost::is_pointer<O>
+        /*boost::is_same<
+            typename boost::iterator_traversal<I>::type,
+            boost::random_access_traversal_tag
+        >,
+        boost::is_same<
+            typename boost::iterator_traversal<O>::type,
+            boost::random_access_traversal_tag
+        >,*/
+        are_elements_contiguous<I>,
+        are_elements_contiguous<O>
     >
 {};
 
@@ -67,18 +107,20 @@ struct is_corresponding_value :
 
 // copy(I, I, O)
 
-template <typename V>
-inline V * copy_dispatch(const V * first, const V * last, V * dst,
-                          boost::mpl::bool_<true> const& /*use_memcpy*/)
+template <typename I, typename O>
+inline O copy_dispatch(I first, I last, O dst,
+                       boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
-    typename std::iterator_traits<V*>::difference_type d = std::distance(first, last);
-    ::memcpy(dst, first, sizeof(V) * d);
+    typedef typename boost::iterator_value<I>::type value_type;
+    typename boost::iterator_difference<I>::type d = std::distance(first, last);
+
+    ::memcpy(boost::addressof(*dst), boost::addressof(*first), sizeof(value_type) * d);
     return dst + d;
 }
 
 template <typename I, typename O>
 inline O copy_dispatch(I first, I last, O dst,
-                          boost::mpl::bool_<false> const& /*use_memcpy*/)
+                       boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
     return std::copy(first, last, dst);                                         // may throw
 }
@@ -88,7 +130,7 @@ inline O copy(I first, I last, O dst)
 {
     typedef typename
     ::boost::mpl::and_<
-        are_corresponding_pointers<I, O>,
+        are_corresponding<I, O>,
         ::boost::has_trivial_assign<
             typename ::boost::iterator_value<O>::type
         >
@@ -99,12 +141,14 @@ inline O copy(I first, I last, O dst)
 
 // uninitialized_copy(I, I, O)
 
-template <typename V>
-V * uninitialized_copy_dispatch(const V * first, const V * last, V * dst,
-                                boost::mpl::bool_<true> const& /*use_memcpy*/)
+template <typename I, typename O>
+O uninitialized_copy_dispatch(I first, I last, O dst,
+                              boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
-    typename std::iterator_traits<V*>::difference_type d = std::distance(first, last);
-    ::memcpy(dst, first, sizeof(V) * d);
+    typedef typename boost::iterator_value<I>::type value_type;
+    typename boost::iterator_difference<I>::type d = std::distance(first, last);
+
+    ::memcpy(boost::addressof(*dst), boost::addressof(*first), sizeof(value_type) * d);
     return dst + d;
 }
 
@@ -120,7 +164,7 @@ F uninitialized_copy(I first, I last, F dst)
 {
     typedef typename
     ::boost::mpl::and_<
-        are_corresponding_pointers<I, F>,
+        are_corresponding<I, F>,
         ::boost::has_trivial_copy<
             typename ::boost::iterator_value<F>::type
         >
@@ -131,11 +175,11 @@ F uninitialized_copy(I first, I last, F dst)
 
 // uninitialized_fill(I, V)
 
-template <typename V>
-void uninitialized_fill_dispatch(V * ptr, V const& v,
+template <typename I, typename V>
+void uninitialized_fill_dispatch(I pos, V const& v,
                                  boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
-    ::memcpy(ptr, boost::addressof(v), sizeof(V));
+    ::memcpy(boost::addressof(*pos), boost::addressof(v), sizeof(V));
 }
 
 template <typename I, typename V>
@@ -162,12 +206,14 @@ void uninitialized_fill(I dst, V const& v)
 
 // TODO use boost::move(I, I, O) instead of copy
 
-template <typename V>
-V * move_dispatch(const V * first, const V * last, V * dst,
+template <typename I, typename O>
+O move_dispatch(I first, I last, O dst,
                   boost::mpl::bool_<true> const& /*use_memmove*/)
 {
-    typename std::iterator_traits<V*>::difference_type d = std::distance(first, last);
-    ::memmove(dst, first, sizeof(V) * d);
+    typedef typename boost::iterator_value<I>::type value_type;
+    typename boost::iterator_difference<I>::type d = std::distance(first, last);
+
+    ::memmove(boost::addressof(*dst), boost::addressof(*first), sizeof(value_type) * d);
     return dst + d;
 }
 
@@ -183,7 +229,7 @@ O move(I first, I last, O dst)
 {
     typedef typename
     ::boost::mpl::and_<
-        are_corresponding_pointers<I, O>,
+        are_corresponding<I, O>,
         ::boost::has_trivial_assign<
             typename ::boost::iterator_value<O>::type
         >
@@ -197,13 +243,16 @@ O move(I first, I last, O dst)
 
 // TODO use boost::move_backward(I, I, O) instead of copy_backward
 
-template <typename V>
-V * move_backward_dispatch(const V * first, const V * last, V * dst,
+template <typename BDI, typename BDO>
+BDO move_backward_dispatch(BDI first, BDI last, BDO dst,
                            boost::mpl::bool_<true> const& /*use_memmove*/)
 {
-    typename std::iterator_traits<V*>::difference_type d = std::distance(first, last);
-    ::memmove(dst - d, first, sizeof(V) * d);
-    return dst - d;
+    typedef typename boost::iterator_value<BDI>::type value_type;
+    typename boost::iterator_difference<BDI>::type d = std::distance(first, last);
+
+    BDO foo(dst - d);
+    ::memmove(boost::addressof(*foo), boost::addressof(*first), sizeof(value_type) * d);
+    return foo;
 }
 
 template <typename BDI, typename BDO>
@@ -218,7 +267,7 @@ BDO move_backward(BDI first, BDI last, BDO dst)
 {
     typedef typename
     ::boost::mpl::and_<
-        are_corresponding_pointers<BDI, BDO>,
+        are_corresponding<BDI, BDO>,
         ::boost::has_trivial_assign<
             typename ::boost::iterator_value<BDO>::type
         >
@@ -230,11 +279,11 @@ BDO move_backward(BDI first, BDI last, BDO dst)
 
 // fill(I, V)
 
-template <typename V>
-void fill_dispatch(V * ptr, V const& v,
+template <typename I, typename V>
+void fill_dispatch(I pos, V const& v,
                    boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
-    ::memcpy(ptr, boost::addressof(v), sizeof(V));
+    ::memcpy(boost::addressof(*pos), boost::addressof(v), sizeof(V));
 }
 
 template <typename I, typename V>
@@ -335,6 +384,10 @@ void construct(I first, I last)
 }
 
 #else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+template <typename I>
+struct are_elements_contiguous
+{};
 
 template <typename I, typename O>
 inline O copy(I first, I last, O dst)
