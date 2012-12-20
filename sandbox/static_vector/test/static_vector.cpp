@@ -1,7 +1,8 @@
-// Boost.Geometry Index
+// Boost.Container StaticVector
 // Unit Test
 
-// Copyright (c) 2011-2012 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2012 Adam Wulkiewicz, Lodz, Poland.
+// Copyright (c) 2012 Andrew Hundt.
 
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
