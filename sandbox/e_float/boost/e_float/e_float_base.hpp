@@ -26,7 +26,7 @@
 
   // Select the number of decimal digits in e_float
   // by setting the value of E_FLOAT_DIGITS10.
-  // Note: This is a compile-time constant.
+  // Do note that this is a compile-time constant.
 
   #define E_FLOAT_DIGITS10 100
 
