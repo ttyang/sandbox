@@ -32,6 +32,7 @@
 //#include <boost/type_traits/has_nothrow_assign.hpp>
 //#include <boost/type_traits/has_nothrow_destructor.hpp>
 
+#include <boost/config.hpp>
 #include <boost/move/move.hpp>
 #include <boost/utility/addressof.hpp>
 #include <boost/iterator/iterator_traits.hpp>
@@ -58,7 +59,7 @@ template <typename Pointer>
 struct are_elements_contiguous< container_detail::vector_iterator<Pointer> > : boost::true_type
 {};
 
-#if defined(_MSC_VER)
+#if defined(BOOST_DINKUMWARE_STDLIB)
 
 template <typename T>
 struct are_elements_contiguous<
@@ -72,7 +73,7 @@ struct are_elements_contiguous<
 > : boost::true_type
 {};
 
-#elif defined(__GLIBCPP__) || defined(__GLIBCXX__)
+#elif defined(BOOST_GNU_STDLIB)
 
 template <typename P, typename T, typename A>
 struct are_elements_contiguous<
