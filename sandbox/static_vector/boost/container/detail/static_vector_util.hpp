@@ -41,7 +41,7 @@
 #include <vector>
 #include <boost/container/vector.hpp>
 
-namespace boost { namespace container { namespace detail { namespace static_vector {
+namespace boost { namespace container { namespace static_vector_detail {
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
@@ -508,6 +508,6 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
     return count;
 }
 
-}}}} // namespace boost::container::detail::static_vector
+}}} // namespace boost::container::static_vector_detail
 
 #endif // BOOST_CONTAINER_DETAIL_STATIC_VECTOR_UTIL_HPP

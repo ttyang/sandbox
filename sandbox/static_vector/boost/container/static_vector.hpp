@@ -40,7 +40,7 @@ namespace boost { namespace container {
 template <typename Value, std::size_t Capacity, typename StoredSizeType>
 class static_vector;
 
-namespace detail { namespace static_vector {
+namespace static_vector_detail {
 
 struct error_handling
 {
@@ -110,7 +110,7 @@ struct error_handling
     }
 };
 
-}} // namespace detail::static_vector
+} // namespace static_vector_detail
 
 template <typename Value, std::size_t Capacity, typename StoredSizeType = std::size_t>
 class static_vector
@@ -127,7 +127,7 @@ class static_vector
         boost::alignment_of<Value[Capacity]>::value
     > aligned_storage_type;
 
-    typedef detail::static_vector::error_handling errh;
+    typedef static_vector_detail::error_handling errh;
 
 public:
     typedef Value value_type;
@@ -165,7 +165,7 @@ public:
     static_vector(static_vector const& other)
         : m_size(other.size())
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
@@ -176,7 +176,7 @@ public:
     {
         errh::check_capacity(other.size());                                         // may throw
         
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
@@ -209,7 +209,7 @@ public:
     // nothrow
     ~static_vector()
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
         sv::destroy(this->begin(), this->end());
     }
 
@@ -217,7 +217,7 @@ public:
     // swap (note: linear complexity)
     void swap(static_vector & other)
     {
-//        namespace sv = detail::static_vector;
+//        namespace sv = static_vector_detail;
 //        iterator it = this->begin();
 //        iterator other_it = other.begin();
 
@@ -277,7 +277,7 @@ public:
     // strong
     void resize(size_type count)
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
 
         if ( count < m_size )
         {
@@ -297,7 +297,7 @@ public:
     {
         if ( count < m_size )
         {
-            namespace sv = detail::static_vector;
+            namespace sv = static_vector_detail;
             sv::destroy(this->begin() + count, this->end());
         }
         else
@@ -320,7 +320,7 @@ public:
     {
         errh::check_capacity(*this, m_size + 1);                                    // may throw
         
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
         sv::uninitialized_fill(this->end(), value);                                 // may throw
         ++m_size; // update end
     }
@@ -331,11 +331,11 @@ public:
         errh::check_empty(*this);
 
         //--m_size; // update end
-        //namespace sv = detail::static_vector;
+        //namespace sv = static_vector_detail;
         //sv::destroy(this->end());
 
         // safer and more intuitive version
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
         sv::destroy(this->end() - 1);
         --m_size; // update end
     }
@@ -343,7 +343,7 @@ public:
     // basic
     iterator insert(iterator position, value_type const& value)
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
 
         errh::check_iterator_end_eq(*this, position);
         errh::check_capacity(*this, m_size + 1);                                    // may throw
@@ -379,7 +379,7 @@ public:
         }
         else
         {
-            namespace sv = detail::static_vector;
+            namespace sv = static_vector_detail;
 
             difference_type to_move = std::distance(position, this->end());
             
@@ -420,7 +420,7 @@ public:
     // basic
     iterator erase(iterator position)
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
 
         errh::check_iterator_end_neq(*this, position);
 
@@ -434,7 +434,7 @@ public:
     // basic
     iterator erase(iterator first, iterator last)
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
 
         errh::check_iterator_end_eq(*this, first);
         errh::check_iterator_end_eq(*this, last);
@@ -464,7 +464,7 @@ public:
     {
         if ( count < m_size )
         {
-            namespace sv = detail::static_vector;
+            namespace sv = static_vector_detail;
 
             std::fill_n(this->begin(), count, value);
             sv::destroy(this->begin() + count, this->end());
@@ -482,7 +482,7 @@ public:
     // nothrow
     void clear()
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
         sv::destroy(this->begin(), this->end());
         m_size = 0; // update end
     }
@@ -585,7 +585,7 @@ private:
 
         if ( position == this->end() )
         {
-            namespace sv = detail::static_vector;
+            namespace sv = static_vector_detail;
 
             sv::uninitialized_copy(first, last, position);                                      // may throw
             m_size += count; // update end
@@ -603,7 +603,7 @@ private:
 
         if ( position == this->end() )
         {
-            namespace sv = detail::static_vector;
+            namespace sv = static_vector_detail;
 
             std::ptrdiff_t d = std::distance(position, this->begin() + Capacity);
             std::size_t count = sv::uninitialized_copy_s(first, last, position, d);                     // may throw
@@ -626,7 +626,7 @@ private:
     template <typename Iterator>
     void insert_in_the_middle(iterator position, Iterator first, Iterator last, difference_type count)
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
 
         difference_type to_move = std::distance(position, this->end());
 
@@ -657,7 +657,7 @@ private:
     template <typename Iterator>
     void assign_dispatch(Iterator first, Iterator last, boost::random_access_traversal_tag const& /*not_random_access*/)
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
 
         typename boost::iterator_difference<Iterator>::type
             s = std::distance(first, last);
@@ -681,7 +681,7 @@ private:
     template <typename Iterator, typename Traversal>
     void assign_dispatch(Iterator first, Iterator last, Traversal const& /*not_random_access*/)
     {
-        namespace sv = detail::static_vector;
+        namespace sv = static_vector_detail;
 
         size_type s = 0;
         iterator it = this->begin();
@@ -719,7 +719,7 @@ private:
 template<typename Value, typename StoredSizeType>
 class static_vector<Value, 0, StoredSizeType>
 {
-    typedef detail::static_vector::error_handling errh;
+    typedef static_vector_detail::error_handling errh;
 
 public:
     typedef Value value_type;
