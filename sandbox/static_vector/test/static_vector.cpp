@@ -6,11 +6,15 @@
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
-
 #include <boost/container/static_vector.hpp>
 
+#ifdef BOOST_SINGLE_HEADER_UTF
+#define BOOST_TEST_MODULE static_vector_tests
+#include <boost/test/unit_test.hpp>
+#else // BOOST_SINGLE_HEADER_UTF
 #include <boost/test/included/test_exec_monitor.hpp>
 #include <boost/test/impl/execution_monitor.ipp>
+#endif // BOOST_SINGLE_HEADER_UTF
 
 #include <vector>
 #include <list>
@@ -61,6 +65,7 @@ public:
     ~counting_value() { --c(); }
     bool operator==(counting_value const& v) const { return aa == v.aa; }
     static size_t count() { return c(); }
+    static void init() { c() = 0; }
 private:
     static size_t & c() { static size_t co = 0; return co; }
     int aa;
@@ -80,7 +85,7 @@ template <typename T, size_t N>
 void test_ctor_ndc()
 {
     static_vector<T, N> s;
-    BOOST_CHECK(s.size() == 0);
+    BOOST_CHECK_EQUAL(s.size() , 0);
     BOOST_CHECK(s.capacity() == N);
     BOOST_CHECK_THROW( s.at(0), std::out_of_range );
 }
@@ -557,14 +562,23 @@ void test_swap_nd()
     }
 }
 
+#ifdef BOOST_SINGLE_HEADER_UTF
+BOOST_AUTO_TEST_CASE(static_vector_test)
+#else // BOOST_SINGLE_HEADER_UTF
 int test_main(int, char* [])
+#endif // BOOST_SINGLE_HEADER_UTF
 {
-    BOOST_CHECK(counting_value::count() == 0);
-
+  BOOST_CHECK(true);
+  counting_value::init();
+  int zero = 0;
+  //BOOST_CHECK_EQUAL(0, 0);
+  zero = counting_value::count();
+  
+  //BOOST_CHECK_EQUAL(counting_value::count(), 0);
     test_ctor_ndc<int, 10>();
     test_ctor_ndc<value_ndc, 10>();
     test_ctor_ndc<counting_value, 10>();
-    BOOST_CHECK(counting_value::count() == 0);
+    //BOOST_CHECK(counting_value::count() == 0);
     test_ctor_ndc<shptr_value, 10>();
 
     test_ctor_nc<int, 10>(5);
@@ -645,5 +659,7 @@ int test_main(int, char* [])
     BOOST_CHECK(counting_value::count() == 0);
     test_swap_nd<shptr_value, 10>();
 
+#ifndef BOOST_SINGLE_HEADER_UTF
     return 0;
+#endif // BOOST_SINGLE_HEADER_UTF
 }
