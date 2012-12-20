@@ -19,6 +19,7 @@
 #include <vector>
 #include <list>
 #include <boost/shared_ptr.hpp>
+#include "movable.hpp"
 
 using namespace boost::container;
 
@@ -61,11 +62,34 @@ class counting_value
 public:
     explicit counting_value(int a = 0) : aa(a) { ++c(); }
     counting_value(counting_value const& v) : aa(v.aa) { ++c(); }
-    counting_value & operator=(counting_value const& v) { aa = v.aa; return *this; }
+    //counting_value & operator=(counting_value const& v) { aa = v.aa; return *this; }
     ~counting_value() { --c(); }
     bool operator==(counting_value const& v) const { return aa == v.aa; }
     static size_t count() { return c(); }
     static void init() { c() = 0; }
+    
+
+   counting_value& operator=(BOOST_COPY_ASSIGN_REF(counting_value) p) // Copy assignment
+   {
+      if (this != &p){
+         int tmp_aa = p.aa ? p.aa : 0;
+         aa = tmp_aa;
+      }
+      return *this;
+   }
+
+   //Move semantics...
+   counting_value(BOOST_RV_REF(counting_value) p)            //Move constructor
+      : aa(p.aa) { p.aa = 0; }
+
+   counting_value& operator=(BOOST_RV_REF(counting_value) p) //Move assignment
+   {
+      if (this != &p){
+         aa = p.aa;
+         p.aa = 0;
+      }
+      return *this;
+   }
 private:
     static size_t & c() { static size_t co = 0; return co; }
     int aa;
@@ -79,6 +103,53 @@ public:
     bool operator==(shptr_value const& v) const { return *m_ptr == *(v.m_ptr); }
 private:
     boost::shared_ptr<int> m_ptr;
+};
+
+template <class T>
+class clone_ptr
+{
+   private:
+   // Mark this class copyable and movable
+   BOOST_COPYABLE_AND_MOVABLE(clone_ptr)
+   T* ptr;
+
+   public:
+   // Construction
+   explicit clone_ptr(T* p = 0) : ptr(p) {}
+
+   // Destruction
+   ~clone_ptr() { delete ptr; }
+
+   clone_ptr(const clone_ptr& p) // Copy constructor (as usual)
+      : ptr(p.ptr ? p.ptr->clone() : 0) {}
+
+   clone_ptr& operator=(BOOST_COPY_ASSIGN_REF(clone_ptr) p) // Copy assignment
+   {
+      if (this != &p){
+         T *tmp_p = p.ptr ? p.ptr->clone() : 0;
+         delete ptr;
+         ptr = tmp_p;
+      }
+      return *this;
+   }
+
+   //Move semantics...
+   clone_ptr(BOOST_RV_REF(clone_ptr) p)            //Move constructor
+      : ptr(p.ptr) { p.ptr = 0; }
+
+   clone_ptr& operator=(BOOST_RV_REF(clone_ptr) p) //Move assignment
+   {
+      if (this != &p){
+         delete ptr;
+         ptr = p.ptr;
+         p.ptr = 0;
+      }
+      return *this;
+   }
+   
+   bool operator==(const clone_ptr&){
+     
+   }
 };
 
 template <typename T, size_t N>
@@ -568,96 +639,105 @@ BOOST_AUTO_TEST_CASE(static_vector_test)
 int test_main(int, char* [])
 #endif // BOOST_SINGLE_HEADER_UTF
 {
-  BOOST_CHECK(true);
-  counting_value::init();
-  int zero = 0;
-  //BOOST_CHECK_EQUAL(0, 0);
-  zero = counting_value::count();
   
-  //BOOST_CHECK_EQUAL(counting_value::count(), 0);
+    BOOST_CHECK_EQUAL(counting_value::count(), 0);
     test_ctor_ndc<int, 10>();
     test_ctor_ndc<value_ndc, 10>();
     test_ctor_ndc<counting_value, 10>();
-    //BOOST_CHECK(counting_value::count() == 0);
+    BOOST_CHECK(counting_value::count() == 0);
     test_ctor_ndc<shptr_value, 10>();
+    test_ctor_ndc<copy_movable, 10>();
 
     test_ctor_nc<int, 10>(5);
     test_ctor_nc<value_nc, 10>(5);
     test_ctor_nc<counting_value, 10>(5);
     BOOST_CHECK(counting_value::count() == 0);
     test_ctor_nc<shptr_value, 10>(5);
+    test_ctor_nc<copy_movable, 10>(5);
 
     test_ctor_nd<int, 10>(5, 1);
     test_ctor_nd<value_nd, 10>(5, value_nd(1));
     test_ctor_nd<counting_value, 10>(5, counting_value(1));
     BOOST_CHECK(counting_value::count() == 0);
     test_ctor_nd<shptr_value, 10>(5, shptr_value(1));
+    test_ctor_nd<copy_movable, 10>(5, produce());
 
     test_resize_nc<int, 10>(5);
     test_resize_nc<value_nc, 10>(5);
     test_resize_nc<counting_value, 10>(5);
     BOOST_CHECK(counting_value::count() == 0);
     test_resize_nc<shptr_value, 10>(5);
+    test_resize_nc<copy_movable, 10>(5);
 
     test_resize_nd<int, 10>(5, 1);
     test_resize_nd<value_nd, 10>(5, value_nd(1));
     test_resize_nd<counting_value, 10>(5, counting_value(1));
     BOOST_CHECK(counting_value::count() == 0);
     test_resize_nd<shptr_value, 10>(5, shptr_value(1));
+    test_resize_nd<copy_movable, 10>(5, produce());
 
     test_push_back_nd<int, 10>();
     test_push_back_nd<value_nd, 10>();
     test_push_back_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
     test_push_back_nd<shptr_value, 10>();
+    test_push_back_nd<copy_movable, 10>();
 
     test_pop_back_nd<int, 10>();
     test_pop_back_nd<value_nd, 10>();
     test_pop_back_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
     test_pop_back_nd<shptr_value, 10>();
+    test_pop_back_nd<copy_movable, 10>();
 
     test_copy_and_assign_nd<int, 10>(1);
     test_copy_and_assign_nd<value_nd, 10>(value_nd(1));
     test_copy_and_assign_nd<counting_value, 10>(counting_value(1));
     BOOST_CHECK(counting_value::count() == 0);
     test_copy_and_assign_nd<shptr_value, 10>(shptr_value(1));
+    test_copy_and_assign_nd<copy_movable, 10>(produce());
 
     test_iterators_nd<int, 10>();
     test_iterators_nd<value_nd, 10>();
     test_iterators_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
     test_iterators_nd<shptr_value, 10>();
+    test_iterators_nd<copy_movable, 10>();
 
     test_erase_nd<int, 10>();
     test_erase_nd<value_nd, 10>();
     test_erase_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
     test_erase_nd<shptr_value, 10>();
+    test_erase_nd<copy_movable, 10>();
 
     test_insert_nd<int, 10>(50);
     test_insert_nd<value_nd, 10>(value_nd(50));
     test_insert_nd<counting_value, 10>(counting_value(50));
     BOOST_CHECK(counting_value::count() == 0);
     test_insert_nd<shptr_value, 10>(shptr_value(50));
+    test_insert_nd<copy_movable, 10>(produce());
 
     test_capacity_0_nd<int>();
     test_capacity_0_nd<value_nd>();
     test_capacity_0_nd<counting_value>();
     BOOST_CHECK(counting_value::count() == 0);
     test_capacity_0_nd<shptr_value>();
+    test_capacity_0_nd<copy_movable>();
 
     test_exceptions_nd<int, 10>();
     test_exceptions_nd<value_nd, 10>();
     test_exceptions_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
     test_exceptions_nd<shptr_value, 10>();
+    test_exceptions_nd<copy_movable, 10>();
 
     test_swap_nd<int, 10>();
     test_swap_nd<value_nd, 10>();
     test_swap_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
     test_swap_nd<shptr_value, 10>();
+    test_swap_nd<copy_movable, 10>();
 
 #ifndef BOOST_SINGLE_HEADER_UTF
     return 0;

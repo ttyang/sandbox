@@ -32,6 +32,7 @@
 //#include <boost/type_traits/has_nothrow_assign.hpp>
 //#include <boost/type_traits/has_nothrow_destructor.hpp>
 
+#include <boost/move/move.hpp>
 #include <boost/utility/addressof.hpp>
 #include <boost/iterator/iterator_traits.hpp>
 
@@ -178,7 +179,7 @@ template <typename I, typename F>
 F uninitialized_copy_dispatch(I first, I last, F dst,
                                  boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
-    return std::uninitialized_copy(first, last, dst);                           // may throw
+    return boost::uninitialized_copy_or_move(first, last, dst);                           // may throw
 }
 
 template <typename I, typename F>
@@ -243,7 +244,7 @@ template <typename I, typename O>
 O move_dispatch(I first, I last, O dst,
                 boost::mpl::bool_<false> const& /*use_memmove*/)
 {
-    return std::copy(first, last, dst);                                         // may throw
+    return boost::move(first, last, dst);                                         // may throw
 }
 
 template <typename I, typename O>
@@ -281,7 +282,7 @@ template <typename BDI, typename BDO>
 BDO move_backward_dispatch(BDI first, BDI last, BDO dst,
                            boost::mpl::bool_<false> const& /*use_memmove*/)
 {
-    return std::copy_backward(first, last, dst);                                // may throw
+    return boost::move_backward(first, last, dst);                                // may throw
 }
 
 template <typename BDI, typename BDO>
