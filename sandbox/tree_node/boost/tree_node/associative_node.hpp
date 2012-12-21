@@ -24,6 +24,7 @@
 #include <boost/tree_node/preprocessor.hpp>
 #include <boost/tree_node/base.hpp>
 #include <boost/tree_node/algorithm/dereference_iterator.hpp>
+#include <boost/tree_node/data_key.hpp>
 #include <boost/assert.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -31,11 +32,102 @@
 #include <boost/preprocessor/repetition/repeat.hpp>
 #endif
 
+#if !defined BOOST_NO_SFINAE
+#include <boost/tr1/type_traits.hpp>
+#include <boost/utility/enable_if.hpp>
+#endif
+
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 #include <boost/move/move.hpp>
 #endif
 
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+#include <boost/mpl/eval_if.hpp>
+#include <boost/fusion/sequence/intrinsic/has_key.hpp>
+#include <boost/fusion/sequence/intrinsic/at_key.hpp>
+#include <boost/fusion/support/is_sequence.hpp>
+#include <boost/fusion/support/category_of.hpp>
+#endif
+
 #include <boost/tree_node/_detail/config_begin.hpp>
+
+//[reference__associative_node_base__put
+namespace boost { namespace tree_node {
+
+    //<-
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    class associative_node_base;
+    //->
+
+    template <
+        typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+      , typename V
+    >
+    void
+        put(
+            associative_node_base<Derived,Key,Data,Selector>& node
+          , data_key const& key
+          , V const& value
+        );
+}}  // namespace boost::tree_node
+//]
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+      , typename FusionKey
+    >
+    struct has_key_impl<
+        associative_node_base<Derived,Key,Data,Selector>
+      , FusionKey
+    > : ::boost::fusion::result_of::has_key<Data,FusionKey>
+    {
+    };
+}}  // namespace boost::tree_node
+
+//[reference__associative_node_base__put__fusion
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+      , typename FusionKey
+      , typename V
+    >
+    void
+        put(
+            associative_node_base<Derived,Key,Data,Selector>& node
+          , FusionKey const& key
+          , V const& value
+          , typename ::boost::enable_if<
+              typename ::boost::mpl::if_<
+                typename ::boost::mpl::eval_if<
+                  typename ::boost::fusion::traits::is_sequence<Data>::type
+                , ::boost::fusion::traits::is_associative<Data>
+                , ::boost::mpl::false_
+                >::type
+              , ::boost::tree_node::has_key<
+                  associative_node_base<Derived,Key,Data,Selector>
+                , FusionKey
+                >
+              , ::boost::mpl::false_
+              >::type
+            , ::boost::mpl::true_
+            >::type = ::boost::mpl::true_()
+        );
+}}  // namespace boost::tree_node
+//]
+#endif
 
 namespace boost { namespace tree_node {
 
@@ -54,13 +146,18 @@ namespace boost { namespace tree_node {
                 children;
 
      public:
+        //[reference__associative_node_base__super_t
+        typedef tree_node_base<Derived>
+                super_t;
+        //]
+
         //[reference__associative_node_base__pointer
-        typedef typename tree_node_base<Derived>::pointer
+        typedef typename super_t::pointer
                 pointer;
         //]
 
         //[reference__associative_node_base__const_pointer
-        typedef typename tree_node_base<Derived>::const_pointer
+        typedef typename super_t::const_pointer
                 const_pointer;
         //]
 
@@ -152,13 +249,55 @@ namespace boost { namespace tree_node {
 #endif
 
      public:
-        //[reference__associative_node_base__get_data__const
-        typename traits::data_type const& get_data() const;
+        //[reference__associative_node_base__key_value_operator__const
+        typename traits::data_type const& operator[](data_key const&) const;
         //]
 
-        //[reference__associative_node_base__get_data
-        typename traits::data_type& get_data();
+        //[reference__associative_node_base__key_value_operator
+        typename traits::data_type& operator[](data_key const&);
         //]
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+        //[reference__associative_node_base__fusion_key_value_operator__const
+        template <typename FusionKey>
+        typename ::boost::lazy_enable_if<
+            typename ::boost::mpl::if_<
+                typename ::boost::mpl::eval_if<
+                    typename ::boost::fusion::traits::is_sequence<Data>::type
+                  , ::boost::fusion::traits::is_associative<Data>
+                  , ::boost::mpl::false_
+                >::type
+              , ::boost::tree_node::has_key<
+                    associative_node_base<Derived,Key,Data,Selector>
+                  , FusionKey
+                >
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::fusion::result_of::at_key<Data const,FusionKey>
+        >::type
+            operator[](FusionKey const&) const;
+        //]
+
+        //[reference__associative_node_base__fusion_key_value_operator
+        template <typename FusionKey>
+        typename ::boost::lazy_enable_if<
+            typename ::boost::mpl::if_<
+                typename ::boost::mpl::eval_if<
+                    typename ::boost::fusion::traits::is_sequence<Data>::type
+                  , ::boost::fusion::traits::is_associative<Data>
+                  , ::boost::mpl::false_
+                >::type
+              , ::boost::tree_node::has_key<
+                    associative_node_base<Derived,Key,Data,Selector>
+                  , FusionKey
+                >
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::fusion::result_of::at_key<Data,FusionKey>
+        >::type
+            operator[](FusionKey const&);
+        //]
+#endif
 
         //[reference__associative_node_base__get_parent_ptr__const
         const_pointer get_parent_ptr() const;
@@ -285,13 +424,58 @@ namespace boost { namespace tree_node {
         void _initialize(iterator& itr);
 
         void _link_children_to_parent();
+
+        void _on_post_modify_value(data_key const& key);
+
+        template <typename D, typename K, typename T, typename S, typename V>
+        friend void
+            put(
+                associative_node_base<D,K,T,S>& node
+              , data_key const& key
+              , V const& value
+            );
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+        template <typename FusionKey>
+        void _on_post_modify_value(FusionKey const& key);
+
+        template <
+            typename D
+          , typename K
+          , typename T
+          , typename S
+          , typename FusionKey
+          , typename V
+        >
+        friend void
+          put(
+            associative_node_base<D,K,T,S>& node
+          , FusionKey const& key
+          , V const& value
+          , typename ::boost::enable_if<
+              typename ::boost::mpl::if_<
+                typename ::boost::mpl::eval_if<
+                  typename ::boost::fusion::traits::is_sequence<T>::type
+                , ::boost::fusion::traits::is_associative<T>
+                , ::boost::mpl::false_
+                >::type
+              , ::boost::tree_node::has_key<
+                  associative_node_base<D,K,T,S>
+                , FusionKey
+                >
+              , ::boost::mpl::false_
+              >::type
+            , ::boost::mpl::true_
+            >::type
+          );
+#endif  // BOOST_TREE_NODE_CAN_USE_FUSION
     };
 
     template <typename Derived, typename Key, typename Data, typename Selector>
     associative_node_base<Derived,Key,Data,Selector>::associative_node_base(
         Derived const& copy
     ) : _children(copy._children)
-      , _data(copy.get_data())
+      , _data(copy._data)
       , _parent(copy._parent)
     {
     }
@@ -367,6 +551,7 @@ namespace boost { namespace tree_node {
         >::on_post_copy_or_move()
     {
         this->_link_children_to_parent();
+        this->on_post_propagate_value(data_key());
     }
 
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -412,7 +597,9 @@ namespace boost { namespace tree_node {
       , Data
       , Selector
     >::traits::data_type const&
-        associative_node_base<Derived,Key,Data,Selector>::get_data() const
+        associative_node_base<Derived,Key,Data,Selector>::operator[](
+            data_key const&
+        ) const
     {
         return this->_data;
     }
@@ -424,10 +611,62 @@ namespace boost { namespace tree_node {
       , Data
       , Selector
     >::traits::data_type&
-        associative_node_base<Derived,Key,Data,Selector>::get_data()
+        associative_node_base<Derived,Key,Data,Selector>::operator[](
+            data_key const&
+        )
     {
         return this->_data;
     }
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    template <typename FusionKey>
+    inline typename ::boost::lazy_enable_if<
+        typename ::boost::mpl::if_<
+            typename ::boost::mpl::eval_if<
+                typename ::boost::fusion::traits::is_sequence<Data>::type
+              , ::boost::fusion::traits::is_associative<Data>
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::tree_node::has_key<
+                associative_node_base<Derived,Key,Data,Selector>
+              , FusionKey
+            >
+          , ::boost::mpl::false_
+        >::type
+      , ::boost::fusion::result_of::at_key<Data const,FusionKey>
+    >::type
+        associative_node_base<Derived,Key,Data,Selector>::operator[](
+            FusionKey const&
+        ) const
+    {
+        return ::boost::fusion::at_key<FusionKey>(this->_data);
+    }
+
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    template <typename FusionKey>
+    inline typename ::boost::lazy_enable_if<
+        typename ::boost::mpl::if_<
+            typename ::boost::mpl::eval_if<
+                typename ::boost::fusion::traits::is_sequence<Data>::type
+              , ::boost::fusion::traits::is_associative<Data>
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::tree_node::has_key<
+                associative_node_base<Derived,Key,Data,Selector>
+              , FusionKey
+            >
+          , ::boost::mpl::false_
+        >::type
+      , ::boost::fusion::result_of::at_key<Data,FusionKey>
+    >::type
+        associative_node_base<Derived,Key,Data,Selector>::operator[](
+            FusionKey const&
+        )
+    {
+        return ::boost::fusion::at_key<FusionKey>(this->_data);
+    }
+#endif  // BOOST_TREE_NODE_CAN_USE_FUSION
 
     template <typename Derived, typename Key, typename Data, typename Selector>
     inline typename associative_node_base<
@@ -757,7 +996,366 @@ namespace boost { namespace tree_node {
             )._parent = this->get_derived();
         }
     }
+
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    inline void
+        associative_node_base<
+            Derived
+          , Key
+          , Data
+          , Selector
+        >::_on_post_modify_value(data_key const& key)
+    {
+        this->on_post_modify_value(key);
+    }
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    template <typename FusionKey>
+    inline void
+        associative_node_base<
+            Derived
+          , Key
+          , Data
+          , Selector
+        >::_on_post_modify_value(FusionKey const& key)
+    {
+        this->on_post_modify_value(key);
+    }
+#endif
 }}  // namespace boost::tree_node
+
+//[reference__associative_node_base__get__const
+namespace boost { namespace tree_node {
+
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    typename associative_node_base<
+        Derived
+      , Key
+      , Data
+      , Selector
+    >::traits::data_type const&
+        get(
+            associative_node_base<Derived,Key,Data,Selector> const& node
+          , data_key const& key
+        );
+
+    //<-
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    inline typename associative_node_base<
+        Derived
+      , Key
+      , Data
+      , Selector
+    >::traits::data_type const&
+        get(
+            associative_node_base<Derived,Key,Data,Selector> const& node
+          , data_key const& key
+        )
+    {
+        return node[key];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__associative_node_base__get
+namespace boost { namespace tree_node {
+
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    typename associative_node_base<
+        Derived
+      , Key
+      , Data
+      , Selector
+    >::traits::data_type&
+        get(
+            associative_node_base<Derived,Key,Data,Selector>& node
+          , data_key const& key
+        );
+
+    //<-
+    template <typename Derived, typename Key, typename Data, typename Selector>
+    inline typename associative_node_base<
+        Derived
+      , Key
+      , Data
+      , Selector
+    >::traits::data_type&
+        get(
+            associative_node_base<Derived,Key,Data,Selector>& node
+          , data_key const& key
+        )
+    {
+        return node[key];
+    }
+
+    template <
+        typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+      , typename V
+    >
+    inline void
+        put(
+            associative_node_base<Derived,Key,Data,Selector>& node
+          , data_key const& key
+          , V const& value
+        )
+    {
+        node[key] = value;
+        node._on_post_modify_value(key);
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+#if !defined BOOST_NO_SFINAE
+//[reference__associative_node_base__get__key__const
+namespace boost { namespace tree_node {
+
+    template <
+        typename DataKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<DataKey,data_key>
+      , typename associative_node_base<
+            Derived
+          , Key
+          , Data
+          , Selector
+        >::traits::data_type const&
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector> const& node);
+
+    //<-
+    template <
+        typename DataKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<DataKey,data_key>
+      , typename associative_node_base<
+            Derived
+          , Key
+          , Data
+          , Selector
+        >::traits::data_type const&
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector> const& node)
+    {
+        return node[data_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__associative_node_base__get__key
+namespace boost { namespace tree_node {
+
+    template <
+        typename DataKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<DataKey,data_key>
+      , typename associative_node_base<
+            Derived
+          , Key
+          , Data
+          , Selector
+        >::traits::data_type&
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector>& node);
+
+    //<-
+    template <
+        typename DataKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<DataKey,data_key>
+      , typename associative_node_base<
+            Derived
+          , Key
+          , Data
+          , Selector
+        >::traits::data_type&
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector>& node)
+    {
+        return node[data_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+#endif  // BOOST_NO_SFINAE
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+//[reference__associative_node_base__get__fusion__const
+namespace boost { namespace tree_node {
+
+    template <
+        typename FusionKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    typename ::boost::lazy_enable_if<
+        typename ::boost::mpl::if_<
+            typename ::boost::mpl::eval_if<
+                typename ::boost::fusion::traits::is_sequence<Data>::type
+              , ::boost::fusion::traits::is_associative<Data>
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::tree_node::has_key<
+                associative_node_base<Derived,Key,Data,Selector>
+              , FusionKey
+            >
+          , ::boost::mpl::false_
+        >::type
+      , ::boost::fusion::result_of::at_key<Data const,FusionKey>
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector> const& node);
+
+    //<-
+    template <
+        typename FusionKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    inline typename ::boost::lazy_enable_if<
+        typename ::boost::mpl::if_<
+            typename ::boost::mpl::eval_if<
+                typename ::boost::fusion::traits::is_sequence<Data>::type
+              , ::boost::fusion::traits::is_associative<Data>
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::tree_node::has_key<
+                associative_node_base<Derived,Key,Data,Selector>
+              , FusionKey
+            >
+          , ::boost::mpl::false_
+        >::type
+      , ::boost::fusion::result_of::at_key<Data const,FusionKey>
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector> const& node)
+    {
+        return node[FusionKey()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__associative_node_base__get__fusion
+namespace boost { namespace tree_node {
+
+    template <
+        typename FusionKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    typename ::boost::lazy_enable_if<
+        typename ::boost::mpl::if_<
+            typename ::boost::mpl::eval_if<
+                typename ::boost::fusion::traits::is_sequence<Data>::type
+              , ::boost::fusion::traits::is_associative<Data>
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::tree_node::has_key<
+                associative_node_base<Derived,Key,Data,Selector>
+              , FusionKey
+            >
+          , ::boost::mpl::false_
+        >::type
+      , ::boost::fusion::result_of::at_key<Data,FusionKey>
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector>& node);
+
+    //<-
+    template <
+        typename FusionKey
+      , typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+    >
+    inline typename ::boost::lazy_enable_if<
+        typename ::boost::mpl::if_<
+            typename ::boost::mpl::eval_if<
+                typename ::boost::fusion::traits::is_sequence<Data>::type
+              , ::boost::fusion::traits::is_associative<Data>
+              , ::boost::mpl::false_
+            >::type
+          , ::boost::tree_node::has_key<
+                associative_node_base<Derived,Key,Data,Selector>
+              , FusionKey
+            >
+          , ::boost::mpl::false_
+        >::type
+      , ::boost::fusion::result_of::at_key<Data,FusionKey>
+    >::type
+        get(associative_node_base<Derived,Key,Data,Selector>& node)
+    {
+        return node[FusionKey()];
+    }
+
+    template <
+        typename Derived
+      , typename Key
+      , typename Data
+      , typename Selector
+      , typename FusionKey
+      , typename V
+    >
+    inline void
+        put(
+            associative_node_base<Derived,Key,Data,Selector>& node
+          , FusionKey const& key
+          , V const& value
+          , typename ::boost::enable_if<
+              typename ::boost::mpl::if_<
+                typename ::boost::mpl::eval_if<
+                  typename ::boost::fusion::traits::is_sequence<Data>::type
+                , ::boost::fusion::traits::is_associative<Data>
+                , ::boost::mpl::false_
+                >::type
+              , ::boost::tree_node::has_key<
+                  associative_node_base<Derived,Key,Data,Selector>
+                , FusionKey
+                >
+              , ::boost::mpl::false_
+              >::type
+            , ::boost::mpl::true_
+            >::type
+        )
+    {
+        node[key] = value;
+        node._on_post_modify_value(key);
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+#endif  // BOOST_TREE_NODE_CAN_USE_FUSION
 
 namespace boost { namespace tree_node {
 
@@ -766,7 +1364,7 @@ namespace boost { namespace tree_node {
       , typename Data
       , typename Selector = ::boost::ptr_mapS
     >
-    class associative_node
+    struct associative_node
       : public
         //[reference__associative_node__bases
         associative_node_base<
@@ -787,7 +1385,6 @@ namespace boost { namespace tree_node {
                 super_t;
         //]
 
-     public:
         //[reference__associative_node__traits
         typedef typename super_t::traits
                 traits;

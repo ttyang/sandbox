@@ -13,14 +13,17 @@
 #include <boost/mpl/eval_if.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/utility/value_init.hpp>
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
 #include <boost/tree_node/preprocessor.hpp>
 #include <boost/tree_node/base.hpp>
 #include <boost/tree_node/algorithm/dereference_iterator.hpp>
+#include <boost/tree_node/height_key.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
 #include <boost/preprocessor/repetition/repeat.hpp>
+#endif
+
+#if !defined BOOST_NO_SFINAE
+#include <boost/utility/enable_if.hpp>
 #endif
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -50,16 +53,16 @@ namespace boost { namespace tree_node {
     {
         friend struct tree_node_base<Derived>;
 
+        typedef with_height_base<Derived,BaseGenerator,T1,T2,Height>
+                self;
+
+     public:
         typedef typename ::boost::mpl::eval_if<
                     ::std::tr1::is_void<T2>
                   , ::boost::mpl::apply_wrap2<BaseGenerator,Derived,T1>
                   , ::boost::mpl::apply_wrap3<BaseGenerator,Derived,T1,T2>
                 >::type
                 super_t;
-        typedef with_height_base<Derived,BaseGenerator,T1,T2,Height>
-                self;
-
-     public:
         typedef typename super_t::traits
                 traits;
         typedef typename super_t::pointer
@@ -107,8 +110,6 @@ namespace boost { namespace tree_node {
 
         ~with_height_base();
 
-        void on_post_copy_or_move();
-
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         void copy_assign(Derived const& copy);
 #else
@@ -116,6 +117,8 @@ namespace boost { namespace tree_node {
 
         void move_assign(BOOST_RV_REF(Derived) source);
 #endif
+
+        void on_post_copy_or_move();
 
         template <typename BooleanIntegralConstant>
         void
@@ -133,8 +136,8 @@ namespace boost { namespace tree_node {
         void on_post_rotate_right_impl();
 
      public:
-        //[reference__with_height_base__get_height
-        Height const& get_height() const;
+        //[reference__with_height_base__key_value_operator
+        Height const& operator[](height_key const&) const;
         //]
 
      private:
@@ -210,26 +213,6 @@ namespace boost { namespace tree_node {
     {
     }
 
-    template <
-        typename Derived
-      , typename BaseGenerator
-      , typename T1
-      , typename T2
-      , typename Height
-    >
-    inline void
-        with_height_base<
-            Derived
-          , BaseGenerator
-          , T1
-          , T2
-          , Height
-        >::on_post_copy_or_move()
-    {
-        super_t::on_post_copy_or_move();
-        this->_shallow_update();
-    }
-
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
@@ -260,6 +243,7 @@ namespace boost { namespace tree_node {
 #else
         super_t::move_assign(static_cast<Derived&&>(source));
 #endif
+//        this->_height = source._height;
     }
 
     template <
@@ -276,6 +260,27 @@ namespace boost { namespace tree_node {
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     {
         super_t::copy_assign(copy);
+//        this->_height = copy._height;
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Height
+    >
+    inline void
+        with_height_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Height
+        >::on_post_copy_or_move()
+    {
+        super_t::on_post_copy_or_move();
+        this->_shallow_update();
     }
 
     template <
@@ -344,6 +349,7 @@ namespace boost { namespace tree_node {
         super_t::on_post_clear_impl();
         this->_height = ::boost::initialized_value;
         self::_update_less_height(this->get_derived());
+        this->on_post_propagate_value(height_key());
     }
 
     template <
@@ -400,7 +406,7 @@ namespace boost { namespace tree_node {
           , T1
           , T2
           , Height
-        >::get_height() const
+        >::operator[](height_key const&) const
     {
         return this->_height;
     }
@@ -421,11 +427,13 @@ namespace boost { namespace tree_node {
         {
             this->_height = new_height;
             self::_update_less_height(this->get_derived());
+            this->on_post_propagate_value(height_key());
         }
         else if (this->_height < new_height)
         {
             this->_height = new_height;
             self::_update_greater_height(this->get_derived());
+            this->on_post_propagate_value(height_key());
         }
     }
 
@@ -451,7 +459,7 @@ namespace boost { namespace tree_node {
         {
             height_plus_1 = ::boost::tree_node::dereference_iterator(
                 c_itr
-            ).get_height();
+            )._height;
 
             if (result < ++height_plus_1)
             {
@@ -484,7 +492,7 @@ namespace boost { namespace tree_node {
         {
             new_height = self::_get_max_height(p->begin(), p->end());
 
-            if (p->get_height() == new_height)
+            if (p->_height == new_height)
             {
                 return;
             }
@@ -512,15 +520,138 @@ namespace boost { namespace tree_node {
           , Height
         >::_update_greater_height(pointer p)
     {
-        Height p_height = p->get_height();
+        Height p_height = p->_height;
 
-        while ((p = p->get_parent_ptr()) && (p->get_height() < ++p_height))
+        while ((p = p->get_parent_ptr()) && (p->_height < ++p_height))
         {
             // This is the new deepest branch.
             p->_height = p_height;
         }
     }
 }}  // namespace boost::tree_node
+
+//[reference__with_height_base__get
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Height
+    >
+    Height const&
+        get(
+            with_height_base<
+                Derived
+              , BaseGenerator
+              , T1
+              , T2
+              , Height
+            > const& node
+          , height_key const& key
+        );
+
+    //<-
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Height
+    >
+    inline Height const&
+        get(
+            with_height_base<
+                Derived
+              , BaseGenerator
+              , T1
+              , T2
+              , Height
+            > const& node
+          , height_key const& key
+        )
+    {
+        return node[key];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+#if !defined BOOST_NO_SFINAE
+//[reference__with_height_base__get__key
+namespace boost { namespace tree_node {
+
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Height
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,height_key>
+      , Height const&
+    >::type
+        get(
+            with_height_base<
+                Derived
+              , BaseGenerator
+              , T1
+              , T2
+              , Height
+            > const& node
+        );
+
+    //<-
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Height
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,height_key>
+      , Height const&
+    >::type
+        get(
+            with_height_base<
+                Derived
+              , BaseGenerator
+              , T1
+              , T2
+              , Height
+            > const& node
+        )
+    {
+        return node[height_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+#endif  // BOOST_NO_SFINAE
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Height
+    >
+    struct has_key_impl<
+        with_height_base<Derived,BaseGenerator,T1,T2,Height>
+      , height_key
+    > : ::boost::mpl::true_
+    {
+    };
+}}  // namespace boost::tree_node
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 namespace boost { namespace tree_node {
 
@@ -530,7 +661,7 @@ namespace boost { namespace tree_node {
       , typename T2 = void
       , typename Height = ::std::size_t
     >
-    class with_height
+    struct with_height
       : public
         //[reference__with_height__bases
         with_height_base<
@@ -544,8 +675,6 @@ namespace boost { namespace tree_node {
     {
         typedef with_height_base<with_height,BaseGenerator,T1,T2,Height>
                 super_t;
-
-     public:
         typedef typename super_t::traits
                 traits;
         typedef typename super_t::pointer
@@ -586,6 +715,7 @@ namespace boost { namespace tree_node {
     inline with_height<BaseGenerator,T1,T2,Height>::with_height(Args&& ...args)
       : super_t(::boost::forward<Args>(args)...)
     {
+        super_t::on_post_emplacement_construct();
     }
 #endif
 }}  // namespace boost::tree_node

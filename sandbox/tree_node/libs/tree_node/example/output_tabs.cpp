@@ -3,14 +3,17 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#include <iostream>
+#include <algorithm>
 #include <boost/assert.hpp>
-#include "show_functions.hpp"
+#include "output_tabs.hpp"
 
-//[example__show_tabs
 void
-    show_tabs(
+    output_tabs(
         boost::tree_node::traversal_state state
       , unsigned int& ply_limit
+      , unsigned int tab_limit
+      , bool is_4_long
     )
 {
     switch (state)
@@ -18,11 +21,14 @@ void
         case boost::tree_node::pre_order_traversal:
         {
             ++ply_limit;
-            std::cout << "    ";
 
-            for (unsigned int ply = 0; ply < ply_limit; ++ply)
+            for (
+                unsigned int ply = 0;
+                ply < (std::min)(ply_limit, tab_limit);
+                ++ply
+            )
             {
-                std::cout << "    ";
+                std::cout << (is_4_long ? "    " : "  ");
             }
 
             std::cout << "(boost::tree_node::pre_order_traversal, ";
@@ -31,11 +37,13 @@ void
 
         case boost::tree_node::post_order_traversal:
         {
-            std::cout << "    ";
-
-            for (unsigned int ply = 0; ply < ply_limit; ++ply)
+            for (
+                unsigned int ply = 0;
+                ply < (std::min)(ply_limit, tab_limit);
+                ++ply
+            )
             {
-                std::cout << "    ";
+                std::cout << (is_4_long ? "    " : "  ");
             }
 
             std::cout << "(boost::tree_node::post_order_traversal, ";
@@ -48,22 +56,5 @@ void
             BOOST_ASSERT(false);
         }
     }
-}
-//]
-
-show_number_tree::show_number_tree() : ply_limit(1)
-{
-}
-
-show_key_and_number_tree::show_key_and_number_tree() : ply_limit(1)
-{
-}
-
-show_data_tree::show_data_tree() : ply_limit(1)
-{
-}
-
-show_key_and_data_tree::show_key_and_data_tree() : ply_limit(1)
-{
 }
 

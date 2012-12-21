@@ -11,10 +11,17 @@
 #include <boost/mpl/apply_wrap.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/tree_node/base.hpp>
 #include <boost/tree_node/preprocessor.hpp>
+#include <boost/tree_node/red_flag_key.hpp>
+#include <boost/tree_node/black_flag_key.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
 #include <boost/preprocessor/repetition/repeat.hpp>
+#endif
+
+#if !defined BOOST_NO_SFINAE
+#include <boost/utility/enable_if.hpp>
 #endif
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -22,6 +29,83 @@
 #endif
 
 #include <boost/tree_node/_detail/config_begin.hpp>
+
+//[reference__with_red_black_flag_base__put__red
+namespace boost { namespace tree_node {
+
+    //<-
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    class with_red_black_flag_base;
+    //->
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    void
+        put(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2>& node
+          , red_flag_key const& key
+          , bool value
+        );
+}}  // namespace boost::tree_node
+//]
+
+//[reference__with_red_black_flag_base__put__black
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    void
+        put(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2>& node
+          , black_flag_key const& key
+          , bool value
+        );
+}}  // namespace boost::tree_node
+//]
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    struct has_key_impl<
+        with_red_black_flag_base<Derived,BaseGenerator,T1,T2>
+      , red_flag_key
+    > : ::boost::mpl::true_
+    {
+    };
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    struct has_key_impl<
+        with_red_black_flag_base<Derived,BaseGenerator,T1,T2>
+      , black_flag_key
+    > : ::boost::mpl::true_
+    {
+    };
+}}  // namespace boost::tree_node
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 namespace boost { namespace tree_node {
 
@@ -41,14 +125,13 @@ namespace boost { namespace tree_node {
         >::type
         //]
     {
+     public:
         typedef typename ::boost::mpl::eval_if<
                     ::std::tr1::is_void<T2>
                   , ::boost::mpl::apply_wrap2<BaseGenerator,Derived,T1>
                   , ::boost::mpl::apply_wrap3<BaseGenerator,Derived,T1,T2>
                 >::type
                 super_t;
-
-     public:
         typedef typename super_t::traits
                 traits;
         typedef typename super_t::pointer
@@ -102,17 +185,23 @@ namespace boost { namespace tree_node {
         void move_assign(BOOST_RV_REF(Derived) source);
 #endif
 
+        void on_post_copy_or_move();
+
      public:
-        //[reference__with_red_black_flag_base__is_red
-        bool is_red() const;
+        //[reference__with_red_black_flag_base__key_value_operator__red
+        bool operator[](red_flag_key const&) const;
         //]
 
-        //[reference__with_red_black_flag_base__is_black
-        bool is_black() const;
+        //[reference__with_red_black_flag_base__key_value_operator__black
+        bool operator[](black_flag_key const&) const;
         //]
 
         //[reference__with_red_black_flag_base__set_red_flag
         void set_red_flag(bool flag);
+        //]
+
+        //[reference__with_red_black_flag_base__set_black_flag
+        void set_black_flag(bool flag);
         //]
     };
 
@@ -244,8 +333,32 @@ namespace boost { namespace tree_node {
       , typename T1
       , typename T2
     >
+    inline void
+        with_red_black_flag_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+        >::on_post_copy_or_move()
+    {
+        super_t::on_post_copy_or_move();
+        this->on_post_modify_value(red_flag_key());
+        this->on_post_modify_value(black_flag_key());
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
     inline bool
-        with_red_black_flag_base<Derived,BaseGenerator,T1,T2>::is_red() const
+        with_red_black_flag_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+        >::operator[](red_flag_key const&) const
     {
         return this->_is_red;
     }
@@ -262,7 +375,7 @@ namespace boost { namespace tree_node {
           , BaseGenerator
           , T1
           , T2
-        >::is_black() const
+        >::operator[](black_flag_key const&) const
     {
         return !this->_is_red;
     }
@@ -279,13 +392,206 @@ namespace boost { namespace tree_node {
         )
     {
         this->_is_red = flag;
+        this->on_post_modify_value(red_flag_key());
+        this->on_post_modify_value(black_flag_key());
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline void
+        with_red_black_flag_base<Derived,BaseGenerator,T1,T2>::set_black_flag(
+            bool flag
+        )
+    {
+        this->_is_red = !flag;
+        this->on_post_modify_value(red_flag_key());
+        this->on_post_modify_value(black_flag_key());
     }
 }}  // namespace boost::tree_node
+
+//[reference__with_red_black_flag_base__get__red
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    bool
+        get(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node
+          , red_flag_key const& key
+        );
+
+    //<-
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline bool
+        get(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node
+          , red_flag_key const& key
+        )
+    {
+        return node[key];
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline void
+        put(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2>& node
+          , red_flag_key const& key
+          , bool value
+        )
+    {
+        node.set_red_flag(value);
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__with_red_black_flag_base__get__black
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    bool
+        get(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node
+          , black_flag_key const& key
+        );
+
+    //<-
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >    //->
+
+    inline bool
+        get(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node
+          , black_flag_key const& key
+        )
+    {
+        return node[key];
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline void
+        put(
+            with_red_black_flag_base<Derived,BaseGenerator,T1,T2>& node
+          , black_flag_key const& key
+          , bool value
+        )
+    {
+        node.set_black_flag(value);
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+#if !defined BOOST_NO_SFINAE
+//[reference__with_red_black_flag_base__get__red_flag_key
+namespace boost { namespace tree_node {
+
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,red_flag_key>
+      , bool
+    >::type
+        get(with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node);
+
+    //<-
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,red_flag_key>
+      , bool
+    >::type
+        get(with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node)
+    {
+        return node[red_flag_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__with_red_black_flag_base__get__black_flag_key
+namespace boost { namespace tree_node {
+
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,black_flag_key>
+      , bool
+    >::type
+        get(with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node);
+
+    //<-
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,black_flag_key>
+      , bool
+    >::type
+        get(with_red_black_flag_base<Derived,BaseGenerator,T1,T2> const& node)
+    {
+        return node[black_flag_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+#endif  // BOOST_NO_SFINAE
 
 namespace boost { namespace tree_node {
 
     template <typename BaseGenerator, typename T1, typename T2 = void>
-    class with_red_black_flag
+    struct with_red_black_flag
       : public
         //[reference__with_red_black_flag__bases
         with_red_black_flag_base<
@@ -303,8 +609,6 @@ namespace boost { namespace tree_node {
                   , T2
                 >
                 super_t;
-
-     public:
         typedef typename super_t::traits
                 traits;
         typedef typename super_t::pointer
@@ -339,6 +643,7 @@ namespace boost { namespace tree_node {
         Args&& ...args
     ) : super_t(::boost::forward<Args>(args)...)
     {
+        super_t::on_post_emplacement_construct();
     }
 #endif
 }}  // namespace boost::tree_node

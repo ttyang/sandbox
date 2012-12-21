@@ -7,6 +7,7 @@
 #define BOOST_TREE_NODE_TYPEOF_WITH_COUNT_HPP_INCLUDED
 
 #include <boost/typeof/typeof.hpp>
+#include <boost/tree_node/typeof/count_key.hpp>
 #include <boost/tree_node/with_count.hpp>
 
 #include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()

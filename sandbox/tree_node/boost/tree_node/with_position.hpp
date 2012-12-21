@@ -15,9 +15,14 @@
 #include <boost/tree_node/preprocessor.hpp>
 #include <boost/tree_node/base.hpp>
 #include <boost/tree_node/algorithm/dereference_iterator.hpp>
+#include <boost/tree_node/position_key.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
 #include <boost/preprocessor/repetition/repeat.hpp>
+#endif
+
+#if !defined BOOST_NO_SFINAE
+#include <boost/utility/enable_if.hpp>
 #endif
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -46,14 +51,13 @@ namespace boost { namespace tree_node {
     {
         friend struct tree_node_base<Derived>;
 
+     public:
         typedef typename ::boost::mpl::eval_if<
                     ::std::tr1::is_void<T2>
                   , ::boost::mpl::apply_wrap2<BaseGenerator,Derived,T1>
                   , ::boost::mpl::apply_wrap3<BaseGenerator,Derived,T1,T2>
                 >::type
                 super_t;
-
-     public:
         typedef typename super_t::traits
                 traits;
         typedef typename super_t::pointer
@@ -108,12 +112,12 @@ namespace boost { namespace tree_node {
         void on_post_inserted_impl(iterator position, ::boost::mpl::false_);
 
      public:
-        //[reference__with_position_base__get_position__const
-        const_iterator get_position() const;
+        //[reference__with_position_base__key_value_operator__const
+        const_iterator operator[](position_key const&) const;
         //]
 
-        //[reference__with_position_base__get_position
-        iterator get_position();
+        //[reference__with_position_base__key_value_operator
+        iterator operator[](position_key const&);
         //]
 
      private:
@@ -188,6 +192,7 @@ namespace boost { namespace tree_node {
     {
         super_t::on_post_copy_or_move();
         this->_set_child_positions(this->get_derived());
+        this->on_post_modify_value(position_key());
     }
 
     template <
@@ -204,6 +209,7 @@ namespace boost { namespace tree_node {
     {
         super_t::on_post_inserted_impl(position, t);
         this->_position = position;
+        this->on_post_modify_value(position_key());
     }
 
     template <
@@ -220,6 +226,19 @@ namespace boost { namespace tree_node {
     {
         super_t::on_post_inserted_impl(position, f);
         this->_set_child_positions(this->get_parent_ptr());
+
+        iterator itr_end = this->get_parent_ptr()->end();
+
+        for (
+            iterator itr = this->get_parent_ptr()->begin();
+            itr != itr_end;
+            ++itr
+        )
+        {
+            ::boost::tree_node::dereference_iterator(itr).on_post_modify_value(
+                position_key()
+            );
+        }
     }
 
     template <
@@ -234,7 +253,9 @@ namespace boost { namespace tree_node {
       , T1
       , T2
     >::const_iterator
-        with_position_base<Derived,BaseGenerator,T1,T2>::get_position() const
+        with_position_base<Derived,BaseGenerator,T1,T2>::operator[](
+            position_key const&
+        ) const
     {
         return this->_position;
     }
@@ -246,7 +267,9 @@ namespace boost { namespace tree_node {
       , typename T2
     >
     inline typename with_position_base<Derived,BaseGenerator,T1,T2>::iterator
-        with_position_base<Derived,BaseGenerator,T1,T2>::get_position()
+        with_position_base<Derived,BaseGenerator,T1,T2>::operator[](
+            position_key const&
+        )
     {
         return this->_position;
     }
@@ -271,10 +294,190 @@ namespace boost { namespace tree_node {
     }
 }}  // namespace boost::tree_node
 
+//[reference__with_position_base__get__const
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    typename with_position_base<
+        Derived
+      , BaseGenerator
+      , T1
+      , T2
+    >::const_iterator
+        get(
+            with_position_base<Derived,BaseGenerator,T1,T2> const& node
+          , position_key const& key
+        );
+
+    //<-
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline typename with_position_base<
+        Derived
+      , BaseGenerator
+      , T1
+      , T2
+    >::const_iterator
+        get(
+            with_position_base<Derived,BaseGenerator,T1,T2> const& node
+          , position_key const& key
+        )
+    {
+        return node[key];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__with_position_base__get
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    typename with_position_base<Derived,BaseGenerator,T1,T2>::iterator
+        get(
+            with_position_base<Derived,BaseGenerator,T1,T2>& node
+          , position_key const& key
+        );
+
+    //<-
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline typename with_position_base<Derived,BaseGenerator,T1,T2>::iterator
+        get(
+            with_position_base<Derived,BaseGenerator,T1,T2>& node
+          , position_key const& key
+        )
+    {
+        return node[key];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+#if !defined BOOST_NO_SFINAE
+//[reference__with_position_base__get__key__const
+namespace boost { namespace tree_node {
+
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,position_key>
+      , typename with_position_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+        >::const_iterator
+    >::type
+        get(with_position_base<Derived,BaseGenerator,T1,T2> const& node);
+
+    //<-
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,position_key>
+      , typename with_position_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+        >::const_iterator
+    >::type
+        get(with_position_base<Derived,BaseGenerator,T1,T2> const& node)
+    {
+        return node[position_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__with_position_base__get__key
+namespace boost { namespace tree_node {
+
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,position_key>
+      , typename with_position_base<Derived,BaseGenerator,T1,T2>::iterator
+    >::type
+        get(with_position_base<Derived,BaseGenerator,T1,T2>& node);
+
+    //<-
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,position_key>
+      , typename with_position_base<Derived,BaseGenerator,T1,T2>::iterator
+    >::type
+        get(with_position_base<Derived,BaseGenerator,T1,T2>& node)
+    {
+        return node[position_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+#endif  // BOOST_NO_SFINAE
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    struct has_key_impl<
+        with_position_base<Derived,BaseGenerator,T1,T2>
+      , position_key
+    > : ::boost::mpl::true_
+    {
+    };
+}}  // namespace boost::tree_node
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
 namespace boost { namespace tree_node {
 
     template <typename BaseGenerator, typename T1, typename T2 = void>
-    class with_position
+    struct with_position
       : public
         //[reference__with_position__bases
         with_position_base<
@@ -286,8 +489,6 @@ namespace boost { namespace tree_node {
         //]
     {
         typedef with_position_base<with_position,BaseGenerator,T1,T2> super_t;
-
-     public:
         typedef typename super_t::traits traits;
         typedef typename super_t::pointer pointer;
         typedef typename super_t::const_pointer const_pointer;
@@ -317,6 +518,7 @@ namespace boost { namespace tree_node {
     inline with_position<BaseGenerator,T1,T2>::with_position(Args&& ...args)
       : super_t(::boost::forward<Args>(args)...)
     {
+        super_t::on_post_emplacement_construct();
     }
 #endif
 }}  // namespace boost::tree_node

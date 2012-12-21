@@ -6,10 +6,12 @@
 #ifndef LIBS_TREE_NODE_EXAMPLE_MATCH_PREDICATE_HPP_INCLUDED
 #define LIBS_TREE_NODE_EXAMPLE_MATCH_PREDICATE_HPP_INCLUDED
 
+#include <boost/config.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/utility/get_iterator_second.hpp>
+#include <boost/utility/get_iterator_value_second.hpp>
 #include <boost/container_gen/is_ptr_selector.hpp>
 
-//[example__match_predicate
 template <typename Node, typename Selector>
 class example_match_predicate
 {
@@ -52,7 +54,21 @@ inline bool
       , boost::mpl::true_
     ) const
 {
-    return p.second->get_data() == _itr->second->get_data();
+#if defined BOOST_NO_SFINAE
+    return get(
+        boost::get_iterator_value_second(p)
+      , boost::tree_node::data_key()
+    ) == get(
+        boost::get_iterator_second(_itr)
+      , boost::tree_node::data_key()
+    );
+#else
+    return boost::tree_node::get<boost::tree_node::data_key>(
+        boost::get_iterator_value_second(p)
+    ) == boost::tree_node::get<boost::tree_node::data_key>(
+        boost::get_iterator_second(_itr)
+    );
+#endif
 }
 
 template <typename Node, typename Selector>
@@ -63,9 +79,17 @@ inline bool
       , boost::mpl::false_
     ) const
 {
-    return p.second.get_data() == _itr->second.get_data();
+#if defined BOOST_NO_SFINAE
+    return get(p.second, boost::tree_node::data_key()) == get(
+        _itr->second
+      , boost::tree_node::data_key()
+    );
+#else
+    return boost::tree_node::get<boost::tree_node::data_key>(
+        p.second
+    ) == boost::tree_node::get<boost::tree_node::data_key>(_itr->second);
+#endif
 }
-//]
 
 #endif  // LIBS_TREE_NODE_EXAMPLE_MATCH_PREDICATE_HPP_INCLUDED
 

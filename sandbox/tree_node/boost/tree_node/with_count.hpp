@@ -13,14 +13,17 @@
 #include <boost/mpl/eval_if.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/utility/value_init.hpp>
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
 #include <boost/tree_node/preprocessor.hpp>
 #include <boost/tree_node/base.hpp>
 #include <boost/tree_node/algorithm/dereference_iterator.hpp>
+#include <boost/tree_node/count_key.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
 #include <boost/preprocessor/repetition/repeat.hpp>
+#endif
+
+#if !defined BOOST_NO_SFINAE
+#include <boost/utility/enable_if.hpp>
 #endif
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -50,16 +53,16 @@ namespace boost { namespace tree_node {
     {
         friend struct tree_node_base<Derived>;
 
+        typedef with_count_base<Derived,BaseGenerator,T1,T2,Count>
+                self;
+
+     public:
         typedef typename ::boost::mpl::eval_if<
                     ::std::tr1::is_void<T2>
                   , ::boost::mpl::apply_wrap2<BaseGenerator,Derived,T1>
                   , ::boost::mpl::apply_wrap3<BaseGenerator,Derived,T1,T2>
                 >::type
                 super_t;
-        typedef with_count_base<Derived,BaseGenerator,T1,T2,Count>
-                self;
-
-     public:
         typedef typename super_t::traits
                 traits;
         typedef typename super_t::pointer
@@ -95,7 +98,7 @@ namespace boost { namespace tree_node {
         BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_HEADER(z, n, Tuple)          \
           , _count(::boost::initialized_value)                               \
         {                                                                    \
-            ++_count;                                                        \
+            ++this->_count;                                                  \
         }                                                                    \
 //!
         BOOST_PP_REPEAT(
@@ -108,8 +111,6 @@ namespace boost { namespace tree_node {
 
         ~with_count_base();
 
-        void on_post_copy_or_move();
-
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         void copy_assign(Derived const& copy);
 #else
@@ -117,6 +118,8 @@ namespace boost { namespace tree_node {
 
         void move_assign(BOOST_RV_REF(Derived) source);
 #endif
+
+        void on_post_copy_or_move();
 
         template <typename BooleanIntegralConstant>
         void
@@ -134,8 +137,8 @@ namespace boost { namespace tree_node {
         void on_post_rotate_right_impl();
 
      public:
-        //[reference__with_count_base__get_count
-        Count const& get_count() const;
+        //[reference__with_count_base__key_value_operator
+        Count const& operator[](count_key const&) const;
         //]
 
      private:
@@ -196,7 +199,7 @@ namespace boost { namespace tree_node {
     ) : super_t(::boost::forward<Args>(args)...)
       , _count(::boost::initialized_value)
     {
-        ++_count;
+        ++this->_count;
     }
 #endif
 
@@ -209,26 +212,6 @@ namespace boost { namespace tree_node {
     >
     with_count_base<Derived,BaseGenerator,T1,T2,Count>::~with_count_base()
     {
-    }
-
-    template <
-        typename Derived
-      , typename BaseGenerator
-      , typename T1
-      , typename T2
-      , typename Count
-    >
-    inline void
-        with_count_base<
-            Derived
-          , BaseGenerator
-          , T1
-          , T2
-          , Count
-        >::on_post_copy_or_move()
-    {
-        super_t::on_post_copy_or_move();
-        this->_shallow_update();
     }
 
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -261,6 +244,7 @@ namespace boost { namespace tree_node {
 #else
         super_t::move_assign(static_cast<Derived&&>(source));
 #endif
+//        this->_count = source._count;
     }
 
     template <
@@ -277,6 +261,27 @@ namespace boost { namespace tree_node {
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     {
         super_t::copy_assign(copy);
+//        this->_count = copy._count;
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    inline void
+        with_count_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Count
+        >::on_post_copy_or_move()
+    {
+        super_t::on_post_copy_or_move();
+        this->_shallow_update();
     }
 
     template <
@@ -304,6 +309,7 @@ namespace boost { namespace tree_node {
           , invalidates_sibling_positions
         );
         self::_update_greater_count(this->get_derived(), this->_count);
+        this->on_post_propagate_value(count_key());
     }
 
     template <
@@ -345,6 +351,7 @@ namespace boost { namespace tree_node {
         super_t::on_post_clear_impl();
         self::_update_less_count(this->get_derived(), --this->_count);
         ++(this->_count = ::boost::initialized_value);
+        this->on_post_propagate_value(count_key());
     }
 
     template <
@@ -367,8 +374,19 @@ namespace boost { namespace tree_node {
 
         pointer p = this->get_parent_ptr();
 
-        (--this->_count) -= p->get_right_child_ptr()->get_count();
-        (++p->_count) += this->get_left_child_ptr()->get_count();
+        if (p->get_right_child_ptr())
+        {
+            this->_count -= p->get_right_child_ptr()->_count;
+        }
+
+        if (this->get_left_child_ptr())
+        {
+            p->_count += this->get_left_child_ptr()->_count;
+        }
+
+        --this->_count;
+        ++p->_count;
+        this->on_post_propagate_value_once(count_key());
     }
 
     template <
@@ -391,8 +409,19 @@ namespace boost { namespace tree_node {
 
         pointer p = this->get_parent_ptr();
 
-        (--this->_count) -= p->get_left_child_ptr()->get_count();
-        (++p->_count) += this->get_right_child_ptr()->get_count();
+        if (pointer l = p->get_left_child_ptr())
+        {
+            this->_count -= p->get_left_child_ptr()->_count;
+        }
+
+        if (this->get_right_child_ptr())
+        {
+            p->_count += this->get_right_child_ptr()->_count;
+        }
+
+        --this->_count;
+        ++p->_count;
+        this->on_post_propagate_value_once(count_key());
     }
 
     template <
@@ -403,7 +432,9 @@ namespace boost { namespace tree_node {
       , typename Count
     >
     inline Count const&
-        with_count_base<Derived,BaseGenerator,T1,T2,Count>::get_count() const
+        with_count_base<Derived,BaseGenerator,T1,T2,Count>::operator[](
+            count_key const&
+        ) const
     {
         return this->_count;
     }
@@ -426,6 +457,7 @@ namespace boost { namespace tree_node {
               , this->_count - new_count
             );
             this->_count = new_count;
+            this->on_post_propagate_value(count_key());
         }
         else if (this->_count < new_count)
         {
@@ -434,6 +466,7 @@ namespace boost { namespace tree_node {
               , new_count - this->_count
             );
             this->_count = new_count;
+            this->on_post_propagate_value(count_key());
         }
     }
 
@@ -459,7 +492,7 @@ namespace boost { namespace tree_node {
         {
             result += ::boost::tree_node::dereference_iterator(
                 c_itr
-            ).get_count();
+            )._count;
             ++c_itr;
         }
 
@@ -511,6 +544,101 @@ namespace boost { namespace tree_node {
     }
 }}  // namespace boost::tree_node
 
+//[reference__with_count_base__get
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    Count const&
+        get(
+            with_count_base<Derived,BaseGenerator,T1,T2,Count> const& node
+          , count_key const& key
+        );
+
+    //<-
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    inline Count const&
+        get(
+            with_count_base<Derived,BaseGenerator,T1,T2,Count> const& node
+          , count_key const& key
+        )
+    {
+        return node[key];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+#if !defined BOOST_NO_SFINAE
+//[reference__with_count_base__get__key
+namespace boost { namespace tree_node {
+
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,count_key>
+      , Count const&
+    >::type
+        get(with_count_base<Derived,BaseGenerator,T1,T2,Count> const& node);
+
+    //<-
+    template <
+        typename Key
+      , typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    inline typename ::boost::enable_if<
+        ::std::tr1::is_same<Key,count_key>
+      , Count const&
+    >::type
+        get(with_count_base<Derived,BaseGenerator,T1,T2,Count> const& node)
+    {
+        return node[count_key()];
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+#endif  // BOOST_NO_SFINAE
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    struct has_key_impl<
+        with_count_base<Derived,BaseGenerator,T1,T2,Count>
+      , count_key
+    > : ::boost::mpl::true_
+    {
+    };
+}}  // namespace boost::tree_node
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
 namespace boost { namespace tree_node {
 
     template <
@@ -519,7 +647,7 @@ namespace boost { namespace tree_node {
       , typename T2 = void
       , typename Count = ::std::size_t
     >
-    class with_count
+    struct with_count
       : public
         //[reference__with_count__bases
         with_count_base<
@@ -532,8 +660,6 @@ namespace boost { namespace tree_node {
         //]
     {
         typedef with_count_base<with_count,BaseGenerator,T1,T2,Count> super_t;
-
-     public:
         typedef typename super_t::traits traits;
         typedef typename super_t::pointer pointer;
         typedef typename super_t::const_pointer const_pointer;
@@ -563,6 +689,7 @@ namespace boost { namespace tree_node {
     inline with_count<BaseGenerator,T1,T2,Count>::with_count(Args&& ...args)
       : super_t(::boost::forward<Args>(args)...)
     {
+        super_t::on_post_emplacement_construct();
     }
 #endif
 }}  // namespace boost::tree_node

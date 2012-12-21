@@ -8,6 +8,38 @@
 
 #include <boost/mpl/bool.hpp>
 #include <boost/detail/base_pointee.hpp>
+#include <boost/tree_node/preprocessor.hpp>
+#include <boost/tree_node/data_key.hpp>
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+#include <boost/mpl/aux_/lambda_support.hpp>
+
+//[reference__tree_node__has_key
+namespace boost { namespace tree_node {
+
+    template <typename Node, typename Key>
+    struct has_key_impl : has_key_impl<typename Node::super_t,Key>
+    {
+    };
+
+    template <typename Key>
+    struct has_key_impl<void,Key> : ::boost::mpl::false_
+    {
+    };
+
+    template <typename Node>
+    struct has_key_impl<Node,data_key> : ::boost::mpl::true_
+    {
+    };
+
+    template <typename Node, typename Key>
+    struct has_key : has_key_impl<Node,Key>::type
+    {
+        BOOST_MPL_AUX_LAMBDA_SUPPORT(2,has_key,(Node,Key))
+    };
+}}  // namespace boost::tree_node
+//]
+#endif  // BOOST_TREE_NODE_CAN_USE_FUSION
 
 namespace boost { namespace tree_node {
 
@@ -19,9 +51,45 @@ namespace boost { namespace tree_node {
                 pointer;
         typedef typename ::boost::detail::base_pointee<Derived>::const_pointer
                 const_pointer;
+        typedef void
+                super_t;
 
      protected:
         ~tree_node_base();
+
+        //[reference__tree_node_base__on_post_emplacement_construct
+        void on_post_emplacement_construct();
+        //]
+
+        //[reference__tree_node_base__on_post_modify_value_impl
+        template <typename Key>
+        void on_post_modify_value_impl(Key const& key);
+        //]
+
+        //[reference__tree_node_base__on_post_modify_value
+        template <typename Key>
+        void on_post_modify_value(Key const& key);
+        //]
+
+        //[reference__tree_node_base__on_post_propagate_value_impl
+        template <typename Key>
+        void on_post_propagate_value_impl(Key const& key);
+        //]
+
+        //[reference__tree_node_base__on_post_propagate_value
+        template <typename Key>
+        void on_post_propagate_value(Key const& key);
+        //]
+
+        //[reference__tree_node_base__on_post_propagate_value_once_impl
+        template <typename Key>
+        void on_post_propagate_value_once_impl(Key const& key);
+        //]
+
+        //[reference__tree_node_base__on_post_propagate_value_once
+        template <typename Key>
+        void on_post_propagate_value_once(Key const& key);
+        //]
 
         //[reference__tree_node_base__on_post_inserted_impl__true
         template <typename Iterator>
@@ -78,6 +146,54 @@ namespace boost { namespace tree_node {
     template <typename Derived>
     tree_node_base<Derived>::~tree_node_base()
     {
+    }
+
+    template <typename Derived>
+    inline void tree_node_base<Derived>::on_post_emplacement_construct()
+    {
+    }
+
+    template <typename Derived>
+    template <typename Key>
+    inline void tree_node_base<Derived>::on_post_modify_value_impl(Key const&)
+    {
+    }
+
+    template <typename Derived>
+    template <typename Key>
+    inline void tree_node_base<Derived>::on_post_modify_value(Key const& key)
+    {
+        this->get_derived()->on_post_modify_value_impl(key);
+    }
+
+    template <typename Derived>
+    template <typename Key>
+    inline void
+        tree_node_base<Derived>::on_post_propagate_value_impl(Key const&)
+    {
+    }
+
+    template <typename Derived>
+    template <typename Key>
+    inline void
+        tree_node_base<Derived>::on_post_propagate_value(Key const& key)
+    {
+        this->get_derived()->on_post_propagate_value_impl(key);
+    }
+
+    template <typename Derived>
+    template <typename Key>
+    inline void
+        tree_node_base<Derived>::on_post_propagate_value_once_impl(Key const&)
+    {
+    }
+
+    template <typename Derived>
+    template <typename Key>
+    inline void
+        tree_node_base<Derived>::on_post_propagate_value_once(Key const& key)
+    {
+        this->get_derived()->on_post_propagate_value_once_impl(key);
     }
 
     template <typename Derived>

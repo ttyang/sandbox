@@ -7,6 +7,7 @@
 #define BOOST_TREE_NODE_TYPEOF_WITH_RED_BLACK_FLAG_HPP_INCLUDED
 
 #include <boost/typeof/typeof.hpp>
+#include <boost/tree_node/typeof/red_black_flag_key.hpp>
 #include <boost/tree_node/with_red_black_flag.hpp>
 
 #include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()

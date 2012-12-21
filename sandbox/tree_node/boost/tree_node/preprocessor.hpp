@@ -7,6 +7,13 @@
 #define BOOST_TREE_NODE_PREPROCESSOR_HPP_INCLUDED
 
 #include <boost/config.hpp>
+
+#if !defined BOOST_NO_SFINAE \
+ && !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION \
+ && !defined BOOST_TREE_NODE_CAN_USE_FUSION
+#define BOOST_TREE_NODE_CAN_USE_FUSION
+#endif
+
 #include <boost/container/detail/workaround.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -68,6 +75,7 @@
 #define BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_DEF(z, n, Tuple)             \
         BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_HEADER(z, n, Tuple)          \
         {                                                                    \
+            Base::on_post_emplacement_construct();                           \
         }                                                                    \
 //]
 #endif  // BOOST_CONTAINER_PERFECT_FORWARDING

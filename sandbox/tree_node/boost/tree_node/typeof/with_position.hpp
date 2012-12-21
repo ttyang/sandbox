@@ -7,6 +7,7 @@
 #define BOOST_TREE_NODE_TYPEOF_WITH_POSITION_HPP_INCLUDED
 
 #include <boost/typeof/typeof.hpp>
+#include <boost/tree_node/typeof/position_key.hpp>
 #include <boost/tree_node/with_position.hpp>
 
 #include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
