@@ -122,6 +122,19 @@ class static_vector
         Value, Capacity, Strategy
     >::strategy errh;
 
+    BOOST_COPYABLE_AND_MOVABLE(static_vector)
+
+#if defined(BOOST_NO_RVALUE_REFERENCES)
+public:
+    template <std::size_t C, typename S>
+    static_vector & operator=(static_vector<Value, C, S> & t)
+    {
+        typedef static_vector<Value, C, S> O;
+        this->operator=(static_cast<const ::boost::rv<O> &>(const_cast<const O &>(t)));
+        return *this;
+    }
+#endif
+
 public:
     typedef Value value_type;
     typedef stored_size_type size_type;
@@ -155,6 +168,17 @@ public:
     }
 
     // strong
+    template <typename Iterator>
+    static_vector(Iterator first, Iterator last)
+        : m_size(0)
+    {
+        // TODO - add MPL_ASSERT, check if Iterator is really an iterator
+        this->assign(first, last);                                                    // may throw
+    }
+
+    // Copy constructors
+
+    // strong
     static_vector(static_vector const& other)
         : m_size(other.size())
     {
@@ -173,17 +197,10 @@ public:
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
-    // strong
-    template <typename Iterator>
-    static_vector(Iterator first, Iterator last)
-        : m_size(0)
-    {
-        // TODO - add MPL_ASSERT, check if Iterator is really an iterator
-        this->assign(first, last);                                                    // may throw
-    }
+    // Copy assignments
 
     // basic
-    static_vector & operator=(static_vector const& other)
+    static_vector & operator=(BOOST_COPY_ASSIGN_REF(static_vector) other)
     {
         this->assign(other.begin(), other.end());                                     // may throw
 
@@ -192,10 +209,62 @@ public:
 
     // basic
     template <std::size_t C, typename S>
+#if defined(BOOST_NO_RVALUE_REFERENCES)
+    static_vector & operator=(boost::rv< static_vector<value_type, C, S> > const& other)
+#else
     static_vector & operator=(static_vector<value_type, C, S> const& other)
+#endif
     {
         this->assign(other.begin(), other.end());                                     // may throw
 
+        return *this;
+    }
+
+    // Move constructors
+
+    // nothrow or basic (depends on traits)
+    static_vector(BOOST_RV_REF(static_vector) other)
+        : m_size(0)
+    {
+        this->swap(other);                                                          // may throw
+    }
+
+    // basic
+    template <std::size_t C, typename S>
+#if defined(BOOST_NO_RVALUE_REFERENCES)
+    static_vector(boost::rv< static_vector<value_type, C, S> > & other)
+#else
+    static_vector(static_vector<value_type, C, S> && other)
+#endif
+        : m_size(0)
+    {
+        this->swap(other);                                                          // may throw
+    }
+
+    // Move assignments
+
+    // nothrow or basic (depends on traits)
+    static_vector & operator=(BOOST_RV_REF(static_vector) other)
+    {
+        this->clear();
+        this->swap(other);
+        //this->swap(other);
+        //other.clear();
+        return *this;
+    }
+
+    // nothrow or basic (depends on traits)
+    template <std::size_t C, typename S>
+#if defined(BOOST_NO_RVALUE_REFERENCES)
+    static_vector & operator=(boost::rv< static_vector<value_type, C, S> > & other)
+#else
+    static_vector & operator=(static_vector<value_type, C, S> && other)
+#endif
+    {
+        this->clear();
+        this->swap(other);
+        //this->swap(other);
+        //other.clear();
         return *this;
     }
 

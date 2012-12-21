@@ -563,48 +563,89 @@ void test_exceptions_nd()
 }
 
 template <typename T, size_t N>
-void test_swap_nd()
+void test_swap_and_move_nd()
 {
     {
-        static_vector<T, N> v;
-        static_vector<T, N> s;
+        static_vector<T, N> v1, v2, v3;
+        static_vector<T, N> s1, s2;
 
         for (size_t i = 0 ; i < N ; ++i )
-            v.push_back(T(i));
+        {
+            v1.push_back(T(i));
+            v2.push_back(T(i));
+            v3.push_back(T(i));
+        }
         for (size_t i = 0 ; i < N/2 ; ++i )
-            s.push_back(T(i));
+        {
+            s1.push_back(T(100 + i));
+            s2.push_back(T(100 + i));
+        }
 
-        s.swap(v);
+        s1.swap(v1);
+        s2 = boost::move(v2);
+        static_vector<T, N> s3(boost::move(v3));
 
-        BOOST_CHECK(v.size() == N/2);
-        BOOST_CHECK(s.size() == N);
+        BOOST_CHECK(v1.size() == N/2);
+        BOOST_CHECK(s1.size() == N);
+        BOOST_CHECK(v2.size() == 0);
+        BOOST_CHECK(s2.size() == N);
+        BOOST_CHECK(v3.size() == 0);
+        BOOST_CHECK(s3.size() == N);
         for (size_t i = 0 ; i < N/2 ; ++i )
-            BOOST_CHECK(v[i] == T(i));
+            BOOST_CHECK(v1[i] == T(100 + i));
         for (size_t i = 0 ; i < N ; ++i )
-            BOOST_CHECK(s[i] == T(i));
+        {
+            BOOST_CHECK(s1[i] == T(i));
+            BOOST_CHECK(s2[i] == T(i));
+            BOOST_CHECK(s3[i] == T(i));
+        }
     }
     {
-        static_vector<T, N> v;
-        static_vector<T, N/2> s;
+        static_vector<T, N> v1, v2, v3;
+        static_vector<T, N/2> s1, s2;
 
         for (size_t i = 0 ; i < N/2 ; ++i )
-            v.push_back(T(i));
+        {
+            v1.push_back(T(i));
+            v2.push_back(T(i));
+            v3.push_back(T(i));
+        }
         for (size_t i = 0 ; i < N/3 ; ++i )
-            s.push_back(T(i));
+        {
+            s1.push_back(T(100 + i));
+            s2.push_back(T(100 + i));
+        }
 
-        s.swap(v);
+        s1.swap(v1);
+        s2 = boost::move(v2);
+        static_vector<T, N/2> s3(boost::move(v3));
 
-        BOOST_CHECK(v.size() == N/3);
-        BOOST_CHECK(s.size() == N/2);
+        BOOST_CHECK(v1.size() == N/3);
+        BOOST_CHECK(s1.size() == N/2);
+        BOOST_CHECK(v2.size() == 0);
+        BOOST_CHECK(s2.size() == N/2);
+        BOOST_CHECK(v3.size() == 0);
+        BOOST_CHECK(s3.size() == N/2);
         for (size_t i = 0 ; i < N/3 ; ++i )
-            BOOST_CHECK(v[i] == T(i));
+            BOOST_CHECK(v1[i] == T(100 + i));
         for (size_t i = 0 ; i < N/2 ; ++i )
-            BOOST_CHECK(s[i] == T(i));
+        {
+            BOOST_CHECK(s1[i] == T(i));
+            BOOST_CHECK(s2[i] == T(i));
+            BOOST_CHECK(s3[i] == T(i));
+        }
     }
     {
         static_vector<T, N> v(N, T(0));
         static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(1));
         BOOST_CHECK_THROW(s.swap(v), std::bad_alloc);
+        v.resize(N, T(0));
+        BOOST_CHECK_THROW(s = boost::move(v), std::bad_alloc);
+        v.resize(N, T(0));
+        try {
+            static_vector<T, N/2, bad_alloc_strategy> s2(boost::move(v));
+            BOOST_CHECK(false);
+        } catch (std::bad_alloc &) {}
     }
 }
 
@@ -707,12 +748,12 @@ int test_main(int, char* [])
     test_exceptions_nd<shptr_value, 10>();
     test_exceptions_nd<copy_movable, 10>();
 
-    test_swap_nd<int, 10>();
-    test_swap_nd<value_nd, 10>();
-    test_swap_nd<counting_value, 10>();
+    test_swap_and_move_nd<int, 10>();
+    test_swap_and_move_nd<value_nd, 10>();
+    test_swap_and_move_nd<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
-    test_swap_nd<shptr_value, 10>();
-    test_swap_nd<copy_movable, 10>();
+    test_swap_and_move_nd<shptr_value, 10>();
+    test_swap_and_move_nd<copy_movable, 10>();
 
 #ifndef BOOST_SINGLE_HEADER_UTF
     return 0;
