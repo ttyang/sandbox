@@ -38,14 +38,17 @@ class static_vector;
 
 namespace static_vector_detail {
 
-struct error_handling
+template <typename SizeType = std::size_t>
+struct default_strategy
 {
+    typedef SizeType size_type;
+
     template <typename V, std::size_t Capacity, typename S>
     static void check_capacity(container::static_vector<V, Capacity, S> const&, std::size_t s)
     {
-        //BOOST_ASSERT_MSG(s <= Capacity, "size can't exceed the capacity");
-        if ( Capacity < s )
-            throw std::bad_alloc();
+        BOOST_ASSERT_MSG(s <= Capacity, "size can't exceed the capacity");
+//        if ( Capacity < s )
+//            throw std::bad_alloc();
     }
 
     template <typename V, std::size_t C, typename S>
@@ -84,9 +87,17 @@ struct error_handling
     }
 };
 
+template <typename Value, std::size_t Capacity, typename Strategy>
+struct static_vector_traits
+{
+    typedef typename Strategy::size_type size_type;
+    typedef boost::true_type use_nonthrowing_swap;
+    typedef Strategy strategy;
+};
+
 } // namespace static_vector_detail
 
-template <typename Value, std::size_t Capacity, typename StoredSizeType = std::size_t>
+template <typename Value, std::size_t Capacity, typename Strategy = static_vector_detail::default_strategy<> >
 class static_vector
 {
     BOOST_MPL_ASSERT_MSG(
@@ -101,11 +112,17 @@ class static_vector
         boost::alignment_of<Value[Capacity]>::value
     > aligned_storage_type;
 
-    typedef static_vector_detail::error_handling errh;
+    typedef typename
+    static_vector_detail::static_vector_traits<
+        Value, Capacity, Strategy
+    >::strategy errh;
 
 public:
     typedef Value value_type;
-    typedef StoredSizeType size_type;
+    typedef typename
+    typedef static_vector_detail::static_vector_traits<
+        Value, Capacity, Strategy
+    >::size_type size_type;
     typedef std::ptrdiff_t difference_type;
     typedef Value& reference;
     typedef Value const& const_reference;
@@ -191,7 +208,12 @@ public:
     // swap (note: linear complexity)
     void swap(static_vector & other)
     {
-        this->swap_dispatch(other, boost::true_type());
+        typedef typename
+        static_vector_detail::static_vector_traits<
+            Value, Capacity, Strategy
+        >::use_nonthrowing_swap use_nonthrowing_swap;
+
+        this->swap_dispatch(other, use_nonthrowing_swap());
     }
 
     // basic
