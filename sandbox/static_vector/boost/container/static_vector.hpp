@@ -100,9 +100,14 @@ struct static_vector_traits
 template <typename Value, std::size_t Capacity, typename Strategy = static_vector_detail::default_strategy<> >
 class static_vector
 {
+    typedef typename
+    static_vector_detail::static_vector_traits<
+        Value, Capacity, Strategy
+    >::size_type stored_size_type;
+
     BOOST_MPL_ASSERT_MSG(
-        ( boost::is_unsigned<StoredSizeType>::value &&
-          sizeof(typename boost::uint_value_t<Capacity>::least) <= sizeof(StoredSizeType) ),
+        ( boost::is_unsigned<stored_size_type>::value &&
+          sizeof(typename boost::uint_value_t<Capacity>::least) <= sizeof(stored_size_type) ),
         SIZE_TYPE_IS_TOO_SMALL,
         (static_vector)
     );
@@ -119,10 +124,7 @@ class static_vector
 
 public:
     typedef Value value_type;
-    typedef typename
-    typedef static_vector_detail::static_vector_traits<
-        Value, Capacity, Strategy
-    >::size_type size_type;
+    typedef stored_size_type size_type;
     typedef std::ptrdiff_t difference_type;
     typedef Value& reference;
     typedef Value const& const_reference;
@@ -716,20 +718,28 @@ private:
         return (reinterpret_cast<const Value*>(m_storage.address()));
     }
 
-    StoredSizeType m_size;
+    stored_size_type m_size;
     aligned_storage_type m_storage;
 };
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
-template<typename Value, typename StoredSizeType>
-class static_vector<Value, 0, StoredSizeType>
+template<typename Value, typename Strategy>
+class static_vector<Value, 0, Strategy>
 {
-    typedef static_vector_detail::error_handling errh;
+    typedef typename
+    static_vector_detail::static_vector_traits<
+        Value, 0, Strategy
+    >::size_type stored_size_type;
+
+    typedef typename
+    static_vector_detail::static_vector_traits<
+        Value, 0, Strategy
+    >::strategy errh;
 
 public:
     typedef Value value_type;
-    typedef std::size_t size_type;
+    typedef stored_size_type size_type;
     typedef std::ptrdiff_t difference_type;
     typedef Value& reference;
     typedef Value const& const_reference;
