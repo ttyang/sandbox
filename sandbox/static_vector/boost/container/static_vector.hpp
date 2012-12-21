@@ -135,6 +135,9 @@ public:
     }
 #endif
 
+    template <typename V, std::size_t C, typename S>
+    friend class static_vector;
+
 public:
     typedef Value value_type;
     typedef stored_size_type size_type;
@@ -231,7 +234,7 @@ public:
         other.m_size = 0;
     }
 
-    // nothrow or basic (depends on traits)
+    // nothrow or strong (depends on stragety)
     // (note: linear complexity)
     template <std::size_t C, typename S>
 #if defined(BOOST_NO_RVALUE_REFERENCES)
@@ -239,9 +242,12 @@ public:
 #else
     static_vector(static_vector<value_type, C, S> && other)
 #endif
-        : m_size(0)
+        : m_size(other.m_size)
     {
-        this->swap(other);
+        errh::check_capacity(*this, other.size());                                  // may throw
+
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
+        other.m_size = 0;
     }
 
     // Move assignments
@@ -257,7 +263,7 @@ public:
         return *this;
     }
 
-    // nothrow or basic (depends on traits)
+    // nothrow or strong (depends on stragety)
     template <std::size_t C, typename S>
 #if defined(BOOST_NO_RVALUE_REFERENCES)
     static_vector & operator=(boost::rv< static_vector<value_type, C, S> > & other)
@@ -265,10 +271,13 @@ public:
     static_vector & operator=(static_vector<value_type, C, S> && other)
 #endif
     {
+        errh::check_capacity(*this, other.size());                                  // may throw
+
         this->clear();
-        this->swap(other);
-        //this->swap(other);
-        //other.clear();
+
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
+        boost::swap(m_size, other.m_size);
+
         return *this;
     }
 
@@ -291,7 +300,7 @@ public:
         this->swap_dispatch(other, use_nonthrowing_swap());
     }
 
-    // basic
+    // nothrow, strong or basic (depends on traits and strategy)
     // swap (note: linear complexity)
     template <std::size_t C, typename S>
     void swap(static_vector<value_type, C, S> & other)
@@ -299,23 +308,12 @@ public:
         errh::check_capacity(*this, other.size());
         errh::check_capacity(other, this->size());
 
-        iterator it = this->begin();
-        iterator other_it = other.begin();
+        typedef typename
+        static_vector_detail::static_vector_traits<
+            Value, Capacity, Strategy
+        >::use_nonthrowing_swap use_nonthrowing_swap;
 
-        if ( this->size() < other.size() )
-        {
-            for (; it != this->end() ; ++it, ++other_it)
-                boost::swap(*it, *other_it);                                          // may throw
-            this->insert(it, other_it, other.end());                                  // may throw
-            other.erase(other_it, other.end());
-        }
-        else
-        {
-            for (; other_it != other.end() ; ++it, ++other_it)
-                boost::swap(*it, *other_it);                                         // may throw
-            other.insert(other_it,it,this->end());                                   // may throw
-            this->erase(it, this->end());
-        }   
+        this->swap_dispatch(other, use_nonthrowing_swap()); 
     }
 
     // strong
@@ -617,39 +615,51 @@ private:
 
     // swap
 
-    void swap_dispatch(static_vector & other, boost::true_type const& /*nonthrowing_version*/)
+    template <std::size_t C, typename S>
+    void swap_dispatch(static_vector<value_type, C, S> & other, boost::true_type const& /*nonthrowing_version*/)
     {
-        // TODO - this may be too big for stack
-        aligned_storage_type temp;
+        typedef typename
+        boost::mpl::if_c<
+            Capacity < C,
+            aligned_storage_type,
+            typename static_vector<value_type, C, S>::aligned_storage_type
+        >::type
+        storage_type;
+        
+        storage_type temp;
         Value * temp_ptr = reinterpret_cast<Value*>(temp.address());
+
         ::memcpy(temp_ptr, this->data(), sizeof(Value) * this->size());
         ::memcpy(this->data(), other.data(), sizeof(Value) * other.size());
         ::memcpy(other.data(), temp_ptr, sizeof(Value) * this->size());
+
         boost::swap(m_size, other.m_size);
     }
 
-    void swap_dispatch(static_vector & other, boost::false_type const& /*throwing_version*/)
+    template <std::size_t C, typename S>
+    void swap_dispatch(static_vector<value_type, C, S> & other, boost::false_type const& /*throwing_version*/)
     {
         namespace sv = static_vector_detail;
-        iterator it = this->begin();
-        iterator other_it = other.begin();
 
         if ( this->size() < other.size() )
-        {
-            for (; it != this->end() ; ++it, ++other_it)
-                boost::swap(*it, *other_it);                                         // may throw
-            sv::uninitialized_copy(other_it, other.end(), it);                       // may throw
-            sv::destroy(other_it, other.end());
-            boost::swap(m_size, other.m_size);
-        }
+            swap_dispatch_impl(this->begin(), this->end(), other.begin(), other.end()); // may throw
         else
-        {
-            for (; other_it != other.end() ; ++it, ++other_it)
-                boost::swap(*it, *other_it);                                         // may throw
-            sv::uninitialized_copy(it, this->end(), other_it);                       // may throw
-            sv::destroy(it, this->end());
-            boost::swap(m_size, other.m_size);
-        }
+            swap_dispatch_impl(other.begin(), other.end(), this->begin(), this->end()); // may throw
+        boost::swap(m_size, other.m_size);
+    }
+
+    template <typename ItSm, typename ItLa>
+    void swap_dispatch_impl(ItSm first_sm, ItSm last_sm, ItLa first_la, ItLa last_la)
+    {
+        //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
+
+        // TODO - use move instead of copy
+
+        namespace sv = static_vector_detail;
+        for (; first_sm != last_sm ; ++first_sm, ++first_la)
+            boost::swap(*first_sm, *first_la);                                      // may throw
+        sv::uninitialized_copy(first_la, last_la, first_sm);                        // may throw
+        sv::destroy(first_la, last_la);
     }
 
     // insert
