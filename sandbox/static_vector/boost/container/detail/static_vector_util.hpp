@@ -185,9 +185,10 @@ O uninitialized_copy_dispatch(I first, I last, O dst,
 
 template <typename I, typename F>
 F uninitialized_copy_dispatch(I first, I last, F dst,
-                                 boost::mpl::bool_<false> const& /*use_memcpy*/)
+                              boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
-    return boost::uninitialized_copy_or_move(first, last, dst);                           // may throw
+    //return boost::uninitialized_copy_or_move(first, last, dst);                           // may throw
+    return std::uninitialized_copy(first, last, dst);                                       // may throw
 }
 
 template <typename I, typename F>
