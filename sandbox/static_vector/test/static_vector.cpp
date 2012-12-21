@@ -503,12 +503,22 @@ void test_insert_nd(T const& val)
 #endif
 }
 
+struct bad_alloc_strategy : public static_vector_detail::default_strategy<>
+{
+    template <typename V, std::size_t Capacity, typename S>
+    static void check_capacity(static_vector<V, Capacity, S> const&, std::size_t s)
+    {
+        if ( Capacity < s )
+            throw std::bad_alloc();
+    }
+};
+
 template <typename T>
 void test_capacity_0_nd()
 {
     static_vector<T, 10> v(5u, T(0));
 
-    static_vector<T, 0> s;
+    static_vector<T, 0, bad_alloc_strategy> s;
     BOOST_CHECK(s.size() == 0);
     BOOST_CHECK(s.capacity() == 0);
     BOOST_CHECK_THROW(s.at(0), std::out_of_range);
@@ -520,11 +530,11 @@ void test_capacity_0_nd()
     BOOST_CHECK_THROW(s.assign(v.begin(), v.end()), std::bad_alloc);
     BOOST_CHECK_THROW(s.assign(5u, T(0)), std::bad_alloc);
     try{
-        static_vector<T, 0> s2(v.begin(), v.end());
+        static_vector<T, 0, bad_alloc_strategy> s2(v.begin(), v.end());
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
     try{
-        static_vector<T, 0> s1(5u, T(0));
+        static_vector<T, 0, bad_alloc_strategy> s1(5u, T(0));
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
 }
@@ -533,7 +543,7 @@ template <typename T, size_t N>
 void test_exceptions_nd()
 {
     static_vector<T, N> v(N, T(0));
-    static_vector<T, N/2> s(N/2, T(0));
+    static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(0));
 
     BOOST_CHECK_THROW(s.resize(N, T(0)), std::bad_alloc);
     BOOST_CHECK_THROW(s.push_back(T(0)), std::bad_alloc);
@@ -543,11 +553,11 @@ void test_exceptions_nd()
     BOOST_CHECK_THROW(s.assign(v.begin(), v.end()), std::bad_alloc);
     BOOST_CHECK_THROW(s.assign(N, T(0)), std::bad_alloc);
     try{
-        static_vector<T, N/2> s2(v.begin(), v.end());
+        static_vector<T, N/2, bad_alloc_strategy> s2(v.begin(), v.end());
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
     try{
-        static_vector<T, N/2> s1(N, T(0));
+        static_vector<T, N/2, bad_alloc_strategy> s1(N, T(0));
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
 }
@@ -593,7 +603,7 @@ void test_swap_nd()
     }
     {
         static_vector<T, N> v(N, T(0));
-        static_vector<T, N/2> s(N/2, T(1));
+        static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(1));
         BOOST_CHECK_THROW(s.swap(v), std::bad_alloc);
     }
 }

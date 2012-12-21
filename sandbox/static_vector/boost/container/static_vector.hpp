@@ -33,10 +33,12 @@
 namespace boost { namespace container {
 
 // Forward declaration
-template <typename Value, std::size_t Capacity, typename StoredSizeType>
+template <typename Value, std::size_t Capacity, typename Strategy>
 class static_vector;
 
 namespace static_vector_detail {
+
+// TODO - remove size_type from here and allow setting it only in traits?
 
 template <typename SizeType = std::size_t>
 struct default_strategy
@@ -47,8 +49,6 @@ struct default_strategy
     static void check_capacity(container::static_vector<V, Capacity, S> const&, std::size_t s)
     {
         BOOST_ASSERT_MSG(s <= Capacity, "size can't exceed the capacity");
-//        if ( Capacity < s )
-//            throw std::bad_alloc();
     }
 
     template <typename V, std::size_t C, typename S>
@@ -206,7 +206,7 @@ public:
         sv::destroy(this->begin(), this->end());
     }
 
-    // nothrow
+    // nothrow or basic (depends on traits)
     // swap (note: linear complexity)
     void swap(static_vector & other)
     {
