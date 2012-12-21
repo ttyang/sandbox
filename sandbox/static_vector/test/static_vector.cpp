@@ -513,6 +513,18 @@ struct bad_alloc_strategy : public static_vector_detail::default_strategy<>
     }
 };
 
+namespace boost { namespace container { namespace static_vector_detail {
+
+template <typename Value, std::size_t Capacity>
+struct static_vector_traits<Value, Capacity, bad_alloc_strategy>
+{
+    typedef std::size_t size_type;
+    typedef boost::false_type use_nonthrowing_swap;
+    typedef bad_alloc_strategy strategy;
+};
+
+}}}
+
 template <typename T>
 void test_capacity_0_nd()
 {
@@ -566,24 +578,28 @@ template <typename T, size_t N>
 void test_swap_and_move_nd()
 {
     {
-        static_vector<T, N> v1, v2, v3;
+        static_vector<T, N> v1, v2, v3, v4;
         static_vector<T, N> s1, s2;
+        static_vector<T, N, bad_alloc_strategy> s4;
 
         for (size_t i = 0 ; i < N ; ++i )
         {
             v1.push_back(T(i));
             v2.push_back(T(i));
             v3.push_back(T(i));
+            v4.push_back(T(i));
         }
         for (size_t i = 0 ; i < N/2 ; ++i )
         {
             s1.push_back(T(100 + i));
             s2.push_back(T(100 + i));
+            s4.push_back(T(100 + i));
         }
 
         s1.swap(v1);
         s2 = boost::move(v2);
         static_vector<T, N> s3(boost::move(v3));
+        v4.swap(s4);
 
         BOOST_CHECK(v1.size() == N/2);
         BOOST_CHECK(s1.size() == N);
@@ -591,13 +607,19 @@ void test_swap_and_move_nd()
         BOOST_CHECK(s2.size() == N);
         BOOST_CHECK(v3.size() == 0);
         BOOST_CHECK(s3.size() == N);
+        BOOST_CHECK(v4.size() == N/2);
+        BOOST_CHECK(s4.size() == N);
         for (size_t i = 0 ; i < N/2 ; ++i )
+        {
             BOOST_CHECK(v1[i] == T(100 + i));
+            BOOST_CHECK(v4[i] == T(100 + i));
+        }
         for (size_t i = 0 ; i < N ; ++i )
         {
             BOOST_CHECK(s1[i] == T(i));
             BOOST_CHECK(s2[i] == T(i));
             BOOST_CHECK(s3[i] == T(i));
+            BOOST_CHECK(s4[i] == T(i));
         }
     }
     {
