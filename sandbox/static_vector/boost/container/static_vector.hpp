@@ -191,7 +191,7 @@ public:
     static_vector(static_vector<value_type, C, S> const& other)
         : m_size(other.size())
     {
-        errh::check_capacity(other.size());                                         // may throw
+        errh::check_capacity(*this, other.size());                                  // may throw
         
         namespace sv = static_vector_detail;
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
@@ -222,14 +222,17 @@ public:
 
     // Move constructors
 
-    // nothrow or basic (depends on traits)
+    // nothrow
+    // (note: linear complexity)
     static_vector(BOOST_RV_REF(static_vector) other)
-        : m_size(0)
+        : m_size(other.m_size)
     {
-        this->swap(other);                                                          // may throw
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
+        other.m_size = 0;
     }
 
-    // basic
+    // nothrow or basic (depends on traits)
+    // (note: linear complexity)
     template <std::size_t C, typename S>
 #if defined(BOOST_NO_RVALUE_REFERENCES)
     static_vector(boost::rv< static_vector<value_type, C, S> > & other)
@@ -238,18 +241,19 @@ public:
 #endif
         : m_size(0)
     {
-        this->swap(other);                                                          // may throw
+        this->swap(other);
     }
 
     // Move assignments
 
-    // nothrow or basic (depends on traits)
+    // nothrow
     static_vector & operator=(BOOST_RV_REF(static_vector) other)
     {
         this->clear();
-        this->swap(other);
-        //this->swap(other);
-        //other.clear();
+
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
+        boost::swap(m_size, other.m_size);
+
         return *this;
     }
 
