@@ -19,10 +19,13 @@
 
 #include <vector>
 #include <list>
-#include <boost/container/vector.hpp>
-#include <boost/container/stable_vector.hpp>
 #include <boost/shared_ptr.hpp>
 #include "movable.hpp"
+
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+#include <boost/container/vector.hpp>
+#include <boost/container/stable_vector.hpp>
+#endif
 
 using namespace boost::container;
 
@@ -131,8 +134,8 @@ class clone_ptr
       return *this;
    }
    
-   bool operator==(const clone_ptr&){
-     
+   bool operator==(const clone_ptr& p){
+        return p.ptr == ptr;
    }
 };
 
@@ -304,16 +307,12 @@ void test_copy_and_assign_nd(T const& val)
     static_vector<T, N> s;
     std::vector<T> v;
     std::list<T> l;
-    stable_vector<T> bsv;
-    vector<T> bv;
 
     for ( size_t i = 0 ; i < N ; ++i )
     {
         s.push_back(T(i));
         v.push_back(T(i));
         l.push_back(T(i));
-        bsv.push_back(T(i));
-        bv.push_back(T(i));
     }
     // copy ctor
     {
@@ -334,8 +333,6 @@ void test_copy_and_assign_nd(T const& val)
     test_copy_and_assign<T, N>(s);
     test_copy_and_assign<T, N>(v);
     test_copy_and_assign<T, N>(l);
-    test_copy_and_assign<T, N>(bsv);
-    test_copy_and_assign<T, N>(bv);
 
     // assign(N, V)
     {
@@ -345,6 +342,13 @@ void test_copy_and_assign_nd(T const& val)
         s1.assign(N, val);
         test_compare_ranges(a.begin(), a.end(), s1.begin(), s1.end());
     }
+
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+    stable_vector<T> bsv(s.begin(), s.end());
+    vector<T> bv(s.begin(), s.end());
+    test_copy_and_assign<T, N>(bsv);
+    test_copy_and_assign<T, N>(bv);
+#endif
 }
 
 template <typename T, size_t N>
@@ -443,8 +447,6 @@ void test_insert_nd(T const& val)
     static_vector<T, N> s, ss;
     std::vector<T> v;
     std::list<T> l;
-    vector<T> bv;
-    stable_vector<T> bsv;
 
     typedef typename static_vector<T, N>::iterator It;
 
@@ -454,8 +456,6 @@ void test_insert_nd(T const& val)
         ss.push_back(T(100 + i));
         v.push_back(T(100 + i));
         l.push_back(T(100 + i));
-        bv.push_back(T(100 + i));
-        bsv.push_back(T(100 + i));
     }
 
     // insert(pos, val)
@@ -494,8 +494,13 @@ void test_insert_nd(T const& val)
     test_insert<T, N>(s, ss);
     test_insert<T, N>(s, v);
     test_insert<T, N>(s, l);
+
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+    stable_vector<T> bsv(ss.begin(), ss.end());
+    vector<T> bv(ss.begin(), ss.end());
     test_insert<T, N>(s, bv);
     test_insert<T, N>(s, bsv);
+#endif
 }
 
 template <typename T>

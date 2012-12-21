@@ -18,21 +18,17 @@
 #include <boost/config.hpp>
 #include <boost/swap.hpp>
 #include <boost/integer.hpp>
-#include <boost/iterator/reverse_iterator.hpp>
 
 #include <boost/mpl/assert.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/and.hpp>
-#include <boost/mpl/or.hpp>
 
 #include <boost/type_traits/is_unsigned.hpp>
-#include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/aligned_storage.hpp>
-#include <boost/type_traits/has_trivial_assign.hpp>
-#include <boost/type_traits/has_trivial_copy.hpp>
-#include <boost/type_traits/has_trivial_constructor.hpp>
-#include <boost/type_traits/has_trivial_destructor.hpp>
+
+// TODO - use std::reverse_iterator and std::iterator_traits
+// instead Boost.Iterator to remove dependency?
+// or boost/detail/iterator.hpp ?
+#include <boost/iterator/reverse_iterator.hpp>
 
 namespace boost { namespace container {
 
@@ -78,17 +74,6 @@ struct error_handling
                                        typename container::static_vector<V, C, S>::const_iterator position)
     {
         BOOST_ASSERT_MSG(v.begin() <= position && position < v.end(), "iterator out of bounds");
-
-        /*BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(
-            difference_type dist = std::distance(this->begin(), position);
-        )
-        BOOST_ASSERT_MSG(
-            0 <= dist &&
-            ( sizeof(dist) <= sizeof(m_size) ?
-                (static_cast<size_type>(dist) < m_size) :
-                ( dist < static_cast<difference_type>(m_size))
-            ), "invalid iterator"
-        );*/
     }
 
     template <typename V, std::size_t C, typename S>
@@ -96,17 +81,6 @@ struct error_handling
                                       typename container::static_vector<V, C, S>::const_iterator position)
     {
         BOOST_ASSERT_MSG(v.begin() <= position && position <= v.end(), "iterator out of bounds");
-
-        /*BOOST_GEOMETRY_INDEX_ASSERT_UNUSED_PARAM(
-            difference_type dist = std::distance(this->begin(), position);
-        )
-        BOOST_ASSERT_MSG(
-        0 <= dist &&
-            ( sizeof(dist) <= sizeof(m_size) ?
-                (static_cast<size_type>(dist) <= m_size) :
-                ( dist <= static_cast<difference_type>(m_size))
-            ), "invalid iterator"
-        );*/
     }
 };
 
@@ -217,34 +191,7 @@ public:
     // swap (note: linear complexity)
     void swap(static_vector & other)
     {
-//        namespace sv = static_vector_detail;
-//        iterator it = this->begin();
-//        iterator other_it = other.begin();
-
-//        if ( this->size() < other.size() )
-//        {
-//            for (; it != this->end() ; ++it, ++other_it)
-//                boost::swap(*it, *other_it);                                         // may throw
-//            sv::uninitialized_copy(other_it, other.end(), it);                       // may throw
-//            sv::destroy(other_it, other.end());
-//            boost::swap(m_size, other.m_size);
-//        }
-//        else
-//        {
-//            for (; other_it != other.end() ; ++it, ++other_it)
-//                boost::swap(*it, *other_it);                                         // may throw
-//            sv::uninitialized_copy(it, this->end(), other_it);                       // may throw
-//            sv::destroy(it, this->end());
-//            boost::swap(m_size, other.m_size);
-//        };
-
-        // TODO - this may be too big for stack
-        aligned_storage_type temp;
-        Value * temp_ptr = reinterpret_cast<Value*>(temp.address());
-        ::memcpy(temp_ptr, this->data(), sizeof(Value) * this->size());
-        ::memcpy(this->data(), other.data(), sizeof(Value) * other.size());
-        ::memcpy(other.data(), temp_ptr, sizeof(Value) * this->size());
-        boost::swap(m_size, other.m_size);
+        this->swap_dispatch(other, boost::true_type());
     }
 
     // basic
@@ -570,6 +517,43 @@ public:
     void shrink_to_fit() {}
 
 private:
+
+    // swap
+
+    void swap_dispatch(static_vector & other, boost::true_type const& /*nonthrowing_version*/)
+    {
+        // TODO - this may be too big for stack
+        aligned_storage_type temp;
+        Value * temp_ptr = reinterpret_cast<Value*>(temp.address());
+        ::memcpy(temp_ptr, this->data(), sizeof(Value) * this->size());
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.size());
+        ::memcpy(other.data(), temp_ptr, sizeof(Value) * this->size());
+        boost::swap(m_size, other.m_size);
+    }
+
+    void swap_dispatch(static_vector & other, boost::false_type const& /*throwing_version*/)
+    {
+        namespace sv = static_vector_detail;
+        iterator it = this->begin();
+        iterator other_it = other.begin();
+
+        if ( this->size() < other.size() )
+        {
+            for (; it != this->end() ; ++it, ++other_it)
+                boost::swap(*it, *other_it);                                         // may throw
+            sv::uninitialized_copy(other_it, other.end(), it);                       // may throw
+            sv::destroy(other_it, other.end());
+            boost::swap(m_size, other.m_size);
+        }
+        else
+        {
+            for (; other_it != other.end() ; ++it, ++other_it)
+                boost::swap(*it, *other_it);                                         // may throw
+            sv::uninitialized_copy(it, this->end(), other_it);                       // may throw
+            sv::destroy(it, this->end());
+            boost::swap(m_size, other.m_size);
+        }
+    }
 
     // insert
 

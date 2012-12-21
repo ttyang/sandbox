@@ -22,6 +22,7 @@
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/int.hpp>
 
+#include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/remove_const.hpp>
 #include <boost/type_traits/has_trivial_assign.hpp>
 #include <boost/type_traits/has_trivial_copy.hpp>
@@ -42,6 +43,12 @@
 #include <boost/container/vector.hpp>
 
 namespace boost { namespace container { namespace static_vector_detail {
+
+// TODO
+// Does BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION checks have any sense?
+// Boost.MPL and Boost.Container might not be used but
+// Boost.Iterator also uses partial specialization
+// and in fact iterator_traits won't work if there is no partial specialization
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
