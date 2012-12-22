@@ -657,8 +657,13 @@ private:
 
         namespace sv = static_vector_detail;
         for (; first_sm != last_sm ; ++first_sm, ++first_la)
-            boost::swap(*first_sm, *first_la);                                      // may throw
-        sv::uninitialized_copy(first_la, last_la, first_sm);                        // may throw
+        {
+            //boost::swap(*first_sm, *first_la);                                      // may throw
+            value_type temp(boost::move(*first_sm));                                // may throw
+            *first_sm = boost::move(*first_la);                                     // may throw
+            *first_la = boost::move(temp);                                          // may throw
+        }
+        sv::uninitialized_move(first_la, last_la, first_sm);                        // may throw
         sv::destroy(first_la, last_la);
     }
 

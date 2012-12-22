@@ -187,7 +187,6 @@ template <typename I, typename F>
 F uninitialized_copy_dispatch(I first, I last, F dst,
                               boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
-    //return boost::uninitialized_copy_or_move(first, last, dst);                           // may throw
     return std::uninitialized_copy(first, last, dst);                                       // may throw
 }
 
@@ -234,13 +233,46 @@ void uninitialized_fill(I dst, V const& v)
     uninitialized_fill_dispatch(dst, v, use_memcpy());                          // may throw
 }
 
-// move(I, I, O)
+// uninitialized_move(I, I, O)
 
-// TODO use boost::move(I, I, O) instead of copy
+template <typename I, typename O>
+O uninitialized_move_dispatch(I first, I last, O dst,
+                              boost::mpl::bool_<true> const& /*use_memcpy*/)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    typename boost::iterator_difference<I>::type d = std::distance(first, last);
+
+    ::memcpy(boost::addressof(*dst), boost::addressof(*first), sizeof(value_type) * d);
+    return dst + d;
+}
+
+template <typename I, typename O>
+O uninitialized_move_dispatch(I first, I last, O dst,
+                              boost::mpl::bool_<false> const& /*use_memcpy*/)
+{
+    return boost::uninitialized_move(first, last, dst);                         // may throw
+}
+
+template <typename I, typename O>
+O uninitialized_move(I first, I last, O dst)
+{
+    typedef typename
+    ::boost::mpl::and_<
+        are_corresponding<I, O>,
+        ::boost::has_trivial_copy<
+            typename ::boost::iterator_value<O>::type
+        >
+    >::type
+    use_memcpy;
+
+    return uninitialized_move_dispatch(first, last, dst, use_memcpy());         // may throw
+}
+
+// move(I, I, O)
 
 template <typename I, typename O>
 O move_dispatch(I first, I last, O dst,
-                  boost::mpl::bool_<true> const& /*use_memmove*/)
+                boost::mpl::bool_<true> const& /*use_memmove*/)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     typename boost::iterator_difference<I>::type d = std::distance(first, last);
@@ -272,8 +304,6 @@ O move(I first, I last, O dst)
 }
 
 // move_backward(BDI, BDI, BDO)
-
-// TODO use boost::move_backward(I, I, O) instead of copy_backward
 
 template <typename BDI, typename BDO>
 BDO move_backward_dispatch(BDI first, BDI last, BDO dst,

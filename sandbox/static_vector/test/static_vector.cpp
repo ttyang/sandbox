@@ -599,7 +599,7 @@ void test_swap_and_move_nd()
         s1.swap(v1);
         s2 = boost::move(v2);
         static_vector<T, N> s3(boost::move(v3));
-        v4.swap(s4);
+        s4.swap(v4);
 
         BOOST_CHECK(v1.size() == N/2);
         BOOST_CHECK(s1.size() == N);
