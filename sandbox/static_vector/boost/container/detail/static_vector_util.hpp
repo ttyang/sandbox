@@ -136,6 +136,51 @@ struct is_corresponding_value :
     >
 {};
 
+// destroy(I, I)
+
+template <typename I>
+void destroy_dispatch(I /*first*/, I /*last*/,
+                      boost::true_type const& /*has_trivial_destructor*/)
+{}
+
+template <typename I>
+void destroy_dispatch(I first, I last,
+                      boost::false_type const& /*has_trivial_destructor*/)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    for ( ; first != last ; ++first )
+        first->~value_type();
+}
+
+template <typename I>
+void destroy(I first, I last)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    destroy_dispatch(first, last, has_trivial_destructor<value_type>());
+}
+
+// destroy(I)
+
+template <typename I>
+void destroy_dispatch(I /*pos*/,
+                      boost::true_type const& /*has_trivial_destructor*/)
+{}
+
+template <typename I>
+void destroy_dispatch(I pos,
+                      boost::false_type const& /*has_trivial_destructor*/)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    pos->~value_type();
+}
+
+template <typename I>
+void destroy(I pos)
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    destroy_dispatch(pos, has_trivial_destructor<value_type>());
+}
+
 // copy(I, I, O)
 
 template <typename I, typename O>
@@ -250,7 +295,20 @@ template <typename I, typename O>
 O uninitialized_move_dispatch(I first, I last, O dst,
                               boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
-    return boost::uninitialized_move(first, last, dst);                         // may throw
+    //return boost::uninitialized_move(first, last, dst);                         // may throw
+
+    O o = dst;
+    try
+    {
+        typedef typename std::iterator_traits<O>::value_type value_type;
+        for (; first != last; ++first, ++o )
+            new (boost::addressof(*o)) value_type(boost::move(*first));
+    }
+    catch (...)
+    {
+        destroy(dst, o);
+    }
+    return dst;
 }
 
 template <typename I, typename O>
@@ -267,6 +325,8 @@ O uninitialized_move(I first, I last, O dst)
 
     return uninitialized_move_dispatch(first, last, dst, use_memcpy());         // may throw
 }
+
+// TODO - move uses memmove - implement 2nd version using memcpy?
 
 // move(I, I, O)
 
@@ -302,6 +362,8 @@ O move(I first, I last, O dst)
 
     return move_dispatch(first, last, dst, use_memmove());                      // may throw
 }
+
+// TODO - move_backward uses memmove - implement 2nd version using memcpy?
 
 // move_backward(BDI, BDI, BDO)
 
@@ -366,51 +428,6 @@ void fill(I pos, V const& v)
     use_memcpy;
 
     fill_dispatch(pos, v, use_memcpy());                                        // may throw
-}
-
-// destroy(I, I)
-
-template <typename I>
-void destroy_dispatch(I /*first*/, I /*last*/,
-                      boost::true_type const& /*has_trivial_destructor*/)
-{}
-
-template <typename I>
-void destroy_dispatch(I first, I last,
-                      boost::false_type const& /*has_trivial_destructor*/)
-{
-    typedef typename boost::iterator_value<I>::type value_type;
-    for ( ; first != last ; ++first )
-        first->~value_type();
-}
-
-template <typename I>
-void destroy(I first, I last)
-{
-    typedef typename boost::iterator_value<I>::type value_type;
-    destroy_dispatch(first, last, has_trivial_destructor<value_type>());
-}
-
-// destroy(I)
-
-template <typename I>
-void destroy_dispatch(I /*pos*/,
-                      boost::true_type const& /*has_trivial_destructor*/)
-{}
-
-template <typename I>
-void destroy_dispatch(I pos,
-                      boost::false_type const& /*has_trivial_destructor*/)
-{
-    typedef typename boost::iterator_value<I>::type value_type;
-    pos->~value_type();
-}
-
-template <typename I>
-void destroy(I pos)
-{
-    typedef typename boost::iterator_value<I>::type value_type;
-    destroy_dispatch(pos, has_trivial_destructor<value_type>());
 }
 
 // construct

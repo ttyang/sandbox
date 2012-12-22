@@ -519,7 +519,8 @@ template <typename Value, std::size_t Capacity>
 struct static_vector_traits<Value, Capacity, bad_alloc_strategy>
 {
     typedef std::size_t size_type;
-    typedef boost::false_type use_nonthrowing_swap;
+    typedef boost::false_type use_memop_in_swap_and_move;
+    typedef boost::false_type use_optimized_swap;
     typedef bad_alloc_strategy strategy;
 };
 

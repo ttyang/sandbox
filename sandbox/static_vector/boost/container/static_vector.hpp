@@ -30,6 +30,33 @@
 // or boost/detail/iterator.hpp ?
 #include <boost/iterator/reverse_iterator.hpp>
 
+#if defined(BOOST_NO_RVALUE_REFERENCES)
+
+#define BOOST_CONTAINER_STATIC_VECTOR_ASSIGN_REF(V, C, S)   boost::rv< static_vector<V, C, S> > const&
+#define BOOST_CONTAINER_STATIC_VECTOR_RV_REF(V, C, S)       boost::rv< static_vector<V, C, S> > &
+
+#define BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE() \
+BOOST_COPYABLE_AND_MOVABLE(static_vector) \
+public: \
+    template <std::size_t C, typename S> \
+    static_vector & operator=(static_vector<Value, C, S> & t) \
+    { \
+        typedef static_vector<Value, C, S> O; \
+        this->operator=(static_cast<const ::boost::rv<O> &>(const_cast<const O &>(t))); \
+        return *this; \
+    } \
+private:
+
+#else
+
+#define BOOST_CONTAINER_STATIC_VECTOR_ASSIGN_REF(V, C, S)   static_vector<V, C, S> const&
+#define BOOST_CONTAINER_STATIC_VECTOR_RV_REF(V, C, S)       static_vector<V, C, S> &&
+
+#define BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE() \
+BOOST_COPYABLE_AND_MOVABLE(static_vector)
+
+#endif
+
 namespace boost { namespace container {
 
 // Forward declaration
@@ -91,7 +118,8 @@ template <typename Value, std::size_t Capacity, typename Strategy>
 struct static_vector_traits
 {
     typedef typename Strategy::size_type size_type;
-    typedef boost::true_type use_nonthrowing_swap;
+    typedef boost::true_type use_memop_in_swap_and_move;
+    typedef boost::false_type use_optimized_swap;
     typedef Strategy strategy;
 };
 
@@ -122,21 +150,10 @@ class static_vector
         Value, Capacity, Strategy
     >::strategy errh;
 
-    BOOST_COPYABLE_AND_MOVABLE(static_vector)
-
-#if defined(BOOST_NO_RVALUE_REFERENCES)
-public:
-    template <std::size_t C, typename S>
-    static_vector & operator=(static_vector<Value, C, S> & t)
-    {
-        typedef static_vector<Value, C, S> O;
-        this->operator=(static_cast<const ::boost::rv<O> &>(const_cast<const O &>(t)));
-        return *this;
-    }
-#endif
-
     template <typename V, std::size_t C, typename S>
     friend class static_vector;
+
+    BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE()
 
 public:
     typedef Value value_type;
@@ -179,8 +196,6 @@ public:
         this->assign(first, last);                                                    // may throw
     }
 
-    // Copy constructors
-
     // strong
     static_vector(static_vector const& other)
         : m_size(other.size())
@@ -200,8 +215,6 @@ public:
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
-    // Copy assignments
-
     // basic
     static_vector & operator=(BOOST_COPY_ASSIGN_REF(static_vector) other)
     {
@@ -212,71 +225,68 @@ public:
 
     // basic
     template <std::size_t C, typename S>
-#if defined(BOOST_NO_RVALUE_REFERENCES)
-    static_vector & operator=(boost::rv< static_vector<value_type, C, S> > const& other)
-#else
-    static_vector & operator=(static_vector<value_type, C, S> const& other)
-#endif
+    static_vector & operator=(BOOST_CONTAINER_STATIC_VECTOR_ASSIGN_REF(value_type, C, S) other)
     {
         this->assign(other.begin(), other.end());                                     // may throw
 
         return *this;
     }
 
-    // Move constructors
-
-    // nothrow
+    // nothrow or strong (based on traits, default nothrow)
     // (note: linear complexity)
     static_vector(BOOST_RV_REF(static_vector) other)
-        : m_size(other.m_size)
     {
-        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
-        other.m_size = 0;
+        typedef typename
+        static_vector_detail::static_vector_traits<
+            Value, Capacity, Strategy
+        >::use_memop_in_swap_and_move use_memop_in_swap_and_move;
+
+        this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    // nothrow or strong (depends on stragety)
+    // nothrow or strong (based on traits, default nothrow)
     // (note: linear complexity)
     template <std::size_t C, typename S>
-#if defined(BOOST_NO_RVALUE_REFERENCES)
-    static_vector(boost::rv< static_vector<value_type, C, S> > & other)
-#else
-    static_vector(static_vector<value_type, C, S> && other)
-#endif
+    static_vector(BOOST_CONTAINER_STATIC_VECTOR_RV_REF(value_type, C, S) other)
         : m_size(other.m_size)
     {
         errh::check_capacity(*this, other.size());                                  // may throw
 
-        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
-        other.m_size = 0;
+        typedef typename
+        static_vector_detail::static_vector_traits<
+            Value, Capacity, Strategy
+        >::use_memop_in_swap_and_move use_memop_in_swap_and_move;
+
+        this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    // Move assignments
-
-    // nothrow
+    // nothrow or basic (based on traits, default nothrow)
+    // (note: linear complexity)
     static_vector & operator=(BOOST_RV_REF(static_vector) other)
     {
-        this->clear();
+        typedef typename
+        static_vector_detail::static_vector_traits<
+            Value, Capacity, Strategy
+        >::use_memop_in_swap_and_move use_memop_in_swap_and_move;
 
-        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
-        boost::swap(m_size, other.m_size);
+        this->move_assign_dispatch(other, use_memop_in_swap_and_move());
 
         return *this;
     }
 
-    // nothrow or strong (depends on stragety)
+    // nothrow or basic (based on traits, default nothrow)
+    // (note: linear complexity)
     template <std::size_t C, typename S>
-#if defined(BOOST_NO_RVALUE_REFERENCES)
-    static_vector & operator=(boost::rv< static_vector<value_type, C, S> > & other)
-#else
-    static_vector & operator=(static_vector<value_type, C, S> && other)
-#endif
+    static_vector & operator=(BOOST_CONTAINER_STATIC_VECTOR_RV_REF(value_type, C, S) other)
     {
         errh::check_capacity(*this, other.size());                                  // may throw
 
-        this->clear();
+        typedef typename
+        static_vector_detail::static_vector_traits<
+            Value, Capacity, Strategy
+        >::use_memop_in_swap_and_move use_memop_in_swap_and_move;
 
-        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
-        boost::swap(m_size, other.m_size);
+        this->move_assign_dispatch(other, use_memop_in_swap_and_move());
 
         return *this;
     }
@@ -288,16 +298,16 @@ public:
         sv::destroy(this->begin(), this->end());
     }
 
-    // nothrow or basic (depends on traits)
+    // nothrow or basic (depends on traits, default nothrow)
     // swap (note: linear complexity)
     void swap(static_vector & other)
     {
         typedef typename
         static_vector_detail::static_vector_traits<
             Value, Capacity, Strategy
-        >::use_nonthrowing_swap use_nonthrowing_swap;
+        >::use_optimized_swap use_optimized_swap;
 
-        this->swap_dispatch(other, use_nonthrowing_swap());
+        this->swap_dispatch(other, use_optimized_swap());
     }
 
     // nothrow, strong or basic (depends on traits and strategy)
@@ -311,9 +321,9 @@ public:
         typedef typename
         static_vector_detail::static_vector_traits<
             Value, Capacity, Strategy
-        >::use_nonthrowing_swap use_nonthrowing_swap;
+        >::use_optimized_swap use_optimized_swap;
 
-        this->swap_dispatch(other, use_nonthrowing_swap()); 
+        this->swap_dispatch(other, use_optimized_swap()); 
     }
 
     // strong
@@ -613,10 +623,54 @@ public:
 
 private:
 
-    // swap
-
+    // nothrow
+    // linear complexity
     template <std::size_t C, typename S>
-    void swap_dispatch(static_vector<value_type, C, S> & other, boost::true_type const& /*nonthrowing_version*/)
+    void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::true_type /*use_memop*/)
+    {
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
+        m_size = other.m_size;
+        other.m_size = 0;
+    }
+
+    // strong
+    // linear complexity
+    template <std::size_t C, typename S>
+    void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
+    {
+        namespace sv = static_vector_detail;
+        sv::uninitialized_move(other.begin(), other.end(), this->begin());
+        m_size = other.m_size;
+        sv::destroy(other.begin(), other.end());        
+        other.m_size = 0;
+    }
+
+    // nothrow
+    // linear complexity
+    template <std::size_t C, typename S>
+    void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::true_type /*use_memop*/)
+    {
+        this->clear();
+
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
+        boost::swap(m_size, other.m_size);
+    }
+
+    // basic
+    // linear complexity
+    template <std::size_t C, typename S>
+    void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
+    {
+        // TODO - use move iterators or implement moving
+
+        this->assign(other.begin(), other.end());
+        other.clear();
+    }
+
+    // nothrow
+    // linear complexity
+    template <std::size_t C, typename S>
+    void swap_dispatch(static_vector<value_type, C, S> & other, boost::true_type const& /*use_optimized_swap*/)
     {
         typedef typename
         boost::mpl::if_c<
@@ -636,8 +690,10 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
+    // basic
+    // linear complexity
     template <std::size_t C, typename S>
-    void swap_dispatch(static_vector<value_type, C, S> & other, boost::false_type const& /*throwing_version*/)
+    void swap_dispatch(static_vector<value_type, C, S> & other, boost::false_type const& /*use_optimized_swap*/)
     {
         namespace sv = static_vector_detail;
 
@@ -648,17 +704,17 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
+    // basic
+    // linear complexity
     template <typename ItSm, typename ItLa>
     void swap_dispatch_impl(ItSm first_sm, ItSm last_sm, ItLa first_la, ItLa last_la)
     {
         //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
 
-        // TODO - use move instead of copy
-
         namespace sv = static_vector_detail;
         for (; first_sm != last_sm ; ++first_sm, ++first_la)
         {
-            //boost::swap(*first_sm, *first_la);                                      // may throw
+            //boost::swap(*first_sm, *first_la);                                    // may throw
             value_type temp(boost::move(*first_sm));                                // may throw
             *first_sm = boost::move(*first_la);                                     // may throw
             *first_la = boost::move(temp);                                          // may throw
@@ -1123,5 +1179,9 @@ inline void swap(static_vector<V, C1, S1> & x, static_vector<V, C2, S2> & y)
 }
 
 }} // namespace boost::container
+
+#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)  
+#pragma warning(pop)
+#endif
 
 #endif // BOOST_CONTAINER_STATIC_VECTOR_HPP
