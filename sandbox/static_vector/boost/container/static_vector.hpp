@@ -79,7 +79,7 @@ struct default_strategy
     }
 
     template <typename V, std::size_t C, typename S>
-    static void check_index_throwing(container::static_vector<V, C, S> const& v,
+    static void check_at(container::static_vector<V, C, S> const& v,
                                      typename container::static_vector<V, C, S>::size_type i)
     {
         if ( v.size() <= i )
@@ -87,7 +87,7 @@ struct default_strategy
     }
 
     template <typename V, std::size_t C, typename S>
-    static void check_index(container::static_vector<V, C, S> const& v,
+    static void check_operator_brackets(container::static_vector<V, C, S> const& v,
                             typename container::static_vector<V, C, S>::size_type i)
     {
         BOOST_ASSERT_MSG(i < v.size(), "index out of bounds");
@@ -542,28 +542,28 @@ public:
     // strong
     Value & at(size_type i)
     {
-        errh::check_index_throwing(*this, i);                                   // may throw
+        errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
     // strong
     Value const& at(size_type i) const
     {
-        errh::check_index_throwing(*this, i);                                   // may throw
+        errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
     // nothrow
     Value & operator[](size_type i)
     {
-        errh::check_index(*this, i);
+        errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
     // nothrow
     Value const& operator[](size_type i) const
     {
-        errh::check_index(*this, i);
+        errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
@@ -1063,28 +1063,28 @@ public:
     // strong
     Value & at(size_type i)
     {
-        errh::check_index_throwing(*this, i);                                   // may throw
+        errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
     // strong
     Value const& at(size_type i) const
     {
-        errh::check_index_throwing(*this, i);                                   // may throw
+        errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
     // nothrow
     Value & operator[](size_type i)
     {
-        errh::check_index(*this, i);
+        errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
     // nothrow
     Value const& operator[](size_type i) const
     {
-        errh::check_index(*this, i);
+        errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
