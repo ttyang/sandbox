@@ -1207,8 +1207,4 @@ inline void swap(static_vector<V, C1, S1> & x, static_vector<V, C2, S2> & y)
 
 }} // namespace boost::container
 
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)  
-#pragma warning(pop)
-#endif
-
 #endif // BOOST_CONTAINER_STATIC_VECTOR_HPP
