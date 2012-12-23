@@ -38,9 +38,11 @@
 #include <boost/utility/addressof.hpp>
 #include <boost/iterator/iterator_traits.hpp>
 
+#ifndef BOOST_NO_EXCEPTIONS
 // TODO - move this to the other, optional file?
 #include <vector>
 #include <boost/container/vector.hpp>
+#endif // BOOST_NO_EXCEPTIONS
 
 namespace boost { namespace container { namespace static_vector_detail {
 
@@ -58,6 +60,7 @@ struct are_elements_contiguous : boost::is_pointer<I>
 
 // TODO - move this to the other, optional file?
 
+#ifndef BOOST_NO_EXCEPTIONS
 template <typename Pointer>
 struct are_elements_contiguous< container_detail::vector_const_iterator<Pointer> > : boost::true_type
 {};
@@ -98,9 +101,10 @@ struct are_elements_contiguous<
 //> : boost::true_type
 //{};
 
-#else
+#else // OTHER_STDLIB
 // TODO - add other iterators implementations
-#endif
+#endif // OTHER_STDLIB
+#endif // BOOST_NO_EXCEPTIONS
 
 template <typename I, typename O>
 struct are_corresponding :
@@ -298,16 +302,20 @@ O uninitialized_move_dispatch(I first, I last, O dst,
     //return boost::uninitialized_move(first, last, dst);                         // may throw
 
     O o = dst;
+#ifndef BOOST_NO_EXCEPTIONS
     try
+#endif // BOOST_NO_EXCEPTIONS
     {
         typedef typename std::iterator_traits<O>::value_type value_type;
         for (; first != last; ++first, ++o )
             new (boost::addressof(*o)) value_type(boost::move(*first));
     }
+#ifndef BOOST_NO_EXCEPTIONS
     catch (...)
     {
         destroy(dst, o);
     }
+#endif // BOOST_NO_EXCEPTIONS
     return dst;
 }
 
@@ -443,16 +451,20 @@ void construct_dispatch(I first, I last,
 {
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
+#ifndef BOOST_NO_EXCEPTIONS
     try
+#endif // BOOST_NO_EXCEPTIONS
     {
         for ( ; it != last ; ++it )
             new (boost::addressof(*it)) value_type();                           // may throw
     }
+#ifndef BOOST_NO_EXCEPTIONS
     catch(...)
     {
         destroy(first, it);
         throw;
     }
+#endif // BOOST_NO_EXCEPTIONS
 }
 
 template <typename I>
@@ -524,16 +536,21 @@ void construct(I first, I last)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
+    
+#ifndef BOOST_NO_EXCEPTIONS
     try
+#endif // BOOST_NO_EXCEPTIONS
     {
         for ( ; it != last ; ++it )
             new (boost::addressof(*it)) value_type();                           // may throw
     }
+#ifndef BOOST_NO_EXCEPTIONS
     catch(...)
     {
         destroy(first, it);
         throw;
     }
+#endif // BOOST_NO_EXCEPTIONS
 }
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -545,7 +562,9 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
 {
     std::size_t count = 0;
     F it = dest;
+#ifndef BOOST_NO_EXCEPTIONS
     try
+#endif // BOOST_NO_EXCEPTIONS
     {
         for ( ; first != last ; ++it, ++first, ++count )
         {
@@ -555,11 +574,14 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
             uninitialized_fill(it, *first);                                     // may throw
         }
     }
+#ifndef BOOST_NO_EXCEPTIONS
     catch(...)
     {
         destroy(dest, it);
         throw;
     }
+#endif // BOOST_NO_EXCEPTIONS
+
     return count;
 }
 

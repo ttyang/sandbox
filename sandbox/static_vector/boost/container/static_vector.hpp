@@ -12,7 +12,9 @@
 
 #include <boost/container/detail/static_vector_util.hpp>
 
+#ifndef BOOST_NO_EXCEPTIONS
 #include <stdexcept>
+#endif // BOOST_NO_EXCEPTIONS
 
 #include <boost/assert.hpp>
 #include <boost/config.hpp>
@@ -82,8 +84,12 @@ struct default_strategy
     static void check_at(container::static_vector<V, C, S> const& v,
                                      typename container::static_vector<V, C, S>::size_type i)
     {
+#ifndef BOOST_NO_EXCEPTIONS
         if ( v.size() <= i )
             throw std::out_of_range("index out of bounds");
+#else // BOOST_NO_EXCEPTIONS
+        BOOST_ASSERT_MSG(i <= v.size(), "index out of bounds");
+#endif // BOOST_NO_EXCEPTIONS
     }
 
     template <typename V, std::size_t C, typename S>
@@ -136,7 +142,7 @@ class static_vector
     BOOST_MPL_ASSERT_MSG(
         ( boost::is_unsigned<stored_size_type>::value &&
           sizeof(typename boost::uint_value_t<Capacity>::least) <= sizeof(stored_size_type) ),
-        SIZE_TYPE_IS_TOO_SMALL,
+        SIZE_TYPE_IS_TOO_SMALL_FOR_SPECIFIED_CAPACITY,
         (static_vector)
     );
 

@@ -27,6 +27,14 @@
 #include <boost/container/stable_vector.hpp>
 #endif
 
+// TODO: Disable parts of the unit test that should not run when BOOST_NO_EXCEPTIONS
+// if exceptions are enabled there must be a user defined throw_exception function
+#ifdef BOOST_NO_EXCEPTIONS
+namespace boost {
+void throw_exception(std::exception const & e){}; // user defined
+} // namespace boost
+#endif // BOOST_NO_EXCEPTIONS
+
 using namespace boost::container;
 
 class value_ndc
@@ -145,7 +153,9 @@ void test_ctor_ndc()
     static_vector<T, N> s;
     BOOST_CHECK_EQUAL(s.size() , 0);
     BOOST_CHECK(s.capacity() == N);
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW( s.at(0), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
 }
 
 template <typename T, size_t N>
@@ -154,7 +164,9 @@ void test_ctor_nc(size_t n)
     static_vector<T, N> s(n);
     BOOST_CHECK(s.size() == n);
     BOOST_CHECK(s.capacity() == N);
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW( s.at(n), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
     if ( 1 < n )
     {
         T val10(10);
@@ -174,7 +186,9 @@ void test_ctor_nd(size_t n, T const& v)
     static_vector<T, N> s(n, v);
     BOOST_CHECK(s.size() == n);
     BOOST_CHECK(s.capacity() == N);
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW( s.at(n), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
     if ( 1 < n )
     {
         BOOST_CHECK(v == s[0]);
@@ -198,7 +212,9 @@ void test_resize_nc(size_t n)
     s.resize(n);
     BOOST_CHECK(s.size() == n);
     BOOST_CHECK(s.capacity() == N);
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW( s.at(n), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
     if ( 1 < n )
     {
         T val10(10);
@@ -220,7 +236,9 @@ void test_resize_nd(size_t n, T const& v)
     s.resize(n, v);
     BOOST_CHECK(s.size() == n);
     BOOST_CHECK(s.capacity() == N);
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW( s.at(n), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
     if ( 1 < n )
     {
         BOOST_CHECK(v == s[0]);
@@ -242,13 +260,17 @@ void test_push_back_nd()
     static_vector<T, N> s;
 
     BOOST_CHECK(s.size() == 0);
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW( s.at(0), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
 
     for ( size_t i = 0 ; i < N ; ++i )
     {
         s.push_back(T(i));
         BOOST_CHECK(s.size() == i + 1);
+#ifndef BOOST_NO_EXCEPTIONS
         BOOST_CHECK_THROW( s.at(i + 1), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
         BOOST_CHECK(T(i) == s.at(i));
         BOOST_CHECK(T(i) == s[i]);
         BOOST_CHECK(T(i) == s.back());
@@ -268,7 +290,9 @@ void test_pop_back_nd()
     {
         s.pop_back();
         BOOST_CHECK(s.size() == i - 1);
+#ifndef BOOST_NO_EXCEPTIONS
         BOOST_CHECK_THROW( s.at(i - 1), std::out_of_range );
+#endif // BOOST_NO_EXCEPTIONS
         BOOST_CHECK(T(i - 2) == s.at(i - 2));
         BOOST_CHECK(T(i - 2) == s[i - 2]);
         BOOST_CHECK(T(i - 2) == s.back());
@@ -508,8 +532,12 @@ struct bad_alloc_strategy : public static_vector_detail::default_strategy<>
     template <typename V, std::size_t Capacity, typename S>
     static void check_capacity(static_vector<V, Capacity, S> const&, std::size_t s)
     {
+#ifndef BOOST_NO_EXCEPTIONS
         if ( Capacity < s )
             throw std::bad_alloc();
+#else // BOOST_NO_EXCEPTIONS
+        BOOST_ASSERT_MSG(!(Capacity < s), "index out of bounds");
+#endif // BOOST_NO_EXCEPTIONS
     }
 };
 
@@ -534,6 +562,7 @@ void test_capacity_0_nd()
     static_vector<T, 0, bad_alloc_strategy> s;
     BOOST_CHECK(s.size() == 0);
     BOOST_CHECK(s.capacity() == 0);
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW(s.at(0), std::out_of_range);
     BOOST_CHECK_THROW(s.resize(5u, T(0)), std::bad_alloc);
     BOOST_CHECK_THROW(s.push_back(T(0)), std::bad_alloc);
@@ -550,6 +579,7 @@ void test_capacity_0_nd()
         static_vector<T, 0, bad_alloc_strategy> s1(5u, T(0));
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
+#endif // BOOST_NO_EXCEPTIONS
 }
 
 template <typename T, size_t N>
@@ -557,7 +587,8 @@ void test_exceptions_nd()
 {
     static_vector<T, N> v(N, T(0));
     static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(0));
-
+    
+#ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW(s.resize(N, T(0)), std::bad_alloc);
     BOOST_CHECK_THROW(s.push_back(T(0)), std::bad_alloc);
     BOOST_CHECK_THROW(s.insert(s.end(), T(0)), std::bad_alloc);
@@ -573,6 +604,7 @@ void test_exceptions_nd()
         static_vector<T, N/2, bad_alloc_strategy> s1(N, T(0));
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
+#endif // BOOST_NO_EXCEPTIONS
 }
 
 template <typename T, size_t N>
@@ -661,6 +693,7 @@ void test_swap_and_move_nd()
     {
         static_vector<T, N> v(N, T(0));
         static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(1));
+#ifndef BOOST_NO_EXCEPTIONS
         BOOST_CHECK_THROW(s.swap(v), std::bad_alloc);
         v.resize(N, T(0));
         BOOST_CHECK_THROW(s = boost::move(v), std::bad_alloc);
@@ -669,6 +702,7 @@ void test_swap_and_move_nd()
             static_vector<T, N/2, bad_alloc_strategy> s2(boost::move(v));
             BOOST_CHECK(false);
         } catch (std::bad_alloc &) {}
+#endif // BOOST_NO_EXCEPTIONS
     }
 }
 
