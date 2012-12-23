@@ -118,7 +118,7 @@ template <typename Value, std::size_t Capacity, typename Strategy>
 struct static_vector_traits
 {
     typedef typename Strategy::size_type size_type;
-    typedef boost::true_type use_memop_in_swap_and_move;
+    typedef boost::false_type use_memop_in_swap_and_move;
     typedef boost::false_type use_optimized_swap;
     typedef Strategy strategy;
 };
@@ -690,24 +690,51 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    // basic
+    // nothrow or basic
     // linear complexity
     template <std::size_t C, typename S>
     void swap_dispatch(static_vector<value_type, C, S> & other, boost::false_type const& /*use_optimized_swap*/)
     {
         namespace sv = static_vector_detail;
 
+        typedef typename
+        static_vector_detail::static_vector_traits<
+            Value, Capacity, Strategy
+        >::use_memop_in_swap_and_move use_memop_in_swap_and_move;
+
         if ( this->size() < other.size() )
-            swap_dispatch_impl(this->begin(), this->end(), other.begin(), other.end()); // may throw
+            swap_dispatch_impl(this->begin(), this->end(), other.begin(), other.end(), use_memop_in_swap_and_move()); // may throw
         else
-            swap_dispatch_impl(other.begin(), other.end(), this->begin(), this->end()); // may throw
+            swap_dispatch_impl(other.begin(), other.end(), this->begin(), this->end(), use_memop_in_swap_and_move()); // may throw
         boost::swap(m_size, other.m_size);
+    }
+
+    // nothrow
+    // linear complexity
+    void swap_dispatch_impl(iterator first_sm, iterator last_sm, iterator first_la, iterator last_la, boost::true_type const& /*use_memop*/)
+    {
+        //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
+
+        namespace sv = static_vector_detail;
+        for (; first_sm != last_sm ; ++first_sm, ++first_la)
+        {
+            boost::aligned_storage<
+                sizeof(value_type),
+                boost::alignment_of<value_type>::value
+            > temp_storage;
+            value_type * temp_ptr = reinterpret_cast<value_type*>(temp_storage.address());
+
+            ::memcpy(temp_ptr, boost::addressof(*first_sm), sizeof(value_type));
+            ::memcpy(boost::addressof(*first_sm), boost::addressof(*first_la), sizeof(value_type));
+            ::memcpy(boost::addressof(*first_la), temp_ptr, sizeof(value_type));
+        }
+
+        ::memcpy(first_sm, first_la, sizeof(value_type) * std::distance(first_la, last_la));
     }
 
     // basic
     // linear complexity
-    template <typename ItSm, typename ItLa>
-    void swap_dispatch_impl(ItSm first_sm, ItSm last_sm, ItLa first_la, ItLa last_la)
+    void swap_dispatch_impl(iterator first_sm, iterator last_sm, iterator first_la, iterator last_la, boost::false_type const& /*use_memop*/)
     {
         //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
 
