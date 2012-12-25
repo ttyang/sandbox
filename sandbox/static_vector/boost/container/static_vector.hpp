@@ -34,9 +34,6 @@
 
 #if defined(BOOST_NO_RVALUE_REFERENCES)
 
-#define BOOST_CONTAINER_STATIC_VECTOR_ASSIGN_REF(V, C, S)   boost::rv< static_vector<V, C, S> > const&
-#define BOOST_CONTAINER_STATIC_VECTOR_RV_REF(V, C, S)       boost::rv< static_vector<V, C, S> > &
-
 #define BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE() \
 BOOST_COPYABLE_AND_MOVABLE(static_vector) \
 public: \
@@ -50,9 +47,6 @@ public: \
 private:
 
 #else
-
-#define BOOST_CONTAINER_STATIC_VECTOR_ASSIGN_REF(V, C, S)   static_vector<V, C, S> const&
-#define BOOST_CONTAINER_STATIC_VECTOR_RV_REF(V, C, S)       static_vector<V, C, S> &&
 
 #define BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE() \
 BOOST_COPYABLE_AND_MOVABLE(static_vector)
@@ -231,7 +225,7 @@ public:
 
     // basic
     template <std::size_t C, typename S>
-    static_vector & operator=(BOOST_CONTAINER_STATIC_VECTOR_ASSIGN_REF(value_type, C, S) other)
+    static_vector & operator=(BOOST_MOVE_COPY_ASSIGN_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
     {
         this->assign(other.begin(), other.end());                                     // may throw
 
@@ -253,7 +247,7 @@ public:
     // nothrow or strong (based on traits, default nothrow)
     // (note: linear complexity)
     template <std::size_t C, typename S>
-    static_vector(BOOST_CONTAINER_STATIC_VECTOR_RV_REF(value_type, C, S) other)
+    static_vector(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
         : m_size(other.m_size)
     {
         errh::check_capacity(*this, other.size());                                  // may throw
@@ -283,7 +277,7 @@ public:
     // nothrow or basic (based on traits, default nothrow)
     // (note: linear complexity)
     template <std::size_t C, typename S>
-    static_vector & operator=(BOOST_CONTAINER_STATIC_VECTOR_RV_REF(value_type, C, S) other)
+    static_vector & operator=(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
     {
         errh::check_capacity(*this, other.size());                                  // may throw
 
