@@ -48,36 +48,33 @@
 #define BOOST_CONTAINER_STATIC_VECTOR_THROW
 #endif
 
-
-#ifndef BOOST_NO_EXCEPTIONS
-// TODO - move this to the other, optional file?
-#include <vector>
-#include <boost/container/vector.hpp>
-#endif // BOOST_NO_EXCEPTIONS
-
-namespace boost { namespace container { namespace static_vector_detail {
-
-// TODO
-// Does BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION checks have any sense?
-// Boost.MPL and Boost.Container might not be used but
-// Boost.Iterator also uses partial specialization
-// and in fact iterator_traits won't work if there is no partial specialization
+// TODO - move vectors iterators optimization to the other, optional file instead of checking defines?
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+
+#if defined(BOOST_CONTAINER_STATIC_VECTOR_ENABLE_VECTORS_OPTIMIZATION) && !defined(BOOST_NO_EXCEPTIONS)
+#include <vector>
+#include <boost/container/vector.hpp>
+#endif // BOOST_CONTAINER_STATIC_VECTOR_ENABLE_ITERATORS_OPTIMIZATION && !BOOST_NO_EXCEPTIONS
+
+namespace boost { namespace container { namespace static_vector_detail {
 
 template <typename I>
 struct are_elements_contiguous : boost::is_pointer<I>
 {};
 
-// TODO - move this to the other, optional file?
+#if defined(BOOST_CONTAINER_STATIC_VECTOR_ENABLE_VECTORS_OPTIMIZATION) && !defined(BOOST_NO_EXCEPTIONS)
 
-#ifndef BOOST_NO_EXCEPTIONS
 template <typename Pointer>
-struct are_elements_contiguous< container_detail::vector_const_iterator<Pointer> > : boost::true_type
+struct are_elements_contiguous<
+    boost::container_detail::vector_const_iterator<Pointer>
+> : boost::true_type
 {};
 
 template <typename Pointer>
-struct are_elements_contiguous< container_detail::vector_iterator<Pointer> > : boost::true_type
+struct are_elements_contiguous<
+    boost::container_detail::vector_iterator<Pointer>
+> : boost::true_type
 {};
 
 #if defined(BOOST_DINKUMWARE_STDLIB)
@@ -113,29 +110,38 @@ struct are_elements_contiguous<
 //{};
 
 #else // OTHER_STDLIB
+
 // TODO - add other iterators implementations
-#endif // OTHER_STDLIB
-#endif // BOOST_NO_EXCEPTIONS
+
+#endif // STDLIB
+
+#endif // BOOST_CONTAINER_STATIC_VECTOR_ENABLE_VECTORS_OPTIMIZATION && !BOOST_NO_EXCEPTIONS
+
+}}} // namespace boost::container::static_vector_detail
+
+#endif // !BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+namespace boost { namespace container { namespace static_vector_detail {
+
+// TODO
+// Does BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION checks have any sense?
+// Boost.MPL and Boost.Container might not be used but
+// Boost.Iterator also uses partial specialization
+// and in fact iterator_traits won't work if there is no partial specialization
+
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
 template <typename I, typename O>
 struct are_corresponding :
-    boost::mpl::and_<
-        boost::is_same<
-            boost::remove_const<
-                typename boost::iterator_value<I>::type
+    ::boost::mpl::and_<
+        ::boost::is_same<
+            ::boost::remove_const<
+                typename ::boost::iterator_value<I>::type
             >,
-            boost::remove_const<
-                typename boost::iterator_value<O>::type
+            ::boost::remove_const<
+                typename ::boost::iterator_value<O>::type
             >
         >,
-        /*boost::is_same<
-            typename boost::iterator_traversal<I>::type,
-            boost::random_access_traversal_tag
-        >,
-        boost::is_same<
-            typename boost::iterator_traversal<O>::type,
-            boost::random_access_traversal_tag
-        >,*/
         are_elements_contiguous<I>,
         are_elements_contiguous<O>
     >
@@ -482,10 +488,6 @@ void construct(I first, I last)
 }
 
 #else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-
-template <typename I>
-struct are_elements_contiguous
-{};
 
 template <typename I, typename O>
 inline O copy(I first, I last, O dst)

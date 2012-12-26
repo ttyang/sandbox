@@ -52,7 +52,7 @@ struct default_strategy
 
     template <typename V, std::size_t C, typename S>
     static void check_at(container::static_vector<V, C, S> const& v,
-                                     typename container::static_vector<V, C, S>::size_type i)
+                         typename container::static_vector<V, C, S>::size_type i)
     {
 #ifndef BOOST_NO_EXCEPTIONS
         if ( v.size() <= i )
@@ -64,7 +64,7 @@ struct default_strategy
 
     template <typename V, std::size_t C, typename S>
     static void check_operator_brackets(container::static_vector<V, C, S> const& v,
-                            typename container::static_vector<V, C, S>::size_type i)
+                                        typename container::static_vector<V, C, S>::size_type i)
     {
         BOOST_ASSERT_MSG(i < v.size(), "index out of bounds");
     }
@@ -212,7 +212,12 @@ public:
 
     // basic
     template <std::size_t C, typename S>
-    static_vector & operator=(BOOST_MOVE_COPY_ASSIGN_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
+// TEMPORARY WORKAROUND
+#if defined(BOOST_NO_RVALUE_REFERENCES)
+    static_vector & operator=(::boost::rv< static_vector<value_type, C, S> > const& other)
+#else
+    static_vector & operator=(static_vector<value_type, C, S> const& other)
+#endif
     {
         this->assign(other.begin(), other.end());                                     // may throw
 
