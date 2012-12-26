@@ -32,27 +32,6 @@
 // or boost/detail/iterator.hpp ?
 #include <boost/iterator/reverse_iterator.hpp>
 
-#if defined(BOOST_NO_RVALUE_REFERENCES)
-
-#define BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE() \
-BOOST_COPYABLE_AND_MOVABLE(static_vector) \
-public: \
-    template <std::size_t C, typename S> \
-    static_vector & operator=(static_vector<Value, C, S> & t) \
-    { \
-        typedef static_vector<Value, C, S> O; \
-        this->operator=(static_cast<const ::boost::rv<O> &>(const_cast<const O &>(t))); \
-        return *this; \
-    } \
-private:
-
-#else
-
-#define BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE() \
-BOOST_COPYABLE_AND_MOVABLE(static_vector)
-
-#endif
-
 namespace boost { namespace container {
 
 // Forward declaration
@@ -63,11 +42,8 @@ namespace static_vector_detail {
 
 // TODO - remove size_type from here and allow setting it only in traits?
 
-template <typename SizeType = std::size_t>
 struct default_strategy
 {
-    typedef SizeType size_type;
-
     template <typename V, std::size_t Capacity, typename S>
     static void check_capacity(container::static_vector<V, Capacity, S> const&, std::size_t s)
     {
@@ -82,7 +58,7 @@ struct default_strategy
         if ( v.size() <= i )
             throw std::out_of_range("index out of bounds");
 #else // BOOST_NO_EXCEPTIONS
-        BOOST_ASSERT_MSG(i <= v.size(), "index out of bounds");
+        BOOST_ASSERT_MSG(i < v.size(), "index out of bounds");
 #endif // BOOST_NO_EXCEPTIONS
     }
 
@@ -117,7 +93,7 @@ struct default_strategy
 template <typename Value, std::size_t Capacity, typename Strategy>
 struct static_vector_traits
 {
-    typedef typename Strategy::size_type size_type;
+    typedef std::size_t size_type;
     typedef boost::false_type use_memop_in_swap_and_move;
     typedef boost::false_type use_optimized_swap;
     typedef Strategy strategy;
@@ -125,7 +101,7 @@ struct static_vector_traits
 
 } // namespace static_vector_detail
 
-template <typename Value, std::size_t Capacity, typename Strategy = static_vector_detail::default_strategy<> >
+template <typename Value, std::size_t Capacity, typename Strategy = static_vector_detail::default_strategy >
 class static_vector
 {
     typedef typename
@@ -153,18 +129,29 @@ class static_vector
     template <typename V, std::size_t C, typename S>
     friend class static_vector;
 
-    BOOST_CONTAINER_STATIC_VECTOR_COPYABLE_AND_MOVABLE()
+    BOOST_COPYABLE_AND_MOVABLE(static_vector)
+
+#ifdef BOOST_NO_RVALUE_REFERENCES
+public:
+    template <std::size_t C, typename S>
+    static_vector & operator=(static_vector<Value, C, S> & sv)
+    {
+        typedef static_vector<Value, C, S> other;
+        this->operator=(static_cast<const ::boost::rv<other> &>(const_cast<const other &>(sv)));
+        return *this;
+    }
+#endif
 
 public:
     typedef Value value_type;
     typedef stored_size_type size_type;
     typedef std::ptrdiff_t difference_type;
-    typedef Value& reference;
+    typedef Value & reference;
     typedef Value const& const_reference;
-    typedef Value * pointer;
+    typedef Value* pointer;
     typedef const Value* const_pointer;
     typedef Value* iterator;
-    typedef const Value * const_iterator;
+    typedef const Value* const_iterator;
     typedef boost::reverse_iterator<iterator> reverse_iterator;
     typedef boost::reverse_iterator<const_iterator> const_reverse_iterator;
 

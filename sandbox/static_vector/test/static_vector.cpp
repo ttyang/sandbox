@@ -527,7 +527,7 @@ void test_insert_nd(T const& val)
 #endif
 }
 
-struct bad_alloc_strategy : public static_vector_detail::default_strategy<>
+struct bad_alloc_strategy : public static_vector_detail::default_strategy
 {
     template <typename V, std::size_t Capacity, typename S>
     static void check_capacity(static_vector<V, Capacity, S> const&, std::size_t s)
@@ -540,19 +540,6 @@ struct bad_alloc_strategy : public static_vector_detail::default_strategy<>
 #endif // BOOST_NO_EXCEPTIONS
     }
 };
-
-namespace boost { namespace container { namespace static_vector_detail {
-
-template <typename Value, std::size_t Capacity>
-struct static_vector_traits<Value, Capacity, bad_alloc_strategy>
-{
-    typedef std::size_t size_type;
-    typedef boost::false_type use_memop_in_swap_and_move;
-    typedef boost::false_type use_optimized_swap;
-    typedef bad_alloc_strategy strategy;
-};
-
-}}}
 
 template <typename T>
 void test_capacity_0_nd()
