@@ -7,6 +7,7 @@
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
+
 #include <boost/container/static_vector.hpp>
 
 #ifdef BOOST_SINGLE_HEADER_UTF
@@ -703,21 +704,34 @@ void test_swap_and_move_nd()
     }
 }
 
-//template <typename T, size_t N>
-//void test_emplace_2p()
-//{
-//    static_vector<T, N, bad_alloc_strategy> v;
+template <typename T, size_t N>
+void test_emplace_2p()
+{
+    static_vector<T, N, bad_alloc_strategy> v;
 
-//    for (int i = 0 ; i < int(N) ; ++i )
-//        v.emplace_back(i, 100 + i);
-//    BOOST_CHECK(v.size() == N);
-//#ifndef BOOST_NO_EXCEPTIONS
-//    BOOST_CHECK_THROW(v.emplace_back(N, 100 + N), std::bad_alloc);
-//#endif
-//    BOOST_CHECK(v.size() == N);
-//    for (int i = 0 ; i < int(N) ; ++i )
-//        BOOST_CHECK(v[i] == T(i, 100 + i));
-//}
+    for (int i = 0 ; i < int(N) ; ++i )
+        v.emplace_back(i, 100 + i);
+    BOOST_CHECK(v.size() == N);
+#ifndef BOOST_NO_EXCEPTIONS
+    BOOST_CHECK_THROW(v.emplace_back(N, 100 + N), std::bad_alloc);
+#endif
+    BOOST_CHECK(v.size() == N);
+    for (int i = 0 ; i < int(N) ; ++i )
+        BOOST_CHECK(v[i] == T(i, 100 + i));
+}
+
+template <typename T, size_t N>
+void test_sv_elem(T const& t)
+{
+    typedef static_vector<T, N, bad_alloc_strategy> V;
+
+    static_vector<V, N, bad_alloc_strategy> v;
+
+    v.push_back(V(N/2, t));
+    v.push_back(V(N/2, t));
+    v.insert(v.begin(), V(N/2, t));
+    v.insert(v.end(), V(N/2, t));
+}
 
 #ifdef BOOST_SINGLE_HEADER_UTF
 BOOST_AUTO_TEST_CASE(static_vector_test)
@@ -825,7 +839,14 @@ int test_main(int, char* [])
     test_swap_and_move_nd<shptr_value, 10>();
     test_swap_and_move_nd<copy_movable, 10>();
 
-    //test_emplace_2p<value_2p, 10>();
+    test_emplace_2p<value_2p, 10>();
+
+    test_sv_elem<int, 10>(50);
+    test_sv_elem<value_nd, 10>(value_nd(50));
+    test_sv_elem<counting_value, 10>(counting_value(50));
+    BOOST_CHECK(counting_value::count() == 0);
+    test_sv_elem<shptr_value, 10>(shptr_value(50));
+    test_sv_elem<copy_movable, 10>(copy_movable(50));
 
 #ifndef BOOST_SINGLE_HEADER_UTF
     return 0;

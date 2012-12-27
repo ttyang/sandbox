@@ -12,9 +12,6 @@
 
 #include <boost/container/detail/static_vector_util.hpp>
 
-#include <boost/container/detail/workaround.hpp>
-#include <boost/container/detail/preprocessor.hpp>
-
 #ifndef BOOST_NO_EXCEPTIONS
 #include <stdexcept>
 #endif // BOOST_NO_EXCEPTIONS
@@ -338,7 +335,7 @@ public:
         {
             errh::check_capacity(*this, count);                                     // may throw
 
-            sv::construct(this->end(), this->begin() + count);                      // may throw
+            sv::uninitialized_fill(this->end(), this->begin() + count);             // may throw
         }
         m_size = count; // update end
     }
@@ -372,7 +369,7 @@ public:
         errh::check_capacity(*this, m_size + 1);                                    // may throw
         
         namespace sv = static_vector_detail;
-        sv::uninitialized_fill(this->end(), value);                                 // may throw
+        sv::construct(this->end(), value);                                          // may throw
         ++m_size; // update end
     }
 
@@ -401,14 +398,16 @@ public:
 
         if ( position == this->end() )
         {
-            sv::uninitialized_fill(position, value);                                // may throw
+            sv::construct(position, value);                                         // may throw
             ++m_size; // update end
         }
         else
         {
             // TODO - should following lines check for exception and revert to the old size?
 
-            sv::uninitialized_fill(this->end(), *(this->end() - 1));                // may throw
+            // TODO - should move be used only if it's nonthrowing?
+            value_type & r = *(this->end() - 1);
+            sv::construct(this->end(), boost::move(r));                             // may throw
             ++m_size; // update end
             sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
             sv::fill(position, value);                                              // may throw
@@ -530,34 +529,34 @@ public:
         m_size = count; // update end
     }
 
-//#if defined(BOOST_CONTAINER_PERFECT_FORWARDING)
-//    template<class ...Args>
-//    void emplace_back(Args &&...args)
-//    {
-//        errh::check_capacity(*this, m_size + 1);                                    // may throw
+#if defined(BOOST_CONTAINER_PERFECT_FORWARDING)
+    template<class ...Args>
+    void emplace_back(Args &&...args)
+    {
+        errh::check_capacity(*this, m_size + 1);                                    // may throw
 
-//        namespace sv = static_vector_detail;
-//        sv::uninitialized_fill(this->end(), ::boost::forward<Args>(args));          // may throw
-//        ++m_size; // update end
-//    }
+        namespace sv = static_vector_detail;
+        sv::construct(this->end(), ::boost::forward<Args>(args));                   // may throw
+        ++m_size; // update end
+    }
 
-//#else // BOOST_CONTAINER_PERFECT_FORWARDING
+#else // BOOST_CONTAINER_PERFECT_FORWARDING
 
-//    #define BOOST_PP_LOCAL_MACRO(n)                                                              \
-//    BOOST_PP_EXPR_IF(n, template<) BOOST_PP_ENUM_PARAMS(n, class P) BOOST_PP_EXPR_IF(n, >)       \
-//    void emplace_back(BOOST_PP_ENUM(n, BOOST_CONTAINER_PP_PARAM_LIST, _))                        \
-//    {                                                                                            \
-//        errh::check_capacity(*this, m_size + 1);                                    /*may throw*/\
-//                                                                                                 \
-//        namespace sv = static_vector_detail;                                                     \
-//        sv::uninitialized_fill(this->end() BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
-//        ++m_size; /*update end*/                                                                 \
-//    }
+    #define BOOST_PP_LOCAL_MACRO(n)                                                              \
+    BOOST_PP_EXPR_IF(n, template<) BOOST_PP_ENUM_PARAMS(n, class P) BOOST_PP_EXPR_IF(n, >)       \
+    void emplace_back(BOOST_PP_ENUM(n, BOOST_CONTAINER_PP_PARAM_LIST, _))                        \
+    {                                                                                            \
+        errh::check_capacity(*this, m_size + 1);                                    /*may throw*/\
+                                                                                                 \
+        namespace sv = static_vector_detail;                                                     \
+        sv::construct(this->end() BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
+        ++m_size; /*update end*/                                                                 \
+    }                                                                                            \
+    //
+    #define BOOST_PP_LOCAL_LIMITS (0, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
+    #include BOOST_PP_LOCAL_ITERATE()
 
-//    #define BOOST_PP_LOCAL_LIMITS (0, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
-//    #include BOOST_PP_LOCAL_ITERATE()
-
-//#endif // BOOST_CONTAINER_PERFECT_FORWARDING
+#endif // BOOST_CONTAINER_PERFECT_FORWARDING
 
     // nothrow
     void clear()

@@ -12,6 +12,9 @@
 #ifndef BOOST_CONTAINER_DETAIL_STATIC_VECTOR_UTIL_HPP
 #define BOOST_CONTAINER_DETAIL_STATIC_VECTOR_UTIL_HPP
 
+#include <boost/container/detail/workaround.hpp>
+#include <boost/container/detail/preprocessor.hpp>
+
 #include <cstddef>
 #include <cstring>
 #include <memory>
@@ -261,35 +264,6 @@ F uninitialized_copy(I first, I last, F dst)
     return uninitialized_copy_dispatch(first, last, dst, use_memcpy());          // may throw
 }
 
-// uninitialized_fill(I, V)
-
-template <typename I, typename V>
-void uninitialized_fill_dispatch(I pos, V const& v,
-                                 boost::mpl::bool_<true> const& /*use_memcpy*/)
-{
-    ::memcpy(boost::addressof(*pos), boost::addressof(v), sizeof(V));
-}
-
-template <typename I, typename V>
-void uninitialized_fill_dispatch(I pos, V const& v,
-                                 boost::mpl::bool_<false> const& /*use_memcpy*/)
-{
-    new (static_cast<void*>(boost::addressof(*pos))) V(v);                      // may throw
-}
-
-template <typename I, typename V>
-void uninitialized_fill(I dst, V const& v)
-{
-    typedef typename
-    ::boost::mpl::and_<
-        is_corresponding_value<I, V>,
-        ::boost::has_trivial_copy<V>
-    >::type
-    use_memcpy;
-
-    uninitialized_fill_dispatch(dst, v, use_memcpy());                          // may throw
-}
-
 // uninitialized_move(I, I, O)
 
 template <typename I, typename O>
@@ -446,16 +420,16 @@ void fill(I pos, V const& v)
     fill_dispatch(pos, v, use_memcpy());                                        // may throw
 }
 
-// construct
+// uninitialized_fill(I, I)
 
 template <typename I>
-void construct_dispatch(I /*first*/, I /*last*/,
-                        boost::true_type const& /*has_trivial_constructor*/)
+void uninitialized_fill_dispatch(I /*first*/, I /*last*/,
+                                 boost::true_type const& /*has_trivial_constructor*/)
 {}
 
 template <typename I>
-void construct_dispatch(I first, I last,
-                        boost::false_type const& /*has_trivial_constructor*/)
+void uninitialized_fill_dispatch(I first, I last,
+                                 boost::false_type const& /*has_trivial_constructor*/)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
@@ -474,11 +448,90 @@ void construct_dispatch(I first, I last,
 }
 
 template <typename I>
-void construct(I first, I last)
+void uninitialized_fill(I first, I last)
 {
     typedef typename boost::iterator_value<I>::type value_type;
-    construct_dispatch(first, last, has_trivial_constructor<value_type>());     // may throw
+    uninitialized_fill_dispatch(first, last, has_trivial_constructor<value_type>());     // may throw
 }
+
+// construct(I, V)
+
+template <typename I, typename V>
+void construct_dispatch(I pos, V const& v,
+                        boost::mpl::bool_<true> const& /*use_memcpy*/)
+{
+    ::memcpy(boost::addressof(*pos), boost::addressof(v), sizeof(V));
+}
+
+template <typename I, typename P>
+void construct_dispatch(I pos, P const& p,
+                        boost::mpl::bool_<false> const& /*use_memcpy*/)
+{
+    typedef typename boost::iterator_value<I>::type V;
+    new (static_cast<void*>(boost::addressof(*pos))) V(p);                      // may throw
+}
+
+
+// P may be e.g. V, const V, boost::rv<V>, const boost::rv<V>
+
+template <typename I, typename P>
+void construct(I pos, P const& p)
+{
+    typedef typename
+    ::boost::mpl::and_<
+        is_corresponding_value<I, P>,
+        ::boost::has_trivial_copy<P>
+    >::type
+    use_memcpy;
+
+    construct_dispatch(pos, p, use_memcpy());                                   // may throw
+}
+
+template <typename I, typename P>
+void construct(I pos, BOOST_RV_REF(P) p)
+{
+    typedef typename
+    ::boost::mpl::and_<
+        is_corresponding_value<I, P>,
+        ::boost::has_trivial_copy<P>
+    >::type
+    use_memcpy;
+
+    typedef typename boost::iterator_value<I>::type V;
+    new (static_cast<void*>(boost::addressof(*pos))) V(p);                      // may throw
+}
+
+#if !defined(BOOST_NO_VARIADIC_TEMPLATES)
+
+template <typename I, class ...Args>
+void construct(I pos, BOOST_FWD_REF(Args) ...args)
+{
+    typedef typename boost::iterator_value<I>::type V;
+    new (static_cast<void*>(boost::addressof(*pos))) V(::boost::forward<Args>(args)...);    // may throw
+}
+
+#else // !BOOST_NO_VARIADIC_TEMPLATES
+
+// BOOST_NO_RVALUE_REFERENCES -> P0 const& p0
+// !BOOST_NO_RVALUE_REFERENCES -> P0 && p0
+// which means that version with one parameter may take V const& v
+
+#define BOOST_PP_LOCAL_MACRO(n)                                                                     \
+template <typename I, typename P BOOST_PP_ENUM_TRAILING_PARAMS(n, typename P) >                     \
+void construct(I pos,                                                                               \
+               BOOST_CONTAINER_PP_PARAM(P, p)                                                       \
+               BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_LIST, _))                         \
+{                                                                                                   \
+    typedef typename boost::iterator_value<I>::type V;                                              \
+    new                                                                                             \
+    (static_cast<void*>(boost::addressof(*pos)))                                                    \
+    V(p, BOOST_PP_ENUM(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _));                   /*may throw*/    \
+}                                                                                                   \
+//
+#define BOOST_PP_LOCAL_LIMITS (1, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
+#include BOOST_PP_LOCAL_ITERATE()
+
+#endif
 
 #else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
@@ -492,12 +545,6 @@ template <typename I, typename F>
 inline F uninitialized_copy(I first, I last, F dst)
 {
     return std::uninitialized_copy(first, last, dst);                           // may throw
-}
-
-template <typename I, typename V>
-inline void uninitialized_fill(I pos, V const& v)
-{
-    new (static_cast<void*>(boost::addressof(*pos))) V(v);                      // may throw
 }
 
 template <typename I, typename O>
@@ -534,7 +581,7 @@ void destroy(I pos)
 }
 
 template <typename I>
-void construct(I first, I last)
+void construct_default(I first, I last)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
@@ -550,6 +597,12 @@ void construct(I first, I last)
         BOOST_RETHROW;
     }
     BOOST_CATCH_END
+}
+
+template <typename I, typename V>
+inline void construct(I pos, V const& v)
+{
+    new (static_cast<void*>(boost::addressof(*pos))) V(v);                      // may throw
 }
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -569,7 +622,7 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
             if ( max_count <= count )
                 return (std::numeric_limits<std::size_t>::max)();
 
-            uninitialized_fill(it, *first);                                     // may throw
+            construct(it, *first);                                              // may throw
         }
     }
     BOOST_CATCH(...)
