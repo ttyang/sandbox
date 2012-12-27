@@ -10,6 +10,10 @@
 #ifndef BOOST_CONTAINER_STATIC_VECTOR_HPP
 #define BOOST_CONTAINER_STATIC_VECTOR_HPP
 
+#include <boost/container/detail/config_begin.hpp>
+#include <boost/container/detail/workaround.hpp>
+#include <boost/container/detail/preprocessor.hpp>
+
 #include <boost/container/detail/static_vector_util.hpp>
 
 #ifndef BOOST_NO_EXCEPTIONS
@@ -368,6 +372,16 @@ public:
     {
         errh::check_capacity(*this, m_size + 1);                                    // may throw
         
+        namespace sv = static_vector_detail;
+        sv::construct(this->end(), value);                                          // may throw
+        ++m_size; // update end
+    }
+
+    // strong
+    void push_back(BOOST_RV_REF(value_type) value)
+    {
+        errh::check_capacity(*this, m_size + 1);                                    // may throw
+
         namespace sv = static_vector_detail;
         sv::construct(this->end(), value);                                          // may throw
         ++m_size; // update end
@@ -1233,5 +1247,7 @@ inline void swap(static_vector<V, C1, S1> & x, static_vector<V, C2, S2> & y)
 }
 
 }} // namespace boost::container
+
+#include <boost/container/detail/config_end.hpp>
 
 #endif // BOOST_CONTAINER_STATIC_VECTOR_HPP

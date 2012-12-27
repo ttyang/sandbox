@@ -277,7 +277,8 @@ void test_push_back_nd()
 
     for ( size_t i = 0 ; i < N ; ++i )
     {
-        s.push_back(T(i));
+        T t(i);
+        s.push_back(t);
         BOOST_CHECK(s.size() == i + 1);
 #ifndef BOOST_NO_EXCEPTIONS
         BOOST_CHECK_THROW( s.at(i + 1), std::out_of_range );
@@ -295,7 +296,10 @@ void test_pop_back_nd()
     static_vector<T, N> s;
 
     for ( size_t i = 0 ; i < N ; ++i )
-        s.push_back(T(i));    
+    {
+        T t(i);
+        s.push_back(t);    
+    }
 
     for ( size_t i = N ; i > 1 ; --i )
     {
@@ -345,9 +349,10 @@ void test_copy_and_assign_nd(T const& val)
 
     for ( size_t i = 0 ; i < N ; ++i )
     {
-        s.push_back(T(i));
-        v.push_back(T(i));
-        l.push_back(T(i));
+        T t(i);
+        s.push_back(t);
+        v.push_back(t);
+        l.push_back(t);
     }
     // copy ctor
     {
@@ -728,10 +733,10 @@ void test_sv_elem(T const& t)
     static_vector<V, N, bad_alloc_strategy> v;
 
     v.push_back(V(N/2, t));
-    v.push_back(V(N/2, t));
+    V vvv(N/2, t);
+    v.push_back(boost::move(vvv));
     v.insert(v.begin(), V(N/2, t));
     v.insert(v.end(), V(N/2, t));
-    v.emplace_back(V(N/2, t));
     v.emplace_back(N/2, t);
 }
 

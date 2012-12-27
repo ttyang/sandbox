@@ -12,9 +12,6 @@
 #ifndef BOOST_CONTAINER_DETAIL_STATIC_VECTOR_UTIL_HPP
 #define BOOST_CONTAINER_DETAIL_STATIC_VECTOR_UTIL_HPP
 
-#include <boost/container/detail/workaround.hpp>
-#include <boost/container/detail/preprocessor.hpp>
-
 #include <cstddef>
 #include <cstring>
 #include <memory>
@@ -471,9 +468,6 @@ void construct_dispatch(I pos, P const& p,
     new (static_cast<void*>(boost::addressof(*pos))) V(p);                      // may throw
 }
 
-
-// P may be e.g. V, const V, boost::rv<V>, const boost::rv<V>
-
 template <typename I, typename P>
 void construct(I pos, P const& p)
 {
@@ -486,6 +480,8 @@ void construct(I pos, P const& p)
 
     construct_dispatch(pos, p, use_memcpy());                                   // may throw
 }
+
+// Needed by push_back(V &&)
 
 template <typename I, typename P>
 void construct(I pos, BOOST_RV_REF(P) p)
@@ -500,6 +496,8 @@ void construct(I pos, BOOST_RV_REF(P) p)
     typedef typename boost::iterator_value<I>::type V;
     new (static_cast<void*>(boost::addressof(*pos))) V(p);                      // may throw
 }
+
+// Needed by emplace_back() and emplace()
 
 #if !defined(BOOST_NO_VARIADIC_TEMPLATES)
 
@@ -559,6 +557,29 @@ inline BDO move_backward(BDI first, BDI last, BDO dst)
     return std::copy_backward(first, last, dst);                                // may throw
 }
 
+template <typename I, typename O>
+O uninitialized_move(I first, I last, O dst)
+{
+    //return boost::uninitialized_move(first, last, dst);                         // may throw
+
+    O o = dst;
+
+    BOOST_TRY
+    {
+        typedef typename std::iterator_traits<O>::value_type value_type;
+        for (; first != last; ++first, ++o )
+            new (boost::addressof(*o)) value_type(boost::move(*first));
+    }
+    BOOST_CATCH(...)
+    {
+        destroy(dst, o);
+        BOOST_RETHROW;
+    }
+    BOOST_CATCH_END
+
+    return dst;
+}
+
 template <typename I, typename V>
 inline void fill(I pos, V const& v)
 {
@@ -581,7 +602,7 @@ void destroy(I pos)
 }
 
 template <typename I>
-void construct_default(I first, I last)
+void uninitialized_fill(I first, I last)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
