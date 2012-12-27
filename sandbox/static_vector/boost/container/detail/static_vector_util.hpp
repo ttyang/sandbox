@@ -33,20 +33,11 @@
 //#include <boost/type_traits/has_nothrow_assign.hpp>
 //#include <boost/type_traits/has_nothrow_destructor.hpp>
 
+#include <boost/detail/no_exceptions_support.hpp>
 #include <boost/config.hpp>
 #include <boost/move/move.hpp>
 #include <boost/utility/addressof.hpp>
 #include <boost/iterator/iterator_traits.hpp>
-
-#ifdef BOOST_NO_EXCEPTIONS
-#define BOOST_CONTAINER_STATIC_VECTOR_TRY       try
-#define BOOST_CONTAINER_STATIC_VECTOR_CATCH_ALL catch(...)
-#define BOOST_CONTAINER_STATIC_VECTOR_THROW     throw
-#else
-#define BOOST_CONTAINER_STATIC_VECTOR_TRY
-#define BOOST_CONTAINER_STATIC_VECTOR_CATCH_ALL if(false)
-#define BOOST_CONTAINER_STATIC_VECTOR_THROW
-#endif
 
 // TODO - move vectors iterators optimization to the other, optional file instead of checking defines?
 
@@ -320,17 +311,18 @@ O uninitialized_move_dispatch(I first, I last, O dst,
 
     O o = dst;
 
-    BOOST_CONTAINER_STATIC_VECTOR_TRY
+    BOOST_TRY
     {
         typedef typename std::iterator_traits<O>::value_type value_type;
         for (; first != last; ++first, ++o )
             new (boost::addressof(*o)) value_type(boost::move(*first));
     }
-    BOOST_CONTAINER_STATIC_VECTOR_CATCH_ALL
+    BOOST_CATCH(...)
     {
         destroy(dst, o);
-        BOOST_CONTAINER_STATIC_VECTOR_THROW;
+        BOOST_RETHROW;
     }
+    BOOST_CATCH_END
 
     return dst;
 }
@@ -468,16 +460,17 @@ void construct_dispatch(I first, I last,
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
 
-    BOOST_CONTAINER_STATIC_VECTOR_TRY
+    BOOST_TRY
     {
         for ( ; it != last ; ++it )
             new (boost::addressof(*it)) value_type();                           // may throw
     }
-    BOOST_CONTAINER_STATIC_VECTOR_CATCH_ALL
+    BOOST_CATCH(...)
     {
         destroy(first, it);
-        BOOST_CONTAINER_STATIC_VECTOR_THROW;
+        BOOST_RETHROW;
     }
+    BOOST_CATCH_END
 }
 
 template <typename I>
@@ -546,16 +539,17 @@ void construct(I first, I last)
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
     
-    BOOST_CONTAINER_STATIC_VECTOR_TRY
+    BOOST_TRY
     {
         for ( ; it != last ; ++it )
             new (boost::addressof(*it)) value_type();                           // may throw
     }
-    BOOST_CONTAINER_STATIC_VECTOR_CATCH_ALL
+    BOOST_CATCH(...)
     {
         destroy(first, it);
-        BOOST_CONTAINER_STATIC_VECTOR_THROW;
+        BOOST_RETHROW;
     }
+    BOOST_CATCH_END
 }
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -568,7 +562,7 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
     std::size_t count = 0;
     F it = dest;
 
-    BOOST_CONTAINER_STATIC_VECTOR_TRY
+    BOOST_TRY
     {
         for ( ; first != last ; ++it, ++first, ++count )
         {
@@ -578,11 +572,12 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
             uninitialized_fill(it, *first);                                     // may throw
         }
     }
-    BOOST_CONTAINER_STATIC_VECTOR_CATCH_ALL
+    BOOST_CATCH(...)
     {
         destroy(dest, it);
-        BOOST_CONTAINER_STATIC_VECTOR_THROW;
+        BOOST_RETHROW;
     }
+    BOOST_CATCH_END
 
     return count;
 }

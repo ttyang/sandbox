@@ -90,6 +90,16 @@ private:
     int aa;
 };
 
+class value_2p
+{
+public:
+    explicit value_2p(int a, int b) : aa(a), bb(b) {}
+    ~value_2p() {}
+    bool operator==(value_2p const& v) const { return aa == v.aa && bb == v.bb; }
+private:
+    int aa, bb;
+};
+
 class shptr_value
 {
     typedef boost::shared_ptr<int> Ptr;
@@ -693,14 +703,30 @@ void test_swap_and_move_nd()
     }
 }
 
+//template <typename T, size_t N>
+//void test_emplace_2p()
+//{
+//    static_vector<T, N, bad_alloc_strategy> v;
+
+//    for (int i = 0 ; i < int(N) ; ++i )
+//        v.emplace_back(i, 100 + i);
+//    BOOST_CHECK(v.size() == N);
+//#ifndef BOOST_NO_EXCEPTIONS
+//    BOOST_CHECK_THROW(v.emplace_back(N, 100 + N), std::bad_alloc);
+//#endif
+//    BOOST_CHECK(v.size() == N);
+//    for (int i = 0 ; i < int(N) ; ++i )
+//        BOOST_CHECK(v[i] == T(i, 100 + i));
+//}
+
 #ifdef BOOST_SINGLE_HEADER_UTF
 BOOST_AUTO_TEST_CASE(static_vector_test)
 #else // BOOST_SINGLE_HEADER_UTF
 int test_main(int, char* [])
 #endif // BOOST_SINGLE_HEADER_UTF
 {
-  
     BOOST_CHECK_EQUAL(counting_value::count(), 0);
+
     test_ctor_ndc<int, 10>();
     test_ctor_ndc<value_ndc, 10>();
     test_ctor_ndc<counting_value, 10>();
@@ -798,6 +824,8 @@ int test_main(int, char* [])
     BOOST_CHECK(counting_value::count() == 0);
     test_swap_and_move_nd<shptr_value, 10>();
     test_swap_and_move_nd<copy_movable, 10>();
+
+    //test_emplace_2p<value_2p, 10>();
 
 #ifndef BOOST_SINGLE_HEADER_UTF
     return 0;
