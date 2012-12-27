@@ -405,29 +405,13 @@ public:
     // basic
     iterator insert(iterator position, value_type const& value)
     {
-        namespace sv = static_vector_detail;
+        return this->priv_insert(position, value);
+    }
 
-        errh::check_iterator_end_eq(*this, position);
-        errh::check_capacity(*this, m_size + 1);                                    // may throw
-
-        if ( position == this->end() )
-        {
-            sv::construct(position, value);                                         // may throw
-            ++m_size; // update end
-        }
-        else
-        {
-            // TODO - should following lines check for exception and revert to the old size?
-
-            // TODO - should move be used only if it's nonthrowing?
-            value_type & r = *(this->end() - 1);
-            sv::construct(this->end(), boost::move(r));                             // may throw
-            ++m_size; // update end
-            sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
-            sv::fill(position, value);                                              // may throw
-        }
-
-        return position;
+    // basic
+    iterator insert(iterator position, BOOST_RV_REF(value_type) value)
+    {
+        return this->priv_insert(position, value);
     }
 
     // basic
@@ -543,6 +527,7 @@ public:
         m_size = count; // update end
     }
 
+#if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
 #if defined(BOOST_CONTAINER_PERFECT_FORWARDING)
     template<class ...Args>
     void emplace_back(Args &&...args)
@@ -552,6 +537,39 @@ public:
         namespace sv = static_vector_detail;
         sv::construct(this->end(), ::boost::forward<Args>(args)...);                // may throw
         ++m_size; // update end
+    }
+
+    template<class ...Args>
+    iterator emplace(iterator position, Args &&...args)
+    {
+        namespace sv = static_vector_detail;
+
+        errh::check_iterator_end_eq(*this, position);
+        errh::check_capacity(*this, m_size + 1);                                    // may throw
+
+        if ( position == this->end() )
+        {
+            sv::construct(position, ::boost::forward<Args>(args)...);               // may throw
+            ++m_size; // update end
+        }
+        else
+        {
+            // TODO - should following lines check for exception and revert to the old size?
+
+            // TODO - should move be used only if it's nonthrowing?
+            value_type & r = *(this->end() - 1);
+            sv::construct(this->end(), boost::move(r));                             // may throw
+            ++m_size; // update end
+            sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
+
+            aligned_storage<sizeof(value_type), alignment_of<value_type>::value> temp_storage;
+            value_type * val_p = static_cast<value_type *>(temp_storage.address());
+            sv::construct(val_p, ::boost::forward<Args>(args)...);                  // may throw
+            sv::scoped_destructor<value_type> d(val_p);
+            sv::assign(position, ::boost::move(*val_p));                            // may throw
+        }
+
+        return position;
     }
 
 #else // BOOST_CONTAINER_PERFECT_FORWARDING
@@ -570,7 +588,45 @@ public:
     #define BOOST_PP_LOCAL_LIMITS (0, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
     #include BOOST_PP_LOCAL_ITERATE()
 
+    #define BOOST_PP_LOCAL_MACRO(n)                                                                 \
+    BOOST_PP_EXPR_IF(n, template<) BOOST_PP_ENUM_PARAMS(n, class P) BOOST_PP_EXPR_IF(n, >)          \
+    iterator emplace(iterator position BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_LIST, _)) \
+    {                                                                                               \
+        namespace sv = static_vector_detail;                                                        \
+                                                                                                    \
+        errh::check_iterator_end_eq(*this, position);                                               \
+        errh::check_capacity(*this, m_size + 1);                                       /*may throw*/\
+                                                                                                    \
+        if ( position == this->end() )                                                              \
+        {                                                                                           \
+            sv::construct(position BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
+            ++m_size; /*update end*/                                                                \
+        }                                                                                           \
+        else                                                                                        \
+        {                                                                                           \
+            /* TODO - should following lines check for exception and revert to the old size? */     \
+            /* TODO - should move be used only if it's nonthrowing? */                              \
+                                                                                                    \
+            value_type & r = *(this->end() - 1);                                                    \
+            sv::construct(this->end(), boost::move(r));                                /*may throw*/\
+            ++m_size; /*update end*/                                                                \
+            sv::move_backward(position, this->end() - 2, this->end() - 1);             /*may throw*/\
+                                                                                                    \
+            aligned_storage<sizeof(value_type), alignment_of<value_type>::value> temp_storage;      \
+            value_type * val_p = static_cast<value_type *>(temp_storage.address());                 \
+            sv::construct(val_p BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
+            sv::scoped_destructor<value_type> d(val_p);                                             \
+            sv::assign(position, ::boost::move(*val_p));                               /*may throw*/\
+        }                                                                                           \
+                                                                                                    \
+        return position;                                                                            \
+    }                                                                                               \
+    //
+    #define BOOST_PP_LOCAL_LIMITS (0, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
+    #include BOOST_PP_LOCAL_ITERATE()
+
 #endif // BOOST_CONTAINER_PERFECT_FORWARDING
+#endif // !BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE
 
     // nothrow
     void clear()
@@ -789,6 +845,36 @@ private:
         }
         sv::uninitialized_move(first_la, last_la, first_sm);                        // may throw
         sv::destroy(first_la, last_la);
+    }
+
+    // insert
+
+    template <typename V>
+    iterator priv_insert(iterator position, V & value)
+    {
+        namespace sv = static_vector_detail;
+
+        errh::check_iterator_end_eq(*this, position);
+        errh::check_capacity(*this, m_size + 1);                                    // may throw
+
+        if ( position == this->end() )
+        {
+            sv::construct(position, value);                                         // may throw
+            ++m_size; // update end
+        }
+        else
+        {
+            // TODO - should following lines check for exception and revert to the old size?
+
+            // TODO - should move be used only if it's nonthrowing?
+            value_type & r = *(this->end() - 1);
+            sv::construct(this->end(), boost::move(r));                             // may throw
+            ++m_size; // update end
+            sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
+            sv::assign(position, value);                                            // may throw
+        }
+
+        return position;
     }
 
     // insert

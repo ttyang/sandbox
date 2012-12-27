@@ -388,35 +388,6 @@ BDO move_backward(BDI first, BDI last, BDO dst)
     return move_backward_dispatch(first, last, dst, use_memmove());             // may throw
 }
 
-// fill(I, V)
-
-template <typename I, typename V>
-void fill_dispatch(I pos, V const& v,
-                   boost::mpl::bool_<true> const& /*use_memcpy*/)
-{
-    ::memcpy(boost::addressof(*pos), boost::addressof(v), sizeof(V));
-}
-
-template <typename I, typename V>
-void fill_dispatch(I pos, V const& v,
-                   boost::mpl::bool_<false> const& /*use_memcpy*/)
-{
-    *pos = v;                                                                   // may throw
-}
-
-template <typename I, typename V>
-void fill(I pos, V const& v)
-{
-    typedef typename
-    ::boost::mpl::and_<
-        is_corresponding_value<I, V>,
-        ::boost::has_trivial_assign<V>
-    >::type
-    use_memcpy;
-
-    fill_dispatch(pos, v, use_memcpy());                                        // may throw
-}
-
 // uninitialized_fill(I, I)
 
 template <typename I>
@@ -499,6 +470,7 @@ void construct(I pos, BOOST_RV_REF(P) p)
 
 // Needed by emplace_back() and emplace()
 
+#if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
 #if !defined(BOOST_NO_VARIADIC_TEMPLATES)
 
 template <typename I, class ...Args>
@@ -529,7 +501,43 @@ void construct(I pos,                                                           
 #define BOOST_PP_LOCAL_LIMITS (1, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
 #include BOOST_PP_LOCAL_ITERATE()
 
-#endif
+#endif // !BOOST_NO_VARIADIC_TEMPLATES
+#endif // !BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE
+
+// assign(I, V)
+
+template <typename I, typename V>
+void assign_dispatch(I pos, V const& v,
+                     boost::mpl::bool_<true> const& /*use_memcpy*/)
+{
+    ::memcpy(boost::addressof(*pos), boost::addressof(v), sizeof(V));
+}
+
+template <typename I, typename V>
+void assign_dispatch(I pos, V const& v,
+                     boost::mpl::bool_<false> const& /*use_memcpy*/)
+{
+    *pos = v;                                                                   // may throw
+}
+
+template <typename I, typename V>
+void assign(I pos, V const& v)
+{
+    typedef typename
+    ::boost::mpl::and_<
+        is_corresponding_value<I, V>,
+        ::boost::has_trivial_assign<V>
+    >::type
+    use_memcpy;
+
+    assign_dispatch(pos, v, use_memcpy());                                        // may throw
+}
+
+template <typename I, typename V>
+void assign(I pos, BOOST_RV_REF(V) v)
+{
+    *pos = v;                                                                     // may throw
+}
 
 #else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
@@ -580,12 +588,6 @@ O uninitialized_move(I first, I last, O dst)
     return dst;
 }
 
-template <typename I, typename V>
-inline void fill(I pos, V const& v)
-{
-    *pos = v;                                                                   // may throw
-}
-
 template <typename I>
 void destroy(I first, I last)
 {
@@ -626,6 +628,12 @@ inline void construct(I pos, V const& v)
     new (static_cast<void*>(boost::addressof(*pos))) V(v);                      // may throw
 }
 
+template <typename I, typename V>
+inline void assign(I pos, V const& v)
+{
+    *pos = v;                                                                   // may throw
+}
+
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 // uninitialized_copy_checked
@@ -655,6 +663,26 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
 
     return count;
 }
+
+// scoped_destructor
+
+template<class T>
+class scoped_destructor
+{
+public:
+    scoped_destructor(T * ptr) : m_ptr(ptr) {}
+
+    ~scoped_destructor()
+    {
+        if(m_ptr)
+            destroy(m_ptr);
+    }
+
+    void release() { m_ptr = 0; }
+
+private:
+    T * m_ptr;
+};
 
 }}} // namespace boost::container::static_vector_detail
 

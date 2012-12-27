@@ -77,27 +77,17 @@ class counting_value
     BOOST_COPYABLE_AND_MOVABLE(counting_value)
 
 public:
-    explicit counting_value(int a = 0) : aa(a) { ++c(); }
-    counting_value(counting_value const& v) : aa(v.aa) { ++c(); }
-    counting_value(BOOST_RV_REF(counting_value) p) : aa(p.aa) { p.aa = 0; ++c(); }                      // Move constructor
-    counting_value& operator=(BOOST_RV_REF(counting_value) p) { aa = p.aa; p.aa = 0; return *this; }    // Move assignment
-    counting_value& operator=(BOOST_COPY_ASSIGN_REF(counting_value) p) { aa = p.aa; return *this; }     // Copy assignment
+    explicit counting_value(int a = 0, int b = 0) : aa(a), bb(b) { ++c(); }
+    counting_value(counting_value const& v) : aa(v.aa), bb(v.bb) { ++c(); }
+    counting_value(BOOST_RV_REF(counting_value) p) : aa(p.aa), bb(p.bb) { p.aa = 0; p.bb = 0; ++c(); }                      // Move constructor
+    counting_value& operator=(BOOST_RV_REF(counting_value) p) { aa = p.aa; p.aa = 0; bb = p.bb; p.bb = 0; return *this; }   // Move assignment
+    counting_value& operator=(BOOST_COPY_ASSIGN_REF(counting_value) p) { aa = p.aa; bb = p.bb; return *this; }              // Copy assignment
     ~counting_value() { --c(); }
-    bool operator==(counting_value const& v) const { return aa == v.aa; }
+    bool operator==(counting_value const& v) const { return aa == v.aa && bb == v.bb; }
     static size_t count() { return c(); }
 
 private:
     static size_t & c() { static size_t co = 0; return co; }
-    int aa;
-};
-
-class value_2p
-{
-public:
-    explicit value_2p(int a, int b) : aa(a), bb(b) {}
-    ~value_2p() {}
-    bool operator==(value_2p const& v) const { return aa == v.aa && bb == v.bb; }
-private:
     int aa, bb;
 };
 
@@ -712,17 +702,44 @@ void test_swap_and_move_nd()
 template <typename T, size_t N>
 void test_emplace_2p()
 {
-    static_vector<T, N, bad_alloc_strategy> v;
+    //emplace_back(pos, int, int)
+    {
+        static_vector<T, N, bad_alloc_strategy> v;
 
-    for (int i = 0 ; i < int(N) ; ++i )
-        v.emplace_back(i, 100 + i);
-    BOOST_CHECK(v.size() == N);
+        for (int i = 0 ; i < int(N) ; ++i )
+            v.emplace_back(i, 100 + i);
+        BOOST_CHECK(v.size() == N);
 #ifndef BOOST_NO_EXCEPTIONS
-    BOOST_CHECK_THROW(v.emplace_back(N, 100 + N), std::bad_alloc);
+        BOOST_CHECK_THROW(v.emplace_back(N, 100 + N), std::bad_alloc);
 #endif
-    BOOST_CHECK(v.size() == N);
-    for (int i = 0 ; i < int(N) ; ++i )
-        BOOST_CHECK(v[i] == T(i, 100 + i));
+        BOOST_CHECK(v.size() == N);
+        for (int i = 0 ; i < int(N) ; ++i )
+            BOOST_CHECK(v[i] == T(i, 100 + i));
+    }
+
+    // emplace(pos, int, int)
+    {
+        typedef typename static_vector<T, N, bad_alloc_strategy>::iterator It;
+
+        int h = N / 2;
+
+        static_vector<T, N, bad_alloc_strategy> v;
+        for ( int i = 0 ; i < h ; ++i )
+            v.emplace_back(i, 100 + i);
+
+        for ( int i = 0 ; i <= h ; ++i )
+        {
+            static_vector<T, N> vv(v);
+            It it = vv.emplace(vv.begin() + i, i+100, i+200);
+            BOOST_CHECK(vv.begin() + i == it);
+            BOOST_CHECK(vv.size() == h+1);
+            for ( int j = 0 ; j < i ; ++j )
+                BOOST_CHECK(vv[j] == T(j, j+100));
+            BOOST_CHECK(vv[i] == T(i+100, i+200));
+            for ( int j = 0 ; j < h-i ; ++j )
+                BOOST_CHECK(vv[j+i+1] == T(j+i, j+i+100));
+        }        
+    }
 }
 
 template <typename T, size_t N>
@@ -846,7 +863,8 @@ int test_main(int, char* [])
     test_swap_and_move_nd<shptr_value, 10>();
     test_swap_and_move_nd<copy_movable, 10>();
 
-    test_emplace_2p<value_2p, 10>();
+    test_emplace_2p<counting_value, 10>();
+    BOOST_CHECK(counting_value::count() == 0);
 
     test_sv_elem<int, 10>(50);
     test_sv_elem<value_nd, 10>(value_nd(50));
