@@ -731,6 +731,7 @@ void test_sv_elem(T const& t)
     v.push_back(V(N/2, t));
     v.insert(v.begin(), V(N/2, t));
     v.insert(v.end(), V(N/2, t));
+    v.emplace_back(V(N/2, t));
 }
 
 #ifdef BOOST_SINGLE_HEADER_UTF

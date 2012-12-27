@@ -536,7 +536,7 @@ public:
         errh::check_capacity(*this, m_size + 1);                                    // may throw
 
         namespace sv = static_vector_detail;
-        sv::construct(this->end(), ::boost::forward<Args>(args));                   // may throw
+        sv::construct(this->end(), ::boost::forward<Args>(args)...);                // may throw
         ++m_size; // update end
     }
 
