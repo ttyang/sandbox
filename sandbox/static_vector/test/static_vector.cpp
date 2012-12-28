@@ -732,7 +732,7 @@ void test_emplace_2p()
             static_vector<T, N> vv(v);
             It it = vv.emplace(vv.begin() + i, i+100, i+200);
             BOOST_CHECK(vv.begin() + i == it);
-            BOOST_CHECK(vv.size() == h+1);
+            BOOST_CHECK(vv.size() == size_t(h+1));
             for ( int j = 0 ; j < i ; ++j )
                 BOOST_CHECK(vv[j] == T(j, j+100));
             BOOST_CHECK(vv[i] == T(i+100, i+200));
