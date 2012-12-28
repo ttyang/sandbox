@@ -24,6 +24,7 @@
 
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/remove_const.hpp>
+#include <boost/type_traits/remove_reference.hpp>
 #include <boost/type_traits/has_trivial_assign.hpp>
 #include <boost/type_traits/has_trivial_copy.hpp>
 #include <boost/type_traits/has_trivial_constructor.hpp>
@@ -386,6 +387,60 @@ BDO move_backward(BDI first, BDI last, BDO dst)
     use_memmove;
 
     return move_backward_dispatch(first, last, dst, use_memmove());             // may throw
+}
+
+// move_if_nothrow(T&)
+
+template <typename T>
+struct move_if_nothrow_type
+{
+    typedef
+    typename ::boost::remove_const<
+        typename ::boost::remove_reference<T>::type
+    >::type
+    value_type;
+
+    typedef ::boost::mpl::bool_<
+        ::boost::has_nothrow_move<value_type>::value
+    > has_type;
+
+    typedef
+    typename ::boost::mpl::if_<
+        has_type,
+        BOOST_RV_REF(value_type),
+        value_type const&
+    >::type
+    result_type;
+};
+
+template <typename T>
+inline typename move_if_nothrow_type<T>::result_type
+move_if_nothrow(T & v)
+{
+    typedef typename move_if_nothrow_type<T>::result_type result_type;
+    return result_type(v);
+}
+
+// uninitialized_move_if_nothrow(I, I, O)
+
+template <typename I, typename O>
+O uninitialized_move_if_noexcept_dispatch(I first, I last, O dst, boost::mpl::bool_<true> const& /*use_move*/)
+{ return uninitialized_move(first, last, dst); }
+
+template <typename I, typename O>
+O uninitialized_move_if_noexcept_dispatch(I first, I last, O dst, boost::mpl::bool_<false> const& /*use_move*/)
+{ return uninitialized_copy(first, last, dst); }
+
+template <typename I, typename O>
+O uninitialized_move_if_noexcept(I first, I last, O dst)
+{
+    typedef
+    typename move_if_nothrow_type<
+        typename iterator_value<O>::type
+    >::has_type
+    use_move;
+
+    return uninitialized_move_if_noexcept_dispatch(first, last, dst, use_move());         // may throw
 }
 
 // uninitialized_fill(I, I)

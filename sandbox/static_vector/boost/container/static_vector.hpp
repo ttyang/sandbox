@@ -736,7 +736,7 @@ private:
     void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
         namespace sv = static_vector_detail;
-        sv::uninitialized_move(other.begin(), other.end(), this->begin());
+        sv::uninitialized_move_if_noexcept(other.begin(), other.end(), this->begin());
         m_size = other.m_size;
         sv::destroy(other.begin(), other.end());        
         other.m_size = 0;
