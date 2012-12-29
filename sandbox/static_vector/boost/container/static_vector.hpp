@@ -232,7 +232,7 @@ public:
         return *this;
     }
 
-    // nothrow or strong (based on traits, default nothrow)
+    // strong or nothrow (based on Values exceptions spec and traits)
     // (note: linear complexity)
     static_vector(BOOST_RV_REF(static_vector) other)
     {
@@ -244,7 +244,7 @@ public:
         this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    // nothrow or strong (based on traits, default nothrow)
+    // strong or nothrow (based on Values exceptions spec and traits)
     // (note: linear complexity)
     template <std::size_t C, typename S>
     static_vector(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
@@ -260,7 +260,7 @@ public:
         this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    // nothrow or basic (based on traits, default nothrow)
+    // basic or nothrow (based on Values exceptions spec and traits)
     // (note: linear complexity)
     static_vector & operator=(BOOST_RV_REF(static_vector) other)
     {
@@ -277,7 +277,7 @@ public:
         return *this;
     }
 
-    // nothrow or basic (based on traits, default nothrow)
+    // basic or nothrow (based on Values exceptions spec and traits)
     // (note: linear complexity)
     template <std::size_t C, typename S>
     static_vector & operator=(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)

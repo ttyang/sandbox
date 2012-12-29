@@ -360,8 +360,6 @@ O move(I first, I last, O dst)
     return move_dispatch(first, last, dst, use_memmove());                      // may throw
 }
 
-// TODO - move_backward uses memmove - implement 2nd version using memcpy?
-
 // move_backward(BDI, BDI, BDO)
 
 template <typename BDI, typename BDO>
