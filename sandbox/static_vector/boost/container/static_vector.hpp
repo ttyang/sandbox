@@ -589,7 +589,7 @@ public:
     }
 
 #if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
-#if defined(BOOST_CONTAINER_PERFECT_FORWARDING)
+#if defined(BOOST_CONTAINER_PERFECT_FORWARDING) || defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
     template<class ...Args>
     void emplace_back(Args &&...args)
     {
@@ -633,7 +633,7 @@ public:
         return position;
     }
 
-#else // BOOST_CONTAINER_PERFECT_FORWARDING
+#else // BOOST_CONTAINER_PERFECT_FORWARDING || BOOST_CONTAINER_DOXYGEN_INVOKED
 
     #define BOOST_PP_LOCAL_MACRO(n)                                                              \
     BOOST_PP_EXPR_IF(n, template<) BOOST_PP_ENUM_PARAMS(n, class P) BOOST_PP_EXPR_IF(n, >)       \
@@ -686,7 +686,7 @@ public:
     #define BOOST_PP_LOCAL_LIMITS (0, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
     #include BOOST_PP_LOCAL_ITERATE()
 
-#endif // BOOST_CONTAINER_PERFECT_FORWARDING
+#endif // BOOST_CONTAINER_PERFECT_FORWARDING || BOOST_CONTAINER_DOXYGEN_INVOKED
 #endif // !BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE
 
     // nothrow
