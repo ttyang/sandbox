@@ -264,6 +264,9 @@ public:
     // (note: linear complexity)
     static_vector & operator=(BOOST_RV_REF(static_vector) other)
     {
+        if ( &other == this )
+            return *this;
+
         typedef typename
         static_vector_detail::static_vector_traits<
             Value, Capacity, Strategy
@@ -392,11 +395,6 @@ public:
     {
         errh::check_empty(*this);
 
-        //--m_size; // update end
-        //namespace sv = static_vector_detail;
-        //sv::destroy(this->end());
-
-        // safer and more intuitive version
         namespace sv = static_vector_detail;
         sv::destroy(this->end() - 1);
         --m_size; // update end
@@ -736,7 +734,7 @@ private:
     void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
         namespace sv = static_vector_detail;
-        sv::uninitialized_move_if_noexcept(other.begin(), other.end(), this->begin());
+        sv::uninitialized_move_if_noexcept(other.begin(), other.end(), this->begin());                  // may throw
         m_size = other.m_size;
         sv::destroy(other.begin(), other.end());        
         other.m_size = 0;
@@ -758,9 +756,20 @@ private:
     template <std::size_t C, typename S>
     void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
-        // TODO - use move iterators or implement moving
+        namespace sv = static_vector_detail;
+        if ( m_size <= static_cast<size_type>(other.size()) )
+        {
+            sv::move_if_noexcept(other.begin(), other.begin() + m_size, this->begin());             // may throw
+            // TODO - perform uninitialized_copy first?
+            sv::uninitialized_move_if_noexcept(other.begin() + m_size, other.end(), this->end());   // may throw
+        }
+        else
+        {
+            sv::move_if_noexcept(other.begin(), other.end(), this->begin());                        // may throw
+            sv::destroy(this->begin() + other.size(), this->end());
+        }
+        m_size = other.size(); // update end
 
-        this->assign(other.begin(), other.end());
         other.clear();
     }
 
@@ -954,7 +963,7 @@ private:
             m_size += count - to_move; // update end
             sv::uninitialized_copy(position, position + to_move, position + count);             // may throw
             m_size += to_move; // update end
-            sv::copy(first, middle_iter, position) ;                                            // may throw
+            sv::copy(first, middle_iter, position);                                             // may throw
         }
     }
 
@@ -968,17 +977,17 @@ private:
         typename boost::iterator_difference<Iterator>::type
             s = std::distance(first, last);
 
-        errh::check_capacity(*this, s);                                                 // may throw
+        errh::check_capacity(*this, s);                                     // may throw
 
         if ( m_size <= static_cast<size_type>(s) )
         {
-            sv::copy(first, first + m_size, this->begin());                             // may throw
+            sv::copy(first, first + m_size, this->begin());                 // may throw
             // TODO - perform uninitialized_copy first?
-            sv::uninitialized_copy(first + m_size, last, this->end());                  // may throw
+            sv::uninitialized_copy(first + m_size, last, this->end());      // may throw
         }
         else
         {
-            sv::copy(first, last, this->begin());                                       // may throw
+            sv::copy(first, last, this->begin());                           // may throw
             sv::destroy(this->begin() + s, this->end());
         }
         m_size = s; // update end

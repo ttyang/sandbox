@@ -198,18 +198,18 @@ void destroy(I pos)
 
 template <typename I, typename O>
 inline O copy_dispatch(I first, I last, O dst,
-                       boost::mpl::bool_<true> const& /*use_memcpy*/)
+                       boost::mpl::bool_<true> const& /*use_memmove*/)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     typename boost::iterator_difference<I>::type d = std::distance(first, last);
 
-    ::memcpy(boost::addressof(*dst), boost::addressof(*first), sizeof(value_type) * d);
+    ::memmove(boost::addressof(*dst), boost::addressof(*first), sizeof(value_type) * d);
     return dst + d;
 }
 
 template <typename I, typename O>
 inline O copy_dispatch(I first, I last, O dst,
-                       boost::mpl::bool_<false> const& /*use_memcpy*/)
+                       boost::mpl::bool_<false> const& /*use_memmove*/)
 {
     return std::copy(first, last, dst);                                         // may throw
 }
@@ -223,14 +223,15 @@ inline O copy(I first, I last, O dst)
         ::boost::has_trivial_assign<
             typename ::boost::iterator_value<O>::type
         >
-    >::type use_memcpy;
+    >::type use_memmove;
     
-    return copy_dispatch(first, last, dst, use_memcpy());                       // may throw
+    return copy_dispatch(first, last, dst, use_memmove());                       // may throw
 }
 
 // uninitialized_copy(I, I, O)
 
 template <typename I, typename O>
+inline
 O uninitialized_copy_dispatch(I first, I last, O dst,
                               boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
@@ -242,6 +243,7 @@ O uninitialized_copy_dispatch(I first, I last, O dst,
 }
 
 template <typename I, typename F>
+inline
 F uninitialized_copy_dispatch(I first, I last, F dst,
                               boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
@@ -249,6 +251,7 @@ F uninitialized_copy_dispatch(I first, I last, F dst,
 }
 
 template <typename I, typename F>
+inline
 F uninitialized_copy(I first, I last, F dst)
 {
     typedef typename
@@ -265,6 +268,7 @@ F uninitialized_copy(I first, I last, F dst)
 // uninitialized_move(I, I, O)
 
 template <typename I, typename O>
+inline
 O uninitialized_move_dispatch(I first, I last, O dst,
                               boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
@@ -276,6 +280,7 @@ O uninitialized_move_dispatch(I first, I last, O dst,
 }
 
 template <typename I, typename O>
+inline
 O uninitialized_move_dispatch(I first, I last, O dst,
                               boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
@@ -300,6 +305,7 @@ O uninitialized_move_dispatch(I first, I last, O dst,
 }
 
 template <typename I, typename O>
+inline
 O uninitialized_move(I first, I last, O dst)
 {
     typedef typename
@@ -319,6 +325,7 @@ O uninitialized_move(I first, I last, O dst)
 // move(I, I, O)
 
 template <typename I, typename O>
+inline
 O move_dispatch(I first, I last, O dst,
                 boost::mpl::bool_<true> const& /*use_memmove*/)
 {
@@ -330,6 +337,7 @@ O move_dispatch(I first, I last, O dst,
 }
 
 template <typename I, typename O>
+inline
 O move_dispatch(I first, I last, O dst,
                 boost::mpl::bool_<false> const& /*use_memmove*/)
 {
@@ -337,6 +345,7 @@ O move_dispatch(I first, I last, O dst,
 }
 
 template <typename I, typename O>
+inline
 O move(I first, I last, O dst)
 {
     typedef typename
@@ -356,6 +365,7 @@ O move(I first, I last, O dst)
 // move_backward(BDI, BDI, BDO)
 
 template <typename BDI, typename BDO>
+inline
 BDO move_backward_dispatch(BDI first, BDI last, BDO dst,
                            boost::mpl::bool_<true> const& /*use_memmove*/)
 {
@@ -368,6 +378,7 @@ BDO move_backward_dispatch(BDI first, BDI last, BDO dst,
 }
 
 template <typename BDI, typename BDO>
+inline
 BDO move_backward_dispatch(BDI first, BDI last, BDO dst,
                            boost::mpl::bool_<false> const& /*use_memmove*/)
 {
@@ -375,6 +386,7 @@ BDO move_backward_dispatch(BDI first, BDI last, BDO dst,
 }
 
 template <typename BDI, typename BDO>
+inline
 BDO move_backward(BDI first, BDI last, BDO dst)
 {
     typedef typename
@@ -389,68 +401,74 @@ BDO move_backward(BDI first, BDI last, BDO dst)
     return move_backward_dispatch(first, last, dst, use_memmove());             // may throw
 }
 
-// move_if_nothrow(T&)
-
-template <typename T>
-struct move_if_nothrow_type
-{
-    typedef
-    typename ::boost::remove_const<
-        typename ::boost::remove_reference<T>::type
-    >::type
-    value_type;
-
-    typedef ::boost::mpl::bool_<
-        ::boost::has_nothrow_move<value_type>::value
-    > has_type;
-
-    typedef
-    typename ::boost::mpl::if_<
-        has_type,
-        BOOST_RV_REF(value_type),
-        value_type const&
-    >::type
-    result_type;
-};
-
-template <typename T>
-inline typename move_if_nothrow_type<T>::result_type
-move_if_nothrow(T & v)
-{
-    typedef typename move_if_nothrow_type<T>::result_type result_type;
-    return result_type(v);
-}
-
-// uninitialized_move_if_nothrow(I, I, O)
+// uninitialized_move_if_noexcept(I, I, O)
 
 template <typename I, typename O>
+inline
 O uninitialized_move_if_noexcept_dispatch(I first, I last, O dst, boost::mpl::bool_<true> const& /*use_move*/)
 { return uninitialized_move(first, last, dst); }
 
 template <typename I, typename O>
+inline
 O uninitialized_move_if_noexcept_dispatch(I first, I last, O dst, boost::mpl::bool_<false> const& /*use_move*/)
 { return uninitialized_copy(first, last, dst); }
 
 template <typename I, typename O>
+inline
 O uninitialized_move_if_noexcept(I first, I last, O dst)
 {
-    typedef
-    typename move_if_nothrow_type<
-        typename iterator_value<O>::type
-    >::has_type
-    use_move;
+    typedef ::boost::mpl::bool_<
+        ::boost::has_nothrow_move<
+            typename ::boost::remove_const<
+                typename ::boost::remove_reference<
+                    typename ::boost::iterator_value<O>::type
+                >::type
+            >::type
+        >::value
+    > use_move;
 
     return uninitialized_move_if_noexcept_dispatch(first, last, dst, use_move());         // may throw
+}
+
+// move_if_noexcept(I, I, O)
+
+template <typename I, typename O>
+inline
+O move_if_noexcept_dispatch(I first, I last, O dst, boost::mpl::bool_<true> const& /*use_move*/)
+{ return move(first, last, dst); }
+
+template <typename I, typename O>
+inline
+O move_if_noexcept_dispatch(I first, I last, O dst, boost::mpl::bool_<false> const& /*use_move*/)
+{ return copy(first, last, dst); }
+
+template <typename I, typename O>
+inline
+O move_if_noexcept(I first, I last, O dst)
+{
+    typedef ::boost::mpl::bool_<
+        ::boost::has_nothrow_move<
+            typename ::boost::remove_const<
+                typename ::boost::remove_reference<
+                    typename ::boost::iterator_value<O>::type
+                >::type
+            >::type
+        >::value
+    > use_move;
+
+    return move_if_noexcept_dispatch(first, last, dst, use_move());         // may throw
 }
 
 // uninitialized_fill(I, I)
 
 template <typename I>
+inline
 void uninitialized_fill_dispatch(I /*first*/, I /*last*/,
                                  boost::true_type const& /*has_trivial_constructor*/)
 {}
 
 template <typename I>
+inline
 void uninitialized_fill_dispatch(I first, I last,
                                  boost::false_type const& /*has_trivial_constructor*/)
 {
@@ -471,6 +489,7 @@ void uninitialized_fill_dispatch(I first, I last,
 }
 
 template <typename I>
+inline
 void uninitialized_fill(I first, I last)
 {
     typedef typename boost::iterator_value<I>::type value_type;
@@ -480,6 +499,7 @@ void uninitialized_fill(I first, I last)
 // construct(I, V)
 
 template <typename I, typename V>
+inline
 void construct_dispatch(I pos, V const& v,
                         boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
@@ -487,6 +507,7 @@ void construct_dispatch(I pos, V const& v,
 }
 
 template <typename I, typename P>
+inline
 void construct_dispatch(I pos, P const& p,
                         boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
@@ -495,6 +516,7 @@ void construct_dispatch(I pos, P const& p,
 }
 
 template <typename I, typename P>
+inline
 void construct(I pos, P const& p)
 {
     typedef typename
@@ -510,6 +532,7 @@ void construct(I pos, P const& p)
 // Needed by push_back(V &&)
 
 template <typename I, typename P>
+inline
 void construct(I pos, BOOST_RV_REF(P) p)
 {
     typedef typename
@@ -529,6 +552,7 @@ void construct(I pos, BOOST_RV_REF(P) p)
 #if !defined(BOOST_NO_VARIADIC_TEMPLATES)
 
 template <typename I, class ...Args>
+inline
 void construct(I pos, BOOST_FWD_REF(Args) ...args)
 {
     typedef typename boost::iterator_value<I>::type V;
@@ -543,6 +567,7 @@ void construct(I pos, BOOST_FWD_REF(Args) ...args)
 
 #define BOOST_PP_LOCAL_MACRO(n)                                                                     \
 template <typename I, typename P BOOST_PP_ENUM_TRAILING_PARAMS(n, typename P) >                     \
+inline                                                                                              \
 void construct(I pos,                                                                               \
                BOOST_CONTAINER_PP_PARAM(P, p)                                                       \
                BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_LIST, _))                         \
@@ -562,6 +587,7 @@ void construct(I pos,                                                           
 // assign(I, V)
 
 template <typename I, typename V>
+inline
 void assign_dispatch(I pos, V const& v,
                      boost::mpl::bool_<true> const& /*use_memcpy*/)
 {
@@ -569,6 +595,7 @@ void assign_dispatch(I pos, V const& v,
 }
 
 template <typename I, typename V>
+inline
 void assign_dispatch(I pos, V const& v,
                      boost::mpl::bool_<false> const& /*use_memcpy*/)
 {
@@ -576,6 +603,7 @@ void assign_dispatch(I pos, V const& v,
 }
 
 template <typename I, typename V>
+inline
 void assign(I pos, V const& v)
 {
     typedef typename
@@ -589,6 +617,7 @@ void assign(I pos, V const& v)
 }
 
 template <typename I, typename V>
+inline
 void assign(I pos, BOOST_RV_REF(V) v)
 {
     *pos = v;                                                                     // may throw
@@ -621,7 +650,7 @@ inline BDO move_backward(BDI first, BDI last, BDO dst)
 }
 
 template <typename I, typename O>
-O uninitialized_move(I first, I last, O dst)
+inline O uninitialized_move(I first, I last, O dst)
 {
     //return boost::uninitialized_move(first, last, dst);                         // may throw
 
@@ -643,8 +672,20 @@ O uninitialized_move(I first, I last, O dst)
     return dst;
 }
 
+template <typename I, typename O>
+inline O uninitialized_move_if_noexcept(I first, I last, O dst)
+{
+    return uninitialized_copy(first, last, dst);                                    // may throw
+}
+
+template <typename I, typename O>
+inline O move_if_noexcept(I first, I last, O dst)
+{
+    return copy(first, last, dst);                                                  // may throw
+}
+
 template <typename I>
-void destroy(I first, I last)
+inline void destroy(I first, I last)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     for ( ; first != last ; ++first )
@@ -652,14 +693,14 @@ void destroy(I first, I last)
 }
 
 template <typename I>
-void destroy(I pos)
+inline void destroy(I pos)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     pos->~value_type();
 }
 
 template <typename I>
-void uninitialized_fill(I first, I last)
+inline void uninitialized_fill(I first, I last)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
