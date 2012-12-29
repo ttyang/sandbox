@@ -170,9 +170,8 @@ public:
     {}
 
     //! Throws: If Value's default constructor throws,
-    //!         if the strategy throws in check_capacity()
+    //!         if the Strategy throws in check_capacity()
     //! Complexity: Linear.
-    // strong or nothrow
     explicit static_vector(size_type count)
         : m_size(0)
     {
@@ -180,9 +179,8 @@ public:
     }
 
     //! Throws: If Value's copy constructor throws,
-    //!         if the strategy throws in check_capacity()
+    //!         if the Strategy throws in check_capacity()
     //! Complexity: Linear.
-    // strong or nothrow
     static_vector(size_type count, value_type const& value)
         : m_size(0)
     {
@@ -190,9 +188,8 @@ public:
     }
 
     //! Throws: If Value's constructor taking a dereferenced Iterator throws,
-    //!         if the strategy throws in check_capacity()
+    //!         if the Strategy throws in check_capacity().
     //! Complexity: Linear.
-    // strong or nothrow
     template <typename Iterator>
     static_vector(Iterator first, Iterator last)
         : m_size(0)
@@ -203,7 +200,6 @@ public:
 
     //! Throws: If Value's copy constructor throws.
     //! Complexity: Linear.
-    // strong or nothrow
     static_vector(static_vector const& other)
         : m_size(other.size())
     {
@@ -212,9 +208,8 @@ public:
     }
 
     //! Throws: If Value's copy constructor throws,
-    //!         if the strategy throws in check_capacity()
+    //!         if the Strategy throws in check_capacity().
     //! Complexity: Linear.
-    // strong or nothrow
     template <std::size_t C, typename S>
     static_vector(static_vector<value_type, C, S> const& other)
         : m_size(other.size())
@@ -227,7 +222,6 @@ public:
 
     //! Throws: If Value's copy constructor or copy assignment throws,
     //! Complexity: Linear.
-    // basic or nothrow
     static_vector & operator=(BOOST_COPY_ASSIGN_REF(static_vector) other)
     {
         this->assign(other.begin(), other.end());                                     // may throw
@@ -236,9 +230,8 @@ public:
     }
 
     //! Throws: If Value's copy constructor or copy assignment throws,
-    //!         if the strategy throws in check_capacity()
+    //!         if the Strategy throws in check_capacity().
     //! Complexity: Linear.
-    // basic or nothrow
     template <std::size_t C, typename S>
 // TEMPORARY WORKAROUND
 #if defined(BOOST_NO_RVALUE_REFERENCES)
@@ -252,8 +245,10 @@ public:
         return *this;
     }
 
-    // strong or nothrow (based on Values exceptions spec and traits)
-    // (note: linear complexity)
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws,
+    //!         (the above only if use_memop_in_swap_and_move is false_type - default).
+    //! Complexity: Linear.
     static_vector(BOOST_RV_REF(static_vector) other)
     {
         typedef typename
@@ -264,8 +259,11 @@ public:
         this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    // strong or nothrow (based on Values exceptions spec and traits)
-    // (note: linear complexity)
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws,
+    //!         (the above only if use_memop_in_swap_and_move is false_type - default),
+    //!         if the Strategy throws in check_capacity().
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     static_vector(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
         : m_size(other.m_size)
@@ -280,8 +278,10 @@ public:
         this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    // basic or nothrow (based on Values exceptions spec and traits)
-    // (note: linear complexity)
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+    //!         (the above only if use_memop_in_swap_and_move is false_type - default),
+    //! Complexity: Linear.
     static_vector & operator=(BOOST_RV_REF(static_vector) other)
     {
         if ( &other == this )
@@ -297,8 +297,11 @@ public:
         return *this;
     }
 
-    // basic or nothrow (based on Values exceptions spec and traits)
-    // (note: linear complexity)
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+    //!         (the above only if use_memop_in_swap_and_move is false_type - default),
+    //!         if the Strategy throws in check_capacity().
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     static_vector & operator=(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
     {
@@ -314,15 +317,18 @@ public:
         return *this;
     }
 
-    // nothrow
+    //! Throws: Nothing
+    //! Complexity: Linear.
     ~static_vector()
     {
         namespace sv = static_vector_detail;
         sv::destroy(this->begin(), this->end());
     }
 
-    // nothrow or basic (depends on traits, default nothrow)
-    // swap (note: linear complexity)
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+    //!         (the above only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default),
+    //! Complexity: Linear.
     void swap(static_vector & other)
     {
         typedef typename
@@ -333,8 +339,11 @@ public:
         this->swap_dispatch(other, use_optimized_swap());
     }
 
-    // nothrow, strong or basic (depends on traits and strategy)
-    // swap (note: linear complexity)
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+    //!         (the above only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default),
+    //!         if the Strategy throws in check_capacity().
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     void swap(static_vector<value_type, C, S> & other)
     {
@@ -349,7 +358,9 @@ public:
         this->swap_dispatch(other, use_optimized_swap()); 
     }
 
-    // strong
+    //! Throws: If Value's default constructor throws,
+    //!         if the Strategy throws in check_capacity()
+    //! Complexity: Linear.
     void resize(size_type count)
     {
         namespace sv = static_vector_detail;
@@ -367,7 +378,9 @@ public:
         m_size = count; // update end
     }
 
-    // strong
+    //! Throws: If Value's copy constructor throws,
+    //!         if the Strategy throws in check_capacity()
+    //! Complexity: Linear.
     void resize(size_type count, value_type const& value)
     {
         if ( count < m_size )
@@ -384,13 +397,16 @@ public:
         m_size = count; // update end
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_capacity()
+    //! Complexity: Linear.
     void reserve(size_type count)
     {
         errh::check_capacity(*this, count);                                         // may throw
     }
 
-    // strong
+    //! Throws: If Value's copy constructor throws,
+    //!         if the Strategy throws in check_capacity()
+    //! Complexity: Constant.
     void push_back(value_type const& value)
     {
         errh::check_capacity(*this, m_size + 1);                                    // may throw
@@ -400,7 +416,9 @@ public:
         ++m_size; // update end
     }
 
-    // strong
+    //! Throws: If Value's move constructor throws,
+    //!         if the Strategy throws in check_capacity()
+    //! Complexity: Constant.
     void push_back(BOOST_RV_REF(value_type) value)
     {
         errh::check_capacity(*this, m_size + 1);                                    // may throw
@@ -410,7 +428,8 @@ public:
         ++m_size; // update end
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_empty()
+    //! Complexity: Constant.
     void pop_back()
     {
         errh::check_empty(*this);
@@ -420,19 +439,27 @@ public:
         --m_size; // update end
     }
 
-    // basic
+    //! Throws: If Value's copy constructor or copy assignment throws,
+    //!         if Value's move constructor or move assignment throws,
+    //!         if the Strategy throws in check_capacity().
+    //! Complexity: Constant or linear.
     iterator insert(iterator position, value_type const& value)
     {
         return this->priv_insert(position, value);
     }
 
-    // basic
+    //! Throws: If Value's move constructor or move assignment throws,
+    //!         if the Strategy throws in check_capacity().
+    //! Complexity: Constant or linear.
     iterator insert(iterator position, BOOST_RV_REF(value_type) value)
     {
         return this->priv_insert(position, value);
     }
 
-    // basic
+    //! Throws: If Value's copy constructor or copy assignment throws,
+    //!         if Value's move constructor or move assignment throws,
+    //!         if the Strategy throws in check_capacity().
+    //! Complexity: Linear.
     iterator insert(iterator position, size_type count, value_type const& value)
     {
         errh::check_iterator_end_eq(*this, position);
@@ -453,7 +480,7 @@ public:
 
             if ( count < static_cast<size_type>(to_move) )
             {
-                sv::uninitialized_copy(this->end() - count, this->end(), this->end());          // may throw
+                sv::uninitialized_move(this->end() - count, this->end(), this->end());          // may throw
                 m_size += count; // update end
                 sv::move_backward(position, position + to_move - count, this->end() - count);   // may throw
                 std::fill_n(position, count, value);                                            // may throw
@@ -462,7 +489,7 @@ public:
             {
                 std::uninitialized_fill(this->end(), position + count, value);                  // may throw
                 m_size += count - to_move; // update end
-                sv::uninitialized_copy(position, position + to_move, position + count);         // may throw
+                sv::uninitialized_move(position, position + to_move, position + count);         // may throw
                 m_size += to_move; // update end
                 std::fill_n(position, to_move, value);                                          // may throw
             }
@@ -471,7 +498,10 @@ public:
         return position;
     }
 
-    // basic
+    //! Throws: If Value's constructor and assignment taking a dereferenced Iterator throws,
+    //!         if Value's move constructor or move assignment throws,
+    //!         if the Strategy throws in check_capacity().
+    //! Complexity: Linear.
     template <typename Iterator>
     iterator insert(iterator position, Iterator first, Iterator last)
     {
@@ -483,12 +513,17 @@ public:
         return position;
     }
 
-    // basic
+    //! Throws: If Value's move assignment throws,
+    //!         if the Strategy throws in check_iterator_end_neq().
+    //! Complexity: Linear.
     iterator erase(iterator position)
     {
         namespace sv = static_vector_detail;
 
         errh::check_iterator_end_neq(*this, position);
+
+        //TODO - add empty check?
+        //errh::check_empty(*this);
 
         sv::move(position + 1, this->end(), position);                              // may throw
         sv::destroy(this->end() - 1);
@@ -497,7 +532,9 @@ public:
         return position;
     }
 
-    // basic
+    //! Throws: If Value's move assignment throws,
+    //!         if the Strategy throws in check_iterator_end_eq().
+    //! Complexity: Linear.
     iterator erase(iterator first, iterator last)
     {
         namespace sv = static_vector_detail;
@@ -506,7 +543,11 @@ public:
         errh::check_iterator_end_eq(*this, last);
         
         difference_type n = std::distance(first, last);
+        
+        //TODO - add invalid range check?
         //BOOST_ASSERT_MSG(0 <= n, "invalid range");
+        //TODO - add this->size() check?
+        //BOOST_ASSERT_MSG(n <= this->size(), "invalid range");
 
         sv::move(last, this->end(), first);                                         // may throw
         sv::destroy(this->end() - n, this->end());
@@ -515,7 +556,8 @@ public:
         return first;
     }
 
-    // basic
+    //! Throws: If Value's copy constructor or copy assignment throws,
+    //! Complexity: Linear.
     template <typename Iterator>
     void assign(Iterator first, Iterator last)
     {
@@ -525,7 +567,8 @@ public:
         this->assign_dispatch(first, last, traversal());                            // may throw
     }
 
-    // basic
+    //! Throws: If Value's copy constructor or copy assignment throws,
+    //! Complexity: Linear.
     void assign(size_type count, value_type const& value)
     {
         if ( count < m_size )
@@ -969,7 +1012,7 @@ private:
 
         if ( count < to_move )
         {
-            sv::uninitialized_copy(this->end() - count, this->end(), this->end());              // may throw
+            sv::uninitialized_move(this->end() - count, this->end(), this->end());              // may throw
             m_size += count; // update end
             sv::move_backward(position, position + to_move - count, this->end() - count);       // may throw
             sv::copy(first, last, position);                                                    // may throw
@@ -981,7 +1024,7 @@ private:
 
             sv::uninitialized_copy(middle_iter, last, this->end());                             // may throw
             m_size += count - to_move; // update end
-            sv::uninitialized_copy(position, position + to_move, position + count);             // may throw
+            sv::uninitialized_move(position, position + to_move, position + count);             // may throw
             m_size += to_move; // update end
             sv::copy(first, middle_iter, position);                                             // may throw
         }

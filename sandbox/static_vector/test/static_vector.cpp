@@ -91,6 +91,16 @@ private:
     int aa, bb;
 };
 
+namespace boost {
+
+template <>
+struct has_nothrow_move<counting_value>
+{
+    static const bool value = true;
+};
+
+}
+
 class shptr_value
 {
     typedef boost::shared_ptr<int> Ptr;

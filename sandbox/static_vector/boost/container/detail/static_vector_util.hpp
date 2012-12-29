@@ -223,7 +223,8 @@ inline O copy(I first, I last, O dst)
         ::boost::has_trivial_assign<
             typename ::boost::iterator_value<O>::type
         >
-    >::type use_memmove;
+    >::type
+    use_memmove;
     
     return copy_dispatch(first, last, dst, use_memmove());                       // may throw
 }
@@ -260,7 +261,8 @@ F uninitialized_copy(I first, I last, F dst)
         ::boost::has_trivial_copy<
             typename ::boost::iterator_value<F>::type
         >
-    >::type use_memcpy;
+    >::type
+    use_memcpy;
 
     return uninitialized_copy_dispatch(first, last, dst, use_memcpy());          // may throw
 }
@@ -399,6 +401,20 @@ BDO move_backward(BDI first, BDI last, BDO dst)
     return move_backward_dispatch(first, last, dst, use_memmove());             // may throw
 }
 
+template <typename T>
+struct has_nothrow_move : public
+    ::boost::mpl::or_<
+        boost::mpl::bool_<
+            ::boost::has_nothrow_move<
+                typename ::boost::remove_const<T>::type
+            >::value
+        >,
+        boost::mpl::bool_<
+            ::boost::has_nothrow_move<T>::value
+        >
+    >
+{};
+
 // uninitialized_move_if_noexcept(I, I, O)
 
 template <typename I, typename O>
@@ -415,15 +431,9 @@ template <typename I, typename O>
 inline
 O uninitialized_move_if_noexcept(I first, I last, O dst)
 {
-    typedef ::boost::mpl::bool_<
-        ::boost::has_nothrow_move<
-            typename ::boost::remove_const<
-                typename ::boost::remove_reference<
-                    typename ::boost::iterator_value<O>::type
-                >::type
-            >::type
-        >::value
-    > use_move;
+    typedef typename has_nothrow_move<
+        typename ::boost::iterator_value<O>::type
+    >::type use_move;
 
     return uninitialized_move_if_noexcept_dispatch(first, last, dst, use_move());         // may throw
 }
@@ -444,15 +454,9 @@ template <typename I, typename O>
 inline
 O move_if_noexcept(I first, I last, O dst)
 {
-    typedef ::boost::mpl::bool_<
-        ::boost::has_nothrow_move<
-            typename ::boost::remove_const<
-                typename ::boost::remove_reference<
-                    typename ::boost::iterator_value<O>::type
-                >::type
-            >::type
-        >::value
-    > use_move;
+    typedef typename has_nothrow_move<
+        typename ::boost::iterator_value<O>::type
+    >::type use_move;
 
     return move_if_noexcept_dispatch(first, last, dst, use_move());         // may throw
 }
