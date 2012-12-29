@@ -590,6 +590,9 @@ public:
 
 #if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
 #if defined(BOOST_CONTAINER_PERFECT_FORWARDING) || defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
+    //! Throws: If Value's constructor taking Args throws,
+    //!         if the Strategy throws in check_capacity()
+    //! Complexity: Constant.
     template<class ...Args>
     void emplace_back(Args &&...args)
     {
@@ -600,6 +603,10 @@ public:
         ++m_size; // update end
     }
 
+    //! Throws: If Value's constructor taking Args throws,
+    //!         if Value's move constructor or move assignment throws,
+    //!         if the Strategy throws in check_capacity()
+    //! Complexity: Constant or linear.
     template<class ...Args>
     iterator emplace(iterator position, Args &&...args)
     {
@@ -689,7 +696,8 @@ public:
 #endif // BOOST_CONTAINER_PERFECT_FORWARDING || BOOST_CONTAINER_DOXYGEN_INVOKED
 #endif // !BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE
 
-    // nothrow
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     void clear()
     {
         namespace sv = static_vector_detail;
@@ -697,92 +705,135 @@ public:
         m_size = 0; // update end
     }
 
-    // strong
+    //! Throws: If the Strategy throws in check_at().
+    //! Complexity: Constant.
     Value & at(size_type i)
     {
         errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
-    // strong
+    //! Throws: If the Strategy throws in check_at().
+    //! Complexity: Constant.
     Value const& at(size_type i) const
     {
         errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_operator_brackets().
+    //! Complexity: Constant.
     Value & operator[](size_type i)
     {
         errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_operator_brackets().
+    //! Complexity: Constant.
     Value const& operator[](size_type i) const
     {
         errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_empty().
+    //! Complexity: Constant.
     Value & front()
     {
         errh::check_empty(*this);
         return *(this->begin());
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_empty().
+    //! Complexity: Constant.
     Value const& front() const
     {
         errh::check_empty(*this);
         return *(this->begin());
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_empty().
+    //! Complexity: Constant.
     Value & back()
     {
         errh::check_empty(*this);
         return *(this->end() - 1);
     }
 
-    // nothrow
+    //! Throws: If the Strategy throws in check_empty().
+    //! Complexity: Constant.
     Value const& back() const
     {
         errh::check_empty(*this);
         return *(this->end() - 1);
     }
 
-    // nothrow
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     Value * data() { return this->ptr(); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const Value * data() const { return this->ptr(); }
 
-    // nothrow
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     iterator begin() { return this->ptr(); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_iterator begin() const { return this->ptr(); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_iterator cbegin() const { return this->ptr(); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     iterator end() { return this->begin() + m_size; }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_iterator end() const { return this->begin() + m_size; }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_iterator cend() const { return this->cbegin() + m_size; }
-    // nothrow
+
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     reverse_iterator rbegin() { return reverse_iterator(this->end()); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_reverse_iterator rbegin() const { return reverse_iterator(this->end()); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_reverse_iterator crbegin() const { return reverse_iterator(this->end()); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     reverse_iterator rend() { return reverse_iterator(this->begin()); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_reverse_iterator rend() const { return reverse_iterator(this->begin()); }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     const_reverse_iterator crend() const { return reverse_iterator(this->begin()); }
 
-    // nothrow
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     static size_type capacity() { return Capacity; }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     static size_type max_size() { return Capacity; }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     size_type size() const { return m_size; }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     bool empty() const { return 0 == m_size; }
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     void shrink_to_fit() {}
 
 private:
 
-    // nothrow
-    // linear complexity
+    //! Throws: Nothing.
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::true_type /*use_memop*/)
     {
@@ -791,8 +842,9 @@ private:
         other.m_size = 0;
     }
 
-    // strong
-    // linear complexity
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
@@ -803,8 +855,8 @@ private:
         other.m_size = 0;
     }
 
-    // nothrow
-    // linear complexity
+    //! Throws: Nothing.
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::true_type /*use_memop*/)
     {
@@ -814,8 +866,9 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    // basic
-    // linear complexity
+    //! Throws: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
+    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor or move assignment throws.
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
@@ -836,8 +889,8 @@ private:
         other.clear();
     }
 
-    // nothrow
-    // linear complexity
+    //! Throws: Nothing.
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     void swap_dispatch(static_vector<value_type, C, S> & other, boost::true_type const& /*use_optimized_swap*/)
     {
@@ -859,8 +912,9 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    // nothrow or basic
-    // linear complexity
+    //! Throws: If Value's move constructor or move assignment throws
+    //!         (only if use_memop_in_swap_and_move is false_type - default).
+    //! Complexity: Linear.
     template <std::size_t C, typename S>
     void swap_dispatch(static_vector<value_type, C, S> & other, boost::false_type const& /*use_optimized_swap*/)
     {
@@ -878,8 +932,8 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    // nothrow
-    // linear complexity
+    //! Throws: Nothing.
+    //! Complexity: Linear.
     void swap_dispatch_impl(iterator first_sm, iterator last_sm, iterator first_la, iterator last_la, boost::true_type const& /*use_memop*/)
     {
         //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
@@ -901,8 +955,8 @@ private:
         ::memcpy(first_sm, first_la, sizeof(value_type) * std::distance(first_la, last_la));
     }
 
-    // basic
-    // linear complexity
+    //! Throws: If Value's move constructor or move assignment throws.
+    //! Complexity: Linear.
     void swap_dispatch_impl(iterator first_sm, iterator last_sm, iterator first_la, iterator last_la, boost::false_type const& /*use_memop*/)
     {
         //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
