@@ -163,26 +163,36 @@ public:
     typedef boost::reverse_iterator<iterator> reverse_iterator;
     typedef boost::reverse_iterator<const_iterator> const_reverse_iterator;
 
-    // nothrow
+    //! Throws: Nothing.
+    //! Complexity: Constant.
     static_vector()
         : m_size(0)
     {}
 
-    // strong
+    //! Throws: If Value's default constructor throws,
+    //!         if the strategy throws in check_capacity()
+    //! Complexity: Linear.
+    // strong or nothrow
     explicit static_vector(size_type count)
         : m_size(0)
     {
         this->resize(count);                                                        // may throw
     }
 
-    // strong
+    //! Throws: If Value's copy constructor throws,
+    //!         if the strategy throws in check_capacity()
+    //! Complexity: Linear.
+    // strong or nothrow
     static_vector(size_type count, value_type const& value)
         : m_size(0)
     {
         this->resize(count, value);                                                 // may throw
     }
 
-    // strong
+    //! Throws: If Value's constructor taking a dereferenced Iterator throws,
+    //!         if the strategy throws in check_capacity()
+    //! Complexity: Linear.
+    // strong or nothrow
     template <typename Iterator>
     static_vector(Iterator first, Iterator last)
         : m_size(0)
@@ -191,7 +201,9 @@ public:
         this->assign(first, last);                                                    // may throw
     }
 
-    // strong
+    //! Throws: If Value's copy constructor throws.
+    //! Complexity: Linear.
+    // strong or nothrow
     static_vector(static_vector const& other)
         : m_size(other.size())
     {
@@ -199,7 +211,10 @@ public:
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
-    // strong
+    //! Throws: If Value's copy constructor throws,
+    //!         if the strategy throws in check_capacity()
+    //! Complexity: Linear.
+    // strong or nothrow
     template <std::size_t C, typename S>
     static_vector(static_vector<value_type, C, S> const& other)
         : m_size(other.size())
@@ -210,7 +225,9 @@ public:
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
-    // basic
+    //! Throws: If Value's copy constructor or copy assignment throws,
+    //! Complexity: Linear.
+    // basic or nothrow
     static_vector & operator=(BOOST_COPY_ASSIGN_REF(static_vector) other)
     {
         this->assign(other.begin(), other.end());                                     // may throw
@@ -218,7 +235,10 @@ public:
         return *this;
     }
 
-    // basic
+    //! Throws: If Value's copy constructor or copy assignment throws,
+    //!         if the strategy throws in check_capacity()
+    //! Complexity: Linear.
+    // basic or nothrow
     template <std::size_t C, typename S>
 // TEMPORARY WORKAROUND
 #if defined(BOOST_NO_RVALUE_REFERENCES)
