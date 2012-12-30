@@ -4,7 +4,7 @@
 <title>Selectors</title>
 <link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.3">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.4">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="../reference.html" title="Reference">
 <link rel="next" href="container_gen.html" title="container_gen">
@@ -366,6 +366,122 @@
 <p>
         </p>
 <p>
+          To instantiate a model of <a href="http://www.sgi.com/tech/stl/AssociativeContainer.html" target="_top"><span class="bold"><strong>Associative Container</strong></span></a> that stores C-style
+          strings as keys, pass the appropriate one of these types as the <code class="computeroutput"><span class="identifier">CompareSelector</span></code> argument to the corresponding
+          container selector template. The following <a class="link" href="selectors.html#container_gen.reference.selectors.description" title="Description">table</a>
+          describes the <code class="computeroutput"><span class="identifier">CompareSelector</span></code>
+          template argument among others in further detail.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">struct</span> <span class="identifier">c_str_equivalence_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">class</span> <span class="identifier">type</span>
+            <span class="special">{</span>
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">true_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="special">!</span><span class="identifier">strcmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">);</span>
+                <span class="special">}</span>
+
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">false_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="special">!</span><span class="identifier">wcscmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">);</span>
+                <span class="special">}</span>
+
+             <span class="keyword">public</span><span class="special">:</span>
+                <span class="keyword">typedef</span> <span class="keyword">bool</span> <span class="identifier">result_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">first_argument_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">second_argument_type</span><span class="special">;</span>
+
+                <span class="keyword">inline</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="keyword">const</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">type</span><span class="special">::</span><span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span>
+                            <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_cv</span><span class="special">&lt;</span>
+                                <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span>
+                                    <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_extent</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span>
+                                <span class="special">&gt;::</span><span class="identifier">type</span>
+                            <span class="special">&gt;::</span><span class="identifier">type</span>
+                          <span class="special">,</span> <span class="keyword">char</span>
+                        <span class="special">&gt;()</span>
+                    <span class="special">);</span>
+                <span class="special">}</span>
+            <span class="special">};</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">c_str_ordering_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">class</span> <span class="identifier">type</span>
+            <span class="special">{</span>
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">true_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">strcmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">0</span><span class="special">;</span>
+                <span class="special">}</span>
+
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">false_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">wcscmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">0</span><span class="special">;</span>
+                <span class="special">}</span>
+
+             <span class="keyword">public</span><span class="special">:</span>
+                <span class="keyword">typedef</span> <span class="keyword">bool</span> <span class="identifier">result_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">first_argument_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">second_argument_type</span><span class="special">;</span>
+
+                <span class="keyword">inline</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="keyword">const</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">type</span><span class="special">::</span><span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span>
+                            <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_cv</span><span class="special">&lt;</span>
+                                <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span>
+                                    <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_extent</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span>
+                                <span class="special">&gt;::</span><span class="identifier">type</span>
+                            <span class="special">&gt;::</span><span class="identifier">type</span>
+                          <span class="special">,</span> <span class="keyword">char</span>
+                        <span class="special">&gt;()</span>
+                    <span class="special">);</span>
+                <span class="special">}</span>
+            <span class="special">};</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+        </p>
+<p>
           This library also retains the old selector types and, for completeness,
           provides type definitions of the selector templates with default arguments.
         </p>
@@ -508,8 +624,8 @@
                   <p>
                     A <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>Boolean Integral Constant</strong></span></a> that
                     determines whether <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> will return
-                    the appropriate <a href="http://www.boost.org/doc/html/boost_tr1.html" target="_top"><span class="bold"><strong>Boost.TR1</strong></span></a> container or the corresponding
-                    Boost container.
+                    the appropriate <a href="http://www.boost.org/doc/html/boost_tr1.html" target="_top"><span class="bold"><strong>Boost.TR1</strong></span></a> container type or the
+                    corresponding Boost container type.
                   </p>
                 </td>
 </tr>
@@ -537,15 +653,24 @@
 <td>
                   <p>
                     If the selector template causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
-                    a <a href="http://www.sgi.com/tech/stl/SortedAssociativeContainer.html" target="_top"><span class="bold"><strong>Sorted Associative Container</strong></span></a>,
+                    a <a href="http://www.sgi.com/tech/stl/SortedAssociativeContainer.html" target="_top"><span class="bold"><strong>Sorted Associative Container</strong></span></a> model,
                     then a <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
                     takes in the value type and returns a <a href="http://www.sgi.com/tech/stl/StrictWeakOrdering.html" target="_top"><span class="bold"><strong>Strict Weak Ordering</strong></span></a> model. If
                     the selector template causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
-                    a <a href="http://www.sgi.com/tech/stl/HashAssociativeContainer.html" target="_top"><span class="bold"><strong>Hashed Associative Container</strong></span></a>,
+                    a <a href="http://www.sgi.com/tech/stl/HashAssociativeContainer.html" target="_top"><span class="bold"><strong>Hashed Associative Container</strong></span></a> model,
                     then a <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
                     takes in the value type and returns a <a href="http://www.sgi.com/tech/stl/BinaryPredicate.html" target="_top"><span class="bold"><strong>Binary Predicate</strong></span></a> model. The return
                     type will become the container template's <code class="computeroutput"><span class="identifier">Compare</span></code>
                     or <code class="computeroutput"><span class="identifier">Pred</span></code> argument.
+                  </p>
+                  <p>
+                    By way of example, as discussed in the <a class="link" href="selectors.html#container_gen.reference.selectors.synopsis" title="Synopsis">synopsis</a>,
+                    the <code class="computeroutput"><span class="identifier">c_str_equivalence_selector</span></code>
+                    type can be passed as the <code class="computeroutput"><span class="identifier">CompareSelector</span></code>
+                    argument to the <code class="computeroutput"><span class="identifier">hash_set_selector</span></code>
+                    template, which in turn can be passed to <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.sgi.com/tech/stl/HashAssociativeContainer.html" target="_top"><span class="bold"><strong>Hashed Associative Container</strong></span></a> model
+                    that stores C-style strings as keys.
                   </p>
                 </td>
 </tr>
@@ -599,8 +724,38 @@
         defined</a>
 </h4></div></div></div>
 <p>
+          C-style string comparator selectors:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/c_str_cmp_selectors.hpp" target="_top">boost/container_gen/c_str_cmp_selectors.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          To register them under <a href="http://www.boost.org/doc/html/typeof.html" target="_top"><span class="bold"><strong>Boost.Typeof</strong></span></a>:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/c_str_cmp_selectors_typeof.hpp" target="_top">boost/container_gen/c_str_cmp_selectors_typeof.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          All other selectors and selector templates:
+        </p>
+<p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/selectors.hpp" target="_top">boost/container_gen/selectors.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          To register them under <a href="http://www.boost.org/doc/html/typeof.html" target="_top"><span class="bold"><strong>Boost.Typeof</strong></span></a>:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/selectors_typeof.hpp" target="_top">boost/container_gen/selectors_typeof.hpp</a><span class="special">&gt;</span>
 </pre>
 <p>
         </p>

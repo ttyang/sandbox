@@ -63,7 +63,7 @@ namespace boost { namespace detail {
     {
         typedef typename ::std::tr1::remove_const<IterValue>::type _value_type;
 
-        return _evaluate(
+        return get_iterator_value_second_helper<IterValue>::_evaluate(
             arg
           , typename ::boost::mpl::if_<
                 ::std::tr1::is_same<

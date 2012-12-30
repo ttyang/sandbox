@@ -20,6 +20,14 @@ selector types.
 
 [reference__template_argument_selectors]
 
+To instantiate a model of __Associative_Container__ that stores C-style strings
+as keys, pass the appropriate one of these types as the `CompareSelector`
+argument to the corresponding container selector template.  The following
+__Selectors_table__ describes the `CompareSelector` template argument among
+others in further detail.
+
+[reference__c_str_compare_selectors]
+
 This library also retains the old selector types and, for completeness,
 provides type definitions of the selector templates with default arguments.
 
@@ -61,7 +69,7 @@ will suffice in documenting the parameters:
         [
             A __Boolean_Integral_Constant__ that determines whether
             __container_gen__ will return the appropriate __Boost_TR1__
-            container or the corresponding Boost container.
+            container type or the corresponding Boost container type.
         ]
     ]
     [
@@ -76,14 +84,21 @@ will suffice in documenting the parameters:
         [`CompareSelector`]
         [
             If the selector template causes __container_gen__ to return a
-            __Sorted_Associative_Container__, then a
+            __Sorted_Associative_Container__ model, then a
             __Unary_Metafunction_Class__ that takes in the value type and
             returns a __Strict_Weak_Ordering__ model.  If the selector template
             causes __container_gen__ to return a
-            __Hashed_Associative_Container__, then a
+            __Hashed_Associative_Container__ model, then a
             __Unary_Metafunction_Class__ that takes in the value type and
             returns a __Binary_Predicate__ model.  The return type will become
             the container template's `Compare` or `Pred` argument.
+
+            By way of example, as discussed in the __Selectors_synopsis__,
+            the `c_str_equivalence_selector` type can be passed as the
+            `CompareSelector` argument to the `hash_set_selector` template,
+            which in turn can be passed to __container_gen__ to return a
+            __Hashed_Associative_Container__ model that stores C-style strings
+            as keys.
         ]
     ]
     [
@@ -112,8 +127,28 @@ will suffice in documenting the parameters:
 [endsect] [/ Description]
 
 [section:definition Where defined]
+C-style string comparator selectors:
+
+``
+#include <__boost_container_gen_c_str_cmp_selectors_hpp__>
+``
+
+To register them under __Boost_Typeof__:
+
+``
+#include <__boost_container_gen_c_str_cmp_selectors_typeof_hpp__>
+``
+
+All other selectors and selector templates:
+
 ``
 #include <__boost_container_gen_selectors_hpp__>
+``
+
+To register them under __Boost_Typeof__:
+
+``
+#include <__boost_container_gen_selectors_typeof_hpp__>
 ``
 [endsect]
 

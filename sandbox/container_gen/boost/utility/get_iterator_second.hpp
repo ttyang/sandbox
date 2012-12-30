@@ -57,7 +57,7 @@ namespace boost { namespace detail {
     {
         typedef typename ::boost::iterator_value<Iterator>::type _value_type;
 
-        return _evaluate(
+        return get_iterator_second_helper<Iterator>::_evaluate(
             itr
           , typename ::boost::mpl::if_<
                 ::std::tr1::is_same<

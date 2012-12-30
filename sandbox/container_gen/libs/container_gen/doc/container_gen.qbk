@@ -1,6 +1,6 @@
 [library container_gen
     [quickbook 1.5]
-    [version 0.3]
+    [version 0.4]
     [authors [Lumsdaine, Andrew][Lee, Lie-Quan][Claveirole, Thomas][Siek, Jeremy G.][Enage, Cromwell D.]]
     [copyright 1997-2012 Andrew Lumsdaine, Lie-Quan Lee, Thomas Claveirole, Jeremy G. Siek, Cromwell D. Enage]
     [purpose Collection of container-generating and selector-introspecting metafunctions]
@@ -34,6 +34,7 @@
 [def _std_string_ [@http://www.sgi.com/tech/stl/basic_string.html std::string]]
 
 [/ Boost library links.]
+[def __Boost_Typeof__ [@boost:doc/html/typeof.html [*Boost.Typeof]]]
 [def __Boost_Utility__ [@boost:libs/utility/index.html [*Boost.Utility]]]
 [def __Boost_Assign__ [@boost:libs/assign/doc/index.html [*Boost.Assign]]]
 [def __Boost_Container__ [@boost:doc/html/container.html [*Boost.Container]]]
@@ -72,6 +73,9 @@
 
 [/ Boost.ContainerGen reference header file links.]
 [def __boost_container_gen_selectors_hpp__ [@../../../../boost/container_gen/selectors.hpp boost/container_gen/selectors.hpp]]
+[def __boost_container_gen_selectors_typeof_hpp__ [@../../../../boost/container_gen/selectors_typeof.hpp boost/container_gen/selectors_typeof.hpp]]
+[def __boost_container_gen_c_str_cmp_selectors_hpp__ [@../../../../boost/container_gen/c_str_cmp_selectors.hpp boost/container_gen/c_str_cmp_selectors.hpp]]
+[def __boost_container_gen_c_str_cmp_selectors_typeof_hpp__ [@../../../../boost/container_gen/c_str_cmp_selectors_typeof.hpp boost/container_gen/c_str_cmp_selectors_typeof.hpp]]
 [def __boost_container_gen_container_gen_hpp__ [@../../../../boost/container_gen/container_gen.hpp boost/container_gen/container_gen.hpp]]
 [def __boost_container_gen_emplace_function_gen_hpp__ [@../../../../boost/container_gen/emplace_function_gen.hpp boost/container_gen/emplace_function_gen.hpp]]
 [def __boost_container_gen_emplace_assoc_function_gen_hpp__ [@../../../../boost/container_gen/emplace_assoc_function_gen.hpp boost/container_gen/emplace_assoc_function_gen.hpp]]
@@ -91,6 +95,8 @@
 [def __Selectors__ [link container_gen.reference.selectors *Selectors*]]
 [def _vector_selector_ [link container_gen.reference.selectors boost::vector_selector]]
 [def _map_selector_ [link container_gen.reference.selectors boost::map_selector]]
+[def __Selectors_synopsis__ [link container_gen.reference.selectors.synopsis synopsis]]
+[def __Selectors_table__ [link container_gen.reference.selectors.description table]]
 [def __container_gen__ [link container_gen.reference.container_gen `container_gen`]]
 [def _container_gen_ [link container_gen.reference.container_gen container_gen]]
 [def __emplace_function_gen__ [link container_gen.reference.emplace_function_gen `emplace_function_gen`]]
@@ -123,6 +129,7 @@
 [/ Autogenerate reference documentation directly from code.]
 [/ Bypass Doxygen.]
 [import ../../../boost/container_gen/selectors.hpp]
+[import ../../../boost/container_gen/c_str_cmp_selectors.hpp]
 [import ../../../boost/container_gen/container_gen.hpp]
 [import ../../../boost/container_gen/emplace_function_gen.hpp]
 [import ../../../boost/container_gen/emplace_assoc_function_gen.hpp]

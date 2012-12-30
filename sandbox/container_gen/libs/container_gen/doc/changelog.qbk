@@ -8,6 +8,10 @@
 
 [section Changelog]
 
+[heading From 0.3 to 0.4]
+
+  * Added `c_str_equivalence_selector` and `c_str_ordering_selector` types.
+
 [heading From 0.2 to 0.3]
 
   * Moved from __Boost_Utility__ to top level.

@@ -75,7 +75,17 @@
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">IterValue</span><span class="special">&gt;</span>
     <span class="keyword">struct</span> <span class="identifier">get_iterator_value_second_result</span>
     <span class="special">{</span>
-        <span class="keyword">typedef</span> <span class="comment">// implementation_defined</span>
+        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span>
+                    <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">unwrap_reference</span><span class="special">&lt;</span>
+                        <span class="identifier">BOOST_TYPEOF_TPL</span><span class="special">(</span>
+                            <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span>
+                                <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">get_reference</span><span class="special">&lt;</span>
+                                    <span class="identifier">IterValue</span>
+                                <span class="special">&gt;().</span><span class="identifier">second</span>
+                            <span class="special">)</span>
+                        <span class="special">)</span>
+                    <span class="special">&gt;::</span><span class="identifier">type</span>
+                <span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span>
                 <span class="identifier">type</span><span class="special">;</span>
     <span class="special">};</span>
 <span class="special">}</span>  <span class="comment">// namespace boost</span>
@@ -106,7 +116,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: August 24, 2012 at 22:39:37 GMT</small></p></td>
+<td align="left"><p><small>Last revised: December 30, 2012 at 16:57:07 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

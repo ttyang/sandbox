@@ -59,7 +59,7 @@ namespace boost {
 
                 inline bool operator()(T const& lhs, T const& rhs) const
                 {
-                    return _evaluate(
+                    return type::_evaluate(
                         lhs
                       , rhs
                       , ::std::tr1::is_same<
@@ -116,7 +116,7 @@ namespace boost {
 
                 inline bool operator()(T const& lhs, T const& rhs) const
                 {
-                    return _evaluate(
+                    return type::_evaluate(
                         lhs
                       , rhs
                       , ::std::tr1::is_same<
