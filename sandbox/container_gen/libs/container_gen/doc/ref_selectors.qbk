@@ -136,7 +136,7 @@ C-style string comparator selectors:
 To register them under __Boost_Typeof__:
 
 ``
-#include <__boost_container_gen_c_str_cmp_selectors_typeof_hpp__>
+#include <__boost_typeof_boost_container_gen_c_str_cmp_selectors_hpp__>
 ``
 
 All other selectors and selector templates:
@@ -148,7 +148,7 @@ All other selectors and selector templates:
 To register them under __Boost_Typeof__:
 
 ``
-#include <__boost_container_gen_selectors_typeof_hpp__>
+#include <__boost_typeof_boost_container_gen_selectors_hpp__>
 ``
 [endsect]
 

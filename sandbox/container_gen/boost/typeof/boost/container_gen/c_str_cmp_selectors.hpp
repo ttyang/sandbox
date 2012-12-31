@@ -6,8 +6,8 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
-#ifndef BOOST_CONTAINER_GEN_C_STR_CMP_SELECTORS_TYPEOF_HPP_INCLUDED
-#define BOOST_CONTAINER_GEN_C_STR_CMP_SELECTORS_TYPEOF_HPP_INCLUDED
+#ifndef BOOST_TYPEOF_BOOST_CONTAINER_GEN_C_STR_CMP_SELECTORS_HPP_INCLUDED
+#define BOOST_TYPEOF_BOOST_CONTAINER_GEN_C_STR_CMP_SELECTORS_HPP_INCLUDED
 
 #include <boost/typeof/typeof.hpp>
 #include <boost/container_gen/c_str_cmp_selectors.hpp>
@@ -17,5 +17,5 @@
 BOOST_TYPEOF_REGISTER_TYPE(::boost::c_str_equivalence_selector);
 BOOST_TYPEOF_REGISTER_TYPE(::boost::c_str_ordering_selector);
 
-#endif  // BOOST_CONTAINER_GEN_C_STR_CMP_SELECTORS_TYPEOF_HPP_INCLUDED
+#endif  // BOOST_TYPEOF_BOOST_CONTAINER_GEN_C_STR_CMP_SELECTORS_HPP_INCLUDED
 

@@ -6,8 +6,8 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
-#ifndef BOOST_CONTAINER_GEN_SELECTORS_TYPEOF_HPP_INCLUDED
-#define BOOST_CONTAINER_GEN_SELECTORS_TYPEOF_HPP_INCLUDED
+#ifndef BOOST_TYPEOF_BOOST_CONTAINER_GEN_SELECTORS_HPP_INCLUDED
+#define BOOST_TYPEOF_BOOST_CONTAINER_GEN_SELECTORS_HPP_INCLUDED
 
 #include <boost/config.hpp>
 #include <boost/typeof/typeof.hpp>
@@ -174,5 +174,5 @@ BOOST_TYPEOF_REGISTER_TEMPLATE(::boost::ptr_hash_multimap_selector, 4)
 BOOST_TYPEOF_REGISTER_TYPE(::boost::ptr_hash_multimapS);
 #endif  // !BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-#endif  // BOOST_CONTAINER_GEN_SELECTORS_TYPEOF_HPP_INCLUDED
+#endif  // BOOST_TYPEOF_BOOST_CONTAINER_GEN_SELECTORS_HPP_INCLUDED
 

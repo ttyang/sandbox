@@ -9,6 +9,7 @@
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/container_gen/selectors.hpp>
+#include <boost/container_gen/is_reversible_selector.hpp>
 #include <boost/container_gen/is_random_access_selector.hpp>
 #include <boost/container_gen/is_associative_selector.hpp>
 #include <boost/container_gen/is_unique_assoc_selector.hpp>
@@ -151,6 +152,134 @@ MPL_TEST_CASE()
     ));
     BOOST_MPL_ASSERT_NOT((
         boost::is_ptr_selector<boost::flat_multimapS>
+    ));
+#endif  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+}
+
+MPL_TEST_CASE()
+{
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::vecS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::dequeS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::listS>
+    ));
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION \
+ || !defined BOOST_NO_SLIST
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::slistS>
+    ));
+#endif
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::setS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::mapS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::multisetS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::multimapS>
+    ));
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION || defined BOOST_HAS_HASH
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_setS>
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_mapS>
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_multisetS>
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_multimapS>
+    ));
+#endif
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::ptr_vecS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::ptr_dequeS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::ptr_listS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::ptr_setS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::ptr_mapS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::ptr_multisetS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::ptr_multimapS>
+    ));
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::ptr_hash_setS>
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::ptr_hash_mapS>
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::ptr_hash_multisetS>
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::ptr_hash_multimapS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::vector_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::stable_vecS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::deque_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::list_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::set_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::map_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::multiset_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::multimap_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_set_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_map_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_multiset_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT_NOT((
+        boost::is_reversible_selector<boost::hash_multimap_selector<true_> >
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::flat_setS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::flat_mapS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::flat_multisetS>
+    ));
+    BOOST_MPL_ASSERT((
+        boost::is_reversible_selector<boost::flat_multimapS>
     ));
 #endif  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 }

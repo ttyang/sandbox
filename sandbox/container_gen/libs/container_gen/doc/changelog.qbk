@@ -8,6 +8,11 @@
 
 [section Changelog]
 
+[heading From 0.4 to 0.5]
+
+  * Added __is_reversible_selector__ introspection metafunction.
+  * Moved __Boost_Typeof__ registration header files for selectors.
+
 [heading From 0.3 to 0.4]
 
   * Added `c_str_equivalence_selector` and `c_str_ordering_selector` types.

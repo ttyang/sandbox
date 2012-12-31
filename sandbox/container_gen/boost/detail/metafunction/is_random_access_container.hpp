@@ -12,7 +12,7 @@
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/aux_/lambda_support.hpp>
 #include <boost/detail/metafunction/is_random_access_iterator.hpp>
-#include <boost/detail/metafunction/is_container.hpp>
+#include <boost/detail/metafunction/is_reversible_container.hpp>
 #include <boost/detail/metafunction/is_associative_container.hpp>
 
 namespace boost { namespace detail { namespace metafunction {
@@ -24,6 +24,7 @@ namespace boost { namespace detail { namespace metafunction {
     struct is_random_access_container_impl
       : ::boost::mpl::and_<
             is_random_access_iterator<typename T::iterator>
+          , is_random_access_iterator<typename T::reverse_iterator>
           , ::boost::mpl::not_< is_associative_container<T> >
         >
     {
@@ -32,7 +33,7 @@ namespace boost { namespace detail { namespace metafunction {
     template <typename T>
     struct is_random_access_container
       : ::boost::mpl::if_<
-            typename is_container<T>::type
+            typename is_reversible_container<T>::type
           , is_random_access_container_impl<T>
           , ::boost::mpl::false_
         >::type

@@ -12,6 +12,7 @@
 [include ref_container_gen.qbk]
 [include ref_emplace_function_gen.qbk]
 [include ref_emplace_assoc_func_gen.qbk]
+[include ref_is_reversible_selector.qbk]
 [include ref_is_rand_access_selector.qbk]
 [include ref_is_associative_selector.qbk]
 [include ref_is_unique_assoc_sel.qbk]
@@ -34,6 +35,7 @@
 
 [heading Selector Introspection Metafunctions]
 
+  * __is_reversible_selector__
   * __is_random_access_selector__
   * __is_associative_selector__
   * __is_unique_associative_selector__
