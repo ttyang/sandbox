@@ -734,7 +734,7 @@ inline void assign(I pos, V const& v)
 
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-// uninitialized_copy_checked
+// uninitialized_copy_s
 
 template <typename I, typename F>
 inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max_count)

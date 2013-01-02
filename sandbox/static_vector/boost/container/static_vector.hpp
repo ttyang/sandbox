@@ -1167,7 +1167,7 @@ private:
     aligned_storage_type m_storage;
 };
 
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
 
 template<typename Value, typename Strategy>
 class static_vector<Value, 0, Strategy>
@@ -1412,6 +1412,7 @@ public:
     size_type max_size() const { return 0; }
     size_type size() const { return 0; }
     bool empty() const { return true; }
+    void shrink_to_fit() {}
 
 private:
 
@@ -1426,7 +1427,7 @@ private:
     }
 };
 
-#endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#endif // !BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION && !BOOST_CONTAINER_DOXYGEN_INVOKED
 
 // comparisons
 template<typename V, std::size_t C, typename S>

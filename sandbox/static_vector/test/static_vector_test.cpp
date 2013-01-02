@@ -34,6 +34,16 @@ namespace boost {
 
 #include "static_vector_test.hpp"
 
+template <typename V>
+struct bad_alloc_strategy /*bad_alloc_null_allocator*/
+    : public static_vector_detail::default_strategy<V>
+{
+    static void allocate_failed()
+    {
+        BOOST_THROW_EXCEPTION(std::bad_alloc());
+    }
+};
+
 template <typename T, size_t N>
 void test_ctor_ndc()
 {
@@ -418,16 +428,6 @@ void test_insert_nd(T const& val)
     test_insert<T, N>(s, bsv);
 #endif
 }
-
-template <typename V>
-struct bad_alloc_strategy
-    : public static_vector_detail::default_strategy<V>
-{
-    static void allocate_failed()
-    {
-        BOOST_THROW_EXCEPTION(std::bad_alloc());
-    }
-};
 
 template <typename T>
 void test_capacity_0_nd()

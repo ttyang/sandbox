@@ -19,7 +19,18 @@
 #include "static_vector_test.hpp"
 
 #include <boost/interprocess/managed_shared_memory.hpp>
+#include <boost/interprocess/allocators/allocator.hpp>
 #include <algorithm>
+
+template <typename V, typename SegmentManager>
+struct interprocess_strategy /*interprocess_null_allocator*/
+    : public boost::interprocess::allocator<V, SegmentManager>
+{
+    static void allocate_failed()
+    {
+        boost::container::static_vector_detail::default_strategy<V>::allocate_failed();
+    }
+};
 
 template <typename T, size_t N>
 void test_interprocess(T const& t)
@@ -33,16 +44,24 @@ void test_interprocess(T const& t)
 
     bi::managed_shared_memory shmem(bi::create_only, "shared_memory", 10000 + sizeof(T) * N);
 
-    typedef static_vector<T, N> SV;
-    SV * sv_ptr = shmem.construct<SV>("my_object")(N, t);
+    typedef static_vector<
+        T, N,
+        interprocess_strategy<T, bi::managed_shared_memory::segment_manager>
+    > SV;
+
+    SV * sv_ptr = shmem.construct<SV>("my_object")();
 
     for ( size_t i = 0 ; i < N ; ++i )
-        (*sv_ptr)[i] = T(N - i);
+        sv_ptr->push_back(T(N - i));
 
     std::sort(sv_ptr->begin(), sv_ptr->end());
 
     for ( size_t i = 0 ; i < N ; ++i )
         BOOST_CHECK((*sv_ptr)[i] == T(i + 1));
+
+    sv_ptr->assign(N/2, t);
+    for ( size_t i = 0 ; i < N/2 ; ++i )
+        BOOST_CHECK(sv_ptr->at(i) == t);
 
     shmem.destroy_ptr(sv_ptr);
 }
