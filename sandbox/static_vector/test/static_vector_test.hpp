@@ -13,23 +13,8 @@
 
 #include <boost/container/static_vector.hpp>
 
-#include <vector>
-#include <list>
 #include <boost/shared_ptr.hpp>
 #include "movable.hpp"
-
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
-#include <boost/container/vector.hpp>
-#include <boost/container/stable_vector.hpp>
-#endif
-
-// TODO: Disable parts of the unit test that should not run when BOOST_NO_EXCEPTIONS
-// if exceptions are enabled there must be a user defined throw_exception function
-#ifdef BOOST_NO_EXCEPTIONS
-namespace boost {
-void throw_exception(std::exception const & e){}; // user defined
-} // namespace boost
-#endif // BOOST_NO_EXCEPTIONS
 
 using namespace boost::container;
 

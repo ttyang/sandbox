@@ -16,7 +16,7 @@
 #include <boost/test/impl/execution_monitor.ipp>
 #endif // BOOST_SINGLE_HEADER_UTF
 
-#include "static_vector.hpp"
+#include "static_vector_test.hpp"
 
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <algorithm>

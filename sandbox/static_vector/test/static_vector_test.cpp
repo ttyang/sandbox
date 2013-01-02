@@ -16,7 +16,23 @@
 #include <boost/test/impl/execution_monitor.ipp>
 #endif // BOOST_SINGLE_HEADER_UTF
 
-#include "static_vector.hpp"
+// TODO: Disable parts of the unit test that should not run when BOOST_NO_EXCEPTIONS
+// if exceptions are enabled there must be a user defined throw_exception function
+#ifdef BOOST_NO_EXCEPTIONS
+namespace boost {
+    void throw_exception(std::exception const & e){}; // user defined
+} // namespace boost
+#endif // BOOST_NO_EXCEPTIONS
+
+#include <vector>
+#include <list>
+
+#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
+#include <boost/container/vector.hpp>
+#include <boost/container/stable_vector.hpp>
+#endif
+
+#include "static_vector_test.hpp"
 
 template <typename T, size_t N>
 void test_ctor_ndc()
@@ -403,17 +419,13 @@ void test_insert_nd(T const& val)
 #endif
 }
 
-struct bad_alloc_strategy : public static_vector_detail::default_strategy
+template <typename V>
+struct bad_alloc_strategy
+    : public static_vector_detail::default_strategy<V>
 {
-    template <typename V, std::size_t Capacity, typename S>
-    static void check_capacity(static_vector<V, Capacity, S> const&, std::size_t s)
+    static void allocate_failed()
     {
-#ifndef BOOST_NO_EXCEPTIONS
-        if ( Capacity < s )
-            throw std::bad_alloc();
-#else // BOOST_NO_EXCEPTIONS
-        BOOST_ASSERT_MSG(!(Capacity < s), "index out of bounds");
-#endif // BOOST_NO_EXCEPTIONS
+        BOOST_THROW_EXCEPTION(std::bad_alloc());
     }
 };
 
@@ -422,7 +434,7 @@ void test_capacity_0_nd()
 {
     static_vector<T, 10> v(5u, T(0));
 
-    static_vector<T, 0, bad_alloc_strategy> s;
+    static_vector<T, 0, bad_alloc_strategy<T> > s;
     BOOST_CHECK(s.size() == 0);
     BOOST_CHECK(s.capacity() == 0);
 #ifndef BOOST_NO_EXCEPTIONS
@@ -435,11 +447,11 @@ void test_capacity_0_nd()
     BOOST_CHECK_THROW(s.assign(v.begin(), v.end()), std::bad_alloc);
     BOOST_CHECK_THROW(s.assign(5u, T(0)), std::bad_alloc);
     try{
-        static_vector<T, 0, bad_alloc_strategy> s2(v.begin(), v.end());
+        static_vector<T, 0, bad_alloc_strategy<T> > s2(v.begin(), v.end());
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
     try{
-        static_vector<T, 0, bad_alloc_strategy> s1(5u, T(0));
+        static_vector<T, 0, bad_alloc_strategy<T> > s1(5u, T(0));
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
 #endif // BOOST_NO_EXCEPTIONS
@@ -449,7 +461,7 @@ template <typename T, size_t N>
 void test_exceptions_nd()
 {
     static_vector<T, N> v(N, T(0));
-    static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(0));
+    static_vector<T, N/2, bad_alloc_strategy<T> > s(N/2, T(0));
 
 #ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW(s.resize(N, T(0)), std::bad_alloc);
@@ -460,11 +472,11 @@ void test_exceptions_nd()
     BOOST_CHECK_THROW(s.assign(v.begin(), v.end()), std::bad_alloc);
     BOOST_CHECK_THROW(s.assign(N, T(0)), std::bad_alloc);
     try{
-        static_vector<T, N/2, bad_alloc_strategy> s2(v.begin(), v.end());
+        static_vector<T, N/2, bad_alloc_strategy<T> > s2(v.begin(), v.end());
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
     try{
-        static_vector<T, N/2, bad_alloc_strategy> s1(N, T(0));
+        static_vector<T, N/2, bad_alloc_strategy<T> > s1(N, T(0));
         BOOST_CHECK(false);
     }catch(std::bad_alloc &){}
 #endif // BOOST_NO_EXCEPTIONS
@@ -476,7 +488,7 @@ void test_swap_and_move_nd()
     {
         static_vector<T, N> v1, v2, v3, v4;
         static_vector<T, N> s1, s2;
-        static_vector<T, N, bad_alloc_strategy> s4;
+        static_vector<T, N, bad_alloc_strategy<T> > s4;
 
         for (size_t i = 0 ; i < N ; ++i )
         {
@@ -555,14 +567,14 @@ void test_swap_and_move_nd()
     }
     {
         static_vector<T, N> v(N, T(0));
-        static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(1));
+        static_vector<T, N/2, bad_alloc_strategy<T> > s(N/2, T(1));
 #ifndef BOOST_NO_EXCEPTIONS
         BOOST_CHECK_THROW(s.swap(v), std::bad_alloc);
         v.resize(N, T(0));
         BOOST_CHECK_THROW(s = boost::move(v), std::bad_alloc);
         v.resize(N, T(0));
         try {
-            static_vector<T, N/2, bad_alloc_strategy> s2(boost::move(v));
+            static_vector<T, N/2, bad_alloc_strategy<T> > s2(boost::move(v));
             BOOST_CHECK(false);
         } catch (std::bad_alloc &) {}
 #endif // BOOST_NO_EXCEPTIONS
@@ -574,7 +586,7 @@ void test_emplace_2p()
 {
     //emplace_back(pos, int, int)
     {
-        static_vector<T, N, bad_alloc_strategy> v;
+        static_vector<T, N, bad_alloc_strategy<T> > v;
 
         for (int i = 0 ; i < int(N) ; ++i )
             v.emplace_back(i, 100 + i);
@@ -589,11 +601,11 @@ void test_emplace_2p()
 
     // emplace(pos, int, int)
     {
-        typedef typename static_vector<T, N, bad_alloc_strategy>::iterator It;
+        typedef typename static_vector<T, N, bad_alloc_strategy<T> >::iterator It;
 
         int h = N / 2;
 
-        static_vector<T, N, bad_alloc_strategy> v;
+        static_vector<T, N, bad_alloc_strategy<T> > v;
         for ( int i = 0 ; i < h ; ++i )
             v.emplace_back(i, 100 + i);
 
@@ -615,9 +627,9 @@ void test_emplace_2p()
 template <typename T, size_t N>
 void test_sv_elem(T const& t)
 {
-    typedef static_vector<T, N, bad_alloc_strategy> V;
+    typedef static_vector<T, N, bad_alloc_strategy<T> > V;
 
-    static_vector<V, N, bad_alloc_strategy> v;
+    static_vector<V, N, bad_alloc_strategy<V> > v;
 
     v.push_back(V(N/2, t));
     V vvv(N/2, t);

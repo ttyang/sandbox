@@ -36,25 +36,40 @@
 // or boost/detail/iterator.hpp ?
 #include <boost/iterator/reverse_iterator.hpp>
 
+// TODO - change the name Strategy to NullAllocator?
+
 namespace boost { namespace container {
 
 // Forward declaration
-template <typename Value, std::size_t Capacity, typename Strategy>
+template <typename Value, std::size_t Capacity, typename Strategy/*NullAllocator*/>
 class static_vector;
 
 namespace static_vector_detail {
 
-// TODO - should strategy define only an error handler instead of a check?
-// e.g. check_capacity_failed(...) { assert(false); }
-// this means that the checking condition would allways be checked
-// safer since the user couldn't play with the check, but a penalty in some cases
+template <typename Value>
+struct default_strategy/*null_allocator*/
+{
+    typedef Value value_type;
+    typedef std::size_t size_type;
+    typedef std::ptrdiff_t difference_type;
+    typedef Value* pointer;
+    typedef const Value* const_pointer;
+    typedef Value& reference;
+    typedef const Value& const_reference;
 
-struct default_strategy
+    static void allocate_failed()
+    {
+        BOOST_ASSERT_MSG(false, "size can't exceed the capacity");
+    }
+};
+
+struct default_error_handler
 {
     template <typename V, std::size_t Capacity, typename S>
     static void check_capacity(container::static_vector<V, Capacity, S> const&, std::size_t s)
     {
-        BOOST_ASSERT_MSG(s <= Capacity, "size can't exceed the capacity");
+        if ( Capacity < s )
+            S::allocate_failed();
     }
 
     template <typename V, std::size_t C, typename S>
@@ -98,24 +113,34 @@ struct default_strategy
     }
 };
 
-template <typename Value, std::size_t Capacity, typename Strategy>
+template <typename Value, std::size_t Capacity, typename Strategy/*NullAllocator*/>
 struct static_vector_traits
 {
-    typedef std::size_t size_type;
+    typedef typename Strategy::value_type value_type;
+    typedef typename Strategy::size_type size_type;
+    typedef typename Strategy::difference_type difference_type;
+    typedef typename Strategy::pointer pointer;
+    typedef typename Strategy::const_pointer const_pointer;
+    typedef typename Strategy::reference reference;
+    typedef typename Strategy::const_reference const_reference;
+
+    typedef default_error_handler error_handler;
+
     typedef boost::false_type use_memop_in_swap_and_move;
     typedef boost::false_type use_optimized_swap;
-    typedef Strategy strategy;
 };
 
 } // namespace static_vector_detail
 
-template <typename Value, std::size_t Capacity, typename Strategy = static_vector_detail::default_strategy >
+template <typename Value, std::size_t Capacity, typename Strategy/*NullAllocator*/ = static_vector_detail::default_strategy<Value>/*null_allocator*/ >
 class static_vector
 {
-    typedef typename
-    static_vector_detail::static_vector_traits<
+    typedef static_vector_detail::static_vector_traits<
         Value, Capacity, Strategy
-    >::size_type stored_size_type;
+    > vt;
+    
+    typedef typename vt::size_type stored_size_type;
+    typedef typename vt::error_handler errh;
 
     BOOST_MPL_ASSERT_MSG(
         ( boost::is_unsigned<stored_size_type>::value &&
@@ -128,11 +153,6 @@ class static_vector
         sizeof(Value[Capacity]),
         boost::alignment_of<Value[Capacity]>::value
     > aligned_storage_type;
-
-    typedef typename
-    static_vector_detail::static_vector_traits<
-        Value, Capacity, Strategy
-    >::strategy errh;
 
     template <typename V, std::size_t C, typename S>
     friend class static_vector;
@@ -151,15 +171,16 @@ public:
 #endif
 
 public:
-    typedef Value value_type;
+    typedef typename vt::value_type value_type;
     typedef stored_size_type size_type;
-    typedef std::ptrdiff_t difference_type;
-    typedef Value & reference;
-    typedef Value const& const_reference;
-    typedef Value* pointer;
-    typedef const Value* const_pointer;
-    typedef Value* iterator;
-    typedef const Value* const_iterator;
+    typedef typename vt::difference_type difference_type;
+    typedef typename vt::pointer pointer;
+    typedef typename vt::const_pointer const_pointer;
+    typedef typename vt::reference reference;
+    typedef typename vt::const_reference const_reference;
+
+    typedef pointer iterator;
+    typedef const_pointer const_iterator;
     typedef boost::reverse_iterator<iterator> reverse_iterator;
     typedef boost::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -707,7 +728,7 @@ public:
 
     //! Throws: If the Strategy throws in check_at().
     //! Complexity: Constant.
-    Value & at(size_type i)
+    reference at(size_type i)
     {
         errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
@@ -715,7 +736,7 @@ public:
 
     //! Throws: If the Strategy throws in check_at().
     //! Complexity: Constant.
-    Value const& at(size_type i) const
+    const_reference at(size_type i) const
     {
         errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
@@ -723,7 +744,7 @@ public:
 
     //! Throws: If the Strategy throws in check_operator_brackets().
     //! Complexity: Constant.
-    Value & operator[](size_type i)
+    reference operator[](size_type i)
     {
         errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
@@ -731,7 +752,7 @@ public:
 
     //! Throws: If the Strategy throws in check_operator_brackets().
     //! Complexity: Constant.
-    Value const& operator[](size_type i) const
+    const_reference operator[](size_type i) const
     {
         errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
@@ -739,7 +760,7 @@ public:
 
     //! Throws: If the Strategy throws in check_empty().
     //! Complexity: Constant.
-    Value & front()
+    reference front()
     {
         errh::check_empty(*this);
         return *(this->begin());
@@ -747,7 +768,7 @@ public:
 
     //! Throws: If the Strategy throws in check_empty().
     //! Complexity: Constant.
-    Value const& front() const
+    const_reference front() const
     {
         errh::check_empty(*this);
         return *(this->begin());
@@ -755,7 +776,7 @@ public:
 
     //! Throws: If the Strategy throws in check_empty().
     //! Complexity: Constant.
-    Value & back()
+    reference back()
     {
         errh::check_empty(*this);
         return *(this->end() - 1);
@@ -763,7 +784,7 @@ public:
 
     //! Throws: If the Strategy throws in check_empty().
     //! Complexity: Constant.
-    Value const& back() const
+    const_reference back() const
     {
         errh::check_empty(*this);
         return *(this->end() - 1);
@@ -771,10 +792,10 @@ public:
 
     //! Throws: Nothing.
     //! Complexity: Constant.
-    Value * data() { return this->ptr(); }
+    pointer data() { return boost::addressof(*(this->ptr())); }
     //! Throws: Nothing.
     //! Complexity: Constant.
-    const Value * data() const { return this->ptr(); }
+    const_pointer data() const { return boost::addressof(*(this->ptr())); }
 
     //! Throws: Nothing.
     //! Complexity: Constant.
@@ -1132,14 +1153,14 @@ private:
         m_size = s; // update end
     }
 
-    Value * ptr()
+    pointer ptr()
     {
-        return (reinterpret_cast<Value*>(m_storage.address()));
+        return pointer(static_cast<Value*>(m_storage.address()));
     }
 
-    const Value * ptr() const
+    const_pointer ptr() const
     {
-        return (reinterpret_cast<const Value*>(m_storage.address()));
+        return const_pointer(static_cast<const Value*>(m_storage.address()));
     }
 
     stored_size_type m_size;
@@ -1151,26 +1172,24 @@ private:
 template<typename Value, typename Strategy>
 class static_vector<Value, 0, Strategy>
 {
-    typedef typename
-    static_vector_detail::static_vector_traits<
+    typedef static_vector_detail::static_vector_traits<
         Value, 0, Strategy
-    >::size_type stored_size_type;
+    > vt;
 
-    typedef typename
-    static_vector_detail::static_vector_traits<
-        Value, 0, Strategy
-    >::strategy errh;
+    typedef typename vt::size_type stored_size_type;
+    typedef typename vt::error_handler errh;
 
 public:
-    typedef Value value_type;
+    typedef typename vt::value_type value_type;
     typedef stored_size_type size_type;
-    typedef std::ptrdiff_t difference_type;
-    typedef Value& reference;
-    typedef Value const& const_reference;
-    typedef Value * pointer;
-    typedef const Value* const_pointer;
-    typedef Value* iterator;
-    typedef const Value * const_iterator;
+    typedef typename vt::difference_type difference_type;
+    typedef typename vt::pointer pointer;
+    typedef typename vt::const_pointer const_pointer;
+    typedef typename vt::reference reference;
+    typedef typename vt::const_reference const_reference;
+
+    typedef pointer iterator;
+    typedef const_pointer const_iterator;
     typedef boost::reverse_iterator<iterator> reverse_iterator;
     typedef boost::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -1196,8 +1215,8 @@ public:
     }
 
     // strong
-    template <size_t C>
-    static_vector(static_vector<value_type, C> const& other)
+    template <size_t C, typename S>
+    static_vector(static_vector<value_type, C, S> const& other)
     {
         errh::check_capacity(*this, other.size());                                  // may throw
     }
@@ -1217,8 +1236,8 @@ public:
     }
 
     // basic
-    template <size_t C>
-    static_vector & operator=(static_vector<value_type, C> const& other)
+    template <size_t C, typename S>
+    static_vector & operator=(static_vector<value_type, C, S> const& other)
     {
         errh::check_capacity(*this, other.size());                                  // may throw
         return *this;
@@ -1314,64 +1333,64 @@ public:
     void clear() {}
 
     // strong
-    Value & at(size_type i)
+    reference at(size_type i)
     {
         errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
     // strong
-    Value const& at(size_type i) const
+    const_reference at(size_type i) const
     {
         errh::check_at(*this, i);                                   // may throw
         return *(this->begin() + i);
     }
 
     // nothrow
-    Value & operator[](size_type i)
+    reference operator[](size_type i)
     {
         errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
     // nothrow
-    Value const& operator[](size_type i) const
+    const_reference operator[](size_type i) const
     {
         errh::check_operator_brackets(*this, i);
         return *(this->begin() + i);
     }
 
     // nothrow
-    Value & front()
+    reference front()
     {
         errh::check_empty(*this);
         return *(this->begin());
     }
 
     // nothrow
-    Value const& front() const
+    const_reference front() const
     {
         errh::check_empty(*this);
         return *(this->begin());
     }
 
     // nothrow
-    Value & back()
+    reference back()
     {
         errh::check_empty(*this);
         return *(this->end() - 1);
     }
 
     // nothrow
-    Value const& back() const
+    const_reference back() const
     {
         errh::check_empty(*this);
         return *(this->end() - 1);
     }
 
     // nothrow
-    Value * data() { return this->ptr(); }
-    const Value * data() const { return this->ptr(); }
+    pointer data() { return boost::addressof(*(this->ptr())); }
+    const_pointer data() const { return boost::addressof(*(this->ptr())); }
 
     // nothrow
     iterator begin() { return this->ptr(); }
@@ -1396,14 +1415,14 @@ public:
 
 private:
 
-    Value * ptr()
+    pointer ptr()
     {
-        return (reinterpret_cast<Value*>(this));
+        return pointer(reinterpret_cast<Value*>(this));
     }
 
-    const Value * ptr() const
+    const_pointer ptr() const
     {
-        return (reinterpret_cast<const Value*>(this));
+        return const_pointer(reinterpret_cast<const Value*>(this));
     }
 };
 

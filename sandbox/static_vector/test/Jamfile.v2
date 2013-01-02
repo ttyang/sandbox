@@ -18,11 +18,11 @@ project boost-container-static_vector-test
     ;
 
 test-suite boost-container-static_vector
-    : [ run static_vector.cpp ]
+    : [ run static_vector_test.cpp ]
     ;
 
 test-suite boost-container-static_vector_interprocess
-    : [ run static_vector_interprocess.cpp /boost/thread//boost_thread
+    : [ run static_vector_interprocess_test.cpp /boost/thread//boost_thread
         :  # additional args
         :  # test-files
         :  # requirements
