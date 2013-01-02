@@ -23,7 +23,7 @@
 #include <algorithm>
 
 template <typename V, typename SegmentManager>
-struct interprocess_strategy /*interprocess_null_allocator*/
+struct interprocess_strategy /*interprocess_fake_allocator*/
     : public boost::interprocess::allocator<V, SegmentManager>
 {
     static void allocate_failed()

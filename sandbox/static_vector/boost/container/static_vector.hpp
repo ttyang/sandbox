@@ -36,18 +36,18 @@
 // or boost/detail/iterator.hpp ?
 #include <boost/iterator/reverse_iterator.hpp>
 
-// TODO - change the name Strategy to NullAllocator?
+// TODO - change the name Strategy to NullAllocator, StaticAllocator, FakeAllocator or something similar?
 
 namespace boost { namespace container {
 
 // Forward declaration
-template <typename Value, std::size_t Capacity, typename Strategy/*NullAllocator*/>
+template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/>
 class static_vector;
 
 namespace static_vector_detail {
 
 template <typename Value>
-struct default_strategy/*null_allocator*/
+struct default_strategy/*fake_allocator*/
 {
     typedef Value value_type;
     typedef std::size_t size_type;
@@ -56,6 +56,23 @@ struct default_strategy/*null_allocator*/
     typedef const Value* const_pointer;
     typedef Value& reference;
     typedef const Value& const_reference;
+
+    static void allocate_failed()
+    {
+        BOOST_ASSERT_MSG(false, "size can't exceed the capacity");
+    }
+};
+
+template <typename Allocator>
+struct allocator_adaptor_strategy/*fake_allocator_adaptor*/
+{
+    typedef typename Allocator::value_type value_type;
+    typedef typename Allocator::size_type size_type;
+    typedef typename Allocator::difference_type difference_type;
+    typedef typename Allocator::pointer pointer;
+    typedef typename Allocator::const_pointer const_pointer;
+    typedef typename Allocator::reference reference;
+    typedef typename Allocator::const_reference const_reference;
 
     static void allocate_failed()
     {
@@ -113,7 +130,7 @@ struct default_error_handler
     }
 };
 
-template <typename Value, std::size_t Capacity, typename Strategy/*NullAllocator*/>
+template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/>
 struct static_vector_traits
 {
     typedef typename Strategy::value_type value_type;
@@ -132,7 +149,7 @@ struct static_vector_traits
 
 } // namespace static_vector_detail
 
-template <typename Value, std::size_t Capacity, typename Strategy/*NullAllocator*/ = static_vector_detail::default_strategy<Value>/*null_allocator*/ >
+template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/ = static_vector_detail::default_strategy<Value>/*fake_allocator*/ >
 class static_vector
 {
     typedef static_vector_detail::static_vector_traits<
