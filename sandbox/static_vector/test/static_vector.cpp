@@ -8,8 +8,6 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/container/static_vector.hpp>
-
 #ifdef BOOST_SINGLE_HEADER_UTF
 #define BOOST_TEST_MODULE static_vector_tests
 #include <boost/test/unit_test.hpp>
@@ -18,103 +16,7 @@
 #include <boost/test/impl/execution_monitor.ipp>
 #endif // BOOST_SINGLE_HEADER_UTF
 
-#include <vector>
-#include <list>
-#include <boost/shared_ptr.hpp>
-#include "movable.hpp"
-
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
-#include <boost/container/vector.hpp>
-#include <boost/container/stable_vector.hpp>
-#endif
-
-// TODO: Disable parts of the unit test that should not run when BOOST_NO_EXCEPTIONS
-// if exceptions are enabled there must be a user defined throw_exception function
-#ifdef BOOST_NO_EXCEPTIONS
-namespace boost {
-void throw_exception(std::exception const & e){}; // user defined
-} // namespace boost
-#endif // BOOST_NO_EXCEPTIONS
-
-using namespace boost::container;
-
-class value_ndc
-{
-public:
-    explicit value_ndc(int a) : aa(a) {}
-    ~value_ndc() {}
-    bool operator==(value_ndc const& v) const { return aa == v.aa; }
-    bool operator<(value_ndc const& v) const { return aa < v.aa; }
-private:
-    value_ndc(value_ndc const&) {}
-    value_ndc & operator=(value_ndc const&) { return *this; }
-    int aa;
-};
-
-class value_nd
-{
-public:
-    explicit value_nd(int a) : aa(a) {}
-    ~value_nd() {}
-    bool operator==(value_nd const& v) const { return aa == v.aa; }
-    bool operator<(value_nd const& v) const { return aa < v.aa; }
-private:
-    int aa;
-};
-
-class value_nc
-{
-public:
-    explicit value_nc(int a = 0) : aa(a) {}
-    ~value_nc() {}
-    bool operator==(value_nc const& v) const { return aa == v.aa; }
-    bool operator<(value_nc const& v) const { return aa < v.aa; }
-private:
-    value_nc(value_nc const&) {}
-    value_nc & operator=(value_ndc const&) { return *this; }
-    int aa;
-};
-
-class counting_value
-{
-    BOOST_COPYABLE_AND_MOVABLE(counting_value)
-
-public:
-    explicit counting_value(int a = 0, int b = 0) : aa(a), bb(b) { ++c(); }
-    counting_value(counting_value const& v) : aa(v.aa), bb(v.bb) { ++c(); }
-    counting_value(BOOST_RV_REF(counting_value) p) : aa(p.aa), bb(p.bb) { p.aa = 0; p.bb = 0; ++c(); }                      // Move constructor
-    counting_value& operator=(BOOST_RV_REF(counting_value) p) { aa = p.aa; p.aa = 0; bb = p.bb; p.bb = 0; return *this; }   // Move assignment
-    counting_value& operator=(BOOST_COPY_ASSIGN_REF(counting_value) p) { aa = p.aa; bb = p.bb; return *this; }              // Copy assignment
-    ~counting_value() { --c(); }
-    bool operator==(counting_value const& v) const { return aa == v.aa && bb == v.bb; }
-    bool operator<(counting_value const& v) const { return aa < v.aa || ( aa == v.aa && bb < v.bb ); }
-    static size_t count() { return c(); }
-
-private:
-    static size_t & c() { static size_t co = 0; return co; }
-    int aa, bb;
-};
-
-namespace boost {
-
-template <>
-struct has_nothrow_move<counting_value>
-{
-    static const bool value = true;
-};
-
-}
-
-class shptr_value
-{
-    typedef boost::shared_ptr<int> Ptr;
-public:
-    explicit shptr_value(int a = 0) : m_ptr(new int(a)) {}
-    bool operator==(shptr_value const& v) const { return *m_ptr == *(v.m_ptr); }
-    bool operator<(shptr_value const& v) const { return *m_ptr < *(v.m_ptr); }
-private:
-    boost::shared_ptr<int> m_ptr;
-};
+#include "static_vector.hpp"
 
 template <typename T, size_t N>
 void test_ctor_ndc()
@@ -256,7 +158,7 @@ void test_pop_back_nd()
     for ( size_t i = 0 ; i < N ; ++i )
     {
         T t(i);
-        s.push_back(t);    
+        s.push_back(t);
     }
 
     for ( size_t i = N ; i > 1 ; --i )
@@ -375,7 +277,7 @@ void test_erase_nd()
 {
     static_vector<T, N> s;
     typedef typename static_vector<T, N>::iterator It;
-    
+
     for ( size_t i = 0 ; i < N ; ++i )
         s.push_back(T(i));
 
@@ -391,7 +293,7 @@ void test_erase_nd()
                 BOOST_CHECK(s1[j] == T(j));
             for ( size_t j = i+1 ; j < N ; ++j )
                 BOOST_CHECK(s1[j-1] == T(j));
-        }        
+        }
     }
     // erase(first, last)
     {
@@ -407,7 +309,7 @@ void test_erase_nd()
                 BOOST_CHECK(s1[j] == T(j));
             for ( size_t j = i+n ; j < N ; ++j )
                 BOOST_CHECK(s1[j-n] == T(j));
-        }        
+        }
     }
 }
 
@@ -469,7 +371,7 @@ void test_insert_nd(T const& val)
             BOOST_CHECK(s1[i] == val);
             for ( size_t j = 0 ; j < h-i ; ++j )
                 BOOST_CHECK(s1[j+i+1] == T(j+i));
-        }        
+        }
     }
     // insert(pos, n, val)
     {
@@ -486,7 +388,7 @@ void test_insert_nd(T const& val)
                 BOOST_CHECK(s1[j+i] == val);
             for ( size_t j = 0 ; j < h-i ; ++j )
                 BOOST_CHECK(s1[j+i+n] == T(j+i));
-        }        
+        }
     }
     // insert(pos, first, last)
     test_insert<T, N>(s, ss);
@@ -548,7 +450,7 @@ void test_exceptions_nd()
 {
     static_vector<T, N> v(N, T(0));
     static_vector<T, N/2, bad_alloc_strategy> s(N/2, T(0));
-    
+
 #ifndef BOOST_NO_EXCEPTIONS
     BOOST_CHECK_THROW(s.resize(N, T(0)), std::bad_alloc);
     BOOST_CHECK_THROW(s.push_back(T(0)), std::bad_alloc);
@@ -706,7 +608,7 @@ void test_emplace_2p()
             BOOST_CHECK(vv[i] == T(i+100, i+200));
             for ( int j = 0 ; j < h-i ; ++j )
                 BOOST_CHECK(vv[j+i+1] == T(j+i, j+i+100));
-        }        
+        }
     }
 }
 
@@ -725,39 +627,13 @@ void test_sv_elem(T const& t)
     v.emplace_back(N/2, t);
 }
 
-//#include <boost/interprocess/managed_shared_memory.hpp>
-//#include <algorithm>
-
-//template <typename T, size_t N>
-//void test_interprocess(T const& t)
-//{
-//    namespace bi = boost::interprocess;
-//    struct shm_remove
-//    {
-//        shm_remove() { bi::shared_memory_object::remove("MySharedMemory"); }
-//        ~shm_remove(){ bi::shared_memory_object::remove("MySharedMemory"); }
-//    } remover;
-
-//    bi::managed_shared_memory shmem(bi::create_only, "MySharedMemory", 10000);
-
-//    typedef static_vector<T, N> SV;
-//    SV * sv_ptr = shmem.construct<SV>("my_object")(N, t);
-
-//    for ( size_t i = 0 ; i < N ; ++i )
-//        (*sv_ptr)[i] = T(N - i);
-//    std::sort(sv_ptr->begin(), sv_ptr->end());
-//    for ( size_t i = 0 ; i < N ; ++i )
-//        BOOST_CHECK((*sv_ptr)[i] == T(i + 1));
-//    shmem.destroy_ptr(sv_ptr);
-//}
-
 #ifdef BOOST_SINGLE_HEADER_UTF
 BOOST_AUTO_TEST_CASE(static_vector_test)
 #else // BOOST_SINGLE_HEADER_UTF
 int test_main(int, char* [])
 #endif // BOOST_SINGLE_HEADER_UTF
 {
-    BOOST_CHECK_EQUAL(counting_value::count(), 0);
+    BOOST_CHECK(counting_value::count() == 0);
 
     test_ctor_ndc<int, 10>();
     test_ctor_ndc<value_ndc, 10>();
@@ -866,12 +742,6 @@ int test_main(int, char* [])
     BOOST_CHECK(counting_value::count() == 0);
     test_sv_elem<shptr_value, 10>(shptr_value(50));
     test_sv_elem<copy_movable, 10>(copy_movable(50));
-
-//    test_interprocess<int, 10>(50);
-//    test_interprocess<value_nd, 10>(value_nd(50));
-//    test_interprocess<counting_value, 10>(counting_value(50));
-//    BOOST_CHECK(counting_value::count() == 0);
-//    test_interprocess<shptr_value, 10>(shptr_value(50));
 
 #ifndef BOOST_SINGLE_HEADER_UTF
     return 0;
