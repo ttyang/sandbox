@@ -44,6 +44,7 @@ public:
     explicit value_ndc(int a) : aa(a) {}
     ~value_ndc() {}
     bool operator==(value_ndc const& v) const { return aa == v.aa; }
+    bool operator<(value_ndc const& v) const { return aa < v.aa; }
 private:
     value_ndc(value_ndc const&) {}
     value_ndc & operator=(value_ndc const&) { return *this; }
@@ -56,6 +57,7 @@ public:
     explicit value_nd(int a) : aa(a) {}
     ~value_nd() {}
     bool operator==(value_nd const& v) const { return aa == v.aa; }
+    bool operator<(value_nd const& v) const { return aa < v.aa; }
 private:
     int aa;
 };
@@ -66,6 +68,7 @@ public:
     explicit value_nc(int a = 0) : aa(a) {}
     ~value_nc() {}
     bool operator==(value_nc const& v) const { return aa == v.aa; }
+    bool operator<(value_nc const& v) const { return aa < v.aa; }
 private:
     value_nc(value_nc const&) {}
     value_nc & operator=(value_ndc const&) { return *this; }
@@ -84,6 +87,7 @@ public:
     counting_value& operator=(BOOST_COPY_ASSIGN_REF(counting_value) p) { aa = p.aa; bb = p.bb; return *this; }              // Copy assignment
     ~counting_value() { --c(); }
     bool operator==(counting_value const& v) const { return aa == v.aa && bb == v.bb; }
+    bool operator<(counting_value const& v) const { return aa < v.aa || ( aa == v.aa && bb < v.bb ); }
     static size_t count() { return c(); }
 
 private:
@@ -107,55 +111,9 @@ class shptr_value
 public:
     explicit shptr_value(int a = 0) : m_ptr(new int(a)) {}
     bool operator==(shptr_value const& v) const { return *m_ptr == *(v.m_ptr); }
+    bool operator<(shptr_value const& v) const { return *m_ptr < *(v.m_ptr); }
 private:
     boost::shared_ptr<int> m_ptr;
-};
-
-template <class T>
-class clone_ptr
-{
-   private:
-   // Mark this class copyable and movable
-   BOOST_COPYABLE_AND_MOVABLE(clone_ptr)
-   T* ptr;
-
-   public:
-   // Construction
-   explicit clone_ptr(T* p = 0) : ptr(p) {}
-
-   // Destruction
-   ~clone_ptr() { delete ptr; }
-
-   clone_ptr(const clone_ptr& p) // Copy constructor (as usual)
-      : ptr(p.ptr ? p.ptr->clone() : 0) {}
-
-   clone_ptr& operator=(BOOST_COPY_ASSIGN_REF(clone_ptr) p) // Copy assignment
-   {
-      if (this != &p){
-         T *tmp_p = p.ptr ? p.ptr->clone() : 0;
-         delete ptr;
-         ptr = tmp_p;
-      }
-      return *this;
-   }
-
-   //Move semantics...
-   clone_ptr(BOOST_RV_REF(clone_ptr) p)            //Move constructor
-      : ptr(p.ptr) { p.ptr = 0; }
-
-   clone_ptr& operator=(BOOST_RV_REF(clone_ptr) p) //Move assignment
-   {
-      if (this != &p){
-         delete ptr;
-         ptr = p.ptr;
-         p.ptr = 0;
-      }
-      return *this;
-   }
-   
-   bool operator==(const clone_ptr& p){
-        return p.ptr == ptr;
-   }
 };
 
 template <typename T, size_t N>
@@ -767,6 +725,32 @@ void test_sv_elem(T const& t)
     v.emplace_back(N/2, t);
 }
 
+//#include <boost/interprocess/managed_shared_memory.hpp>
+//#include <algorithm>
+
+//template <typename T, size_t N>
+//void test_interprocess(T const& t)
+//{
+//    namespace bi = boost::interprocess;
+//    struct shm_remove
+//    {
+//        shm_remove() { bi::shared_memory_object::remove("MySharedMemory"); }
+//        ~shm_remove(){ bi::shared_memory_object::remove("MySharedMemory"); }
+//    } remover;
+
+//    bi::managed_shared_memory shmem(bi::create_only, "MySharedMemory", 10000);
+
+//    typedef static_vector<T, N> SV;
+//    SV * sv_ptr = shmem.construct<SV>("my_object")(N, t);
+
+//    for ( size_t i = 0 ; i < N ; ++i )
+//        (*sv_ptr)[i] = T(N - i);
+//    std::sort(sv_ptr->begin(), sv_ptr->end());
+//    for ( size_t i = 0 ; i < N ; ++i )
+//        BOOST_CHECK((*sv_ptr)[i] == T(i + 1));
+//    shmem.destroy_ptr(sv_ptr);
+//}
+
 #ifdef BOOST_SINGLE_HEADER_UTF
 BOOST_AUTO_TEST_CASE(static_vector_test)
 #else // BOOST_SINGLE_HEADER_UTF
@@ -882,6 +866,12 @@ int test_main(int, char* [])
     BOOST_CHECK(counting_value::count() == 0);
     test_sv_elem<shptr_value, 10>(shptr_value(50));
     test_sv_elem<copy_movable, 10>(copy_movable(50));
+
+//    test_interprocess<int, 10>(50);
+//    test_interprocess<value_nd, 10>(value_nd(50));
+//    test_interprocess<counting_value, 10>(counting_value(50));
+//    BOOST_CHECK(counting_value::count() == 0);
+//    test_interprocess<shptr_value, 10>(shptr_value(50));
 
 #ifndef BOOST_SINGLE_HEADER_UTF
     return 0;
