@@ -59,6 +59,12 @@ void test_interprocess(T const& t)
     for ( size_t i = 0 ; i < N ; ++i )
         BOOST_CHECK((*sv_ptr)[i] == T(i + 1));
 
+    {
+        T * p = sv_ptr->data();
+        for ( size_t i = 0 ; p != sv_ptr->data() + sv_ptr->size() ; ++p, ++i )
+            BOOST_CHECK(*p == T(i + 1));
+    }
+
     sv_ptr->assign(N/2, t);
     for ( size_t i = 0 ; i < N/2 ; ++i )
         BOOST_CHECK(sv_ptr->at(i) == t);

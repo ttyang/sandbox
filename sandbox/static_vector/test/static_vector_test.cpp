@@ -173,6 +173,7 @@ void test_push_back_nd()
         BOOST_CHECK(T(i) == s[i]);
         BOOST_CHECK(T(i) == s.back());
         BOOST_CHECK(T(0) == s.front());
+        BOOST_CHECK(T(i) == *(s.data() + i));
     }
 }
 

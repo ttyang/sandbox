@@ -528,6 +528,8 @@ public:
         ++m_size; // update end
     }
 
+    //! <b>Requires</b>: !empty().
+    //!
     //! <b>Effects</b>: Destroys last value and decreases the size.
     //!
     //! <b>Throws</b>: Nothing by default.
@@ -542,6 +544,8 @@ public:
         --m_size; // update end
     }
 
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()].
+    //!
     //! <b>Effects</b>: Inserts a copy of element at position.
     //!
     //! <b>Throws</b>: If Value's copy constructor or copy assignment throws
@@ -554,6 +558,8 @@ public:
         return this->priv_insert(position, value);
     }
 
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()].
+    //!
     //! <b>Effects</b>: Inserts a move-constructed element at position.
     //!
     //! <b>Throws</b>: If Value's move constructor or move assignment throws.
@@ -565,6 +571,8 @@ public:
         return this->priv_insert(position, value);
     }
 
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()].
+    //!
     //! <b>Effects</b>: Inserts a count copies of value at position.
     //!
     //! <b>Throws</b>: If Value's copy constructor or copy assignment throws
@@ -610,6 +618,8 @@ public:
         return position;
     }
 
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()].
+    //!
     //! <b>Effects</b>: Inserts a copy of a range [first, last) at position.
     //!
     //! <b>Throws</b>: If Value's constructor and assignment taking a dereferenced Iterator throws
@@ -628,6 +638,8 @@ public:
         return position;
     }
 
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()).
+    //!
     //! <b>Effects</b>: Erases Value from position.
     //!
     //! <b>Throws</b>: If Value's move assignment throws.
@@ -649,6 +661,8 @@ public:
         return position;
     }
 
+    //! <b>Requires</b>: first and last must define a valid range, iterators must be in range [begin(), end()].
+    //!
     //! <b>Effects</b>: Erases Values from a range [first, last).
     //!
     //! <b>Throws</b>: If Value's move assignment throws.
@@ -841,7 +855,13 @@ public:
         m_size = 0; // update end
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_at().
+    //! <b>Requires</b>: i < size().
+    //!
+    //! <b>Effects</b>: Returns a reference to the i-th element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: std::out_of_range exception by default.
+    //!
     //! <b>Complexity</b>: Constant.
     reference at(size_type i)
     {
@@ -849,7 +869,13 @@ public:
         return *(this->begin() + i);
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_at().
+    //! <b>Requires</b>: i < size().
+    //!
+    //! <b>Effects</b>: Returns a const reference to the i-th element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: std::out_of_range exception by default.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reference at(size_type i) const
     {
@@ -857,7 +883,13 @@ public:
         return *(this->begin() + i);
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_operator_brackets().
+    //! <b>Requires</b>: i < size().
+    //!
+    //! <b>Effects</b>: Returns a reference to the i-th element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: Nothing by default.
+    //!
     //! <b>Complexity</b>: Constant.
     reference operator[](size_type i)
     {
@@ -865,7 +897,13 @@ public:
         return *(this->begin() + i);
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_operator_brackets().
+    //! <b>Requires</b>: i < size().
+    //!
+    //! <b>Effects</b>: Returns a const reference to the i-th element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: Nothing by default.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reference operator[](size_type i) const
     {
@@ -873,7 +911,13 @@ public:
         return *(this->begin() + i);
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_empty().
+    //! <b>Requires</b>: !empty().
+    //!
+    //! <b>Effects</b>: Returns a reference to the first element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: Nothing by default.
+    //!
     //! <b>Complexity</b>: Constant.
     reference front()
     {
@@ -881,7 +925,13 @@ public:
         return *(this->begin());
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_empty().
+    //! <b>Requires</b>: !empty().
+    //!
+    //! <b>Effects</b>: Returns a const reference to the first element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: Nothing by default.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reference front() const
     {
@@ -889,7 +939,13 @@ public:
         return *(this->begin());
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_empty().
+    //! <b>Requires</b>: !empty().
+    //!
+    //! <b>Effects</b>: Returns a reference to the last element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: Nothing by default.
+    //!
     //! <b>Complexity</b>: Constant.
     reference back()
     {
@@ -897,7 +953,13 @@ public:
         return *(this->end() - 1);
     }
 
-    //! <b>Throws</b>: If the Strategy throws in check_empty().
+    //! <b>Requires</b>: !empty().
+    //!
+    //! <b>Effects</b>: Returns a const reference to the last element
+    //!   from the beginning of the container.
+    //!
+    //! <b>Throws</b>: Nothing by default.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reference back() const
     {
@@ -905,12 +967,27 @@ public:
         return *(this->end() - 1);
     }
 
+    //! <b>Returns</b>: Pointer such that [data(), data() + size()) is a valid range.
+    //!   For a non-empty vector, data() == &front().
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
-    pointer data() { return boost::addressof(*(this->ptr())); }
+    Value * data()
+    {
+        return boost::addressof(*(this->ptr()));
+    }
+
+    //! <b>Returns</b>: Const pointer such that [data(), data() + size()) is a valid range.
+    //!   For a non-empty vector, data() == &front().
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
-    const_pointer data() const { return boost::addressof(*(this->ptr())); }
+    const Value * data() const
+    {
+        return boost::addressof(*(this->ptr()));
+    }
 
     //! <b>Throws</b>: Nothing.
     //! <b>Complexity</b>: Constant.
@@ -1504,8 +1581,8 @@ public:
     }
 
     // nothrow
-    pointer data() { return boost::addressof(*(this->ptr())); }
-    const_pointer data() const { return boost::addressof(*(this->ptr())); }
+    Value * data() { return boost::addressof(*(this->ptr())); }
+    const Value * data() const { return boost::addressof(*(this->ptr())); }
 
     // nothrow
     iterator begin() { return this->ptr(); }
