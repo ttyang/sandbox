@@ -210,6 +210,8 @@ public:
         : m_size(0)
     {}
 
+    //! <b>Requires</b>: count <= Capacity.
+    //!
     //! <b>Effects</b>: Constructs a static_vector containing count default constructed Values.
     //!
     //! <b>Throws</b>: If Value's default constructor throws.
@@ -222,6 +224,8 @@ public:
         this->resize(count);                                                        // may throw
     }
 
+    //! <b>Requires</b>: count <= Capacity.
+    //!
     //! <b>Effects</b>: Constructs a static_vector containing count copies of value.
     //!
     //! <b>Throws</b>: If Value's copy constructor throws.
@@ -234,6 +238,8 @@ public:
         this->resize(count, value);                                                 // may throw
     }
 
+    //! <b>Requires</b>: distance(first, last) <= Capacity.
+    //!
     //! <b>Effects</b>: Constructs a static_vector containing copy of a range [first, last).
     //!
     //! <b>Throws</b>: If Value's constructor taking a dereferenced Iterator throws.
@@ -260,6 +266,8 @@ public:
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
+    //! <b>Requires</b>: other.size() <= Capacity.
+    //!
     //! <b>Effects</b>: Constructs a copy of other static_vector.
     //!
     //! <b>Throws</b>: If Value's copy constructor throws.
@@ -288,6 +296,8 @@ public:
         return *this;
     }
 
+    //! <b>Requires</b>: other.size() <= Capacity.
+    //!
     //! <b>Effects</b>: Copy assigns Values stored in the other static_vector to this one.
     //!
     //! <b>Throws</b>: If Value's copy constructor or copy assignment throws,
@@ -324,6 +334,8 @@ public:
         this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
+    //! <b>Requires</b>: other.size() <= Capacity.
+    //!
     //! <b>Effects</b>: Move constructor. Moves Values stored in the other static_vector to this one.
     //!
     //! <b>Throws</b>: If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
@@ -368,6 +380,8 @@ public:
         return *this;
     }
 
+    //! <b>Requires</b>: other.size() <= Capacity.
+    //!
     //! <b>Effects</b>: Move assignment. Moves Values stored in the other static_vector to this one.
     //!
     //! <b>Throws</b>: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
@@ -419,6 +433,8 @@ public:
         this->swap_dispatch(other, use_optimized_swap());
     }
 
+    //! <b>Requires</b>: other.size() <= Capacity && size() <= other.capacity().
+    //!
     //! <b>Effects</b>: Swaps contents of the other static_vector and this one.
     //!
     //! <b>Throws</b>: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
@@ -441,6 +457,8 @@ public:
         this->swap_dispatch(other, use_optimized_swap()); 
     }
 
+    //! <b>Requires</b>: count <= Capacity.
+    //!
     //! <b>Effects</b>: Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are default constructed.
     //!
@@ -465,6 +483,8 @@ public:
         m_size = count; // update end
     }
 
+    //! <b>Requires</b>: count <= Capacity.
+    //!
     //! <b>Effects</b>: Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are copy constructed from value.
     //!
@@ -488,6 +508,8 @@ public:
         m_size = count; // update end
     }
 
+    //! <b>Requires</b>: count <= Capacity.
+    //!
     //! <b>Effects</b>: This call has no effect because the Capacity of this container is constant.
     //!
     //! <b>Throws</b>: If the error handler throws in capacity check (nothing by default).
@@ -498,6 +520,8 @@ public:
         errh::check_capacity(*this, count);                                         // may throw
     }
 
+    //! <b>Requires</b>: size() < Capacity.
+    //!
     //! <b>Effects</b>: Adds a copy of value at the end.
     //!
     //! <b>Throws</b>: If Value's copy constructor throws.
@@ -513,6 +537,8 @@ public:
         ++m_size; // update end
     }
 
+    //! <b>Requires</b>: size() < Capacity.
+    //!
     //! <b>Effects</b>: Moves value to the end.
     //!
     //! <b>Throws</b>: If Value's move constructor throws.
@@ -558,7 +584,8 @@ public:
         return this->priv_insert(position, value);
     }
 
-    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()].
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()]
+    //!   and size() < Capacity.
     //!
     //! <b>Effects</b>: Inserts a move-constructed element at position.
     //!
@@ -571,7 +598,8 @@ public:
         return this->priv_insert(position, value);
     }
 
-    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()].
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()]
+    //!   and size() + count <= Capacity.
     //!
     //! <b>Effects</b>: Inserts a count copies of value at position.
     //!
@@ -618,7 +646,8 @@ public:
         return position;
     }
 
-    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()].
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()]
+    //!   and distance(first, last) <= Capacity.
     //!
     //! <b>Effects</b>: Inserts a copy of a range [first, last) at position.
     //!
@@ -689,6 +718,8 @@ public:
         return first;
     }
 
+    //! <b>Requires</b>: distance(first, last) <= Capacity.
+    //!
     //! <b>Effects</b>: Assigns a range [first, last) of Values to this container.
     //!
     //! <b>Throws</b>: If Value's copy constructor or copy assignment throws,
@@ -703,6 +734,8 @@ public:
         this->assign_dispatch(first, last, traversal());                            // may throw
     }
 
+    //! <b>Requires</b>: count <= Capacity.
+    //!
     //! <b>Effects</b>: Assigns a count copies of value to this container.
     //!
     //! <b>Throws</b>: If Value's copy constructor or copy assignment throws.
@@ -729,6 +762,8 @@ public:
 
 #if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
 #if defined(BOOST_CONTAINER_PERFECT_FORWARDING) || defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
+    //! <b>Requires</b>: size() < Capacity.
+    //!
     //! <b>Effects</b>: Inserts a Value constructed with
     //!   std::forward<Args>(args)... in the end of the container.
     //!
@@ -746,6 +781,9 @@ public:
         ++m_size; // update end
     }
 
+    //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()]
+    //!   and size() < Capacity.
+    //!
     //! <b>Effects</b>: Inserts a Value constructed with
     //!   std::forward<Args>(args)... before position
     //!
@@ -967,7 +1005,7 @@ public:
         return *(this->end() - 1);
     }
 
-    //! <b>Returns</b>: Pointer such that [data(), data() + size()) is a valid range.
+    //! <b>Effects</b>: Pointer such that [data(), data() + size()) is a valid range.
     //!   For a non-empty vector, data() == &front().
     //!
     //! <b>Throws</b>: Nothing.
@@ -978,7 +1016,7 @@ public:
         return boost::addressof(*(this->ptr()));
     }
 
-    //! <b>Returns</b>: Const pointer such that [data(), data() + size()) is a valid range.
+    //! <b>Effects</b>: Const pointer such that [data(), data() + size()) is a valid range.
     //!   For a non-empty vector, data() == &front().
     //!
     //! <b>Throws</b>: Nothing.
@@ -989,57 +1027,129 @@ public:
         return boost::addressof(*(this->ptr()));
     }
 
+    //! <b>Effects</b>: Returns an iterator to the first element contained in the vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     iterator begin() { return this->ptr(); }
+
+    //! <b>Effects</b>: Returns a const_iterator to the first element contained in the vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_iterator begin() const { return this->ptr(); }
+
+    //! <b>Effects</b>: Returns a const_iterator to the first element contained in the vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_iterator cbegin() const { return this->ptr(); }
+
+    //! <b>Effects</b>: Returns an iterator pointing to the one after the last element contained in the vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     iterator end() { return this->begin() + m_size; }
+
+    //! <b>Effects</b>: Returns a const_iterator pointing to the one after the last element contained in the vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_iterator end() const { return this->begin() + m_size; }
+
+    //! <b>Effects</b>: Returns a const_iterator pointing to the one after the last element contained in the vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_iterator cend() const { return this->cbegin() + m_size; }
 
+    //! <b>Effects</b>: Returns a reverse_iterator pointing to the beginning
+    //! of the reversed static_vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     reverse_iterator rbegin() { return reverse_iterator(this->end()); }
+
+    //! <b>Effects</b>: Returns a const_reverse_iterator pointing to the beginning
+    //! of the reversed static_vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reverse_iterator rbegin() const { return reverse_iterator(this->end()); }
+
+    //! <b>Effects</b>: Returns a const_reverse_iterator pointing to the beginning
+    //! of the reversed static_vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reverse_iterator crbegin() const { return reverse_iterator(this->end()); }
+
+    //! <b>Effects</b>: Returns a reverse_iterator pointing to the one after the last element
+    //! of the reversed static_vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     reverse_iterator rend() { return reverse_iterator(this->begin()); }
+
+    //! <b>Effects</b>: Returns a const_reverse_iterator pointing to the one after the last element
+    //! of the reversed static_vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reverse_iterator rend() const { return reverse_iterator(this->begin()); }
+
+    //! <b>Effects</b>: Returns a const_reverse_iterator pointing to the one after the last element
+    //! of the reversed static_vector.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     const_reverse_iterator crend() const { return reverse_iterator(this->begin()); }
 
+    //! <b>Effects</b>: Returns container's capacity.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     static size_type capacity() { return Capacity; }
+
+    //! <b>Effects</b>: Returns container's capacity.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     static size_type max_size() { return Capacity; }
+
+    //! <b>Effects</b>: Returns the number of elements contained in the container.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     size_type size() const { return m_size; }
+
+    //! <b>Effects</b>: Returns true if the number of elements contained in the
+    //!   container is equal to 0.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     bool empty() const { return 0 == m_size; }
+
+    //! <b>Effects</b>: The call has no effects.
+    //!
     //! <b>Throws</b>: Nothing.
+    //!
     //! <b>Complexity</b>: Constant.
     void shrink_to_fit() {}
 
@@ -1188,6 +1298,9 @@ private:
 
     // insert
 
+    //! <b>Throws</b>: If Value's move constructor or move assignment throws
+    //!   or if Value's copy assignment throws.
+    //! <b>Complexity</b>: Linear.
     template <typename V>
     iterator priv_insert(iterator position, V & value)
     {
