@@ -10,6 +10,10 @@
 #ifndef BOOST_CONTAINER_STATIC_VECTOR_HPP
 #define BOOST_CONTAINER_STATIC_VECTOR_HPP
 
+#if (defined _MSC_VER) && (_MSC_VER >= 1200)
+#  pragma once
+#endif
+
 #include <boost/container/detail/config_begin.hpp>
 #include <boost/container/detail/workaround.hpp>
 #include <boost/container/detail/preprocessor.hpp>
@@ -1155,8 +1159,8 @@ public:
 
 private:
 
-    //! <b>Throws</b>: Nothing.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: Nothing.
+    // <b>Complexity</b>: Linear.
     template <std::size_t C, typename S>
     void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::true_type /*use_memop*/)
     {
@@ -1165,9 +1169,9 @@ private:
         other.m_size = 0;
     }
 
-    //! <b>Throws</b>: If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
-    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
+    //   or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+    // <b>Complexity</b>: Linear.
     template <std::size_t C, typename S>
     void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
@@ -1178,8 +1182,8 @@ private:
         other.m_size = 0;
     }
 
-    //! <b>Throws</b>: Nothing.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: Nothing.
+    // <b>Complexity</b>: Linear.
     template <std::size_t C, typename S>
     void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::true_type /*use_memop*/)
     {
@@ -1189,9 +1193,9 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    //! <b>Throws</b>: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
-    //!         or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor or move assignment throws.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
+    //   or if boost::has_nothrow_move<Value>::value is false and Value's copy constructor or move assignment throws.
+    // <b>Complexity</b>: Linear.
     template <std::size_t C, typename S>
     void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
@@ -1212,8 +1216,8 @@ private:
         other.clear();
     }
 
-    //! <b>Throws</b>: Nothing.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: Nothing.
+    // <b>Complexity</b>: Linear.
     template <std::size_t C, typename S>
     void swap_dispatch(static_vector<value_type, C, S> & other, boost::true_type const& /*use_optimized_swap*/)
     {
@@ -1235,9 +1239,9 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    //! <b>Throws</b>: If Value's move constructor or move assignment throws
-    //!         (only if use_memop_in_swap_and_move is false_type - default).
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: If Value's move constructor or move assignment throws
+    //   but only if use_memop_in_swap_and_move is false_type - default.
+    // <b>Complexity</b>: Linear.
     template <std::size_t C, typename S>
     void swap_dispatch(static_vector<value_type, C, S> & other, boost::false_type const& /*use_optimized_swap*/)
     {
@@ -1255,8 +1259,8 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    //! <b>Throws</b>: Nothing.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: Nothing.
+    // <b>Complexity</b>: Linear.
     void swap_dispatch_impl(iterator first_sm, iterator last_sm, iterator first_la, iterator last_la, boost::true_type const& /*use_memop*/)
     {
         //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
@@ -1278,8 +1282,8 @@ private:
         ::memcpy(first_sm, first_la, sizeof(value_type) * std::distance(first_la, last_la));
     }
 
-    //! <b>Throws</b>: If Value's move constructor or move assignment throws.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: If Value's move constructor or move assignment throws.
+    // <b>Complexity</b>: Linear.
     void swap_dispatch_impl(iterator first_sm, iterator last_sm, iterator first_la, iterator last_la, boost::false_type const& /*use_memop*/)
     {
         //BOOST_ASSERT_MSG(std::distance(first_sm, last_sm) <= std::distance(first_la, last_la));
@@ -1298,9 +1302,9 @@ private:
 
     // insert
 
-    //! <b>Throws</b>: If Value's move constructor or move assignment throws
-    //!   or if Value's copy assignment throws.
-    //! <b>Complexity</b>: Linear.
+    // <b>Throws</b>: If Value's move constructor or move assignment throws
+    //   or if Value's copy assignment throws.
+    // <b>Complexity</b>: Linear.
     template <typename V>
     iterator priv_insert(iterator position, V & value)
     {
@@ -1331,6 +1335,9 @@ private:
 
     // insert
 
+    // <b>Throws</b>: If Value's move constructor, move assignment throws
+    //   or if Value's copy constructor or copy assignment throws.
+    // <b>Complexity</b>: Linear.
     template <typename Iterator>
     void insert_dispatch(iterator position, Iterator first, Iterator last, boost::random_access_traversal_tag const&)
     {
@@ -1354,6 +1361,9 @@ private:
         }
     }
 
+    // <b>Throws</b>: If Value's move constructor, move assignment throws
+    //   or if Value's copy constructor or copy assignment throws.
+    // <b>Complexity</b>: Linear.
     template <typename Iterator, typename Traversal>
     void insert_dispatch(iterator position, Iterator first, Iterator last, Traversal const& /*not_random_access*/)
     {
@@ -1381,6 +1391,9 @@ private:
         }
     }
 
+    // <b>Throws</b>: If Value's move constructor, move assignment throws
+    //   or if Value's copy constructor or copy assignment throws.
+    // <b>Complexity</b>: Linear.
     template <typename Iterator>
     void insert_in_the_middle(iterator position, Iterator first, Iterator last, difference_type count)
     {
@@ -1412,6 +1425,8 @@ private:
 
     // assign
 
+    // <b>Throws</b>: If Value's constructor or assignment taking dereferenced Iterator throws.
+    // <b>Complexity</b>: Linear.
     template <typename Iterator>
     void assign_dispatch(Iterator first, Iterator last, boost::random_access_traversal_tag const& /*not_random_access*/)
     {
@@ -1436,6 +1451,8 @@ private:
         m_size = s; // update end
     }
 
+    // <b>Throws</b>: If Value's constructor or assignment taking dereferenced Iterator throws.
+    // <b>Complexity</b>: Linear.
     template <typename Iterator, typename Traversal>
     void assign_dispatch(Iterator first, Iterator last, Traversal const& /*not_random_access*/)
     {
