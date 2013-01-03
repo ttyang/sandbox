@@ -1,0 +1,40 @@
+[/
+ / Copyright (c) 2012 Adam Wulkiewicz
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[library StaticVector
+    [quickbook 1.5]
+    [authors [Wulkiewicz, Adam], [Hundt, Andrew]]
+    [copyright 2012 Adam Wulkiewicz, 2011-2012 Andrew Hundt]
+    [id static_vector]
+    [category containers]
+    [purpose Containers library]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[section:static_vector static_vector]
+
+Description.
+
+[endsect]
+
+[include auto_index_helpers.qbk]
+
+[section:index Indexes]
+
+[named_index class_name Class Index]
+[named_index typedef_name Typedef Index]
+[named_index function_name Function Index]
+[/named_index macro_name Macro Index]
+[/index]
+
+[endsect]
+
+[xinclude autodoc.xml]
