@@ -153,6 +153,13 @@ struct static_vector_traits
 
 } // namespace static_vector_detail
 
+/// A hybrid of boost::container::vector and boost::array. 
+/**
+ * static_vector is a sequence container like boost::container::vector with contiguous storage that can
+ * change in size, but provides the static allocation, low overhead, and fixed capacity of boost::array.
+ *
+ * 
+ */
 template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/ = static_vector_detail::default_strategy<Value>/*fake_allocator*/ >
 class static_vector
 {

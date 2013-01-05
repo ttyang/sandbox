@@ -3,7 +3,7 @@
  *  @date   Aug 14, 2011
  *  @author Andrew Hundt <ATHundt@gmail.com>
  *
- *  (C) Andrew Hundt 2011 <ATHundt@gmail.com>
+ *  (C) 2011-2012 Andrew Hundt <ATHundt@gmail.com>
  *
  *  Distributed under the Boost Software License, Version 1.0. (See
  *  accompanying file LICENSE_1_0.txt or copy at

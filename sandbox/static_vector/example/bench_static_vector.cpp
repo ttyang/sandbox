@@ -1,9 +1,22 @@
 
 // benchmark based on: http://cpp-next.com/archive/2010/10/howards-stl-move-semantics-benchmark/
-
+/**
+ *  @file   static_vector_set_example.cpp
+ *  @date   Aug 14, 2011
+ *  @author Andrew Hundt <ATHundt@gmail.com>
+ *
+ *  (C) 2011-2012 Andrew Hundt <ATHundt@gmail.com>
+ *
+ *  Distributed under the Boost Software License, Version 1.0. (See
+ *  accompanying file LICENSE_1_0.txt or copy at
+ *  http://www.boost.org/LICENSE_1_0.txt)
+ *
+ *  @brief  static_vector_benchmark.cpp compares the performance of boost::container::static_vector to boost::container::vector
+ *
+ */
+ 
 #include "boost/container/static_vector.hpp"
 #include "boost/container/vector.hpp"
-#include "boost/container/set.hpp"
 #include <vector>
 #include <iostream>
 #include <boost/timer/timer.hpp>
@@ -15,7 +28,7 @@ using boost::timer::cpu_timer;
 using boost::timer::cpu_times;
 using boost::timer::nanosecond_type;
 
-static const std::size_t N = 720;
+static const std::size_t N = 720; // note: if N is too large you will run out of stack space. It is possible to increase the stack limit on some platforms.
 
 extern bool some_test;
 
