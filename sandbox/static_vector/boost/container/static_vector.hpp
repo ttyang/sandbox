@@ -166,16 +166,21 @@ struct static_vector_traits
 /// A hybrid of boost::container::vector and boost::array. 
 /**
  * static_vector is a sequence container like boost::container::vector with contiguous storage that can
- * change in size, but provides the static allocation, low overhead, and fixed capacity of boost::array.
+ * change in size, along with the static allocation, low overhead, and fixed capacity of boost::array.
+ *
+ * A static_vector is a sequence that supports random access to elements, constant time insertion and 
+ * removal of elements at the end, and linear time insertion and removal of elements at the beginning or 
+ * in the middle. The number of elements in a static_vector may vary dynamically up to a fixed capacity 
+ * because elements are stored within the object itself similarly to an array. However, objects are 
+ * initialized as they are inserted into static_vector unlike C arrays or std::array which must construct 
+ * all elements on instantiation. The behavior of static_vector enables the use of statically allocated 
+ * elements in cases with complex object lifetime requirements that would otherwise not be trivially 
+ * possible.
  *
  * @tparam Value the type of element that will be stored.
  * @tparam Capacity the maximum number of elements static_vector can store, fixed at compile time.
  *
- *
- * static_vector stores elements within the object itself similarly to an array, allowing dynamic resizing
- * up to a fixed capacity. Objects are initialized as they are inserted into static_vector. This behavior
- * differs from C arrays or std::array which must construct all elements on instantiation, enabling the use
- * of statically allocated elements in cases that would otherwise not be trivially possible.
+ * @example
  *
  * \include example/static_vector_example.cpp
  *
