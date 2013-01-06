@@ -19,6 +19,8 @@
 #include <boost/container/detail/preprocessor.hpp>
 
 #include <boost/container/detail/static_vector_util.hpp>
+#include <boost/container/detail/static_vector_concept.hpp>
+#include <boost/iterator/iterator_concepts.hpp>
 
 #ifndef BOOST_NO_EXCEPTIONS
 #include <stdexcept>
@@ -49,7 +51,16 @@ template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator
 class static_vector;
 
 namespace static_vector_detail {
-
+    
+// TODO: Improve error messages
+//       possibly include N in the strategy, and provide size as an optoinal allocate_failed parameter?
+//       Example of current error with reserve(4) when capacity is 3:
+//          "boost/container/static_vector.hpp(66): size can't exceed the capacity"
+//       Could say
+//          "cannot reserve(4) due to fixed capacity of 3 elements"
+    
+    
+// TODO: document strategy concept, possibly define as subset of Allocator concept
 template <typename Value>
 struct default_strategy/*fake_allocator*/
 {
@@ -158,7 +169,9 @@ struct static_vector_traits
  * static_vector is a sequence container like boost::container::vector with contiguous storage that can
  * change in size, but provides the static allocation, low overhead, and fixed capacity of boost::array.
  *
- * 
+ * @tparam Value the type of element that will be stored
+ * @tparam Capacity the maximum number of elements static_vector can store, fixed at compile time.
+ * @tparam Strategy 
  */
 template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/ = static_vector_detail::default_strategy<Value>/*fake_allocator*/ >
 class static_vector
@@ -176,6 +189,8 @@ class static_vector
         SIZE_TYPE_IS_TOO_SMALL_FOR_SPECIFIED_CAPACITY,
         (static_vector)
     );
+
+    BOOST_CONCEPT_ASSERT((concept::StaticVectorStrategy<Strategy>));
 
     typedef boost::aligned_storage<
         sizeof(Value[Capacity]),
@@ -250,6 +265,7 @@ public:
     }
 
     //! <b>Requires</b>: distance(first, last) <= Capacity.
+    //!                  Iterator must meet the ForwardTraversal Iterator concept
     //!
     //! <b>Effects</b>: Constructs a static_vector containing copy of a range [first, last).
     //!
@@ -261,7 +277,8 @@ public:
     static_vector(Iterator first, Iterator last)
         : m_size(0)
     {
-        // TODO - add MPL_ASSERT, check if Iterator is really an iterator
+        BOOST_CONCEPT_ASSERT((boost_concepts::ForwardTraversal<Iterator>)); // Make sure you passed a ForwardIterator
+        
         this->assign(first, last);                                                    // may throw
     }
 
@@ -659,6 +676,7 @@ public:
 
     //! <b>Requires</b>: position must be a valid iterator of *this in range [begin(), end()]
     //!   and distance(first, last) <= Capacity.
+    //!   Iterator must meet the ForwardTraversal Iterator concept
     //!
     //! <b>Effects</b>: Inserts a copy of a range [first, last) at position.
     //!
@@ -670,7 +688,7 @@ public:
     template <typename Iterator>
     iterator insert(iterator position, Iterator first, Iterator last)
     {
-        // TODO - add MPL_ASSERT, check if Iterator is really an iterator
+        BOOST_CONCEPT_ASSERT((boost_concepts::ForwardTraversal<Iterator>)); // Make sure you passed a ForwardIterator
 
         typedef typename boost::iterator_traversal<Iterator>::type traversal;
         this->insert_dispatch(position, first, last, traversal());
@@ -739,7 +757,7 @@ public:
     template <typename Iterator>
     void assign(Iterator first, Iterator last)
     {
-        // TODO - add MPL_ASSERT, check if Iterator is really an iterator
+        BOOST_CONCEPT_ASSERT((boost_concepts::ForwardTraversal<Iterator>)); // Make sure you passed a ForwardIterator
 
         typedef typename boost::iterator_traversal<Iterator>::type traversal;
         this->assign_dispatch(first, last, traversal());                            // may throw
@@ -1348,6 +1366,8 @@ private:
     template <typename Iterator>
     void insert_dispatch(iterator position, Iterator first, Iterator last, boost::random_access_traversal_tag const&)
     {
+        BOOST_CONCEPT_ASSERT((boost_concepts::RandomAccessTraversal<Iterator>)); // Make sure you passed a RandomAccessIterator
+        
         errh::check_iterator_end_eq(*this, position);
         
         typename boost::iterator_difference<Iterator>::type
@@ -1587,6 +1607,7 @@ public:
         errh::check_capacity(*this, count);                                         // may throw
     }
 
+    
     // nothrow
     void reserve(size_type count)
     {

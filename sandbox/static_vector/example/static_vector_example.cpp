@@ -13,44 +13,28 @@
  *
  */
  
-#include <iostream>
-#include <string>
-#include <set>
+//[static_vector_example_cpp
+
+// static_vector_example.cpp
+
 #include "boost/container/static_vector.hpp"
-
-using namespace std;
-using namespace boost;
-
-  
-void print(std::size_t value){
-  cout << " " << value;
-}
-
 
 int main(int argc, char** argv){
   
-  // create static_vector with a capacity of 3
-  boost::container::static_vector<std::size_t,3> three; // size: 0 capacity: 3
+  // static_vector of ints, fixed capacity: 3
+  boost::container::static_vector<int,3> three; // size: 0
 
-  three.push_back(5); // size: 1 capacity: 3
-  three.push_back(2); // size: 2 capacity: 3
-  three.push_back(1); // size: 3 capacity: 3
+  three.push_back(1);    // size: 1
+  three.push_back(2);    // size: 2
+  three.push_back(3);    // size: 3
   
-  cout << "Values: ";
-  std::for_each(three.begin(),three.end(),print);
-  cout << "size: " << three.size() << " capacity: "  << three.capacity() << std::endl; // size: 3 capacity: 3
+  //three.reserve(4);    // no effect, fixed capacity: 3
+  //three.push_back(3);  // size: 4, undefined behavior
   
-  // three.push_back(3); // uncomment for undefined behavior, adding a 4th element goes over the end. capacity: 3 size: 3
+  three.pop_back();      // size: 2
+  three.shrink_to_fit(); // no effect, fixed capacity: 3
   
-  std::sort(three.begin(), three.end());
-  cout << "Sorted:";
-  std::for_each(three.begin(),three.end(),print);
-  cout << "size: " << three.size() << " capacity: "  << three.capacity() << std::endl; // size: 3 capacity: 3
-  
-  three.pop_back(); // size: 2 capacity: 3
-  three.shrink_to_fit(); // has no effect, size: 2 capacity: 3
-  
-  cout << "Popped: ";
-  std::for_each(three.begin(),three.end(),print);
-  cout << "  size: " << three.size() << " capacity: "  << three.capacity() << std::endl; // size: 2 capacity: 3
+  return 0;
 }
+
+//]

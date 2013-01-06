@@ -27,7 +27,8 @@ static_vector is a hybrid of boost::container::vector and boost::array.
 static_vector is a sequence container like boost::container::vector with contiguous storage that can
 change in size, but provides the static allocation, low overhead, and fixed capacity of boost::array.
 
-<Insert example here>
+[import ../example/static_vector_example.cpp]
+[static_vector_example_cpp]
 
 static_vector is well suited for use in a buffer or in the internal implementation of of other classes, or use cases where there is a fixed limit to the number of elements that must be stored. Embedded and realtime applications are a particular case where static_vector is most useful, where allocation either may not be available or acceptable. 
 

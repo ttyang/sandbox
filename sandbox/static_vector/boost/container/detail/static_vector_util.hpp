@@ -54,23 +54,23 @@ namespace boost { namespace container { namespace static_vector_detail {
 template <typename I>
 struct are_elements_contiguous : boost::is_pointer<I>
 {};
-
+    
 #if defined(BOOST_CONTAINER_STATIC_VECTOR_ENABLE_VECTORS_OPTIMIZATION) && !defined(BOOST_NO_EXCEPTIONS)
-
+    
 template <typename Pointer>
 struct are_elements_contiguous<
-    boost::container_detail::vector_const_iterator<Pointer>
+    boost::container::container_detail::vector_const_iterator<Pointer>
 > : boost::true_type
 {};
 
 template <typename Pointer>
 struct are_elements_contiguous<
-    boost::container_detail::vector_iterator<Pointer>
+    boost::container::container_detail::vector_iterator<Pointer>
 > : boost::true_type
 {};
 
 #if defined(BOOST_DINKUMWARE_STDLIB)
-
+    
 template <typename T>
 struct are_elements_contiguous<
     std::_Vector_const_iterator<T>
@@ -94,7 +94,6 @@ struct are_elements_contiguous<
 #elif defined(_LIBCPP_VERSION)
 
 // TODO - test it first
-
 //template <typename P>
 //struct are_elements_contiguous<
 //    __wrap_iter<P>
@@ -104,7 +103,7 @@ struct are_elements_contiguous<
 #else // OTHER_STDLIB
 
 // TODO - add other iterators implementations
-
+    
 #endif // STDLIB
 
 #endif // BOOST_CONTAINER_STATIC_VECTOR_ENABLE_VECTORS_OPTIMIZATION && !BOOST_NO_EXCEPTIONS
