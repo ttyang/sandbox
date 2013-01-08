@@ -1,15 +1,15 @@
-[section:inkviewscape Using Inkscape and Inkview ]
+[section:inkviewscape Using Inkscape and Inkview]
 
-These two programs can be regarded as 'reference' programs for rendering SVG images.
+These two programs can be regarded as ['reference] programs for rendering SVG images.
 The results are always superior to any general purpose browsers.
 
 [h4 Using Inkview]
 
-You may find it especially convenient to use the viewer, Inkview, on Microsoft Windows,
+You may find it especially convenient to use the read-only viewer, Inkview, on Microsoft Windows,
 and make this the default program for files of type .svg.
 To do this, you will need to download install the Inkscape package.
-Inkview.exe is included in the directory you chose for the install,
-usually C:\program Files\Inkscape.
+Inkview.exe is included in the directory you choose for the install,
+usually `C:\program Files\Inkscape`.
 
 You will need to use the Windows Explorer, Tools, Folder Options,
 and add extension .svg if necessary, and then associate .svg files with inkview.exe.
@@ -88,7 +88,7 @@ And you can Import as many types including:
 
 * [@www.ijg.org/ JPEG (.jpeg)]
 
-* (@en.wikipedia.org/wiki/Tagged_Image_File_Format TIFF (.tif)]
+* [@en.wikipedia.org/wiki/Tagged_Image_File_Format TIFF (.tif)]
 
 * Adobe Portable document Format (.pdf)
 

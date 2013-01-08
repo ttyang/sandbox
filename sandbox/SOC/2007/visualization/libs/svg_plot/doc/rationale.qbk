@@ -1,9 +1,88 @@
-[section:implementation Implementation & Rationale]
+[section:implementation Implementation, History & Rationale]
+
+[section:history  History]
+
+# 2007 Initial versions without uncertainty handling by Jake Voytko.
+# 2009 Simple uncertainty handling added by Paul A. Bristow.
+# 2010 Release as a [@http://sourceforge.net/projects/svgplot sourceforge project].
+# 2012 Full uncertainty handling added by Paul A. Bristow.
+
+[endsect] [/section:history  History]
+
+[section:compilers Compilers and Examples]
+
+[h4 Compiler and platforms versions]
+
+The code is header-only and does not require any pre-built libraries,
+but to avoid requiring the Boost C99 math library,
+you should define the macro `BOOST_ALL_NO_LIB`.
+For example, in the jamfile this is done with:
+
+  <define>BOOST_ALL_NO_LIB # Avoid using 'libboost_math_c99-vc100-mt-gd-1_53.lib'.
+
+In a preprocessor definitions, write `-DBOOST_ALL_NO_LIB`
+
+You will require a Boost library to be in your include path
+and the SVG plot visualization modules
+
+[https://svn.boost.org/svn/boost/sandbox/SOC/2007/visualization/ visualization]
+
+The uncertainty handling code has been stored at
+[@https://svn.boost.org/svn/boost/sandbox/SOC/2007/quan/ quan library]
+
+The code of version 2 is written to comply with the C++11 standard.
+
+[note If you want to use older compilers, you should probably instead use the 1st release of this software
+which did not provide a full implementation of uncertainty, but this feature requires the C++11 `auto` feature.]
+
+The examples have been built with
+
+# Microsoft Visual Studio 2010 and 2012 (MSVC).
+# GCC 4.7.2 needs option -std=c++11
+# Clang 3.1 needs option -std=c++11
+
+but might work on some earlier releases.
+
+To avoid warnings:
+
+with GCC and Clang these options may be useful
+
+  -Wno-missing-braces, -Wno-reorder, -Wno-unused-variable
+
+and with MSVC
+
+  /wd4800 # Forcing value to bool 'true' or 'false'
+  /wd4996 # Deprecated.
+  /wd4512 # Assignment operator could not be generated.
+  /wd4127 # Expression is constant.
+
+
+Other compilers like Apple Darwin and Intel have not been used, but are likely to work OK.
+
+[h4 IDE]
+
+The examples have been built using two IDEs:
+
+* Microsoft Visual Studio (using the Microsoft compilers only).
+* Netbeans 7.2 (using Clang and GCC, and Microsoft compiler using `VCC4N C++ Compiler` tool).
+
+[h4 Building the examples]
+
+A Boost bjam (aka b2) 'jamfile.v2' is provided in the libs/examples folder
+to build all the examples using the chosen compiler.
+You may like to copy and modify this to build your own programs using bjam.
+It contains the necessary options and warnings disablers for the above compilers.
+
+[endsect] [/section:compilers Compilers and Examples]
+
+
+[section:implementation Implementation and other notes]
 
 [h4 Switches for axis labels and autoscaling]
 
-If a axis label string is provided, or autoscaling is requested, it is assumed that it should be displayed/acted on.
-So there functions have the effect of switching these options on, as if , for example:
+If a axis label string is provided, or autoscaling is requested,
+it is assumed that it should be displayed/acted on.
+So there functions have the effect of switching these options on, as if, for example:
 
 `x_autoscale(true);`
 `y_label_on(true);`
@@ -249,7 +328,7 @@ for example a publisher.  svg set and get member functions:
 
 Unicode symbols that work on most browsers in html are listed at:
 
-[@boost\math_toolkit\libs\math\doc\sf_and_dist\html4_symbols.qbk html4_symbols],
+[@boost/math_toolkit/libs/math/doc/sf_and_dist/html4_symbols.qbk html4_symbols],
 [@http://www.htmlhelp.com/reference/html40/entities/symbols.html reference/html40/entities/symbols],
 and  [@http://www.alanwood.net/demos/ent4_frame.html demos].
 
@@ -269,7 +348,7 @@ Similarly for greek in title, legend and axes:
 [h4 Subscript and superscript in title, legend and labels]
 
 It is very common need to show superscript, in units for example, area (m[super 2]),
-and subscript for a[sub 0, a[sub 2]...
+and subscript for a[sub 0], a[sub 2]...
 
 Sadly, although these needs are both OK with html,
 showing sub and superscripts in svg doesn't work well as yet
@@ -324,10 +403,13 @@ has been used.
 
 Some data members end with _ to avoid name clashes, another widely used convention.
 
-[endsect] [/section:implementation Implementation & Rationale]
+[endsect] [/section:implementation Implementation and other notes]
+
+[endsect] [/section:implementation Implementation, History & Rationale]
+
 
 [/ rationale.qbk
-  Copyright 2008 - 2009 Jake Voytko and Paul A. Bristow.
+  Copyright 2008 - 2009, 2012 Jake Voytko and Paul A. Bristow.
   Distributed under the Boost Software License, Version 1.0.
   (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).

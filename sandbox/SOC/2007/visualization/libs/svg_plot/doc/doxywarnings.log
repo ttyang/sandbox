@@ -1,0 +1,501 @@
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/uncertain.hpp:84: warning: Compound boost::svg::unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:50: warning: Compound boost::type_erasure::concept_interface< base_and_derived< T, U >, Base, U > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:430: warning: Compound setAllUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:63: warning: Compound tabs is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:17: warning: Compound meas2 is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:487: warning: Compound setUncWidth is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:477: warning: Compound resetMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:499: warning: Compound setScale is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:439: warning: Compound setUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:463: warning: Compound resetUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:39: warning: Compound base_and_derived is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:453: warning: Compound setMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:419: warning: Compound showUncTypes is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:98: warning: Compound boost::type_erasure::ostreamable< Os, std::pair< T1, T2 > > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:70: warning: Compound unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:411: warning: Compound showUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:2078: warning: Compound lessAbs is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:54: warning: Compound spaces is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:72: warning: Compound stars is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:92: warning: Compound setupperbase is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:82: warning: Compound chars is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:511: warning: Compound setSigDigits is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:24: warning: found more than one \mainpage comment block! Skipping this block.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:14: warning: found more than one \mainpage comment block! Skipping this block.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:26: warning: Member uncun (typedef) of file meas.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:103: warning: Member operator<<(ostream &os, const Meas &m) (function) of file meas.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:104: warning: Member operator>>(istream &is, Meas &m) (function) of file meas.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:45: warning: Member operator<<(ostream &os, const meas2 &m) (function) of file meas2.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:46: warning: Member operator>>(istream &is, meas2 &m) (function) of file meas2.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/pair_io.hpp:16: warning: Member operator<<(std::basic_ostream< charT, traits > &os, const std::pair< T1, T2 > &p) (function) of file pair_io.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/pair_io.hpp:23: warning: Member operator<<(std::basic_ostream< charT, traits > &os, const std::pair< double, double > &p) (function) of file pair_io.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:979: warning: Member distribution_type (enumeration) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:133: warning: Member BOOST_STATIC_ASSERT(std::numeric_limits< double >::is_iec559) (function) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:137: warning: Member BOOST_STATIC_ASSERT(std::numeric_limits< double >::is_specialized) (function) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:177: warning: Member round_ms(FPT v, int m) (function) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:145: warning: Member maxdigits10 (variable) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:1314: warning: Member oneDivSqrtSix (variable) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:1315: warning: Member oneDivTwoSqrtSix (variable) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:707: warning: Member scaled (variable) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:1312: warning: Member sqrt_2 (variable) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:1316: warning: Member sqrt_3 (variable) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/rounding.hpp:1313: warning: Member sqrt_6 (variable) of file rounding.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:279: warning: Member findAnyUnit(const string, unsigned int &, unsigned int &, unsigned int &) (function) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:274: warning: Member findUnit(const string, const unit *, unsigned int &, unsigned int &) (function) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:268: warning: Member showAllNonSIunits(const unit *, ostream &) (function) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:263: warning: Member showAllUnits(const unit *, ostream &) (function) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:266: warning: Member showNonSIunits(const unit *, ostream &) (function) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:264: warning: Member showSIunit(const unit *, ostream &) (function) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:265: warning: Member showSIunits(const unit *, ostream &) (function) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:190: warning: Member ampCurrentUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:191: warning: Member ampCurrentUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:241: warning: Member ampHourChargeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:242: warning: Member ampHourChargeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:221: warning: Member candelaLumintensityUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:222: warning: Member candelaLumintensityUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:202: warning: Member celsiusTemperatureUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:246: warning: Member charge (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:243: warning: Member chargeToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:238: warning: Member chargeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:244: warning: Member chargeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:245: warning: Member chargeUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:239: warning: Member coulombChargeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:240: warning: Member coulombChargeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:201: warning: Member cTemperatureUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:195: warning: Member current (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:192: warning: Member currentToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:189: warning: Member currentUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:193: warning: Member currentUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:194: warning: Member currentUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:134: warning: Member cwtMassUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:135: warning: Member cwtMassUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:174: warning: Member dayTimeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:175: warning: Member dayTimeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:123: warning: Member dimlessNoUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:124: warning: Member dimlessUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:204: warning: Member fahrenheitTemperatureUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:153: warning: Member feetLengthUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:154: warning: Member feetLengthUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:180: warning: Member fortnightTimeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:181: warning: Member fortnightTimeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:235: warning: Member freq (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:232: warning: Member freqToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:229: warning: Member freqUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:233: warning: Member freqUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:234: warning: Member freqUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:203: warning: Member fTemperatureUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:130: warning: Member gramMassUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:131: warning: Member gramMassUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:230: warning: Member hertzFreqUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:231: warning: Member hertzFreqUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:172: warning: Member hourTimeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:173: warning: Member hourTimeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:155: warning: Member inchLengthUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:156: warning: Member inchLengthUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:200: warning: Member kelvinTemperatureUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:199: warning: Member kTemperatureUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:136: warning: Member lbMassUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:137: warning: Member lbMassUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:162: warning: Member length (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:159: warning: Member lengthToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:146: warning: Member lengthUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:160: warning: Member lengthUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:161: warning: Member lengthUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:226: warning: Member lumintensity (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:223: warning: Member lumintensityToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:220: warning: Member lumintensityUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:224: warning: Member lumintensityUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:225: warning: Member lumintensityUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:143: warning: Member mass (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:142: warning: Member massToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:129: warning: Member massUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:140: warning: Member massUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:141: warning: Member massUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:41: warning: Member maxPowerTen (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:55: warning: Member maxPowerTens (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:52: warning: Member maxRounds (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:147: warning: Member meterLengthUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:148: warning: Member meterLengthUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:149: warning: Member mileLengthUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:150: warning: Member mileLengthUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:170: warning: Member minuteTimeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:171: warning: Member minuteTimeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:212: warning: Member molSubstanceUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:213: warning: Member molSubstanceUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:176: warning: Member monthTimeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:177: warning: Member monthTimeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:39: warning: Member notOK (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:112: warning: Member noUnit (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:110: warning: Member noUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:111: warning: Member noUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:125: warning: Member NoUnitsFactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:138: warning: Member ozMassUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:139: warning: Member ozMassUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:119: warning: Member perBillionUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:120: warning: Member perBillionUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:113: warning: Member perCentUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:114: warning: Member perCentUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:115: warning: Member perMilleUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:116: warning: Member perMilleUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:117: warning: Member perMillionUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:118: warning: Member perMillionUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:121: warning: Member perTrillionUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:122: warning: Member perTrillionUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:157: warning: Member pointLengthUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:158: warning: Member pointLengthUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:50: warning: Member powersOfTen[maxPowerTen+1+maxPowerTen] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:53: warning: Member rounds[maxRounds] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:166: warning: Member secondTimeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:167: warning: Member secondTimeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:61: warning: Member SImaxPowers (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:56: warning: Member SImaxPowerTen (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:58: warning: Member SIminPowerTen (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:59: warning: Member SIprefixes[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:62: warning: Member SIprefixesLength (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:60: warning: Member SIsymbols[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:217: warning: Member substance (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:214: warning: Member substanceToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:211: warning: Member substanceUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:215: warning: Member substanceUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:216: warning: Member substanceUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:208: warning: Member temperature (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:205: warning: Member temperatureToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:198: warning: Member temperatureUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:206: warning: Member temperatureUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:207: warning: Member temperatureUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:185: warning: Member Time (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:182: warning: Member timeToSIfactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:165: warning: Member timeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:183: warning: Member timeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:184: warning: Member timeUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:132: warning: Member tonMassUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:133: warning: Member tonMassUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:260: warning: Member unitps[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:259: warning: Member unitsCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:250: warning: Member unknownCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:251: warning: Member unknownunit[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:256: warning: Member unknownUnit (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:249: warning: Member unknownUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:253: warning: Member unknownUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:252: warning: Member unknownUnitsCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:254: warning: Member unknownUnitsCounts[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:255: warning: Member unknownUnitsFactors[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:151: warning: Member yardLengthUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:152: warning: Member yardLengthUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:178: warning: Member yearTimeUnitCount (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:179: warning: Member yearTimeUnits[] (variable) of file si_units.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:151: warning: Member uncun (typedef) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:2066: warning: Member abs(const Type &a) (function) of namespace std is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:2103: warning: Member autoprefix_norm(const unc< false > &arg) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:131: warning: Member BOOST_STATIC_ASSERT(std::numeric_limits< double >::is_iec559) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:185: warning: Member cube(const Type &a) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:331: warning: Member noautoscale(std::ios_base &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:387: warning: Member operator<<(std::ostream, const setAllUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:389: warning: Member operator<<(std::ostream, const setUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:391: warning: Member operator<<(std::ostream, const setMaskedUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:393: warning: Member operator<<(std::ostream, const resetUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:395: warning: Member operator<<(std::ostream, const resetMaskedUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:397: warning: Member operator<<(std::ostream, const setUncWidth &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:399: warning: Member operator<<(std::ostream, const setScale &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:401: warning: Member operator<<(std::ostream, const setUncSigDigits &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:403: warning: Member operator<<(std::ostream, const setRoundingLoss &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:404: warning: Member operator<<(std::ostream, const setConfidence &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:405: warning: Member operator<<(std::ostream, const setSigDigits &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:388: warning: Member operator>>(std::istream, const setAllUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:390: warning: Member operator>>(std::istream, const setUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:392: warning: Member operator>>(std::istream, const setMaskedUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:394: warning: Member operator>>(std::istream, const resetUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:396: warning: Member operator>>(std::istream, const resetMaskedUncFlags &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:398: warning: Member operator>>(std::istream, const setUncWidth &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:400: warning: Member operator>>(std::istream, const setScale &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:402: warning: Member operator>>(std::istream, const setUncSigDigits &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:406: warning: Member operator>>(std::istream, const setSigDigits &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:316: warning: Member outFpClass(double, std::ostream &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:139: warning: Member outIosFlags(long, std::ostream &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:408: warning: Member outUncFlags(long uncflags, std::ostream) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:140: warning: Member outUncTypes(unsigned short int, std::ostream &) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:234: warning: Member outUncValues(std::ostream &os, std::ostream &log) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:235: warning: Member setUncDefaults(std::ios_base &os) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:184: warning: Member sqr(const Type &a) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:197: warning: Member sqrtSumSqrs(const Type &a, const Type &b) (function) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:280: warning: Member DEG_FREE_DEF (variable) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:279: warning: Member UNC_DEF (variable) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:282: warning: Member uncTypeWords[] (variable) of file unc.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:50: warning: Member confidenceIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:54: warning: Member indexID (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:55: warning: Member isIndexed (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:40: warning: Member oldScaleIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:34: warning: Member oldSigDigitsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:32: warning: Member oldUncFlagsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:44: warning: Member oldUncSetWidthIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:38: warning: Member oldUncSigDigitsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:46: warning: Member oldUncUsedIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:43: warning: Member oldUncWidthIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:48: warning: Member oldWidthIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:49: warning: Member roundingLossIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:39: warning: Member scaleIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:41: warning: Member setScaleIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:35: warning: Member setSigDigitsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:37: warning: Member setUncSigDigitsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:33: warning: Member sigDigitsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:52: warning: Member topIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:31: warning: Member uncFlagsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:36: warning: Member uncSigDigitsIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:42: warning: Member uncWidthIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:45: warning: Member usedIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:47: warning: Member widthIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc_init.hpp:29: warning: Member zeroIndex (variable) of file unc_init.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:31: warning: Member unc_types (enumeration) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:20: warning: Member oldScaleIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:12: warning: Member oldSigDigitsIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:16: warning: Member oldStdDevSigDigitsIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:9: warning: Member oldUncFlagsIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:24: warning: Member oldUncSetWidthIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:26: warning: Member oldUncUsedIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:23: warning: Member oldUncWidthIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:28: warning: Member oldWidthIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:17: warning: Member ScaleIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:18: warning: Member setScaleIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:11: warning: Member setSigDigitsIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:10: warning: Member sigDigitsIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:14: warning: Member stdDevSigDigitsIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:7: warning: Member uncFlagsIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:21: warning: Member uncWidthIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:25: warning: Member usedIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/uncdata.hpp:27: warning: Member widthIndex (variable) of file uncdata.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:102: warning: Member outFpClass(double value, std::ostream &os) (function) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:101: warning: Member outIosFlags(long flags, std::ostream &os) (function) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:104: warning: Member outIOstates(std::ios_base::iostate rdstate=std::cout.rdstate(), std::ostream &os=std::cerr, const char *term=". ") (function) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:114: warning: Member showformat(std::ostream &os) (function) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:111: warning: Member showiostate(std::ostream &os) (function) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:40: warning: Member bell (variable) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:36: warning: Member nl (variable) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:39: warning: Member sp (variable) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:38: warning: Member space (variable) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:37: warning: Member tab (variable) of file xiostream.hpp is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/uncertain.hpp:67: warning: Member uncun (typedef) of namespace boost::svg is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/uncertain.hpp:278: warning: Member operator<<(std::ostream &os, const std::pair< unc< false >, unc< false > > &u) (function) of namespace boost::svg is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:147: warning: Member iterator_type (typedef) of class abstract_printer is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:146: warning: Member ostream_type (typedef) of class abstract_printer is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:143: warning: Member requirements (typedef) of class abstract_printer is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:149: warning: Member do_print(iterator_type first, iterator_type last, ostream_type os) const =0 (function) of class abstract_printer is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:42: warning: Member apply(U &arg) (function) of class base_and_derived is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:85: warning: Member chars(int, char) (function) of class chars is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:147: warning: Member iterator_type (typedef) of class abstract_printer<> is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:146: warning: Member ostream_type (typedef) of class abstract_printer<> is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:143: warning: Member requirements (typedef) of class abstract_printer<> is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:198: warning: Member do_print(iterator_type first, iterator_type last, ostream_type os) const  (function) of class decor_printer is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:2080: warning: Member operator()(const Type &a, const Type &b) const  (function) of class lessAbs is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:50: warning: Member abs(const Meas &rhs) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:51: warning: Member abs(Meas &rhs) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1875: warning: Member degFree(void) const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1873: warning: Member deviation(void) const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1871: warning: Member mean(void) const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:39: warning: Member Meas(double const d=0.) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:43: warning: Member Meas(uncun u, string id="", boost::posix_time::ptime ti=(boost::posix_time::not_a_date_time), int o=-1) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:45: warning: Member Meas(const Meas &) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1022: warning: Member operator value_type() const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:54: warning: Member operator!=(const Meas &p) const  (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1176: warning: Member operator!=(const unc< is_correlated > &x) const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1071: warning: Member operator*=(const unc< is_correlated > &ud) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1095: warning: Member operator*=(const double &a) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:58: warning: Member operator+(const Meas &) const  (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:915: warning: Member operator++(void) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:921: warning: Member operator++(int) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:984: warning: Member operator+=(const unc< is_correlated > &ud) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1027: warning: Member operator+=(const double &a) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:62: warning: Member operator-(void) const  (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:68: warning: Member operator-(void) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:918: warning: Member operator--(void) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:928: warning: Member operator--(int) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1036: warning: Member operator-=(const unc< is_correlated > &ud) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1062: warning: Member operator-=(const double &a) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1105: warning: Member operator/=(const unc< is_correlated > &ud) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:55: warning: Member operator<(const Meas &rhs) const  (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1182: warning: Member operator<(const unc< is_correlated > &x) const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:53: warning: Member operator==(const Meas &p) const  (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1170: warning: Member operator==(const unc< is_correlated > &x) const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:56: warning: Member operator>(const Meas &rhs) const  (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:700: warning: Member types(short unsigned int type) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1877: warning: Member uncFlags(void) const (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:81: warning: Member earlier(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:84: warning: Member equal_toUnc(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1990: warning: Member equalU(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1997: warning: Member equalU2(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:83: warning: Member greater2U(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:82: warning: Member greaterU(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:77: warning: Member less(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:79: warning: Member less2U(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:85: warning: Member lessAbsM(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:78: warning: Member lessU(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1935: warning: Member lessU(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1960: warning: Member lessU2(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1984: warning: Member moreU(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc< false > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:80: warning: Member precedes(const Meas &l, const Meas &r) (function) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:89: warning: Member id_ (variable) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:98: warning: Member order_ (variable) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas.hpp:97: warning: Member time_ (variable) of class Meas is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:23: warning: Member meas2(uncun ux, uncun uy, string id="", boost::posix_time::ptime ti=(boost::posix_time::not_a_date_time), int o=-1) (function) of class meas2 is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:37: warning: Member m_id (variable) of class meas2 is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:39: warning: Member m_order (variable) of class meas2 is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:41: warning: Member m_time (variable) of class meas2 is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:28: warning: Member m_uncx (variable) of class meas2 is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/meas2.hpp:29: warning: Member m_uncy (variable) of class meas2 is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:481: warning: Member resetMaskedUncFlags(int, int) (function) of class resetMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:482: warning: Member flags (variable) of class resetMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:483: warning: Member mask (variable) of class resetMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:469: warning: Member resetUncFlags(int) (function) of class resetUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:470: warning: Member flags (variable) of class resetUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:434: warning: Member setAllUncFlags(int) (function) of class setAllUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:435: warning: Member flags (variable) of class setAllUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:566: warning: Member setConfidence(double) (function) of class setConfidence is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:569: warning: Member confidence_ (variable) of class setConfidence is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:457: warning: Member setMaskedUncFlags(int, int) (function) of class setMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:458: warning: Member flags (variable) of class setMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:459: warning: Member mask (variable) of class setMaskedUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:552: warning: Member setRoundingLoss(double) (function) of class setRoundingLoss is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:555: warning: Member roundingloss_ (variable) of class setRoundingLoss is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:504: warning: Member setScale(int) (function) of class setScale is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:505: warning: Member scale (variable) of class setScale is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:515: warning: Member setSigDigits(int) (function) of class setSigDigits is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:517: warning: Member sigDigits_ (variable) of class setSigDigits is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:445: warning: Member setUncFlags(int) (function) of class setUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:446: warning: Member flags (variable) of class setUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:538: warning: Member setUncSigDigits(int) (function) of class setUncSigDigits is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:541: warning: Member uncSigDigits_ (variable) of class setUncSigDigits is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:492: warning: Member setUncWidth(int) (function) of class setUncWidth is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:493: warning: Member uncWidth (variable) of class setUncWidth is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:96: warning: Member setupperbase(int) (function) of class setupperbase is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:414: warning: Member showUncFlags(unsigned short int) (function) of class showUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:415: warning: Member flags (variable) of class showUncFlags is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:423: warning: Member showUncTypes(unsigned short int) (function) of class showUncTypes is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:424: warning: Member types (variable) of class showUncTypes is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:57: warning: Member spaces(int) (function) of class spaces is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:75: warning: Member stars(int) (function) of class stars is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:77: warning: Member num (variable) of class stars is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/xiostream.hpp:66: warning: Member tabs(int) (function) of class tabs is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1875: warning: Member degFree(void) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1873: warning: Member deviation(void) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1871: warning: Member mean(void) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1022: warning: Member operator value_type() const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1176: warning: Member operator!=(const unc< is_correlated > &x) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1071: warning: Member operator*=(const unc< is_correlated > &ud) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1095: warning: Member operator*=(const double &a) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:915: warning: Member operator++(void) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:921: warning: Member operator++(int) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:984: warning: Member operator+=(const unc< is_correlated > &ud) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1027: warning: Member operator+=(const double &a) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:866: warning: Member operator-(void) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:918: warning: Member operator--(void) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:928: warning: Member operator--(int) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1036: warning: Member operator-=(const unc< is_correlated > &ud) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1062: warning: Member operator-=(const double &a) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1105: warning: Member operator/=(const unc< is_correlated > &ud) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1182: warning: Member operator<(const unc< is_correlated > &x) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1170: warning: Member operator==(const unc< is_correlated > &x) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:700: warning: Member types(short unsigned int type) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:841: warning: Member unc(const unc &ud) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1877: warning: Member uncFlags(void) const  (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1990: warning: Member equalU(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1997: warning: Member equalU2(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1935: warning: Member lessU(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1960: warning: Member lessU2(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1984: warning: Member moreU(const unc< is_correlated > &l, const unc< is_correlated > &r) (function) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1607: warning: Member abs(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1735: warning: Member acos(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1728: warning: Member asin(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1745: warning: Member atan(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1753: warning: Member atan2(const unc< is_correlated > &arg1, const unc< is_correlated > &arg2) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1571: warning: Member ceil(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1710: warning: Member cos(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1816: warning: Member cosh(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1777: warning: Member exp(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1589: warning: Member fabs(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1580: warning: Member floor(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1655: warning: Member fmod(const unc< is_correlated > &arg, const unc< is_correlated > &divisor) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1646: warning: Member frexp(unc< is_correlated > arg, int *intarg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1627: warning: Member ldexp(unc< is_correlated > arg, int intarg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1787: warning: Member log(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1797: warning: Member log10(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1638: warning: Member modf(unc< is_correlated > arg, double *intpart) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:937: warning: Member operator*(unc< is_correlated > a, const unc< is_correlated > &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:944: warning: Member operator*(unc< is_correlated > a, const double &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:950: warning: Member operator*(const double &b, unc< is_correlated > a) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:877: warning: Member operator+(unc< is_correlated > a, const unc< is_correlated > &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:883: warning: Member operator+(unc< is_correlated > a, const double &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:889: warning: Member operator+(const double &b, unc< is_correlated > a) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:895: warning: Member operator-(unc< is_correlated > a, const unc< is_correlated > &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:901: warning: Member operator-(unc< is_correlated > a, const double &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:907: warning: Member operator-(const double &b, unc< is_correlated > a) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:956: warning: Member operator/(unc< is_correlated > a, const unc< is_correlated > &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:962: warning: Member operator/(unc< is_correlated > a, const double &b) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:968: warning: Member operator/(const double &b, unc< is_correlated > a) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1557: warning: Member operator>>(std::istream &is, unc< is_correlated > &ud) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1836: warning: Member pow(const unc< is_correlated > &arg1, const unc< is_correlated > &arg2) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1883: warning: Member PropagateUncertaintiesBySlope(double(*certain_func)(double), const unc< is_correlated > &arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1900: warning: Member PropagateUncertaintiesBySlope(double(*certain_func)(double, double), const unc< is_correlated > &arg1, const unc< is_correlated > &arg2) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1699: warning: Member sin(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1809: warning: Member sinh(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1687: warning: Member sqrt(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1720: warning: Member tan(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/unc.hpp:1826: warning: Member tanh(unc< is_correlated > arg) (friend) of class unc is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:93: warning: Member SIunitAbbrev (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:90: warning: Member SIunitNames (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:80: warning: Member unitAbbrevCount (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:89: warning: Member unitLengths (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:94: warning: Member unitNames (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:81: warning: Member unitNamesCount (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:72: warning: Member unitOf (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:78: warning: Member unitSINameCount (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:84: warning: Member unitsNamesCount (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/si_units.hpp:97: warning: Member unitToSIfactors (variable) of class unit is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/uncertain.hpp:67: warning: Member uncun (typedef) of namespace boost::svg is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/uncertain.hpp:278: warning: Member operator<<(std::ostream &os, const std::pair< unc< false >, unc< false > > &u) (function) of namespace boost::svg is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:290: warning: Member plot(const T &container, const std::string &title="") (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:292: warning: Member plot(const T &begin, const T &end, const std::string &title="") (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:295: warning: Member plot(const T &container, const std::string &title="", U functor=boost::svg::detail::double_1d_convert()) (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:297: warning: Member plot(const T &begin, const T &end, const std::string &title="", U functor=boost::svg::detail::double_1d_convert()) (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:286: warning: Member write(std::ostream &s_out) (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:232: warning: Member alpha_ (variable) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:233: warning: Member epsilon_ (variable) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:235: warning: Member isNoisyDigit_ (variable) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:243: warning: Member text_plusminus_ (variable) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_1d_plot.hpp:234: warning: Member uncSigDigits_ (variable) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_2d_plot.hpp:442: warning: Member alpha_ (variable) of class boost::svg::svg_2d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_2d_plot.hpp:443: warning: Member epsilon_ (variable) of class boost::svg::svg_2d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_2d_plot.hpp:445: warning: Member isNoisyDigit_ (variable) of class boost::svg::svg_2d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_2d_plot.hpp:453: warning: Member text_plusminus_ (variable) of class boost::svg::svg_2d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_2d_plot.hpp:444: warning: Member uncSigDigits_ (variable) of class boost::svg::svg_2d_plot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_boxplot.hpp:733: warning: Member alpha_ (variable) of class boost::svg::svg_boxplot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_boxplot.hpp:734: warning: Member epsilon_ (variable) of class boost::svg::svg_boxplot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_boxplot.hpp:736: warning: Member isNoisyDigit_ (variable) of class boost::svg::svg_boxplot is not documented.
+I:/boost-sandbox/soc/2007/visualization/boost/svg_plot/svg_boxplot.hpp:735: warning: Member uncSigDigits_ (variable) of class boost::svg::svg_boxplot is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:52: warning: Member operator typename rebind_any< Base, const T & >::type() const  (function) of class boost::type_erasure::concept_interface< base_and_derived< T, U >, Base, U > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:56: warning: Member operator typename rebind_any< Base, T & >::type() (function) of class boost::type_erasure::concept_interface< base_and_derived< T, U >, Base, U > is not documented.
+I:/boost-sandbox/soc/2007/quan/boost/quan/type_erasure_printer.hpp:100: warning: Member apply(Os &out, const std::pair< T1, T2 > &arg) (function) of class boost::type_erasure::ostreamable< Os, std::pair< T1, T2 > > is not documented.
+<write>:277: warning: Unsupported xml/html tag <g> found
+<conf_interval>:1: warning: argument 'unc' of command @param is not found in the argument list of conf_interval(double mean, double sigma, double df=1., double alpha=0.05, distribution_type distrib=gaussian)
+<conf_interval>:1242: warning: explicit link request to 'x03C3' could not be resolved
+<conf_interval>:1242: warning: explicit link request to 'x00B2' could not be resolved
+<conf_interval>:1: warning: The following parameters of conf_interval(double mean, double sigma, double df=1., double alpha=0.05, distribution_type distrib=gaussian) are not documented:
+  parameter 'sigma'
+<operator<<>:151: warning: Found unknown command `\detail'
+<operator<<>:162: warning: Found unknown command `\detail'
+<operator<<>:162: warning: expected whitespace after b command
+<out_value_df_limits>:1: warning: argument 'Signed' of command @param is not found in the argument list of out_value_df_limits(double mean, double unc, int degfree=1, std::ostream &os=std::cout)
+<out_value_df_limits>:1: warning: argument 'm' of command @param is not found in the argument list of out_value_df_limits(double mean, double unc, int degfree=1, std::ostream &os=std::cout)
+<out_value_df_limits>:1: warning: The following parameters of out_value_df_limits(double mean, double unc, int degfree=1, std::ostream &os=std::cout) are not documented:
+  parameter 'degfree'
+<out_value_limits>:1: warning: argument 'Signed' of command @param is not found in the argument list of out_value_limits(double mean, double unc, std::pair< double, double > ci, int m, std::ostream &os=std::cout)
+<out_value_limits>:1: warning: The following parameters of out_value_limits(double mean, double unc, std::pair< double, double > ci, int m, std::ostream &os=std::cout) are not documented:
+  parameter 'ci'
+<round_e>:258: warning: explicit link request to 'max_digits10' could not be resolved
+<round_e>:259: warning: explicit link request to 'digits' could not be resolved
+<round_e>:1: warning: argument 'd' of command @param is not found in the argument list of round_e(FPT v, int sigdigits)
+<round_e>:1: warning: The following parameters of round_e(FPT v, int sigdigits) are not documented:
+  parameter 'v'
+<round_m>:1: warning: argument 'sigmasigdigits' of command @param is not found in the argument list of round_m(double epsilon=0.01, double sigma=0., unsigned int sigma_sigdigits=2U, distribution_type distrib=gaussian)
+<round_m>:1: warning: argument 'distribution_type' of command @param is not found in the argument list of round_m(double epsilon=0.01, double sigma=0., unsigned int sigma_sigdigits=2U, distribution_type distrib=gaussian)
+<round_m>:1: warning: The following parameters of round_m(double epsilon=0.01, double sigma=0., unsigned int sigma_sigdigits=2U, distribution_type distrib=gaussian) are not documented:
+  parameter 'sigma_sigdigits'
+  parameter 'distrib'

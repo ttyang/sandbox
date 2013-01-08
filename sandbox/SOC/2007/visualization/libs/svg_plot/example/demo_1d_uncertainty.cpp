@@ -91,9 +91,9 @@ int main()
     /*`A few (member) functions that are set (using concatenation or chaining) should be fairly self-explanatory:
 
     * .title() provides a title at the top for the whole plot,
-    * .`legend_on(true)` will mean that titles of data series and markers will display in the legend box.
-    * .`x_range(-1, 11)` sets the axis limits from -1 to +11 (instead of the default -10 to +10).
-    * .`background_border_color(blue)` sets just one of the very many other options.
+    * .legend_on(true) will mean that titles of data series and markers will display in the legend box.
+    * .x_range(-1, 11) sets the axis limits from -1 to +11 (instead of the default -10 to +10).
+    * .background_border_color(blue) sets just one of the very many other options.
     */
     my_plot.autoscale_check_limits(false); // Default is true.
     my_plot.autoscale_plusminus(2); // default is 3.

@@ -124,7 +124,7 @@ the order of data values is important.
   data1.insert(make_pair(uncun(4.1, 0.4F, 7), uncun(3.1, 0.3F, 18))); //
   data1.insert(make_pair(uncun(-2.234, 0.03F, 7), uncun(-8.76, 0.9F, 9)));
 
-  /*
+ /*
 `Make very sure you don't forget either uncun(...) like this
 `data1.insert(make_pair((-2.234, 0.12F, 7),(-8.76, 0.56F, 9)));`
 because, by the bizarre operation of the comma operator, the result will be an integer!
@@ -209,7 +209,7 @@ Echo the values input:
 
   show_2d_plot_settings(my_plot);
 
- // ] [/demo_2d_uncertainty_2]
+ //] [/demo_2d_uncertainty_2]
 
   }
   catch (const std::exception& e)

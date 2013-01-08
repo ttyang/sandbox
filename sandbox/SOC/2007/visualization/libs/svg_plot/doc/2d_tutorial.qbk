@@ -228,7 +228,7 @@ This will produce the following plot image:
 
 [$images/2d_y_grid.svg]
 
-The source of this examples is at [@../../example\2d_y_grid.cpp]
+The source of this examples is at [@../../example/2d_y_grid.cpp]
 
 Similarly you can have horizontal and/or vertical lines:
 
@@ -259,7 +259,7 @@ This produces the following images:
 [$images/2d_area_fill_1.svg]
 [$images/2d_area_fill_2.svg]
 
-from source at [@../../example\2d_area_fill.cpp]
+from source at [@../../example/2d_area_fill.cpp]
 
 [h4 Curve Interpolation]
 

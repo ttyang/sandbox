@@ -94,6 +94,7 @@ xml svg_plot
 doxygen autodoc
   :
     [ glob ../../../boost/svg_plot/*.hpp ]
+    [ glob ../../../../quan/boost/quan/*.hpp ]
     # [ glob ../../../boost/svg_plot/detail/*.hpp ]
   :
     #<doxygen:param>INPUT="filename1 directoryname2" # Separate with spaces.

@@ -75,12 +75,12 @@ and greater than 255 being constrained to their respective min and max.]
 [heading Colors Internals and Rationale]
 
 Color constants are defined in an enum, `svg_color_constant`, in alphabetical order at
-[@..\..\..\..\boost\svg_plot\svg_color.hpp color constants].
+[@../../../../boost/svg_plot/svg_color.hpp color constants].
 This facilitates quick lookup of their RGB values from an array. Anywhere
 that a `svg_color` can be used, a `svg_color_constant` can be used, as the
 conversion is implicit.
 
-All color information is stored in RGB format as three 'unsigned char' in a `svg_color` struct.
+All color information is stored in RGB format as three `unsigned char` in a `svg_color` struct.
 The  rationale for storing information in RGB format is that it is precise,
 and is always representable the exactly the same way.
 Storing as a floating-point percent or fraction

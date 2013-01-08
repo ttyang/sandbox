@@ -59,7 +59,7 @@ project
 
       <include>../../../ # boost-sandbox/SOC/2007/visualization
       <include>../../../../../../../ # boost-trunk
-      <include>../../../..//quan/ # boost-sandbox/SOC/2007/quan
+      <include>../../../../quan/ # boost-sandbox/SOC/2007/quan
     ;
     
 

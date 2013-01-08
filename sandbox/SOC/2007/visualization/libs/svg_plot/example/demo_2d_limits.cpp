@@ -152,5 +152,5 @@ limit points stroke color RGB(0,0,255)
 limit points fill color RGB(255,192,203)
 
 */
-//} //[/demo_2d_limits_output]
+//] //[/demo_2d_limits_output]
 
