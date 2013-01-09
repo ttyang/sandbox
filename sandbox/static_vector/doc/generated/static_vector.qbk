@@ -16,7 +16,7 @@ Insertion beyond the capacity and out of bounds errors result in undefined behav
 Error handling behavior can be modified to more closely match std::vector exception behavior when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
 
 [heading Header]
-`#include <.hpp>`
+`#include <boost/container/static_vector.hpp>`
 
 [heading Synopsis]
 ``template<typename Value,
@@ -487,7 +487,7 @@ Adds a copy of value at the end. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `value_type const &` ][ `value` ][]]
+[[ `value_type const &` ][ `value` ][The value used to copy construct the new element.]]
 ]
 [heading Precondition]
 size() < Capacity.
@@ -506,7 +506,7 @@ Moves value to the end. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `value_type &&` ][ `value` ][]]
+[[ `value_type &&` ][ `value` ][The value to move construct the new element.]]
 ]
 [heading Precondition]
 size() < Capacity.

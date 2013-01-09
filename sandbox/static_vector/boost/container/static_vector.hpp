@@ -701,7 +701,7 @@ public:
     //!
     //! @brief Adds a copy of value at the end.
     //!
-    //! @param count    The value used to copy construct the new element.
+    //! @param value    The value used to copy construct the new element.
     //!
     //! @par Throws
     //!   If Value's copy constructor throws.
@@ -724,7 +724,7 @@ public:
     //!
     //! @brief Moves value to the end.
     //!
-    //! @param count    The value to move construct the new element.
+    //! @param value    The value to move construct the new element.
     //!
     //! @par Throws
     //!   If Value's move constructor throws.
