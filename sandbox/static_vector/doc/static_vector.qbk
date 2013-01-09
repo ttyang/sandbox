@@ -22,6 +22,8 @@
 
 [section:static_vector static_vector]
 
+[section:introduction Introduction]
+
 static_vector is a hybrid of boost::container::vector and boost::array. 
 
 static_vector is a sequence container like boost::container::vector with contiguous storage that can
@@ -34,19 +36,12 @@ static_vector is well suited for use in a buffer or in the internal implementati
 
 Exceptions can be disabled for cases where it is not supported or not desired.
 
+[endsect]
+
+[section:reference Reference]
+
+[include generated/static_vector.qbk]
 
 [endsect]
 
-[include auto_index_helpers.qbk]
-
-[section:index Indexes]
-
-[named_index class_name Class Index]
-[named_index typedef_name Typedef Index]
-[named_index function_name Function Index]
-[/named_index macro_name Macro Index]
-[/index]
-
 [endsect]
-
-[xinclude autodoc.xml]

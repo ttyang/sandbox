@@ -1,0 +1,3768 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Reference</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;StaticVector">
+<link rel="up" href="../static_vector.html" title="static_vector">
+<link rel="prev" href="introduction.html" title="Introduction">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="http://www.boost.org/doc/libs/release/boost.png"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/release/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/release/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/release/more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="static_vector.static_vector.reference"></a><a class="link" href="reference.html" title="Reference">Reference</a>
+</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="reference.html#staticvector.static_vector.reference.boost_container_static_vector">boost::container::static_vector</a></span></dt></dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector" title="boost::container::static_vector">boost::container::static_vector</a>
+</h4></div></div></div>
+<p>
+          <a class="indexterm" name="idp6325160"></a><a class="indexterm" name="idp6325504"></a><a class="indexterm" name="idp6325848"></a>
+A hybrid of boost::container::vector and boost::array.
+        </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.h0"></a>
+          <span><a name="staticvector.static_vector.reference.boost_container_static_vector.description"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.description">Description</a>
+        </h6>
+<p>
+          static_vector is a sequence container like boost::container::vector with
+          contiguous storage that can change in size, along with the static allocation,
+          low overhead, and fixed capacity of boost::array.
+        </p>
+<p>
+          A static_vector is a sequence that supports random access to elements,
+          constant time insertion and removal of elements at the end, and linear
+          time insertion and removal of elements at the beginning or in the middle.
+          The number of elements in a static_vector may vary dynamically up to a
+          fixed capacity because elements are stored within the object itself similarly
+          to an array. However, objects are initialized as they are inserted into
+          static_vector unlike C arrays or std::array which must construct all elements
+          on instantiation. The behavior of static_vector enables the use of statically
+          allocated elements in cases with complex object lifetime requirements that
+          would otherwise not be trivially possible.
+        </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.h1"></a>
+          <span><a name="staticvector.static_vector.reference.boost_container_static_vector.header"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.header">Header</a>
+        </h6>
+<p>
+          <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
+        </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.h2"></a>
+          <span><a name="staticvector.static_vector.reference.boost_container_static_vector.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.synopsis">Synopsis</a>
+        </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Value</span><span class="special">,</span>
+         <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">Capacity</span><span class="special">,</span>
+         <span class="keyword">typename</span> <span class="identifier">Strategy</span> <span class="special">=</span> <span class="identifier">static_vector_detail</span><span class="special">::</span><span class="identifier">default_strategy</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;&gt;</span>
+<span class="keyword">class</span> <span class="identifier">static_vector</span>
+<span class="special">{</span>
+  <span class="comment">// ...</span>
+<span class="special">};</span>
+</pre>
+<p>
+        </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.h3"></a>
+          <span><a name="staticvector.static_vector.reference.boost_container_static_vector.template_parameter_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.template_parameter_s_">Template
+          parameter(s)</a>
+        </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Parameter
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Value</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    the type of element that will be stored.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">Capacity</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    the maximum number of elements static_vector can store, fixed
+                    at compile time.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.h4"></a>
+          <span><a name="staticvector.static_vector.reference.boost_container_static_vector.constructor_s__and_destructor"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.constructor_s__and_destructor">Constructor(s)
+          and destructor</a>
+        </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Function
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member0" title="static_vector()"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs an empty static_vector.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member1" title="static_vector(size_type)"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs a static_vector containing count default constructed
+                    Values.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member2" title="static_vector(size_type, value_type const &amp;)"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span>
+                    <span class="identifier">value_type</span> <span class="keyword">const</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs a static_vector containing count copies of value.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member3" title="static_vector(Iterator, Iterator)"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">Iterator</span><span class="special">,</span>
+                    <span class="identifier">Iterator</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs a static_vector containing copy of a range [first,
+                    last).
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member4" title="static_vector(static_vector const &amp;)"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span> <span class="keyword">const</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs a copy of other static_vector.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member5" title="static_vector(static_vector&lt;...&gt; const &amp;)"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs a copy of other static_vector.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member8" title="static_vector(static_vector &amp;&amp;)"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span> <span class="special">&amp;&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Move constructor. Moves Values stored in the other static_vector
+                    to this one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member9" title="static_vector(static_vector&lt;...&gt; &amp;&amp;)"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="special">&amp;&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Move constructor. Moves Values stored in the other static_vector
+                    to this one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member12" title="~static_vector()"><code class="computeroutput"><span class="special">~</span><span class="identifier">static_vector</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Destructor. Destroys Values stored in this container.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.h5"></a>
+          <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member_s_">Member(s)</a>
+        </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Function
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member6" title="operator=(const static_vector &amp;)"><code class="computeroutput"><span class="keyword">operator</span><span class="special">=(</span><span class="keyword">const</span> <span class="identifier">static_vector</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Copy assigns Values stored in the other static_vector to this
+                    one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member7" title="operator=(static_vector&lt;...&gt; const &amp;)"><code class="computeroutput"><span class="keyword">operator</span><span class="special">=(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Copy assigns Values stored in the other static_vector to this
+                    one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member10" title="operator=(static_vector &amp;&amp;)"><code class="computeroutput"><span class="keyword">operator</span><span class="special">=(</span><span class="identifier">static_vector</span> <span class="special">&amp;&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Move assignment. Moves Values stored in the other static_vector
+                    to this one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member11" title="operator=(static_vector&lt;...&gt; &amp;&amp;)"><code class="computeroutput"><span class="keyword">operator</span><span class="special">=(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="special">&amp;&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Move assignment. Moves Values stored in the other static_vector
+                    to this one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member13" title="swap(static_vector &amp;)"><code class="computeroutput"><span class="identifier">swap</span><span class="special">(</span><span class="identifier">static_vector</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Swaps contents of the other static_vector and this one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member14" title="swap(static_vector&lt;...&gt; &amp;)"><code class="computeroutput"><span class="identifier">swap</span><span class="special">(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Swaps contents of the other static_vector and this one.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member15" title="resize(size_type)"><code class="computeroutput"><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts or erases elements at the end such that the size becomes
+                    count. New elements are default constructed.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member16" title="resize(size_type, value_type const &amp;)"><code class="computeroutput"><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span>
+                    <span class="identifier">value_type</span> <span class="keyword">const</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts or erases elements at the end such that the size becomes
+                    count. New elements are copy constructed from value.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member17" title="reserve(size_type)"><code class="computeroutput"><span class="identifier">reserve</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    This call has no effect because the Capacity of this container
+                    is constant.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member18" title="push_back(value_type const &amp;)"><code class="computeroutput"><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">value_type</span> <span class="keyword">const</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Adds a copy of value at the end.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member19" title="push_back(value_type &amp;&amp;)"><code class="computeroutput"><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">value_type</span> <span class="special">&amp;&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Moves value to the end.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member20" title="pop_back()"><code class="computeroutput"><span class="identifier">pop_back</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Destroys last value and decreases the size.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member21" title="insert(iterator, value_type const &amp;)"><code class="computeroutput"><span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span>
+                    <span class="identifier">value_type</span> <span class="keyword">const</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts a copy of element at position.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member22" title="insert(iterator, value_type &amp;&amp;)"><code class="computeroutput"><span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span>
+                    <span class="identifier">value_type</span> <span class="special">&amp;&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts a move-constructed element at position.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member23" title="insert(iterator, size_type, value_type const &amp;)"><code class="computeroutput"><span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span>
+                    <span class="identifier">size_type</span><span class="special">,</span>
+                    <span class="identifier">value_type</span> <span class="keyword">const</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts a count copies of value at position.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member24" title="insert(iterator, Iterator, Iterator)"><code class="computeroutput"><span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span>
+                    <span class="identifier">Iterator</span><span class="special">,</span>
+                    <span class="identifier">Iterator</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts a copy of a range [first, last) at position.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member25" title="erase(iterator)"><code class="computeroutput"><span class="identifier">erase</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Erases Value from position.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member26" title="erase(iterator, iterator)"><code class="computeroutput"><span class="identifier">erase</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span>
+                    <span class="identifier">iterator</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Erases Values from a range [first, last).
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member27" title="assign(Iterator, Iterator)"><code class="computeroutput"><span class="identifier">assign</span><span class="special">(</span><span class="identifier">Iterator</span><span class="special">,</span>
+                    <span class="identifier">Iterator</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Assigns a range [first, last) of Values to this container.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member28" title="assign(size_type, value_type const &amp;)"><code class="computeroutput"><span class="identifier">assign</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span>
+                    <span class="identifier">value_type</span> <span class="keyword">const</span>
+                    <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Assigns a count copies of value to this container.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member29" title="emplace_back(Args &amp;&amp;...)"><code class="computeroutput"><span class="identifier">emplace_back</span><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;...)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts a Value constructed with std::forward&lt;Args&gt;(args)...
+                    in the end of the container.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member30" title="emplace(iterator, Args &amp;&amp;...)"><code class="computeroutput"><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span>
+                    <span class="identifier">Args</span> <span class="special">&amp;&amp;...)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Inserts a Value constructed with std::forward&lt;Args&gt;(args)...
+                    before position.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member31" title="clear()"><code class="computeroutput"><span class="identifier">clear</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Removes all elements from the container.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member32" title="at(size_type)"><code class="computeroutput"><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member33" title="at(size_type)"><code class="computeroutput"><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member34" title="operator["><code class="computeroutput"><span class="keyword">operator</span><span class="special">[](</span><span class="identifier">size_type</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member35" title="operator["><code class="computeroutput"><span class="keyword">operator</span><span class="special">[](</span><span class="identifier">size_type</span><span class="special">)</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member36" title="front()"><code class="computeroutput"><span class="identifier">front</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member37" title="front()"><code class="computeroutput"><span class="identifier">front</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member38" title="back()"><code class="computeroutput"><span class="identifier">back</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member39" title="back()"><code class="computeroutput"><span class="identifier">back</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member40" title="data()"><code class="computeroutput"><span class="identifier">data</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Pointer such that [data(), data() + size()) is a valid range.
+                    For a non-empty vector, data() == &amp;front().
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member41" title="data()"><code class="computeroutput"><span class="identifier">data</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Const pointer such that [data(), data() + size()) is a valid
+                    range. For a non-empty vector, data() == &amp;front().
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member42" title="begin()"><code class="computeroutput"><span class="identifier">begin</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member43" title="begin()"><code class="computeroutput"><span class="identifier">begin</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member44" title="cbegin()"><code class="computeroutput"><span class="identifier">cbegin</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member45" title="end()"><code class="computeroutput"><span class="identifier">end</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member46" title="end()"><code class="computeroutput"><span class="identifier">end</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member47" title="cend()"><code class="computeroutput"><span class="identifier">cend</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member48" title="rbegin()"><code class="computeroutput"><span class="identifier">rbegin</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member49" title="rbegin()"><code class="computeroutput"><span class="identifier">rbegin</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member50" title="crbegin()"><code class="computeroutput"><span class="identifier">crbegin</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member51" title="rend()"><code class="computeroutput"><span class="identifier">rend</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member52" title="rend()"><code class="computeroutput"><span class="identifier">rend</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member53" title="crend()"><code class="computeroutput"><span class="identifier">crend</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member54" title="capacity()"><code class="computeroutput"><span class="identifier">capacity</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member55" title="max_size()"><code class="computeroutput"><span class="identifier">max_size</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member56" title="size()"><code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member57" title="empty()"><code class="computeroutput"><span class="identifier">empty</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member58" title="shrink_to_fit()"><code class="computeroutput"><span class="identifier">shrink_to_fit</span><span class="special">()</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Capacity is fixed so this call has no effects.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member0"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member0" title="static_vector()">static_vector()</a>
+</h5></div></div></div>
+<p>
+            Constructs an empty static_vector.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member0.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member0.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member0.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">static_vector</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member1"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member1" title="static_vector(size_type)">static_vector(size_type)</a>
+</h5></div></div></div>
+<p>
+            Constructs a static_vector containing count default constructed Values.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member1.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member1.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member1.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member1.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member1.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member1.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">count</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member2"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member2" title="static_vector(size_type, value_type const &amp;)">static_vector(size_type,
+          value_type const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Constructs a static_vector containing count copies of value.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member2.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member2.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member2.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member2.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member2.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member2.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">count</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member3"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member3" title="static_vector(Iterator, Iterator)">static_vector(Iterator,
+          Iterator)</a>
+</h5></div></div></div>
+<p>
+            Constructs a static_vector containing copy of a range [first, last).
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member3.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member3.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member3.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+<span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member3.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member3.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member3.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">first</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">last</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member4"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member4" title="static_vector(static_vector const &amp;)">static_vector(static_vector
+          const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Constructs a copy of other static_vector.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member4.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member4.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member4.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member4.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member4.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member4.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member5"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member5" title="static_vector(static_vector&lt;...&gt; const &amp;)">static_vector(static_vector&lt;...&gt;
+          const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Constructs a copy of other static_vector.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member5.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member5.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member5.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">S</span><span class="special">&gt;</span>
+<span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member5.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member5.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member5.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member8"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member8" title="static_vector(static_vector &amp;&amp;)">static_vector(static_vector
+          &amp;&amp;)</a>
+</h5></div></div></div>
+<p>
+            Move constructor. Moves Values stored in the other static_vector to this
+            one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member8.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member8.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member8.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span> <span class="special">&amp;&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member8.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member8.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member8.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span> <span class="special">&amp;&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member9"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member9" title="static_vector(static_vector&lt;...&gt; &amp;&amp;)">static_vector(static_vector&lt;...&gt;
+          &amp;&amp;)</a>
+</h5></div></div></div>
+<p>
+            Move constructor. Moves Values stored in the other static_vector to this
+            one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member9.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member9.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member9.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">S</span><span class="special">&gt;</span>
+<span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span> <span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member9.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member9.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member9.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span>
+                      <span class="special">&gt;</span> <span class="special">&amp;&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member12"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member12" title="~static_vector()">~static_vector()</a>
+</h5></div></div></div>
+<p>
+            Destructor. Destroys Values stored in this container.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member12.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member12.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member12.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="special">~</span><span class="identifier">static_vector</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member6"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member6" title="operator=(const static_vector &amp;)">operator=(const
+          static_vector &amp;)</a>
+</h5></div></div></div>
+<p>
+            Copy assigns Values stored in the other static_vector to this one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member6.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member6.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member6.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">static_vector</span> <span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="keyword">const</span> <span class="identifier">static_vector</span> <span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member6.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member6.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member6.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">static_vector</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member7"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member7" title="operator=(static_vector&lt;...&gt; const &amp;)">operator=(static_vector&lt;...&gt;
+          const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Copy assigns Values stored in the other static_vector to this one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member7.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member7.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member7.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">S</span><span class="special">&gt;</span>
+<span class="identifier">static_vector</span> <span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member7.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member7.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member7.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member10"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member10" title="operator=(static_vector &amp;&amp;)">operator=(static_vector
+          &amp;&amp;)</a>
+</h5></div></div></div>
+<p>
+            Move assignment. Moves Values stored in the other static_vector to this
+            one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member10.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member10.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member10.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">static_vector</span> <span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">static_vector</span> <span class="special">&amp;&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member10.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member10.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member10.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span> <span class="special">&amp;&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member11"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member11" title="operator=(static_vector&lt;...&gt; &amp;&amp;)">operator=(static_vector&lt;...&gt;
+          &amp;&amp;)</a>
+</h5></div></div></div>
+<p>
+            Move assignment. Moves Values stored in the other static_vector to this
+            one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member11.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member11.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member11.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">S</span><span class="special">&gt;</span>
+<span class="identifier">static_vector</span> <span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span> <span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member11.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member11.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member11.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span>
+                      <span class="special">&gt;</span> <span class="special">&amp;&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member13"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member13" title="swap(static_vector &amp;)">swap(static_vector
+          &amp;)</a>
+</h5></div></div></div>
+<p>
+            Swaps contents of the other static_vector and this one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member13.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member13.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member13.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">static_vector</span> <span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member13.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member13.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member13.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member14"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member14" title="swap(static_vector&lt;...&gt; &amp;)">swap(static_vector&lt;...&gt;
+          &amp;)</a>
+</h5></div></div></div>
+<p>
+            Swaps contents of the other static_vector and this one.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member14.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member14.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member14.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">S</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span> <span class="special">&gt;</span> <span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member14.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member14.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member14.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">C</span><span class="special">,</span> <span class="identifier">S</span>
+                      <span class="special">&gt;</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">other</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member15"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member15" title="resize(size_type)">resize(size_type)</a>
+</h5></div></div></div>
+<p>
+            Inserts or erases elements at the end such that the size becomes count.
+            New elements are default constructed.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member15.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member15.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member15.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member15.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member15.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member15.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">count</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member16"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member16" title="resize(size_type, value_type const &amp;)">resize(size_type,
+          value_type const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Inserts or erases elements at the end such that the size becomes count.
+            New elements are copy constructed from value.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member16.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member16.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member16.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member16.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member16.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member16.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">count</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member17"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member17" title="reserve(size_type)">reserve(size_type)</a>
+</h5></div></div></div>
+<p>
+            This call has no effect because the Capacity of this container is constant.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member17.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member17.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member17.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">reserve</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member17.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member17.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member17.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">count</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member18"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member18" title="push_back(value_type const &amp;)">push_back(value_type
+          const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Adds a copy of value at the end.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member18.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member18.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member18.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">push_back</span><span class="special">(</span><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member18.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member18.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member18.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member19"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member19" title="push_back(value_type &amp;&amp;)">push_back(value_type
+          &amp;&amp;)</a>
+</h5></div></div></div>
+<p>
+            Moves value to the end.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member19.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member19.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member19.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">push_back</span><span class="special">(</span><span class="identifier">value_type</span> <span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member19.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member19.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member19.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="special">&amp;&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member20"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member20" title="pop_back()">pop_back()</a>
+</h5></div></div></div>
+<p>
+            Destroys last value and decreases the size.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member20.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member20.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member20.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">pop_back</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member21"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member21" title="insert(iterator, value_type const &amp;)">insert(iterator,
+          value_type const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Inserts a copy of element at position.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member21.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member21.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member21.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member21.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member21.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member21.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">position</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member22"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member22" title="insert(iterator, value_type &amp;&amp;)">insert(iterator,
+          value_type &amp;&amp;)</a>
+</h5></div></div></div>
+<p>
+            Inserts a move-constructed element at position.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member22.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member22.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member22.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="special">&amp;&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member22.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member22.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member22.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">position</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="special">&amp;&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member23"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member23" title="insert(iterator, size_type, value_type const &amp;)">insert(iterator,
+          size_type, value_type const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Inserts a count copies of value at position.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member23.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member23.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member23.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">position</span><span class="special">,</span>
+                <span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">,</span>
+                <span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member23.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member23.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member23.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">position</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">count</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member24"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member24" title="insert(iterator, Iterator, Iterator)">insert(iterator,
+          Iterator, Iterator)</a>
+</h5></div></div></div>
+<p>
+            Inserts a copy of a range [first, last) at position.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member24.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member24.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member24.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+<span class="identifier">iterator</span> <span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">position</span><span class="special">,</span>
+                <span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span>
+                <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member24.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member24.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member24.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">position</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">first</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">last</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member25"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member25" title="erase(iterator)">erase(iterator)</a>
+</h5></div></div></div>
+<p>
+            Erases Value from position.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member25.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member25.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member25.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">erase</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">position</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member25.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member25.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member25.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">position</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member26"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member26" title="erase(iterator, iterator)">erase(iterator,
+          iterator)</a>
+</h5></div></div></div>
+<p>
+            Erases Values from a range [first, last).
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member26.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member26.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member26.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">erase</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">iterator</span> <span class="identifier">last</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member26.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member26.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member26.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">first</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">last</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member27"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member27" title="assign(Iterator, Iterator)">assign(Iterator,
+          Iterator)</a>
+</h5></div></div></div>
+<p>
+            Assigns a range [first, last) of Values to this container.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member27.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member27.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member27.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">assign</span><span class="special">(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member27.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member27.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member27.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">first</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">last</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member28"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member28" title="assign(size_type, value_type const &amp;)">assign(size_type,
+          value_type const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Assigns a count copies of value to this container.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member28.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member28.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member28.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">assign</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">value</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member28.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member28.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member28.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">count</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value_type</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">value</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member29"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member29" title="emplace_back(Args &amp;&amp;...)">emplace_back(Args
+          &amp;&amp;...)</a>
+</h5></div></div></div>
+<p>
+            Inserts a Value constructed with std::forward&lt;Args&gt;(args)... in
+            the end of the container.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member29.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member29.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member29.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">emplace_back</span><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member29.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member29.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member29.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Args</span> <span class="special">&amp;&amp;...</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">args</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member30"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member30" title="emplace(iterator, Args &amp;&amp;...)">emplace(iterator,
+          Args &amp;&amp;...)</a>
+</h5></div></div></div>
+<p>
+            Inserts a Value constructed with std::forward&lt;Args&gt;(args)... before
+            position.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member30.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member30.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member30.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span>
+<span class="identifier">iterator</span> <span class="identifier">emplace</span><span class="special">(</span><span class="identifier">iterator</span> <span class="identifier">position</span><span class="special">,</span> <span class="identifier">Args</span> <span class="special">&amp;&amp;...</span> <span class="identifier">args</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member30.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member30.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member30.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">iterator</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">position</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">Args</span> <span class="special">&amp;&amp;...</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">args</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member31"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member31" title="clear()">clear()</a>
+</h5></div></div></div>
+<p>
+            Removes all elements from the container.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member31.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member31.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member31.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">clear</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member32"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member32" title="at(size_type)">at(size_type)</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member32.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member32.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member32.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">reference</span> <span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">i</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member32.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member32.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member32.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">i</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member32.h2"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member32.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member32.returns">Returns</a>
+          </h6>
+<p>
+            reference to the i-th element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member33"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member33" title="at(size_type)">at(size_type)</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member33.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member33.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member33.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reference</span> <span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> <span class="identifier">i</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member33.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member33.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member33.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">i</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member33.h2"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member33.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member33.returns">Returns</a>
+          </h6>
+<p>
+            const reference to the i-th element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member34"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member34" title="operator[">operator[</a>
+</h5></div></div></div>
+<p>
+            (size_type)]
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member34.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member34.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member34.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">reference</span> <span class="keyword">operator</span><span class="special">[](</span><span class="identifier">size_type</span> <span class="identifier">i</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member34.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member34.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member34.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">i</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member34.h2"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member34.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member34.returns">Returns</a>
+          </h6>
+<p>
+            reference to the i-th element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member35"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member35" title="operator[">operator[</a>
+</h5></div></div></div>
+<p>
+            (size_type)]
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member35.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member35.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member35.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reference</span> <span class="keyword">operator</span><span class="special">[](</span><span class="identifier">size_type</span> <span class="identifier">i</span><span class="special">)</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member35.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member35.parameters"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member35.parameters">Parameters</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">size_type</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">i</span></code>
+                    </p>
+                  </td>
+<td>
+                  </td>
+</tr></tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member35.h2"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member35.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member35.returns">Returns</a>
+          </h6>
+<p>
+            const reference to the i-th element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member36"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member36" title="front()">front()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member36.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member36.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member36.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">reference</span> <span class="identifier">front</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member36.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member36.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member36.returns">Returns</a>
+          </h6>
+<p>
+            reference to the first element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member37"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member37" title="front()">front()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member37.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member37.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member37.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reference</span> <span class="identifier">front</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member37.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member37.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member37.returns">Returns</a>
+          </h6>
+<p>
+            const reference to the first element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member38"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member38" title="back()">back()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member38.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member38.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member38.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">reference</span> <span class="identifier">back</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member38.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member38.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member38.returns">Returns</a>
+          </h6>
+<p>
+            reference to the last element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member39"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member39" title="back()">back()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member39.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member39.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member39.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reference</span> <span class="identifier">back</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member39.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member39.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member39.returns">Returns</a>
+          </h6>
+<p>
+            const reference to the last element from the beginning of the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member40"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member40" title="data()">data()</a>
+</h5></div></div></div>
+<p>
+            Pointer such that [data(), data() + size()) is a valid range. For a non-empty
+            vector, data() == &amp;front().
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member40.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member40.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member40.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">Value</span> <span class="special">*</span> <span class="identifier">data</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member41"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member41" title="data()">data()</a>
+</h5></div></div></div>
+<p>
+            Const pointer such that [data(), data() + size()) is a valid range. For
+            a non-empty vector, data() == &amp;front().
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member41.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member41.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member41.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">Value</span> <span class="special">*</span> <span class="identifier">data</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member42"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member42" title="begin()">begin()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member42.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member42.description"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member42.description">Description</a>
+          </h6>
+<p>
+            iterator to the first element contained in the vector.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member42.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member42.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member42.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">begin</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member43"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member43" title="begin()">begin()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member43.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member43.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member43.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_iterator</span> <span class="identifier">begin</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member43.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member43.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member43.returns">Returns</a>
+          </h6>
+<p>
+            const_iterator to the first element contained in the vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member44"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member44" title="cbegin()">cbegin()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member44.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member44.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member44.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_iterator</span> <span class="identifier">cbegin</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member44.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member44.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member44.returns">Returns</a>
+          </h6>
+<p>
+            const_iterator to the first element contained in the vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member45"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member45" title="end()">end()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member45.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member45.description"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member45.description">Description</a>
+          </h6>
+<p>
+            iterator pointing to the one after the last element contained in the
+            vector.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member45.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member45.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member45.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">iterator</span> <span class="identifier">end</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member46"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member46" title="end()">end()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member46.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member46.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member46.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_iterator</span> <span class="identifier">end</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member46.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member46.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member46.returns">Returns</a>
+          </h6>
+<p>
+            const_iterator pointing to the one after the last element contained in
+            the vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member47"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member47" title="cend()">cend()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member47.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member47.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member47.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_iterator</span> <span class="identifier">cend</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member47.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member47.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member47.returns">Returns</a>
+          </h6>
+<p>
+            const_iterator pointing to the one after the last element contained in
+            the vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member48"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member48" title="rbegin()">rbegin()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member48.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member48.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member48.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">reverse_iterator</span> <span class="identifier">rbegin</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member48.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member48.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member48.returns">Returns</a>
+          </h6>
+<p>
+            reverse_iterator pointing to the beginning of the reversed static_vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member49"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member49" title="rbegin()">rbegin()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member49.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member49.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member49.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reverse_iterator</span> <span class="identifier">rbegin</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member49.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member49.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member49.returns">Returns</a>
+          </h6>
+<p>
+            const_reverse_iterator pointing to the beginning of the reversed static_vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member50"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member50" title="crbegin()">crbegin()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member50.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member50.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member50.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reverse_iterator</span> <span class="identifier">crbegin</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member50.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member50.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member50.returns">Returns</a>
+          </h6>
+<p>
+            const_reverse_iterator pointing to the beginning of the reversed static_vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member51"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member51" title="rend()">rend()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member51.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member51.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member51.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">reverse_iterator</span> <span class="identifier">rend</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member51.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member51.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member51.returns">Returns</a>
+          </h6>
+<p>
+            reverse_iterator pointing to the one after the last element of the reversed
+            static_vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member52"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member52" title="rend()">rend()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member52.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member52.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member52.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reverse_iterator</span> <span class="identifier">rend</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member52.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member52.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member52.returns">Returns</a>
+          </h6>
+<p>
+            const_reverse_iterator pointing to the one after the last element of
+            the reversed static_vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member53"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member53" title="crend()">crend()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member53.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member53.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member53.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">const_reverse_iterator</span> <span class="identifier">crend</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member53.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member53.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member53.returns">Returns</a>
+          </h6>
+<p>
+            const_reverse_iterator pointing to the one after the last element of
+            the reversed static_vector.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member54"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member54" title="capacity()">capacity()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member54.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member54.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member54.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">size_type</span> <span class="identifier">capacity</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member54.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member54.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member54.returns">Returns</a>
+          </h6>
+<p>
+            container's capacity.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member55"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member55" title="max_size()">max_size()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member55.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member55.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member55.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">size_type</span> <span class="identifier">max_size</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member55.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member55.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member55.returns">Returns</a>
+          </h6>
+<p>
+            container's capacity.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member56"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member56" title="size()">size()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member56.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member56.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member56.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">size_type</span> <span class="identifier">size</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member56.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member56.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member56.returns">Returns</a>
+          </h6>
+<p>
+            Number of elements contained in the container.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member57"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member57" title="empty()">empty()</a>
+</h5></div></div></div>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member57.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member57.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member57.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">bool</span> <span class="identifier">empty</span><span class="special">()</span></pre>
+<p>
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member57.h1"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member57.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member57.returns">Returns</a>
+          </h6>
+<p>
+            true if the number of elements contained in the container is equal to
+            0.
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member58"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member58" title="shrink_to_fit()">shrink_to_fit()</a>
+</h5></div></div></div>
+<p>
+            Capacity is fixed so this call has no effects.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.boost_container_static_vector.member58.h0"></a>
+            <span><a name="staticvector.static_vector.reference.boost_container_static_vector.member58.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.member58.synopsis">Synopsis</a>
+          </h6>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">shrink_to_fit</span><span class="special">()</span></pre>
+<p>
+          </p>
+</div>
+<p>
+          <br>
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Adam Wulkiewicz<br>Copyright &#169; 2011, 2012 Andrew Hundt<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a>
+</div>
+</body>
+</html>

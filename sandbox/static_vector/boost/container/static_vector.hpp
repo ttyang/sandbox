@@ -163,8 +163,9 @@ struct static_vector_traits
 
 } // namespace static_vector_detail
 
-/// A hybrid of boost::container::vector and boost::array. 
 /**
+ * @brief A hybrid of boost::container::vector and boost::array.
+ *
  * static_vector is a sequence container like boost::container::vector with contiguous storage that can
  * change in size, along with the static allocation, low overhead, and fixed capacity of boost::array.
  *
@@ -180,9 +181,6 @@ struct static_vector_traits
  * @tparam Value the type of element that will be stored.
  * @tparam Capacity the maximum number of elements static_vector can store, fixed at compile time.
  *
- * @example
- *
- * \include example/static_vector_example.cpp
  *
  * @par Error Handling
  *
