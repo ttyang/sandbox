@@ -10,6 +10,11 @@ static\u005fvector is a sequence container like boost::container::vector with co
 
 A static\u005fvector is a sequence that supports random access to elements, constant time insertion and removal of elements at the end, and linear time insertion and removal of elements at the beginning or in the middle. The number of elements in a static\u005fvector may vary dynamically up to a fixed capacity because elements are stored within the object itself similarly to an array. However, objects are initialized as they are inserted into static\u005fvector unlike C arrays or std::array which must construct all elements on instantiation. The behavior of static\u005fvector enables the use of statically allocated elements in cases with complex object lifetime requirements that would otherwise not be trivially possible.
 
+[heading Error Handling]
+Insertion beyond the capacity and out of bounds errors result in undefined behavior unless otherwise specified. In this respect if size() == capacity(), then static_vector::push_back() behaves like std::vector pop_front() if size() == empty(). The reason for this difference is because unlike vectors, static_vector does not perform allocation.
+[heading Advanced Usage]
+Error handling behavior can be modified to more closely match std::vector exception behavior when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
+
 [heading Header]
 `#include <.hpp>`
 
@@ -27,7 +32,25 @@ class static_vector
 [table
 [[Parameter] [Description]]
 [[`Value`][the type of element that will be stored. ]]
-[[`std::size_t Capacity`][the maximum number of elements static_vector can store, fixed at compile time.]]
+[[`std::size_t Capacity`][the maximum number of elements static_vector can store, fixed at compile time. ]]
+[[`Strategy`][defines the public typedefs and error handlers, implements StaticVectorStrategy and has some similarities to an Allocator.]]
+]
+
+[heading Typedef(s)]
+[table
+[[Type] [Description]]
+[[`value_type`][The type of elements stored in the container. ]]
+[[`size_type`][The unsigned integral type used by the container. ]]
+[[`difference_type`][The pointers difference type. ]]
+[[`pointer`][The pointer type. ]]
+[[`const_pointer`][The const pointer type. ]]
+[[`reference`][The value reference type. ]]
+[[`const_reference`][The value const reference type. ]]
+[[`iterator`][The iterator type. ]]
+[[`const_iterator`][The const iterator type. ]]
+[[`reverse_iterator`][The reverse iterator type. ]]
+[[`const_reverse_iterator`][The const reverse iterator. ]]
+[[`strategy_type`][The type of a strategy used by the static_vector. ]]
 ]
 
 [heading Constructor(s) and destructor]
@@ -70,32 +93,32 @@ class static_vector
 [[[link staticvector.static_vector.reference.boost_container_static_vector.member29 `emplace_back(Args &&...)`]][Inserts a Value constructed with std::forward<Args>(args)... in the end of the container. ]]
 [[[link staticvector.static_vector.reference.boost_container_static_vector.member30 `emplace(iterator, Args &&...)`]][Inserts a Value constructed with std::forward<Args>(args)... before position. ]]
 [[[link staticvector.static_vector.reference.boost_container_static_vector.member31 `clear()`]][Removes all elements from the container. ]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member32 `at(size_type)`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member33 `at(size_type)`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member34 `operator[](size_type)`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member35 `operator[](size_type)`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member36 `front()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member37 `front()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member38 `back()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member39 `back()`]][]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member32 `at(size_type)`]][Returns reference to the i-th element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member33 `at(size_type)`]][Returns const reference to the i-th element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member34 `operator[](size_type)`]][Returns reference to the i-th element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member35 `operator[](size_type)`]][Returns const reference to the i-th element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member36 `front()`]][Returns reference to the first element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member37 `front()`]][Returns const reference to the first element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member38 `back()`]][Returns reference to the last element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member39 `back()`]][Returns const reference to the first element. ]]
 [[[link staticvector.static_vector.reference.boost_container_static_vector.member40 `data()`]][Pointer such that [data(), data() + size()) is a valid range. For a non-empty vector, data() == &front(). ]]
 [[[link staticvector.static_vector.reference.boost_container_static_vector.member41 `data()`]][Const pointer such that [data(), data() + size()) is a valid range. For a non-empty vector, data() == &front(). ]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member42 `begin()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member43 `begin()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member44 `cbegin()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member45 `end()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member46 `end()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member47 `cend()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member48 `rbegin()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member49 `rbegin()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member50 `crbegin()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member51 `rend()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member52 `rend()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member53 `crend()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member54 `capacity()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member55 `max_size()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member56 `size()`]][]]
-[[[link staticvector.static_vector.reference.boost_container_static_vector.member57 `empty()`]][]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member42 `begin()`]][Returns iterator to the first element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member43 `begin()`]][Returns const iterator to the first element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member44 `cbegin()`]][Returns const iterator to the first element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member45 `end()`]][Returns iterator to the one after the last element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member46 `end()`]][Returns const iterator to the one after the last element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member47 `cend()`]][Returns const iterator to the one after the last element. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member48 `rbegin()`]][Returns reverse iterator to the first element of the reversed container. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member49 `rbegin()`]][Returns const reverse iterator to the first element of the reversed container. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member50 `crbegin()`]][Returns const reverse iterator to the first element of the reversed container. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member51 `rend()`]][Returns reverse iterator to the one after the last element of the reversed container. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member52 `rend()`]][Returns const reverse iterator to the one after the last element of the reversed container. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member53 `crend()`]][Returns const reverse iterator to the one after the last element of the reversed container. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member54 `capacity()`]][Returns container's capacity. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member55 `max_size()`]][Returns container's capacity. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member56 `size()`]][Returns the number of stored elements. ]]
+[[[link staticvector.static_vector.reference.boost_container_static_vector.member57 `empty()`]][Queries if the container contains elements. ]]
 [[[link staticvector.static_vector.reference.boost_container_static_vector.member58 `shrink_to_fit()`]][Capacity is fixed so this call has no effects. ]]
 ]
 
@@ -103,6 +126,11 @@ class static_vector
 [section:member0 static_vector()]
 Constructs an empty static_vector. [heading Synopsis]
 ``static_vector()``
+
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
 
 [endsect]
 [br]
@@ -114,8 +142,15 @@ Constructs a static_vector containing count default constructed Values. [heading
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `count` ][]]
+[[ `size_type` ][ `count` ][The number of values which will be contained in the container.]]
 ]
+[heading Precondition]
+count <= Capacity.
+[heading Throws]
+If Value's default constructor throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -126,9 +161,16 @@ Constructs a static_vector containing count copies of value. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `count` ][]]
-[[ `value_type const &` ][ `value` ][]]
+[[ `size_type` ][ `count` ][The number of copies of a values that will be contained in the container. ]]
+[[ `value_type const &` ][ `value` ][The value which will be used to copy construct values.]]
 ]
+[heading Precondition]
+count <= Capacity.
+[heading Throws]
+If Value's copy constructor throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -140,9 +182,16 @@ static_vector(Iterator first, Iterator last)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `Iterator` ][ `first` ][]]
-[[ `Iterator` ][ `last` ][]]
+[[ `Iterator` ][ `first` ][The iterator to the first element in range. ]]
+[[ `Iterator` ][ `last` ][The iterator to the one after the last element in range.]]
 ]
+[heading Precondition]
+distance(first, last) <= Capacity. Iterator must meet the ForwardTraversal Iterator concept
+[heading Throws]
+If Value's constructor taking a dereferenced Iterator throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -153,8 +202,13 @@ Constructs a copy of other static_vector. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector const &` ][ `other` ][]]
+[[ `static_vector const &` ][ `other` ][The static_vector which content will be copied to this one.]]
 ]
+[heading Throws]
+If Value's copy constructor throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -166,8 +220,15 @@ static_vector(static_vector< value_type, C, S > const & other)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector< value_type, C, S > const &` ][ `other` ][]]
+[[ `static_vector< value_type, C, S > const &` ][ `other` ][The static_vector which content will be copied to this one.]]
 ]
+[heading Precondition]
+other.size() <= Capacity.
+[heading Throws]
+If Value's copy constructor throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -178,8 +239,18 @@ Move constructor. Moves Values stored in the other static_vector to this one. [h
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector &&` ][ `other` ][]]
+[[ `static_vector &&` ][ `other` ][The static_vector which content will be moved to this one.]]
 ]
+[heading Throws]
+
+
+* If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws. 
+* If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -191,14 +262,31 @@ static_vector(static_vector< value_type, C, S > && other)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector< value_type, C, S > &&` ][ `other` ][]]
+[[ `static_vector< value_type, C, S > &&` ][ `other` ][The static_vector which content will be moved to this one.]]
 ]
+[heading Precondition]
+other.size() <= Capacity.
+[heading Throws]
+
+
+* If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws. 
+* If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
 [section:member12 ~static_vector()]
 Destructor. Destroys Values stored in this container. [heading Synopsis]
 ``~static_vector()``
+
+[heading Throws]
+Nothing
+[heading Complexity]
+Linear O(N).
 
 [endsect]
 [br]
@@ -210,8 +298,13 @@ Copy assigns Values stored in the other static_vector to this one. [heading Syno
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `const static_vector &` ][ `other` ][]]
+[[ `const static_vector &` ][ `other` ][The static_vector which content will be copied to this one.]]
 ]
+[heading Throws]
+If Value's copy constructor or copy assignment throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -223,8 +316,15 @@ static_vector & operator=(static_vector< value_type, C, S > const & other)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector< value_type, C, S > const &` ][ `other` ][]]
+[[ `static_vector< value_type, C, S > const &` ][ `other` ][The static_vector which content will be copied to this one.]]
 ]
+[heading Precondition]
+other.size() <= Capacity.
+[heading Throws]
+If Value's copy constructor or copy assignment throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -235,8 +335,18 @@ Move assignment. Moves Values stored in the other static_vector to this one. [he
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector &&` ][ `other` ][]]
+[[ `static_vector &&` ][ `other` ][The static_vector which content will be moved to this one.]]
 ]
+[heading Throws]
+
+
+* If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws. 
+* If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws.
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -248,8 +358,20 @@ static_vector & operator=(static_vector< value_type, C, S > && other)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector< value_type, C, S > &&` ][ `other` ][]]
+[[ `static_vector< value_type, C, S > &&` ][ `other` ][The static_vector which content will be moved to this one.]]
 ]
+[heading Precondition]
+other.size() <= Capacity.
+[heading Throws]
+
+
+* If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws. 
+* If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws.
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -260,8 +382,18 @@ Swaps contents of the other static_vector and this one. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector &` ][ `other` ][]]
+[[ `static_vector &` ][ `other` ][The static_vector which content will be swapped with this one's content.]]
 ]
+[heading Throws]
+
+
+* If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws, 
+* If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -273,8 +405,20 @@ void swap(static_vector< value_type, C, S > & other)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `static_vector< value_type, C, S > &` ][ `other` ][]]
+[[ `static_vector< value_type, C, S > &` ][ `other` ][The static_vector which content will be swapped with this one's content.]]
 ]
+[heading Precondition]
+other.size() <= Capacity && size() <= other.capacity().
+[heading Throws]
+
+
+* If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws, 
+* If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -285,8 +429,15 @@ Inserts or erases elements at the end such that the size becomes count. New elem
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `count` ][]]
+[[ `size_type` ][ `count` ][The number of elements which will be stored in the container.]]
 ]
+[heading Precondition]
+count <= Capacity.
+[heading Throws]
+If Value's default constructor throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -297,9 +448,16 @@ Inserts or erases elements at the end such that the size becomes count. New elem
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `count` ][]]
-[[ `value_type const &` ][ `value` ][]]
+[[ `size_type` ][ `count` ][The number of elements which will be stored in the container. ]]
+[[ `value_type const &` ][ `value` ][The value used to copy construct the new element.]]
 ]
+[heading Precondition]
+count <= Capacity.
+[heading Throws]
+If Value's copy constructor throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -310,8 +468,15 @@ This call has no effect because the Capacity of this container is constant. [hea
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `count` ][]]
+[[ `size_type` ][ `count` ][The number of elements which the container should be able to contain.]]
 ]
+[heading Precondition]
+count <= Capacity.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -324,6 +489,13 @@ Adds a copy of value at the end. [heading Synopsis]
 [[Type][Name][Description]]
 [[ `value_type const &` ][ `value` ][]]
 ]
+[heading Precondition]
+size() < Capacity.
+[heading Throws]
+If Value's copy constructor throws.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
@@ -336,12 +508,26 @@ Moves value to the end. [heading Synopsis]
 [[Type][Name][Description]]
 [[ `value_type &&` ][ `value` ][]]
 ]
+[heading Precondition]
+size() < Capacity.
+[heading Throws]
+If Value's move constructor throws.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member20 pop_back()]
 Destroys last value and decreases the size. [heading Synopsis]
 ``void pop_back()``
+
+[heading Precondition]
+!empty().
+[heading Throws]
+Nothing by default.
+[heading Complexity]
+Constant O(1).
 
 [endsect]
 [br]
@@ -353,9 +539,21 @@ Inserts a copy of element at position. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `iterator` ][ `position` ][]]
-[[ `value_type const &` ][ `value` ][]]
+[[ `iterator` ][ `position` ][The position at which the new value will be inserted. ]]
+[[ `value_type const &` ][ `value` ][The value used to copy construct the new element.]]
 ]
+[heading Precondition]
+position must be a valid iterator of *this in range [begin(), end()].
+[heading Throws]
+
+
+* If Value's copy constructor or copy assignment throws 
+* If Value's move constructor or move assignment throws.
+
+[/]
+[heading Complexity]
+Constant or linear.
+
 [endsect]
 [br]
 
@@ -366,9 +564,16 @@ Inserts a move-constructed element at position. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `iterator` ][ `position` ][]]
-[[ `value_type &&` ][ `value` ][]]
+[[ `iterator` ][ `position` ][The position at which the new value will be inserted. ]]
+[[ `value_type &&` ][ `value` ][The value used to move construct the new element.]]
 ]
+[heading Precondition]
+position must be a valid iterator of *this in range [begin(), end()] and size() < Capacity.
+[heading Throws]
+If Value's move constructor or move assignment throws.
+[heading Complexity]
+Constant or linear.
+
 [endsect]
 [br]
 
@@ -381,10 +586,22 @@ Inserts a count copies of value at position. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `iterator` ][ `position` ][]]
-[[ `size_type` ][ `count` ][]]
-[[ `value_type const &` ][ `value` ][]]
+[[ `iterator` ][ `position` ][The position at which new elements will be inserted. ]]
+[[ `size_type` ][ `count` ][The number of new elements which will be inserted. ]]
+[[ `value_type const &` ][ `value` ][The value used to copy construct new elements.]]
 ]
+[heading Precondition]
+position must be a valid iterator of *this in range [begin(), end()] and size() + count <= Capacity.
+[heading Throws]
+
+
+* If Value's copy constructor or copy assignment throws. 
+* If Value's move constructor or move assignment throws.
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -398,10 +615,22 @@ iterator insert(iterator position,
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `iterator` ][ `position` ][]]
-[[ `Iterator` ][ `first` ][]]
-[[ `Iterator` ][ `last` ][]]
+[[ `iterator` ][ `position` ][The position at which new elements will be inserted. ]]
+[[ `Iterator` ][ `first` ][The iterator to the first element of a range used to construct new elements. ]]
+[[ `Iterator` ][ `last` ][The iterator to the one after the last element of a range used to construct new elements.]]
 ]
+[heading Precondition]
+position must be a valid iterator of *this in range [begin(), end()] and distance(first, last) <= Capacity. Iterator must meet the ForwardTraversal Iterator concept
+[heading Throws]
+
+
+* If Value's constructor and assignment taking a dereferenced Iterator. 
+* If Value's move constructor or move assignment throws. //!
+
+[/]
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -412,8 +641,15 @@ Erases Value from position. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `iterator` ][ `position` ][]]
+[[ `iterator` ][ `position` ][The position of the element which will be erased from the container.]]
 ]
+[heading Precondition]
+position must be a valid iterator of *this in range [begin(), end()).
+[heading Throws]
+If Value's move assignment throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -424,9 +660,16 @@ Erases Values from a range [first, last). [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `iterator` ][ `first` ][]]
-[[ `iterator` ][ `last` ][]]
+[[ `iterator` ][ `first` ][The position of the first element of a range which will be erased from the container. ]]
+[[ `iterator` ][ `last` ][The position of the one after the last element of a range which will be erased from the container.]]
 ]
+[heading Precondition]
+first and last must define a valid range, iterators must be in range [begin(), end()].
+[heading Throws]
+If Value's move assignment throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -438,9 +681,16 @@ void assign(Iterator first, Iterator last)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `Iterator` ][ `first` ][]]
-[[ `Iterator` ][ `last` ][]]
+[[ `Iterator` ][ `first` ][The iterator to the first element of a range used to construct new content of this container. ]]
+[[ `Iterator` ][ `last` ][The iterator to the one after the last element of a range used to construct new content of this container.]]
 ]
+[heading Precondition]
+distance(first, last) <= Capacity.
+[heading Throws]
+If Value's copy constructor or copy assignment throws,
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -451,9 +701,16 @@ Assigns a count copies of value to this container. [heading Synopsis]
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `count` ][]]
-[[ `value_type const &` ][ `value` ][]]
+[[ `size_type` ][ `count` ][The new number of elements which will be container in the container. ]]
+[[ `value_type const &` ][ `value` ][The value which will be used to copy construct the new content.]]
 ]
+[heading Precondition]
+count <= Capacity.
+[heading Throws]
+If Value's copy constructor or copy assignment throws.
+[heading Complexity]
+Linear O(N).
+
 [endsect]
 [br]
 
@@ -465,8 +722,15 @@ void emplace_back(Args &&... args)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `Args &&...` ][ `args` ][]]
+[[ `Args &&...` ][ `args` ][The arguments of the constructor of the new element which will be created at the end of the container.]]
 ]
+[heading Precondition]
+size() < Capacity.
+[heading Throws]
+If in-place constructor throws or Value's move constructor throws.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
@@ -478,9 +742,16 @@ iterator emplace(iterator position, Args &&... args)``
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `iterator` ][ `position` ][]]
-[[ `Args &&...` ][ `args` ][]]
+[[ `iterator` ][ `position` ][The position at which new elements will be inserted. ]]
+[[ `Args &&...` ][ `args` ][The arguments of the constructor of the new element.]]
 ]
+[heading Precondition]
+position must be a valid iterator of *this in range [begin(), end()] and size() < Capacity.
+[heading Throws]
+If in-place constructor throws or Value's move constructor or move assignment throws.
+[heading Complexity]
+Constant or linear.
+
 [endsect]
 [br]
 
@@ -488,104 +759,170 @@ iterator emplace(iterator position, Args &&... args)``
 Removes all elements from the container. [heading Synopsis]
 ``void clear()``
 
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member32 at(size_type)]
-[heading Synopsis]
+Returns reference to the i-th element. [heading Synopsis]
 ``reference at(size_type i)``
 
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `i` ][]]
+[[ `size_type` ][ `i` ][The element's index.]]
 ]
 [heading Returns]
 reference to the i-th element from the beginning of the container.
+[heading Precondition]
+i < size().
+[heading Throws]
+std::out_of_range exception by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member33 at(size_type)]
-[heading Synopsis]
+Returns const reference to the i-th element. [heading Synopsis]
 ``const_reference at(size_type i)``
 
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `i` ][]]
+[[ `size_type` ][ `i` ][The element's index.]]
 ]
 [heading Returns]
 const reference to the i-th element from the beginning of the container.
+[heading Precondition]
+i < size().
+[heading Throws]
+std::out_of_range exception by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member34 operator[](size_type)]
-[heading Synopsis]
+Returns reference to the i-th element. [heading Synopsis]
 ``reference operator[](size_type i)``
 
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `i` ][]]
+[[ `size_type` ][ `i` ][The element's index.]]
 ]
 [heading Returns]
 reference to the i-th element from the beginning of the container.
+[heading Precondition]
+i < size().
+[heading Throws]
+Nothing by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member35 operator[](size_type)]
-[heading Synopsis]
+Returns const reference to the i-th element. [heading Synopsis]
 ``const_reference operator[](size_type i)``
 
 [heading Parameters]
 [table 
 [[Type][Name][Description]]
-[[ `size_type` ][ `i` ][]]
+[[ `size_type` ][ `i` ][The element's index.]]
 ]
 [heading Returns]
 const reference to the i-th element from the beginning of the container.
+[heading Precondition]
+i < size().
+[heading Throws]
+Nothing by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member36 front()]
-[heading Synopsis]
+Returns reference to the first element. [heading Synopsis]
 ``reference front()``
 
 [heading Returns]
 reference to the first element from the beginning of the container.
+[heading Precondition]
+!empty().
+[heading Throws]
+Nothing by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member37 front()]
-[heading Synopsis]
+Returns const reference to the first element. [heading Synopsis]
 ``const_reference front()``
 
 [heading Returns]
 const reference to the first element from the beginning of the container.
+[heading Precondition]
+!empty().
+[heading Throws]
+Nothing by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member38 back()]
-[heading Synopsis]
+Returns reference to the last element. [heading Synopsis]
 ``reference back()``
 
 [heading Returns]
 reference to the last element from the beginning of the container.
+[heading Precondition]
+!empty().
+[heading Throws]
+Nothing by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member39 back()]
-[heading Synopsis]
+Returns const reference to the first element. [heading Synopsis]
 ``const_reference back()``
 
 [heading Returns]
 const reference to the last element from the beginning of the container.
+[heading Precondition]
+!empty().
+[heading Throws]
+Nothing by default.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member40 data()]
 Pointer such that [data(), data() + size()) is a valid range. For a non-empty vector, data() == &front(). [heading Synopsis]
 ``Value * data()``
+
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
 
 [endsect]
 [br]
@@ -594,154 +931,246 @@ Pointer such that [data(), data() + size()) is a valid range. For a non-empty ve
 Const pointer such that [data(), data() + size()) is a valid range. For a non-empty vector, data() == &front(). [heading Synopsis]
 ``const Value * data()``
 
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member42 begin()]
-[heading Description]
-iterator to the first element contained in the vector.[heading Synopsis]
+Returns iterator to the first element. [heading Synopsis]
 ``iterator begin()``
+
+[heading Returns]
+iterator to the first element contained in the vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
 
 [endsect]
 [br]
 
 [section:member43 begin()]
-[heading Synopsis]
+Returns const iterator to the first element. [heading Synopsis]
 ``const_iterator begin()``
 
 [heading Returns]
 const_iterator to the first element contained in the vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member44 cbegin()]
-[heading Synopsis]
+Returns const iterator to the first element. [heading Synopsis]
 ``const_iterator cbegin()``
 
 [heading Returns]
 const_iterator to the first element contained in the vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member45 end()]
-[heading Description]
-iterator pointing to the one after the last element contained in the vector.[heading Synopsis]
+Returns iterator to the one after the last element. [heading Synopsis]
 ``iterator end()``
+
+[heading Returns]
+iterator pointing to the one after the last element contained in the vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
 
 [endsect]
 [br]
 
 [section:member46 end()]
-[heading Synopsis]
+Returns const iterator to the one after the last element. [heading Synopsis]
 ``const_iterator end()``
 
 [heading Returns]
 const_iterator pointing to the one after the last element contained in the vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member47 cend()]
-[heading Synopsis]
+Returns const iterator to the one after the last element. [heading Synopsis]
 ``const_iterator cend()``
 
 [heading Returns]
 const_iterator pointing to the one after the last element contained in the vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member48 rbegin()]
-[heading Synopsis]
+Returns reverse iterator to the first element of the reversed container. [heading Synopsis]
 ``reverse_iterator rbegin()``
 
 [heading Returns]
 reverse_iterator pointing to the beginning of the reversed static_vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member49 rbegin()]
-[heading Synopsis]
+Returns const reverse iterator to the first element of the reversed container. [heading Synopsis]
 ``const_reverse_iterator rbegin()``
 
 [heading Returns]
 const_reverse_iterator pointing to the beginning of the reversed static_vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member50 crbegin()]
-[heading Synopsis]
+Returns const reverse iterator to the first element of the reversed container. [heading Synopsis]
 ``const_reverse_iterator crbegin()``
 
 [heading Returns]
 const_reverse_iterator pointing to the beginning of the reversed static_vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member51 rend()]
-[heading Synopsis]
+Returns reverse iterator to the one after the last element of the reversed container. [heading Synopsis]
 ``reverse_iterator rend()``
 
 [heading Returns]
 reverse_iterator pointing to the one after the last element of the reversed static_vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member52 rend()]
-[heading Synopsis]
+Returns const reverse iterator to the one after the last element of the reversed container. [heading Synopsis]
 ``const_reverse_iterator rend()``
 
 [heading Returns]
 const_reverse_iterator pointing to the one after the last element of the reversed static_vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member53 crend()]
-[heading Synopsis]
+Returns const reverse iterator to the one after the last element of the reversed container. [heading Synopsis]
 ``const_reverse_iterator crend()``
 
 [heading Returns]
 const_reverse_iterator pointing to the one after the last element of the reversed static_vector.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member54 capacity()]
-[heading Synopsis]
+Returns container's capacity. [heading Synopsis]
 ``size_type capacity()``
 
 [heading Returns]
 container's capacity.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member55 max_size()]
-[heading Synopsis]
+Returns container's capacity. [heading Synopsis]
 ``size_type max_size()``
 
 [heading Returns]
 container's capacity.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member56 size()]
-[heading Synopsis]
+Returns the number of stored elements. [heading Synopsis]
 ``size_type size()``
 
 [heading Returns]
 Number of elements contained in the container.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member57 empty()]
-[heading Synopsis]
+Queries if the container contains elements. [heading Synopsis]
 ``bool empty()``
 
 [heading Returns]
 true if the number of elements contained in the container is equal to 0.
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
+
 [endsect]
 [br]
 
 [section:member58 shrink_to_fit()]
 Capacity is fixed so this call has no effects. [heading Synopsis]
 ``void shrink_to_fit()``
+
+[heading Throws]
+Nothing.
+[heading Complexity]
+Constant O(1).
 
 [endsect]
 [br]

@@ -180,27 +180,19 @@ struct static_vector_traits
  *
  * @tparam Value the type of element that will be stored.
  * @tparam Capacity the maximum number of elements static_vector can store, fixed at compile time.
- *
- *
- * @par Error Handling
- *
- *      Insertion beyond the capacity and out of bounds errors result in undefined behavior unless
- *      otherwise specified. In this respect if size() == capacity(), then static_vector::push_back() 
- *      behaves like std::vector pop_front() if size() == empty(). The reason for this difference
- *      is because unlike vectors, static_vector does not perform allocation. 
- *
- * @internal
- *
  * @tparam Strategy defines the public typedefs and error handlers,
  *         implements StaticVectorStrategy and has some similarities
- *         to an Allocator. @see StaticVectorStrategy
+ *         to an Allocator.
+ *
+ * @par Error Handling
+ *  Insertion beyond the capacity and out of bounds errors result in undefined behavior unless
+ *  otherwise specified. In this respect if size() == capacity(), then static_vector::push_back() 
+ *  behaves like std::vector pop_front() if size() == empty(). The reason for this difference
+ *  is because unlike vectors, static_vector does not perform allocation.
  *
  * @par Advanced Usage
- *
- *      Error handling behavior can be modified to more closely match std::vector exception behavior
- *      when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
- *
- * @endinternal
+ *  Error handling behavior can be modified to more closely match std::vector exception behavior
+ *  when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
  */
 template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/ = static_vector_detail::default_strategy<Value>/*fake_allocator*/ >
 class static_vector
@@ -243,22 +235,36 @@ public:
 #endif
 
 public:
+    //! @brief The type of elements stored in the container.
     typedef typename vt::value_type value_type;
+    //! @brief The unsigned integral type used by the container.
     typedef stored_size_type size_type;
+    //! @brief The pointers difference type.
     typedef typename vt::difference_type difference_type;
+    //! @brief The pointer type.
     typedef typename vt::pointer pointer;
+    //! @brief The const pointer type.
     typedef typename vt::const_pointer const_pointer;
+    //! @brief The value reference type.
     typedef typename vt::reference reference;
+    //! @brief The value const reference type.
     typedef typename vt::const_reference const_reference;
 
+    //! @brief The iterator type.
     typedef pointer iterator;
+    //! @brief The const iterator type.
     typedef const_pointer const_iterator;
+    //! @brief The reverse iterator type.
     typedef boost::reverse_iterator<iterator> reverse_iterator;
+    //! @brief The const reverse iterator.
     typedef boost::reverse_iterator<const_iterator> const_reverse_iterator;
+
+    //! @brief The type of a strategy used by the static_vector.
+    typedef Strategy strategy_type;
 
     //! @brief Constructs an empty static_vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
@@ -271,7 +277,9 @@ public:
     //!
     //! @brief Constructs a static_vector containing count default constructed Values.
     //!
-    //! @throws
+    //! @param count    The number of values which will be contained in the container.
+    //!
+    //! @par Throws
     //!   If Value's default constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -289,7 +297,10 @@ public:
     //!
     //! @brief Constructs a static_vector containing count copies of value.
     //!
-    //! @throws
+    //! @param count    The number of copies of a values that will be contained in the container.
+    //! @param value    The value which will be used to copy construct values.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -308,7 +319,10 @@ public:
     //!
     //! @brief Constructs a static_vector containing copy of a range [first, last).
     //!
-    //! @throws
+    //! @param first    The iterator to the first element in range.
+    //! @param last     The iterator to the one after the last element in range.
+    //!
+    //! @par Throws
     //!   If Value's constructor taking a dereferenced Iterator throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -327,7 +341,9 @@ public:
 
     //! @brief Constructs a copy of other static_vector.
     //!
-    //! @throws
+    //! @param other    The static_vector which content will be copied to this one.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor throws.
     //!
     //! @par Complexity
@@ -343,7 +359,9 @@ public:
     //!
     //! @brief Constructs a copy of other static_vector.
     //!
-    //! @throws
+    //! @param other    The static_vector which content will be copied to this one.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -363,7 +381,9 @@ public:
 
     //! @brief Copy assigns Values stored in the other static_vector to this one.
     //!
-    //! @throws
+    //! @param other    The static_vector which content will be copied to this one.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor or copy assignment throws.
     //!
     //! @par Complexity
@@ -379,8 +399,10 @@ public:
     //!
     //! @brief Copy assigns Values stored in the other static_vector to this one.
     //!
-    //! @throws
-    //!   If Value's copy constructor or copy assignment throws,
+    //! @param other    The static_vector which content will be copied to this one.
+    //!
+    //! @par Throws
+    //!   If Value's copy constructor or copy assignment throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -402,10 +424,14 @@ public:
 
     //! @brief Move constructor. Moves Values stored in the other static_vector to this one.
     //!
-    //! @throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws
-    //!       but only if use_memop_in_swap_and_move is false_type - default.
+    //! @param other    The static_vector which content will be moved to this one.
+    //!
+    //! @par Throws
+    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws.
+    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+    //! @internal
+    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //! @endinternal
     //!
     //! @par Complexity
     //!   Linear O(N).
@@ -423,10 +449,14 @@ public:
     //!
     //! @brief Move constructor. Moves Values stored in the other static_vector to this one.
     //!
-    //! @throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws
-    //!       but only if use_memop_in_swap_and_move is false_type - default.
+    //! @param other    The static_vector which content will be moved to this one.
+    //!
+    //! @par Throws
+    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws.
+    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+    //! @internal
+    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //! @endinternal
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -437,6 +467,8 @@ public:
     static_vector(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
         : m_size(other.m_size)
     {
+// TODO - move only if pointers are the same
+
         errh::check_capacity(*this, other.size());                                  // may throw
 
         typedef typename
@@ -449,10 +481,14 @@ public:
 
     //! @brief Move assignment. Moves Values stored in the other static_vector to this one.
     //!
-    //! @throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
-    //!       but only if use_memop_in_swap_and_move is false_type - default.
+    //! @param other    The static_vector which content will be moved to this one.
+    //!
+    //! @par Throws
+    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws.
+    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws.
+    //! @internal
+    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //! @endinternal
     //!
     //! @par Complexity
     //!   Linear O(N).
@@ -475,10 +511,14 @@ public:
     //!
     //! @brief Move assignment. Moves Values stored in the other static_vector to this one.
     //!
-    //! @throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
-    //!       but only if use_memop_in_swap_and_move is false_type - default.
+    //! @param other    The static_vector which content will be moved to this one.
+    //!
+    //! @par Throws
+    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws.
+    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws.
+    //! @internal
+    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //! @endinternal
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -488,6 +528,8 @@ public:
     template <std::size_t C, typename S>
     static_vector & operator=(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
     {
+// TODO - move only if pointers are the same
+
         errh::check_capacity(*this, other.size());                                  // may throw
 
         typedef typename
@@ -502,7 +544,7 @@ public:
 
     //! @brief Destructor. Destroys Values stored in this container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing
     //!
     //! @par Complexity
@@ -515,15 +557,21 @@ public:
 
     //! @brief Swaps contents of the other static_vector and this one.
     //!
-    //! @throws
+    //! @param other    The static_vector which content will be swapped with this one's content.
+    //!
+    //! @par Throws
     //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
     //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
-    //!       but only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default.
+    //! @internal
+    //!   @li It throws only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default.
+    //! @endinternal
     //!
     //! @par Complexity
     //!   Linear O(N).
     void swap(static_vector & other)
     {
+// TODO - move only if pointers are the same
+
         typedef typename
         static_vector_detail::static_vector_traits<
             Value, Capacity, Strategy
@@ -536,10 +584,14 @@ public:
     //!
     //! @brief Swaps contents of the other static_vector and this one.
     //!
-    //! @throws
+    //! @param other    The static_vector which content will be swapped with this one's content.
+    //!
+    //! @par Throws
     //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
     //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
-    //!       but only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default.
+    //! @internal
+    //!   @li It throws only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default.
+    //! @endinternal
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -549,6 +601,8 @@ public:
     template <std::size_t C, typename S>
     void swap(static_vector<value_type, C, S> & other)
     {
+// TODO - move only if pointers are the same
+
         errh::check_capacity(*this, other.size());
         errh::check_capacity(other, this->size());
 
@@ -565,7 +619,9 @@ public:
     //! @brief Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are default constructed.
     //!
-    //! @throws
+    //! @param count    The number of elements which will be stored in the container.
+    //!
+    //! @par Throws
     //!   If Value's default constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -595,7 +651,10 @@ public:
     //! @brief Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are copy constructed from value.
     //!
-    //! @throws
+    //! @param count    The number of elements which will be stored in the container.
+    //! @param value    The value used to copy construct the new element.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -623,7 +682,10 @@ public:
     //!
     //! @brief This call has no effect because the Capacity of this container is constant.
     //!
-    //! @throws
+    //! @param count    The number of elements which the container should be able to contain.
+    //!
+    //! @par Throws
+    //!   Nothing.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -639,7 +701,9 @@ public:
     //!
     //! @brief Adds a copy of value at the end.
     //!
-    //! @throws
+    //! @param count    The value used to copy construct the new element.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -660,7 +724,9 @@ public:
     //!
     //! @brief Moves value to the end.
     //!
-    //! @throws
+    //! @param count    The value to move construct the new element.
+    //!
+    //! @par Throws
     //!   If Value's move constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -681,7 +747,7 @@ public:
     //!
     //! @brief Destroys last value and decreases the size.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing by default.
     //!
     //! @par Complexity
@@ -699,9 +765,12 @@ public:
     //!
     //! @brief Inserts a copy of element at position.
     //!
-    //! @throws
-    //!   If Value's copy constructor or copy assignment throws
-    //!   or if Value's move constructor or move assignment throws.
+    //! @param position    The position at which the new value will be inserted.
+    //! @param value       The value used to copy construct the new element.
+    //!
+    //! @par Throws
+    //!   @li If Value's copy constructor or copy assignment throws
+    //!   @li If Value's move constructor or move assignment throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -718,7 +787,10 @@ public:
     //!
     //! @brief Inserts a move-constructed element at position.
     //!
-    //! @throws
+    //! @param position    The position at which the new value will be inserted.
+    //! @param value       The value used to move construct the new element.
+    //!
+    //! @par Throws
     //!   If Value's move constructor or move assignment throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -736,9 +808,13 @@ public:
     //!
     //! @brief Inserts a count copies of value at position.
     //!
-    //! @throws
-    //!   If Value's copy constructor or copy assignment throws
-    //!   or if Value's move constructor or move assignment throws.
+    //! @param position    The position at which new elements will be inserted.
+    //! @param count       The number of new elements which will be inserted.
+    //! @param value       The value used to copy construct new elements.
+    //!
+    //! @par Throws
+    //!   @li If Value's copy constructor or copy assignment throws.
+    //!   @li If Value's move constructor or move assignment throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -789,10 +865,13 @@ public:
     //!
     //! @brief Inserts a copy of a range [first, last) at position.
     //!
-    //! @throws
-    //!   @li If Value's constructor and assignment taking a dereferenced Iterator
-    //!   @li If Value's move constructor or move assignment throws.
+    //! @param position    The position at which new elements will be inserted.
+    //! @param first       The iterator to the first element of a range used to construct new elements.
+    //! @param last        The iterator to the one after the last element of a range used to construct new elements.
     //!
+    //! @par Throws
+    //!   @li If Value's constructor and assignment taking a dereferenced Iterator.
+    //!   @li If Value's move constructor or move assignment throws.    //!
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -814,7 +893,9 @@ public:
     //!
     //! @brief Erases Value from position.
     //!
-    //! @throws
+    //! @param position    The position of the element which will be erased from the container.
+    //!
+    //! @par Throws
     //!   If Value's move assignment throws.
     //!
     //! @par Complexity
@@ -839,7 +920,10 @@ public:
     //!
     //! @brief Erases Values from a range [first, last).
     //!
-    //! @throws
+    //! @param first    The position of the first element of a range which will be erased from the container.
+    //! @param last     The position of the one after the last element of a range which will be erased from the container.
+    //!
+    //! @par Throws
     //!   If Value's move assignment throws.
     //!
     //! @par Complexity
@@ -869,7 +953,10 @@ public:
     //!
     //! @brief Assigns a range [first, last) of Values to this container.
     //!
-    //! @throws
+    //! @param first       The iterator to the first element of a range used to construct new content of this container.
+    //! @param last        The iterator to the one after the last element of a range used to construct new content of this container.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor or copy assignment throws,
     //!
     //! @par Complexity
@@ -887,7 +974,10 @@ public:
     //!
     //! @brief Assigns a count copies of value to this container.
     //!
-    //! @throws
+    //! @param count       The new number of elements which will be container in the container.
+    //! @param value       The value which will be used to copy construct the new content.
+    //!
+    //! @par Throws
     //!   If Value's copy constructor or copy assignment throws.
     //!
     //! @par Complexity
@@ -918,7 +1008,9 @@ public:
     //! @brief Inserts a Value constructed with
     //!   std::forward<Args>(args)... in the end of the container.
     //!
-    //! @throws
+    //! @param args     The arguments of the constructor of the new element which will be created at the end of the container.
+    //!
+    //! @par Throws
     //!   If in-place constructor throws or Value's move constructor throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -942,7 +1034,10 @@ public:
     //! @brief Inserts a Value constructed with
     //!   std::forward<Args>(args)... before position
     //!
-    //! @throws
+    //! @param position The position at which new elements will be inserted.
+    //! @param args     The arguments of the constructor of the new element.
+    //!
+    //! @par Throws
     //!   If in-place constructor throws or Value's move
     //!   constructor or move assignment throws.
     //! @internal
@@ -1042,7 +1137,7 @@ public:
 
     //! @brief Removes all elements from the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
@@ -1056,10 +1151,14 @@ public:
 
     //! @pre i < size().
     //!
+    //! @brief Returns reference to the i-th element.
+    //!
+    //! @param i    The element's index.
+    //!
     //! @return reference to the i-th element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   std::out_of_range exception by default.
     //!
     //! @par Complexity
@@ -1072,10 +1171,14 @@ public:
 
     //! @pre i < size().
     //!
+    //! @brief Returns const reference to the i-th element.
+    //!
+    //! @param i    The element's index.
+    //!
     //! @return const reference to the i-th element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   std::out_of_range exception by default.
     //!
     //! @par Complexity
@@ -1088,10 +1191,14 @@ public:
 
     //! @pre i < size().
     //!
+    //! @brief Returns reference to the i-th element.
+    //!
+    //! @param i    The element's index.
+    //!
     //! @return reference to the i-th element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing by default.
     //!
     //! @par Complexity
@@ -1105,10 +1212,14 @@ public:
 
     //! @pre i < size().
     //!
+    //! @brief Returns const reference to the i-th element.
+    //!
+    //! @param i    The element's index.
+    //!
     //! @return const reference to the i-th element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing by default.
     //!
     //! @par Complexity
@@ -1121,10 +1232,12 @@ public:
 
     //! @pre !empty().
     //!
+    //! @brief Returns reference to the first element.
+    //!
     //! @return reference to the first element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing by default.
     //!
     //! @par Complexity
@@ -1137,10 +1250,12 @@ public:
 
     //! @pre !empty().
     //!
+    //! @brief Returns const reference to the first element.
+    //!
     //! @return const reference to the first element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing by default.
     //!
     //! @par Complexity
@@ -1153,10 +1268,12 @@ public:
 
     //! @pre !empty().
     //!
+    //! @brief Returns reference to the last element.
+    //!
     //! @return reference to the last element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing by default.
     //!
     //! @par Complexity
@@ -1169,10 +1286,12 @@ public:
 
     //! @pre !empty().
     //!
+    //! @brief Returns const reference to the first element.
+    //!
     //! @return const reference to the last element
     //!   from the beginning of the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing by default.
     //!
     //! @par Complexity
@@ -1186,7 +1305,7 @@ public:
     //! @brief Pointer such that [data(), data() + size()) is a valid range.
     //!   For a non-empty vector, data() == &front().
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
@@ -1199,7 +1318,7 @@ public:
     //! @brief Const pointer such that [data(), data() + size()) is a valid range.
     //!   For a non-empty vector, data() == &front().
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
@@ -1209,151 +1328,184 @@ public:
         return boost::addressof(*(this->ptr()));
     }
 
-    //! @returnn iterator to the first element contained in the vector.
+    
+    //! @brief Returns iterator to the first element.
     //!
-    //! @throws
+    //! @return iterator to the first element contained in the vector.
+    //!
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     iterator begin() { return this->ptr(); }
 
+    //! @brief Returns const iterator to the first element.
+    //!
     //! @return const_iterator to the first element contained in the vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_iterator begin() const { return this->ptr(); }
 
+    //! @brief Returns const iterator to the first element.
+    //!
     //! @return const_iterator to the first element contained in the vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_iterator cbegin() const { return this->ptr(); }
 
-    //! @returnn iterator pointing to the one after the last element contained in the vector.
+    //! @brief Returns iterator to the one after the last element.
     //!
-    //! @throws
+    //! @return iterator pointing to the one after the last element contained in the vector.
+    //!
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     iterator end() { return this->begin() + m_size; }
 
+    //! @brief Returns const iterator to the one after the last element.
+    //!
     //! @return const_iterator pointing to the one after the last element contained in the vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_iterator end() const { return this->begin() + m_size; }
 
+    //! @brief Returns const iterator to the one after the last element.
+    //!
     //! @return const_iterator pointing to the one after the last element contained in the vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_iterator cend() const { return this->cbegin() + m_size; }
 
+    //! @brief Returns reverse iterator to the first element of the reversed container.
+    //!
     //! @return reverse_iterator pointing to the beginning
     //! of the reversed static_vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     reverse_iterator rbegin() { return reverse_iterator(this->end()); }
 
+    //! @brief Returns const reverse iterator to the first element of the reversed container.
+    //!
     //! @return const_reverse_iterator pointing to the beginning
     //! of the reversed static_vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_reverse_iterator rbegin() const { return reverse_iterator(this->end()); }
 
+    //! @brief Returns const reverse iterator to the first element of the reversed container.
+    //!
     //! @return const_reverse_iterator pointing to the beginning
     //! of the reversed static_vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_reverse_iterator crbegin() const { return reverse_iterator(this->end()); }
 
+    //! @brief Returns reverse iterator to the one after the last element of the reversed container.
+    //!
     //! @return reverse_iterator pointing to the one after the last element
     //! of the reversed static_vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     reverse_iterator rend() { return reverse_iterator(this->begin()); }
 
+    //! @brief Returns const reverse iterator to the one after the last element of the reversed container.
+    //!
     //! @return const_reverse_iterator pointing to the one after the last element
     //! of the reversed static_vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_reverse_iterator rend() const { return reverse_iterator(this->begin()); }
 
+    //! @brief Returns const reverse iterator to the one after the last element of the reversed container.
+    //!
     //! @return const_reverse_iterator pointing to the one after the last element
     //! of the reversed static_vector.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     const_reverse_iterator crend() const { return reverse_iterator(this->begin()); }
 
+    //! @brief Returns container's capacity.
+    //!
     //! @return container's capacity.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     static size_type capacity() { return Capacity; }
 
+    //! @brief Returns container's capacity.
+    //!
     //! @return container's capacity.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     static size_type max_size() { return Capacity; }
 
+    //! @brief Returns the number of stored elements.
+    //!
     //! @return Number of elements contained in the container.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
     //!   Constant O(1).
     size_type size() const { return m_size; }
 
+    //! @brief Queries if the container contains elements.
+    //!
     //! @return true if the number of elements contained in the
     //!   container is equal to 0.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
@@ -1362,7 +1514,7 @@ public:
 
     //! @brief Capacity is fixed so this call has no effects.
     //!
-    //! @throws
+    //! @par Throws
     //!   Nothing.
     //!
     //! @par Complexity
@@ -1371,7 +1523,7 @@ public:
 
 private:
 
-    // @throws
+    // @par Throws
     //   Nothing.
     // @par Complexity
     //   Linear O(N).
@@ -1383,7 +1535,7 @@ private:
         other.m_size = 0;
     }
 
-    // @throws
+    // @par Throws
     //   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws
     //   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
     // @par Complexity
@@ -1398,7 +1550,7 @@ private:
         other.m_size = 0;
     }
 
-    // @throws
+    // @par Throws
     //   Nothing.
     // @par Complexity
     //   Linear O(N).
@@ -1411,7 +1563,7 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    // @throws
+    // @par Throws
     //   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws
     //   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or move assignment throws.
     // @par Complexity
@@ -1436,7 +1588,7 @@ private:
         other.clear();
     }
 
-    // @throws
+    // @par Throws
     //   Nothing.
     // @par Complexity
     //   Linear O(N).
@@ -1461,7 +1613,7 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    // @throws
+    // @par Throws
     //   If Value's move constructor or move assignment throws
     //   but only if use_memop_in_swap_and_move is false_type - default.
     // @par Complexity
@@ -1483,7 +1635,7 @@ private:
         boost::swap(m_size, other.m_size);
     }
 
-    // @throws
+    // @par Throws
     //   Nothing.
     // @par Complexity
     //   Linear O(N).
@@ -1508,7 +1660,7 @@ private:
         ::memcpy(first_sm, first_la, sizeof(value_type) * std::distance(first_la, last_la));
     }
 
-    // @throws
+    // @par Throws
     //   If Value's move constructor or move assignment throws.
     // @par Complexity
     //   Linear O(N).
@@ -1530,7 +1682,7 @@ private:
 
     // insert
 
-    // @throws
+    // @par Throws
     //   If Value's move constructor or move assignment throws
     //   or if Value's copy assignment throws.
     // @par Complexity
@@ -1565,7 +1717,7 @@ private:
 
     // insert
 
-    // @throws
+    // @par Throws
     //   If Value's move constructor, move assignment throws
     //   or if Value's copy constructor or copy assignment throws.
     // @par Complexity
@@ -1595,7 +1747,7 @@ private:
         }
     }
 
-    // @throws
+    // @par Throws
     //   If Value's move constructor, move assignment throws
     //   or if Value's copy constructor or copy assignment throws.
     // @par Complexity
@@ -1627,7 +1779,7 @@ private:
         }
     }
 
-    // @throws
+    // @par Throws
     //   If Value's move constructor, move assignment throws
     //   or if Value's copy constructor or copy assignment throws.
     // @par Complexity
@@ -1663,7 +1815,7 @@ private:
 
     // assign
 
-    // @throws
+    // @par Throws
     //   If Value's constructor or assignment taking dereferenced Iterator throws.
     // @par Complexity
     //   Linear O(N).
@@ -1691,7 +1843,7 @@ private:
         m_size = s; // update end
     }
 
-    // @throws
+    // @par Throws
     //   If Value's constructor or assignment taking dereferenced Iterator throws.
     // @par Complexity
     //   Linear O(N).
