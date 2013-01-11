@@ -164,7 +164,7 @@ struct static_vector_traits
 } // namespace static_vector_detail
 
 /**
- * @brief A hybrid of boost::container::vector and boost::array.
+ * @brief A hybrid of \c boost::container::vector and \c boost::array.
  *
  * static_vector is a sequence container like boost::container::vector with contiguous storage that can
  * change in size, along with the static allocation, low overhead, and fixed capacity of boost::array.
@@ -178,12 +178,6 @@ struct static_vector_traits
  * elements in cases with complex object lifetime requirements that would otherwise not be trivially 
  * possible.
  *
- * @tparam Value the type of element that will be stored.
- * @tparam Capacity the maximum number of elements static_vector can store, fixed at compile time.
- * @tparam Strategy defines the public typedefs and error handlers,
- *         implements StaticVectorStrategy and has some similarities
- *         to an Allocator.
- *
  * @par Error Handling
  *  Insertion beyond the capacity and out of bounds errors result in undefined behavior unless
  *  otherwise specified. In this respect if size() == capacity(), then static_vector::push_back() 
@@ -193,6 +187,12 @@ struct static_vector_traits
  * @par Advanced Usage
  *  Error handling behavior can be modified to more closely match std::vector exception behavior
  *  when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
+ *
+ * @tparam Value    The type of element that will be stored.
+ * @tparam Capacity The maximum number of elements static_vector can store, fixed at compile time.
+ * @tparam Strategy Defines the public typedefs and error handlers,
+ *         implements StaticVectorStrategy and has some similarities
+ *         to an Allocator.
  */
 template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/ = static_vector_detail::default_strategy<Value>/*fake_allocator*/ >
 class static_vector
@@ -273,7 +273,7 @@ public:
         : m_size(0)
     {}
 
-    //! @pre count <= Capacity.
+    //! @pre <tt>count <= Capacity</tt>
     //!
     //! @brief Constructs a static_vector containing count default constructed Values.
     //!
@@ -293,7 +293,7 @@ public:
         this->resize(count);                                                        // may throw
     }
 
-    //! @pre count <= Capacity.
+    //! @pre <tt>count <= Capacity</tt>
     //!
     //! @brief Constructs a static_vector containing count copies of value.
     //!
@@ -314,10 +314,11 @@ public:
         this->resize(count, value);                                                 // may throw
     }
 
-    //! @pre distance(first, last) <= Capacity.
-    //!                  Iterator must meet the ForwardTraversal Iterator concept
+    //! @pre
+    //!  @li <tt>distance(first, last) <= Capacity</tt>
+    //!  @li Iterator must meet the \c ForwardTraversalIterator concept.
     //!
-    //! @brief Constructs a static_vector containing copy of a range [first, last).
+    //! @brief Constructs a static_vector containing copy of a range <tt>[first, last)</tt>.
     //!
     //! @param first    The iterator to the first element in range.
     //! @param last     The iterator to the one after the last element in range.
@@ -355,7 +356,7 @@ public:
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
-    //! @pre other.size() <= Capacity.
+    //! @pre <tt>other.size() <= Capacity</tt>.
     //!
     //! @brief Constructs a copy of other static_vector.
     //!
@@ -395,7 +396,7 @@ public:
         return *this;
     }
 
-    //! @pre other.size() <= Capacity.
+    //! @pre <tt>other.size() <= Capacity</tt>
     //!
     //! @brief Copy assigns Values stored in the other static_vector to this one.
     //!
@@ -427,10 +428,10 @@ public:
     //! @param other    The static_vector which content will be moved to this one.
     //!
     //! @par Throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws.
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c true and Value's move constructor throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c false and Value's copy constructor throws.
     //! @internal
-    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //!   @li It throws only if \c use_memop_in_swap_and_move is \c false_type - default.
     //! @endinternal
     //!
     //! @par Complexity
@@ -445,17 +446,17 @@ public:
         this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    //! @pre other.size() <= Capacity.
+    //! @pre <tt>other.size() <= Capacity</tt>
     //!
     //! @brief Move constructor. Moves Values stored in the other static_vector to this one.
     //!
     //! @param other    The static_vector which content will be moved to this one.
     //!
     //! @par Throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor throws.
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c true and Value's move constructor throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c false and Value's copy constructor throws.
     //! @internal
-    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //!   @li It throws only if \c use_memop_in_swap_and_move is false_type - default.
     //! @endinternal
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -484,10 +485,10 @@ public:
     //! @param other    The static_vector which content will be moved to this one.
     //!
     //! @par Throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws.
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c true and Value's move constructor or move assignment throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c false and Value's copy constructor or copy assignment throws.
     //! @internal
-    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //!   @li It throws only if \c use_memop_in_swap_and_move is \c false_type - default.
     //! @endinternal
     //!
     //! @par Complexity
@@ -507,17 +508,17 @@ public:
         return *this;
     }
 
-    //! @pre other.size() <= Capacity.
+    //! @pre <tt>other.size() <= Capacity</tt>
     //!
     //! @brief Move assignment. Moves Values stored in the other static_vector to this one.
     //!
     //! @param other    The static_vector which content will be moved to this one.
     //!
     //! @par Throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws.
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c true and Value's move constructor or move assignment throws.
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c false and Value's copy constructor or copy assignment throws.
     //! @internal
-    //!   @li It throws only if use_memop_in_swap_and_move is false_type - default.
+    //!   @li It throws only if \c use_memop_in_swap_and_move is \c false_type - default.
     //! @endinternal
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -560,10 +561,10 @@ public:
     //! @param other    The static_vector which content will be swapped with this one's content.
     //!
     //! @par Throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c true and Value's move constructor or move assignment throws,
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c false and Value's copy constructor or copy assignment throws,
     //! @internal
-    //!   @li It throws only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default.
+    //!   @li It throws only if \c use_memop_in_swap_and_move and \c use_optimized_swap are \c false_type - default.
     //! @endinternal
     //!
     //! @par Complexity
@@ -580,17 +581,17 @@ public:
         this->swap_dispatch(other, use_optimized_swap());
     }
 
-    //! @pre other.size() <= Capacity && size() <= other.capacity().
+    //! @pre <tt>other.size() <= Capacity && size() <= other.capacity()</tt>
     //!
     //! @brief Swaps contents of the other static_vector and this one.
     //!
     //! @param other    The static_vector which content will be swapped with this one's content.
     //!
     //! @par Throws
-    //!   @li If boost::has_nothrow_move<Value>::value is true and Value's move constructor or move assignment throws,
-    //!   @li If boost::has_nothrow_move<Value>::value is false and Value's copy constructor or copy assignment throws,
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c true and Value's move constructor or move assignment throws,
+    //!   @li If \c boost::has_nothrow_move<Value>::value is \c false and Value's copy constructor or copy assignment throws,
     //! @internal
-    //!   @li It throws only if use_memop_in_swap_and_move and use_optimized_swap are false_type - default.
+    //!   @li It throws only if \c use_memop_in_swap_and_move and \c use_optimized_swap are \c false_type - default.
     //! @endinternal
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
@@ -614,7 +615,7 @@ public:
         this->swap_dispatch(other, use_optimized_swap()); 
     }
 
-    //! @pre count <= Capacity.
+    //! @pre <tt>count <= Capacity</tt>
     //!
     //! @brief Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are default constructed.
@@ -646,7 +647,7 @@ public:
         m_size = count; // update end
     }
 
-    //! @pre count <= Capacity.
+    //! @pre <tt>count <= Capacity</tt>
     //!
     //! @brief Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are copy constructed from value.
@@ -678,7 +679,7 @@ public:
         m_size = count; // update end
     }
 
-    //! @pre count <= Capacity.
+    //! @pre <tt>count <= Capacity</tt>
     //!
     //! @brief This call has no effect because the Capacity of this container is constant.
     //!
@@ -697,7 +698,7 @@ public:
         errh::check_capacity(*this, count);                                         // may throw
     }
 
-    //! @pre size() < Capacity.
+    //! @pre <tt>size() < Capacity</tt>
     //!
     //! @brief Adds a copy of value at the end.
     //!
@@ -720,7 +721,7 @@ public:
         ++m_size; // update end
     }
 
-    //! @pre size() < Capacity.
+    //! @pre <tt>size() < Capacity</tt>
     //!
     //! @brief Moves value to the end.
     //!
@@ -743,7 +744,7 @@ public:
         ++m_size; // update end
     }
 
-    //! @pre !empty().
+    //! @pre <tt>!empty()</tt>
     //!
     //! @brief Destroys last value and decreases the size.
     //!
@@ -761,7 +762,9 @@ public:
         --m_size; // update end
     }
 
-    //! @pre position must be a valid iterator of *this in range [begin(), end()].
+    //! @pre
+    //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
+    //!  @li <tt>size() < Capacity</tt>
     //!
     //! @brief Inserts a copy of element at position.
     //!
@@ -782,8 +785,9 @@ public:
         return this->priv_insert(position, value);
     }
 
-    //! @pre position must be a valid iterator of *this in range [begin(), end()]
-    //!   and size() < Capacity.
+    //! @pre
+    //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
+    //!  @li <tt>size() < Capacity</tt>
     //!
     //! @brief Inserts a move-constructed element at position.
     //!
@@ -803,8 +807,9 @@ public:
         return this->priv_insert(position, value);
     }
 
-    //! @pre position must be a valid iterator of *this in range [begin(), end()]
-    //!   and size() + count <= Capacity.
+    //! @pre
+    //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
+    //!  @li <tt>size() + count <= Capacity</tt>
     //!
     //! @brief Inserts a count copies of value at position.
     //!
@@ -859,19 +864,20 @@ public:
         return position;
     }
 
-    //! @pre position must be a valid iterator of *this in range [begin(), end()]
-    //!   and distance(first, last) <= Capacity.
-    //!   Iterator must meet the ForwardTraversal Iterator concept
+    //! @pre
+    //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
+    //!  @li <tt>distance(first, last) <= Capacity</tt>
+    //!  @li \c Iterator must meet the \cForwardTraversalIterator concept.
     //!
-    //! @brief Inserts a copy of a range [first, last) at position.
+    //! @brief Inserts a copy of a range <tt>[first, last)</tt> at position.
     //!
     //! @param position    The position at which new elements will be inserted.
     //! @param first       The iterator to the first element of a range used to construct new elements.
     //! @param last        The iterator to the one after the last element of a range used to construct new elements.
     //!
     //! @par Throws
-    //!   @li If Value's constructor and assignment taking a dereferenced Iterator.
-    //!   @li If Value's move constructor or move assignment throws.    //!
+    //!   @li If Value's constructor and assignment taking a dereferenced \c Iterator.
+    //!   @li If Value's move constructor or move assignment throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -889,7 +895,7 @@ public:
         return position;
     }
 
-    //! @pre position must be a valid iterator of *this in range [begin(), end()).
+    //! @pre \c position must be a valid iterator of \c *this in range <tt>[begin(), end())</tt>
     //!
     //! @brief Erases Value from position.
     //!
@@ -916,9 +922,11 @@ public:
         return position;
     }
 
-    //! @pre first and last must define a valid range, iterators must be in range [begin(), end()].
+    //! @pre
+    //!  @li \c first and \c last must define a valid range
+    //!  @li iterators must be in range <tt>[begin(), end()]</tt>
     //!
-    //! @brief Erases Values from a range [first, last).
+    //! @brief Erases Values from a range <tt>[first, last)</tt>.
     //!
     //! @param first    The position of the first element of a range which will be erased from the container.
     //! @param last     The position of the one after the last element of a range which will be erased from the container.
@@ -949,9 +957,9 @@ public:
         return first;
     }
 
-    //! @pre distance(first, last) <= Capacity.
+    //! @pre <tt>distance(first, last) <= Capacity</tt>
     //!
-    //! @brief Assigns a range [first, last) of Values to this container.
+    //! @brief Assigns a range <tt>[first, last)</tt> of Values to this container.
     //!
     //! @param first       The iterator to the first element of a range used to construct new content of this container.
     //! @param last        The iterator to the one after the last element of a range used to construct new content of this container.
@@ -970,7 +978,7 @@ public:
         this->assign_dispatch(first, last, traversal());                            // may throw
     }
 
-    //! @pre count <= Capacity.
+    //! @pre <tt>count <= Capacity</tt>
     //!
     //! @brief Assigns a count copies of value to this container.
     //!
@@ -1003,10 +1011,10 @@ public:
 
 #if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
 #if defined(BOOST_CONTAINER_PERFECT_FORWARDING) || defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
-    //! @pre size() < Capacity.
+    //! @pre <tt>size() < Capacity</tt>
     //!
     //! @brief Inserts a Value constructed with
-    //!   std::forward<Args>(args)... in the end of the container.
+    //!   \c std::forward<Args>(args)... in the end of the container.
     //!
     //! @param args     The arguments of the constructor of the new element which will be created at the end of the container.
     //!
@@ -1028,18 +1036,18 @@ public:
         ++m_size; // update end
     }
 
-    //! @pre position must be a valid iterator of *this in range [begin(), end()]
-    //!   and size() < Capacity.
+    //! @pre
+    //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>
+    //!  @li <tt>size() < Capacity</tt>
     //!
     //! @brief Inserts a Value constructed with
-    //!   std::forward<Args>(args)... before position
+    //!   \c std::forward<Args>(args)... before position
     //!
     //! @param position The position at which new elements will be inserted.
     //! @param args     The arguments of the constructor of the new element.
     //!
     //! @par Throws
-    //!   If in-place constructor throws or Value's move
-    //!   constructor or move assignment throws.
+    //!   If in-place constructor throws or if Value's move constructor or move assignment throws.
     //! @internal
     //!   @li If a throwing error handler is specified, throws when the capacity is exceeded. (not by default).
     //! @endinternal
@@ -1149,7 +1157,7 @@ public:
         m_size = 0; // update end
     }
 
-    //! @pre i < size().
+    //! @pre <tt>i < size()</tt>
     //!
     //! @brief Returns reference to the i-th element.
     //!
@@ -1159,7 +1167,7 @@ public:
     //!   from the beginning of the container.
     //!
     //! @par Throws
-    //!   std::out_of_range exception by default.
+    //!   \c std::out_of_range exception by default.
     //!
     //! @par Complexity
     //!   Constant O(1).
@@ -1169,7 +1177,7 @@ public:
         return *(this->begin() + i);
     }
 
-    //! @pre i < size().
+    //! @pre <tt>i < size()</tt>
     //!
     //! @brief Returns const reference to the i-th element.
     //!
@@ -1179,7 +1187,7 @@ public:
     //!   from the beginning of the container.
     //!
     //! @par Throws
-    //!   std::out_of_range exception by default.
+    //!   \c std::out_of_range exception by default.
     //!
     //! @par Complexity
     //!   Constant O(1).
@@ -1189,7 +1197,7 @@ public:
         return *(this->begin() + i);
     }
 
-    //! @pre i < size().
+    //! @pre <tt>i < size()</tt>
     //!
     //! @brief Returns reference to the i-th element.
     //!
@@ -1210,7 +1218,7 @@ public:
         return *(this->begin() + i);
     }
 
-    //! @pre i < size().
+    //! @pre <tt>i < size()</tt>
     //!
     //! @brief Returns const reference to the i-th element.
     //!
@@ -1230,7 +1238,7 @@ public:
         return *(this->begin() + i);
     }
 
-    //! @pre !empty().
+    //! @pre \c !empty()
     //!
     //! @brief Returns reference to the first element.
     //!
@@ -1248,7 +1256,7 @@ public:
         return *(this->begin());
     }
 
-    //! @pre !empty().
+    //! @pre \c !empty()
     //!
     //! @brief Returns const reference to the first element.
     //!
@@ -1266,7 +1274,7 @@ public:
         return *(this->begin());
     }
 
-    //! @pre !empty().
+    //! @pre \c !empty()
     //!
     //! @brief Returns reference to the last element.
     //!
@@ -1284,7 +1292,7 @@ public:
         return *(this->end() - 1);
     }
 
-    //! @pre !empty().
+    //! @pre \c !empty()
     //!
     //! @brief Returns const reference to the first element.
     //!
@@ -1302,8 +1310,8 @@ public:
         return *(this->end() - 1);
     }
 
-    //! @brief Pointer such that [data(), data() + size()) is a valid range.
-    //!   For a non-empty vector, data() == &front().
+    //! @brief Pointer such that <tt>[data(), data() + size())</tt> is a valid range.
+    //!   For a non-empty vector <tt>data() == &front()</tt>.
     //!
     //! @par Throws
     //!   Nothing.
@@ -1315,8 +1323,8 @@ public:
         return boost::addressof(*(this->ptr()));
     }
 
-    //! @brief Const pointer such that [data(), data() + size()) is a valid range.
-    //!   For a non-empty vector, data() == &front().
+    //! @brief Const pointer such that <tt>[data(), data() + size())</tt> is a valid range.
+    //!   For a non-empty vector <tt>data() == &front()</tt>.
     //!
     //! @par Throws
     //!   Nothing.
