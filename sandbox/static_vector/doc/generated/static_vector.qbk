@@ -10,6 +10,12 @@ static\u005fvector is a sequence container like boost::container::vector with co
 
 A static\u005fvector is a sequence that supports random access to elements, constant time insertion and removal of elements at the end, and linear time insertion and removal of elements at the beginning or in the middle. The number of elements in a static\u005fvector may vary dynamically up to a fixed capacity because elements are stored within the object itself similarly to an array. However, objects are initialized as they are inserted into static\u005fvector unlike C arrays or std::array which must construct all elements on instantiation. The behavior of static\u005fvector enables the use of statically allocated elements in cases with complex object lifetime requirements that would otherwise not be trivially possible.
 
+[heading Error Handling]
+Insertion beyond the capacity and out of bounds errors result in undefined behavior unless otherwise specified. In this respect if size() == capacity(), then static_vector::push_back() behaves like std::vector pop_front() if size() == empty(). The reason for this difference is because unlike vectors, static_vector does not perform allocation.
+
+[heading Advanced Usage]
+Error handling behavior can be modified to more closely match std::vector exception behavior when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
+
 [heading Header]
 `#include <boost/container/static_vector.hpp>`
 
