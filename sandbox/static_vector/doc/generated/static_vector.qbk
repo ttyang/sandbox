@@ -4,7 +4,7 @@
 [section:boost_container_static_vector boost::container::static_vector]
 
 '''<indexterm><primary>boost</primary></indexterm><indexterm><primary>container</primary></indexterm><indexterm><primary>static_vector</primary></indexterm>'''
-A hybrid of [^boost::container::vector] and [^boost::array] with fixed capacity. 
+A hybrid of [^`boost::container::vector`] and [^`boost::array`] with fixed capacity. 
 
 [heading Description]
 [link classboost_1_1container_1_1static__vector static_vector] is a sequence container like boost::container::vector with contiguous storage that can change in size, along with the static allocation, low overhead, and fixed capacity of boost::array.
@@ -62,7 +62,7 @@ Error handling behavior can be modified to more closely match std::vector except
 [[[link classboost_1_1container_1_1static__vector_1ae0f7f391d06180aea516a6b03b3402c2 `static_vector()`]][Constructs an empty [link classboost_1_1container_1_1static__vector static_vector]. ]]
 [[[link classboost_1_1container_1_1static__vector_1ab6461f56b1a46dc3e708e22d24b262c5 `static_vector(size_type)`]][Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing count default constructed Values. ]]
 [[[link classboost_1_1container_1_1static__vector_1a5f0a8f8d5a685d0d9ed9c54e202c7c3c `static_vector(size_type, value_type const &)`]][Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing count copies of value. ]]
-[[[link classboost_1_1container_1_1static__vector_1a5e2c5c81fe53874667e3b9c2c07757b3 `static_vector(Iterator, Iterator)`]][Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing copy of a range [^[first, last)]. ]]
+[[[link classboost_1_1container_1_1static__vector_1a5e2c5c81fe53874667e3b9c2c07757b3 `static_vector(Iterator, Iterator)`]][Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing copy of a range [^`[first, last)`]. ]]
 [[[link classboost_1_1container_1_1static__vector_1a48efc321954acc24a3a6f37a26c676f2 `static_vector(static_vector const &)`]][Constructs a copy of other [link classboost_1_1container_1_1static__vector static_vector]. ]]
 [[[link classboost_1_1container_1_1static__vector_1ae9a84810e47883c67b51dbaf760a6c1b `static_vector(static_vector<...> const &)`]][Constructs a copy of other [link classboost_1_1container_1_1static__vector static_vector]. ]]
 [[[link classboost_1_1container_1_1static__vector_1a5e19b124c38ed45fbd5868349622c228 `static_vector(static_vector &&)`]][Move constructor. Moves Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
@@ -88,13 +88,13 @@ Error handling behavior can be modified to more closely match std::vector except
 [[[link classboost_1_1container_1_1static__vector_1a949c881458809c08e0c6de6f54871fdf `insert(iterator, value_type const &)`]][Inserts a copy of element at position. ]]
 [[[link classboost_1_1container_1_1static__vector_1a93e722fcda2a5454901292642fcabfba `insert(iterator, value_type &&)`]][Inserts a move-constructed element at position. ]]
 [[[link classboost_1_1container_1_1static__vector_1a6381368d09a3b93c1bc6c28199f9810c `insert(iterator, size_type, value_type const &)`]][Inserts a count copies of value at position. ]]
-[[[link classboost_1_1container_1_1static__vector_1a7f3daa5ea1faae1f75f2f33f8fc5c15c `insert(iterator, Iterator, Iterator)`]][Inserts a copy of a range [^[first, last)] at position. ]]
+[[[link classboost_1_1container_1_1static__vector_1a7f3daa5ea1faae1f75f2f33f8fc5c15c `insert(iterator, Iterator, Iterator)`]][Inserts a copy of a range [^`[first, last)`] at position. ]]
 [[[link classboost_1_1container_1_1static__vector_1aa8ba2711fd2390953a10f02eb464d269 `erase(iterator)`]][Erases Value from position. ]]
-[[[link classboost_1_1container_1_1static__vector_1a2fc879a077c834f4305efc21706e033c `erase(iterator, iterator)`]][Erases Values from a range [^[first, last)]. ]]
-[[[link classboost_1_1container_1_1static__vector_1a5f820fa73c4728fed1df89da341b98cb `assign(Iterator, Iterator)`]][Assigns a range [^[first, last)] of Values to this container. ]]
+[[[link classboost_1_1container_1_1static__vector_1a2fc879a077c834f4305efc21706e033c `erase(iterator, iterator)`]][Erases Values from a range [^`[first, last)`]. ]]
+[[[link classboost_1_1container_1_1static__vector_1a5f820fa73c4728fed1df89da341b98cb `assign(Iterator, Iterator)`]][Assigns a range [^`[first, last)`] of Values to this container. ]]
 [[[link classboost_1_1container_1_1static__vector_1ac589c93c8b59e5712b0225a9b424f50f `assign(size_type, value_type const &)`]][Assigns a count copies of value to this container. ]]
-[[[link classboost_1_1container_1_1static__vector_1ac00c9401b86fdbf8816540ce92329f40 `emplace_back(Args &&...)`]][Inserts a Value constructed with [^std::forward<Args>(args)]... in the end of the container. ]]
-[[[link classboost_1_1container_1_1static__vector_1ae06ce1a29316261d44920ca0d3836dad `emplace(iterator, Args &&...)`]][Inserts a Value constructed with [^std::forward<Args>(args)]... before position. ]]
+[[[link classboost_1_1container_1_1static__vector_1ac00c9401b86fdbf8816540ce92329f40 `emplace_back(Args &&...)`]][Inserts a Value constructed with [^`std::forward<Args>(args)`]... in the end of the container. ]]
+[[[link classboost_1_1container_1_1static__vector_1ae06ce1a29316261d44920ca0d3836dad `emplace(iterator, Args &&...)`]][Inserts a Value constructed with [^`std::forward<Args>(args)`]... before position. ]]
 [[[link classboost_1_1container_1_1static__vector_1a11ae430a28a7f9b9636f249bfc932a50 `clear()`]][Removes all elements from the container. ]]
 [[[link classboost_1_1container_1_1static__vector_1a2ab748bbf59967f381131dc2ded8878e `at(size_type)`]][Returns reference to the i-th element. ]]
 [[[link classboost_1_1container_1_1static__vector_1ad69bcb249614e043de9ad3c30848a046 `at(size_type)`]][Returns const reference to the i-th element. ]]
@@ -104,8 +104,8 @@ Error handling behavior can be modified to more closely match std::vector except
 [[[link classboost_1_1container_1_1static__vector_1a2a1b6ca353a315e76c0f41cdb6440cf8 `front()`]][Returns const reference to the first element. ]]
 [[[link classboost_1_1container_1_1static__vector_1a8b3295ab8d967460eb4ed6f87e827eb6 `back()`]][Returns reference to the last element. ]]
 [[[link classboost_1_1container_1_1static__vector_1aa3a259c979e7755ae410f5b5250e2bd4 `back()`]][Returns const reference to the first element. ]]
-[[[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce `data()`]][Pointer such that [^[[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()], [link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] + [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()])] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] == &[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
-[[[link classboost_1_1container_1_1static__vector_1a3ac0ed788bfecd5103183f0b705d602d `data()`]][Const pointer such that [^[[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()], [link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] + [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()])] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] == &[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
+[[[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce `data()`]][Pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
+[[[link classboost_1_1container_1_1static__vector_1a3ac0ed788bfecd5103183f0b705d602d `data()`]][Const pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
 [[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 `begin()`]][Returns iterator to the first element. ]]
 [[[link classboost_1_1container_1_1static__vector_1a5ad66643c38c5c0c5754b010011c0024 `begin()`]][Returns const iterator to the first element. ]]
 [[[link classboost_1_1container_1_1static__vector_1a33bd2d5cff22aa5a88050026367416a6 `cbegin()`]][Returns const iterator to the first element. ]]
@@ -159,7 +159,7 @@ Constructs a [link classboost_1_1container_1_1static__vector static_vector] cont
 [[[^[link classboost_1_1container_1_1static__vector_1a1bfd8a9abbcd1f382a0ad150f7e2a40a size_type]]][ `count` ][The number of values which will be contained in the container.]]
 ]
 [heading Precondition(s)]
-[^count <= Capacity]
+[^`count <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's default constructor throws.
@@ -186,7 +186,7 @@ Constructs a [link classboost_1_1container_1_1static__vector static_vector] cont
 [[[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]` const &`][ `value` ][The value which will be used to copy construct values.]]
 ]
 [heading Precondition(s)]
-[^count <= Capacity]
+[^`count <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's copy constructor throws.
@@ -198,7 +198,7 @@ Linear O(N).
 
 [#classboost_1_1container_1_1static__vector_1a5e2c5c81fe53874667e3b9c2c07757b3]
 [section static_vector(Iterator, Iterator)]
-Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing copy of a range [^[first, last)]. 
+Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing copy of a range [^`[first, last)`]. 
 
 [heading Synopsis]
 [pre
@@ -215,8 +215,8 @@ Constructs a [link classboost_1_1container_1_1static__vector static_vector] cont
 [heading Precondition(s)]
 
 
-* [^distance(first, last) <= Capacity]
-* Iterator must meet the [^ForwardTraversalIterator] concept.
+* [^`distance(first, last) <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
+* Iterator must meet the [^`ForwardTraversalIterator`] concept.
 
 
 
@@ -267,7 +267,7 @@ Constructs a copy of other [link classboost_1_1container_1_1static__vector stati
 [[[^[link classboost_1_1container_1_1static__vector static_vector]]`< `[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]`, C, S > const &`][ `other` ][The [link classboost_1_1container_1_1static__vector static_vector] which content will be copied to this one.]]
 ]
 [heading Precondition(s)]
-[^other.size() <= Capacity].
+[^`other.size() <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]].
 
 [heading Throws]
 If Value's copy constructor throws.
@@ -295,8 +295,8 @@ Move constructor. Moves Values stored in the other [link classboost_1_1container
 [heading Throws]
 
 
-* If [^boost::has_nothrow_move<Value>::value] is [^true] and Value's move constructor throws. 
-* If [^boost::has_nothrow_move<Value>::value] is [^false] and Value's copy constructor throws.
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`true`] and Value's move constructor throws. 
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`false`] and Value's copy constructor throws.
 
 
 
@@ -321,13 +321,13 @@ Move constructor. Moves Values stored in the other [link classboost_1_1container
 [[[^[link classboost_1_1container_1_1static__vector static_vector]]`< `[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]`, C, S > &&`][ `other` ][The [link classboost_1_1container_1_1static__vector static_vector] which content will be moved to this one.]]
 ]
 [heading Precondition(s)]
-[^other.size() <= Capacity]
+[^`other.size() <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 
 
-* If [^boost::has_nothrow_move<Value>::value] is [^true] and Value's move constructor throws. 
-* If [^boost::has_nothrow_move<Value>::value] is [^false] and Value's copy constructor throws.
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`true`] and Value's move constructor throws. 
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`false`] and Value's copy constructor throws.
 
 
 
@@ -393,7 +393,7 @@ Copy assigns Values stored in the other [link classboost_1_1container_1_1static_
 [[[^[link classboost_1_1container_1_1static__vector static_vector]]`< `[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]`, C, S > const &`][ `other` ][The [link classboost_1_1container_1_1static__vector static_vector] which content will be copied to this one.]]
 ]
 [heading Precondition(s)]
-[^other.size() <= Capacity]
+[^`other.size() <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's copy constructor or copy assignment throws.
@@ -421,8 +421,8 @@ Move assignment. Moves Values stored in the other [link classboost_1_1container_
 [heading Throws]
 
 
-* If [^boost::has_nothrow_move<Value>::value] is [^true] and Value's move constructor or move assignment throws. 
-* If [^boost::has_nothrow_move<Value>::value] is [^false] and Value's copy constructor or copy assignment throws.
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`true`] and Value's move constructor or move assignment throws. 
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`false`] and Value's copy constructor or copy assignment throws.
 
 
 
@@ -447,13 +447,13 @@ Move assignment. Moves Values stored in the other [link classboost_1_1container_
 [[[^[link classboost_1_1container_1_1static__vector static_vector]]`< `[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]`, C, S > &&`][ `other` ][The [link classboost_1_1container_1_1static__vector static_vector] which content will be moved to this one.]]
 ]
 [heading Precondition(s)]
-[^other.size() <= Capacity]
+[^`other.size() <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 
 
-* If [^boost::has_nothrow_move<Value>::value] is [^true] and Value's move constructor or move assignment throws. 
-* If [^boost::has_nothrow_move<Value>::value] is [^false] and Value's copy constructor or copy assignment throws.
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`true`] and Value's move constructor or move assignment throws. 
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`false`] and Value's copy constructor or copy assignment throws.
 
 
 
@@ -480,8 +480,8 @@ Swaps contents of the other [link classboost_1_1container_1_1static__vector stat
 [heading Throws]
 
 
-* If [^boost::has_nothrow_move<Value>::value] is [^true] and Value's move constructor or move assignment throws, 
-* If [^boost::has_nothrow_move<Value>::value] is [^false] and Value's copy constructor or copy assignment throws,
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`true`] and Value's move constructor or move assignment throws, 
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`false`] and Value's copy constructor or copy assignment throws,
 
 
 
@@ -506,13 +506,13 @@ Swaps contents of the other [link classboost_1_1container_1_1static__vector stat
 [[[^[link classboost_1_1container_1_1static__vector static_vector]]`< `[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]`, C, S > &`][ `other` ][The [link classboost_1_1container_1_1static__vector static_vector] which content will be swapped with this one's content.]]
 ]
 [heading Precondition(s)]
-[^other.size() <= Capacity && [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] <= other.capacity()]
+[^`other.size() <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]` && `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` <= other.capacity()`]
 
 [heading Throws]
 
 
-* If [^boost::has_nothrow_move<Value>::value] is [^true] and Value's move constructor or move assignment throws, 
-* If [^boost::has_nothrow_move<Value>::value] is [^false] and Value's copy constructor or copy assignment throws,
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`true`] and Value's move constructor or move assignment throws, 
+* If [^`boost::has_nothrow_move<Value>::value`] is [^`false`] and Value's copy constructor or copy assignment throws,
 
 
 
@@ -537,7 +537,7 @@ Inserts or erases elements at the end such that the size becomes count. New elem
 [[[^[link classboost_1_1container_1_1static__vector_1a1bfd8a9abbcd1f382a0ad150f7e2a40a size_type]]][ `count` ][The number of elements which will be stored in the container.]]
 ]
 [heading Precondition(s)]
-[^count <= Capacity]
+[^`count <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's default constructor throws.
@@ -564,7 +564,7 @@ Inserts or erases elements at the end such that the size becomes count. New elem
 [[[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]` const &`][ `value` ][The value used to copy construct the new element.]]
 ]
 [heading Precondition(s)]
-[^count <= Capacity]
+[^`count <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's copy constructor throws.
@@ -590,7 +590,7 @@ This call has no effect because the Capacity of this container is constant.
 [[[^[link classboost_1_1container_1_1static__vector_1a1bfd8a9abbcd1f382a0ad150f7e2a40a size_type]]][ `count` ][The number of elements which the container should be able to contain.]]
 ]
 [heading Precondition(s)]
-[^count <= Capacity]
+[^`count <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 Nothing.
@@ -616,7 +616,7 @@ Adds a copy of value at the end.
 [[[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]` const &`][ `value` ][The value used to copy construct the new element.]]
 ]
 [heading Precondition(s)]
-[^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] < Capacity]
+[^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` < `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's copy constructor throws.
@@ -642,7 +642,7 @@ Moves value to the end.
 [[[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]` &&`][ `value` ][The value to move construct the new element.]]
 ]
 [heading Precondition(s)]
-[^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] < Capacity]
+[^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` < `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's move constructor throws.
@@ -663,7 +663,7 @@ Destroys last value and decreases the size.
 ]
 
 [heading Precondition(s)]
-[^!empty()]
+[^`!empty()`]
 
 [heading Throws]
 Nothing by default.
@@ -692,8 +692,8 @@ Inserts a copy of element at position.
 [heading Precondition(s)]
 
 
-* [^position] must be a valid iterator of [^*this] in range [^[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()], [link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]]]. 
-* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] < Capacity]
+* [^`position`] must be a valid iterator of [^`*this`] in range [^`[`[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()]`, `[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]`]`]. 
+* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` < `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 
 
@@ -729,8 +729,8 @@ Inserts a move-constructed element at position.
 [heading Precondition(s)]
 
 
-* [^position] must be a valid iterator of [^*this] in range [^[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()], [link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]]]. 
-* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] < Capacity]
+* [^`position`] must be a valid iterator of [^`*this`] in range [^`[`[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()]`, `[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]`]`]. 
+* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` < `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 
 
@@ -764,8 +764,8 @@ Inserts a count copies of value at position.
 [heading Precondition(s)]
 
 
-* [^position] must be a valid iterator of [^*this] in range [^[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()], [link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]]]. 
-* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] + count <= Capacity]
+* [^`position`] must be a valid iterator of [^`*this`] in range [^`[`[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()]`, `[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]`]`]. 
+* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` + count <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 
 
@@ -784,7 +784,7 @@ Linear O(N).
 
 [#classboost_1_1container_1_1static__vector_1a7f3daa5ea1faae1f75f2f33f8fc5c15c]
 [section insert(iterator, Iterator, Iterator)]
-Inserts a copy of a range [^[first, last)] at position. 
+Inserts a copy of a range [^`[first, last)`] at position. 
 
 [heading Synopsis]
 [pre
@@ -804,16 +804,16 @@ Inserts a copy of a range [^[first, last)] at position.
 [heading Precondition(s)]
 
 
-* [^position] must be a valid iterator of [^*this] in range [^[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()], [link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]]]. 
-* [^distance(first, last) <= Capacity]
-* [^Iterator] must meet the  concept.
+* [^`position`] must be a valid iterator of [^`*this`] in range [^`[`[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()]`, `[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]`]`]. 
+* [^`distance(first, last) <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
+* [^`Iterator`] must meet the [^`ForwardTraversalIterator`] concept.
 
 
 
 [heading Throws]
 
 
-* If Value's constructor and assignment taking a dereferenced [^Iterator]. 
+* If Value's constructor and assignment taking a dereferenced [^`Iterator`]. 
 * If Value's move constructor or move assignment throws.
 
 
@@ -839,7 +839,7 @@ Erases Value from position.
 [[[^[link classboost_1_1container_1_1static__vector_1ae9387f4d5cba4f4f87ad06222b46357e iterator]]][ `position` ][The position of the element which will be erased from the container.]]
 ]
 [heading Precondition(s)]
-[^position] must be a valid iterator of [^*this] in range [^[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()], [link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()])]
+[^`position`] must be a valid iterator of [^`*this`] in range [^`[`[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()]`, `[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]`)`]
 
 [heading Throws]
 If Value's move assignment throws.
@@ -851,7 +851,7 @@ Linear O(N).
 
 [#classboost_1_1container_1_1static__vector_1a2fc879a077c834f4305efc21706e033c]
 [section erase(iterator, iterator)]
-Erases Values from a range [^[first, last)]. 
+Erases Values from a range [^`[first, last)`]. 
 
 [heading Synopsis]
 [pre
@@ -868,8 +868,8 @@ Erases Values from a range [^[first, last)].
 [heading Precondition(s)]
 
 
-* [^first] and [^last] must define a valid range 
-* iterators must be in range [^[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()], [link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]]]
+* [^`first`] and [^`last`] must define a valid range 
+* iterators must be in range [^`[`[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()]`, `[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]`]`]
 
 
 
@@ -883,7 +883,7 @@ Linear O(N).
 
 [#classboost_1_1container_1_1static__vector_1a5f820fa73c4728fed1df89da341b98cb]
 [section assign(Iterator, Iterator)]
-Assigns a range [^[first, last)] of Values to this container. 
+Assigns a range [^`[first, last)`] of Values to this container. 
 
 [heading Synopsis]
 [pre
@@ -898,7 +898,7 @@ Assigns a range [^[first, last)] of Values to this container.
 [[`Iterator`][ `last` ][The iterator to the one after the last element of a range used to construct new content of this container.]]
 ]
 [heading Precondition(s)]
-[^distance(first, last) <= Capacity]
+[^`distance(first, last) <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's copy constructor or copy assignment throws,
@@ -925,7 +925,7 @@ Assigns a count copies of value to this container.
 [[[^[link classboost_1_1container_1_1static__vector_1a5985fc0bab97e6e2b923c9b97ef32b7e value_type]]` const &`][ `value` ][The value which will be used to copy construct the new content.]]
 ]
 [heading Precondition(s)]
-[^count <= Capacity]
+[^`count <= `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If Value's copy constructor or copy assignment throws.
@@ -937,7 +937,7 @@ Linear O(N).
 
 [#classboost_1_1container_1_1static__vector_1ac00c9401b86fdbf8816540ce92329f40]
 [section emplace_back(Args &&...)]
-Inserts a Value constructed with [^std::forward<Args>(args)]... in the end of the container. 
+Inserts a Value constructed with [^`std::forward<Args>(args)`]... in the end of the container. 
 
 [heading Synopsis]
 [pre
@@ -951,7 +951,7 @@ Inserts a Value constructed with [^std::forward<Args>(args)]... in the end of th
 [[`Args &&...`][ `args` ][The arguments of the constructor of the new element which will be created at the end of the container.]]
 ]
 [heading Precondition(s)]
-[^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] < Capacity]
+[^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` < `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 [heading Throws]
 If in-place constructor throws or Value's move constructor throws.
@@ -963,7 +963,7 @@ Constant O(1).
 
 [#classboost_1_1container_1_1static__vector_1ae06ce1a29316261d44920ca0d3836dad]
 [section emplace(iterator, Args &&...)]
-Inserts a Value constructed with [^std::forward<Args>(args)]... before position. 
+Inserts a Value constructed with [^`std::forward<Args>(args)`]... before position. 
 
 [heading Synopsis]
 [pre
@@ -980,8 +980,8 @@ Inserts a Value constructed with [^std::forward<Args>(args)]... before position.
 [heading Precondition(s)]
 
 
-* [^position] must be a valid iterator of [^*this] in range [^[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()], [link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]]]
-* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] < Capacity]
+* [^`position`] must be a valid iterator of [^`*this`] in range [^`[`[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 begin()]`, `[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc end()]`]`]
+* [^[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]` < `[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()]]
 
 
 
@@ -1027,12 +1027,12 @@ Returns reference to the i-th element.
 [[[^[link classboost_1_1container_1_1static__vector_1a1bfd8a9abbcd1f382a0ad150f7e2a40a size_type]]][ `i` ][The element's index.]]
 ]
 [heading Precondition(s)]
-[^i < [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
+[^`i < `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
 
 [heading Returns]
 reference to the i-th element from the beginning of the container.
 [heading Throws]
-[^std::out_of_range] exception by default.
+[^`std::out_of_range`] exception by default.
 
 [heading Complexity]
 Constant O(1). 
@@ -1055,12 +1055,12 @@ Returns const reference to the i-th element.
 [[[^[link classboost_1_1container_1_1static__vector_1a1bfd8a9abbcd1f382a0ad150f7e2a40a size_type]]][ `i` ][The element's index.]]
 ]
 [heading Precondition(s)]
-[^i < [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
+[^`i < `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
 
 [heading Returns]
 const reference to the i-th element from the beginning of the container.
 [heading Throws]
-[^std::out_of_range] exception by default.
+[^`std::out_of_range`] exception by default.
 
 [heading Complexity]
 Constant O(1). 
@@ -1083,7 +1083,7 @@ Returns reference to the i-th element.
 [[[^[link classboost_1_1container_1_1static__vector_1a1bfd8a9abbcd1f382a0ad150f7e2a40a size_type]]][ `i` ][The element's index.]]
 ]
 [heading Precondition(s)]
-[^i < [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
+[^`i < `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
 
 [heading Returns]
 reference to the i-th element from the beginning of the container.
@@ -1111,7 +1111,7 @@ Returns const reference to the i-th element.
 [[[^[link classboost_1_1container_1_1static__vector_1a1bfd8a9abbcd1f382a0ad150f7e2a40a size_type]]][ `i` ][The element's index.]]
 ]
 [heading Precondition(s)]
-[^i < [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
+[^`i < `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]]
 
 [heading Returns]
 const reference to the i-th element from the beginning of the container.
@@ -1134,7 +1134,7 @@ Returns reference to the first element.
 ]
 
 [heading Precondition(s)]
-[^!empty]()
+[^`!empty`]()
 
 [heading Returns]
 reference to the first element from the beginning of the container.
@@ -1157,7 +1157,7 @@ Returns const reference to the first element.
 ]
 
 [heading Precondition(s)]
-[^!empty]()
+[^`!empty`]()
 
 [heading Returns]
 const reference to the first element from the beginning of the container.
@@ -1180,7 +1180,7 @@ Returns reference to the last element.
 ]
 
 [heading Precondition(s)]
-[^!empty]()
+[^`!empty`]()
 
 [heading Returns]
 reference to the last element from the beginning of the container.
@@ -1203,7 +1203,7 @@ Returns const reference to the first element.
 ]
 
 [heading Precondition(s)]
-[^!empty]()
+[^`!empty`]()
 
 [heading Returns]
 const reference to the last element from the beginning of the container.
@@ -1217,7 +1217,7 @@ Constant O(1).
 
 [#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce]
 [section data()]
-Pointer such that [^[[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()], [link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] + [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()])] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] == &[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. 
+Pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. 
 
 [heading Synopsis]
 [pre
@@ -1235,7 +1235,7 @@ Constant O(1).
 
 [#classboost_1_1container_1_1static__vector_1a3ac0ed788bfecd5103183f0b705d602d]
 [section data()]
-Const pointer such that [^[[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()], [link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] + [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()])] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()] == &[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. 
+Const pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. 
 
 [heading Synopsis]
 [pre

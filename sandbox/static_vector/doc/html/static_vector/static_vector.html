@@ -7,7 +7,7 @@
 <link rel="home" href="../index.html" title="Chapter&#160;1.&#160;StaticVector">
 <link rel="up" href="../index.html" title="Chapter&#160;1.&#160;StaticVector">
 <link rel="prev" href="../index.html" title="Chapter&#160;1.&#160;StaticVector">
-<link rel="next" href="static_vector/introduction.html" title="Introduction">
+<link rel="next" href="static_vector/reference.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,17 +20,119 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="static_vector/introduction.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="static_vector/reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="static_vector.static_vector"></a><a class="link" href="static_vector.html" title="static_vector">static_vector</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="static_vector/introduction.html">Introduction</a></span></dt>
 <dt><span class="section"><a href="static_vector/reference.html">Reference</a></span></dt>
-<dd><dl><dt><span class="section"><a href="static_vector/reference.html#staticvector.static_vector.reference.boost_container_static_vector">boost::container::static_vector</a></span></dt></dl></dd>
+<dd><dl>
+<dt><span class="section"><a href="static_vector/reference.html#staticvector.static_vector.reference.boost_container_static_vector">boost::container::static_vector</a></span></dt>
+<dt><span class="section"><a href="static_vector/reference.html#staticvector.static_vector.reference.group__static__vector__non__member">static_vector
+        non-member functions (boost::container::)</a></span></dt>
+</dl></dd>
 </dl></div>
+<h4>
+<a name="static_vector.static_vector.h0"></a>
+      <span class="phrase"><a name="static_vector.static_vector.introduction"></a></span><a class="link" href="static_vector.html#static_vector.static_vector.introduction">Introduction</a>
+    </h4>
+<p>
+      static_vector is a fixed capacity container like boost::array implementing
+      C++11 <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code> functionalities like <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="identifier">vector</span></code>.
+    </p>
+<p>
+      static_vector is a sequence container like <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="identifier">vector</span></code>
+      with contiguous storage that can change in size, along with the static allocation,
+      low overhead, and fixed capacity of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span></code>.
+      Unlike <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span></code> it doesn't construct values on creation.
+      Values stored in static_vector may not define default constructor or copy constructor.
+      Like containers in <code class="computeroutput"><span class="identifier">Boost</span><span class="special">.</span><span class="identifier">Container</span></code> library, this container implements
+      move semantics and C++11 <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code>
+      methods like <code class="computeroutput"><span class="identifier">emplace</span><span class="special">()</span></code>.
+      Implementation uses Boost.Move library and it works on compilers without r-value
+      references suport. If the compiler doesn't support variadic templates <code class="computeroutput"><span class="identifier">BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS</span></code>
+      <code class="computeroutput"><span class="identifier">emplace</span><span class="special">()</span></code>
+      and <code class="computeroutput"><span class="identifier">emplace_back</span><span class="special">()</span></code>
+      overloads are generated.
+    </p>
+<h4>
+<a name="static_vector.static_vector.h1"></a>
+      <span class="phrase"><a name="static_vector.static_vector.example"></a></span><a class="link" href="static_vector.html#static_vector.static_vector.example">Example</a>
+    </h4>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// static_vector_example.cpp</span>
+
+<span class="preprocessor">#include</span> <span class="string">"boost/container/static_vector.hpp"</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span><span class="special">**</span> <span class="identifier">argv</span><span class="special">){</span>
+
+  <span class="comment">// static_vector of ints, fixed capacity: 3</span>
+  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="identifier">static_vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="number">3</span><span class="special">&gt;</span> <span class="identifier">three</span><span class="special">;</span> <span class="comment">// size: 0</span>
+
+  <span class="identifier">three</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>    <span class="comment">// size: 1</span>
+  <span class="identifier">three</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="number">2</span><span class="special">);</span>    <span class="comment">// size: 2</span>
+  <span class="identifier">three</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>    <span class="comment">// size: 3</span>
+
+  <span class="comment">//three.reserve(4);    // no effect, fixed capacity: 3</span>
+  <span class="comment">//three.push_back(3);  // size: 4, behavior depends on strategy, assert by default</span>
+
+  <span class="identifier">three</span><span class="special">.</span><span class="identifier">pop_back</span><span class="special">();</span>      <span class="comment">// size: 2</span>
+  <span class="identifier">three</span><span class="special">.</span><span class="identifier">shrink_to_fit</span><span class="special">();</span> <span class="comment">// no effect, fixed capacity: 3</span>
+
+  <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<h4>
+<a name="static_vector.static_vector.h2"></a>
+      <span class="phrase"><a name="static_vector.static_vector.behavior"></a></span><a class="link" href="static_vector.html#static_vector.static_vector.behavior">Behavior</a>
+    </h4>
+<p>
+      The number of elements in a static_vector may vary dynamically up to a fixed
+      capacity because elements are stored within the object itself similarly to
+      an array. However, objects are initialized as they are inserted into static_vector
+      unlike C arrays or <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">array</span></code> which must construct all elements on
+      instantiation. The behavior of static_vector enables the use of statically
+      allocated elements in cases with complex object lifetime requirements that
+      would otherwise not be trivially possible.
+    </p>
+<h4>
+<a name="static_vector.static_vector.h3"></a>
+      <span class="phrase"><a name="static_vector.static_vector.runtime_complexity"></a></span><a class="link" href="static_vector.html#static_vector.static_vector.runtime_complexity">Runtime
+      Complexity</a>
+    </h4>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          random access to elements
+        </li>
+<li class="listitem">
+          constant time insertion and removal of elements at the end
+        </li>
+<li class="listitem">
+          linear time insertion and removal of elements at the beginning or in the
+          middle.
+        </li>
+</ul></div>
+<h4>
+<a name="static_vector.static_vector.h4"></a>
+      <span class="phrase"><a name="static_vector.static_vector.use_cases"></a></span><a class="link" href="static_vector.html#static_vector.static_vector.use_cases">Use
+      Cases</a>
+    </h4>
+<p>
+      static_vector is well suited for use in a buffer, the internal implementation
+      of of other classes, or use cases where there is a fixed limit to the number
+      of elements that must be stored. Embedded and realtime applications where allocation
+      either may not be available or acceptable are a particular case where static_vector
+      can be beneficial.
+    </p>
+<p>
+      Exceptions can be disabled for cases where they are either not supported or
+      desired.
+    </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
@@ -42,7 +144,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="static_vector/introduction.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="static_vector/reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

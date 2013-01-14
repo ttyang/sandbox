@@ -22,14 +22,14 @@
 int main(int argc, char** argv){
   
   // static_vector of ints, fixed capacity: 3
-  boost::container::static_vector<int,3> three; // size: 0
+  boost::container::static_vector<int, 3> three; // size: 0
 
   three.push_back(1);    // size: 1
   three.push_back(2);    // size: 2
   three.push_back(3);    // size: 3
   
   //three.reserve(4);    // no effect, fixed capacity: 3
-  //three.push_back(3);  // size: 4, undefined behavior
+  //three.push_back(3);  // size: 4, behavior depends on strategy, assert by default
   
   three.pop_back();      // size: 2
   three.shrink_to_fit(); // no effect, fixed capacity: 3

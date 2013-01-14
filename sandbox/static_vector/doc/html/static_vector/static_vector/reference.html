@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;StaticVector">
 <link rel="up" href="../static_vector.html" title="static_vector">
-<link rel="prev" href="introduction.html" title="Introduction">
+<link rel="prev" href="../static_vector.html" title="static_vector">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -19,21 +19,25 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="introduction.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a>
+<a accesskey="p" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="static_vector.static_vector.reference"></a><a class="link" href="reference.html" title="Reference">Reference</a>
 </h3></div></div></div>
-<div class="toc"><dl><dt><span class="section"><a href="reference.html#staticvector.static_vector.reference.boost_container_static_vector">boost::container::static_vector</a></span></dt></dl></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="reference.html#staticvector.static_vector.reference.boost_container_static_vector">boost::container::static_vector</a></span></dt>
+<dt><span class="section"><a href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member">static_vector
+        non-member functions (boost::container::)</a></span></dt>
+</dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="staticvector.static_vector.reference.boost_container_static_vector"></a><a name="classboost_1_1container_1_1static__vector"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector" title="boost::container::static_vector">boost::container::static_vector</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id889858"></a><a class="indexterm" name="id889863"></a><a class="indexterm" name="id889867"></a>
-A hybrid of <code class="literal">boost::container::vector</code> and <code class="literal">boost::array</code>
-          with fixed capacity.
+          <a class="indexterm" name="id886484"></a><a class="indexterm" name="id886489"></a><a class="indexterm" name="id886494"></a>
+A hybrid of <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="identifier">vector</span></code></code>
+          and <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span></code></code> with fixed capacity.
         </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.h0"></a>
@@ -407,7 +411,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
 <td>
                   <p>
                     Constructs a <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>
-                    containing copy of a range <code class="literal">[first, last)</code>.
+                    containing copy of a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span>
+                    <span class="identifier">last</span><span class="special">)</span></code></code>.
                   </p>
                 </td>
 </tr>
@@ -712,8 +717,9 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
                 </td>
 <td>
                   <p>
-                    Inserts a copy of a range <code class="literal">[first, last)</code> at
-                    position.
+                    Inserts a copy of a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span>
+                    <span class="identifier">last</span><span class="special">)</span></code></code>
+                    at position.
                   </p>
                 </td>
 </tr>
@@ -738,7 +744,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
                 </td>
 <td>
                   <p>
-                    Erases Values from a range <code class="literal">[first, last)</code>.
+                    Erases Values from a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span>
+                    <span class="identifier">last</span><span class="special">)</span></code></code>.
                   </p>
                 </td>
 </tr>
@@ -751,8 +758,9 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
                 </td>
 <td>
                   <p>
-                    Assigns a range <code class="literal">[first, last)</code> of Values to
-                    this container.
+                    Assigns a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span>
+                    <span class="identifier">last</span><span class="special">)</span></code></code>
+                    of Values to this container.
                   </p>
                 </td>
 </tr>
@@ -778,8 +786,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
                 </td>
 <td>
                   <p>
-                    Inserts a Value constructed with <code class="literal">std::forward&lt;Args&gt;(args)</code>...
-                    in the end of the container.
+                    Inserts a Value constructed with <code class="literal"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">forward</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;(</span><span class="identifier">args</span><span class="special">)</span></code></code>... in the end of the
+                    container.
                   </p>
                 </td>
 </tr>
@@ -792,8 +800,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
                 </td>
 <td>
                   <p>
-                    Inserts a Value constructed with <code class="literal">std::forward&lt;Args&gt;(args)</code>...
-                    before position.
+                    Inserts a Value constructed with <code class="literal"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">forward</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;(</span><span class="identifier">args</span><span class="special">)</span></code></code>... before position.
                   </p>
                 </td>
 </tr>
@@ -913,11 +920,10 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
                 </td>
 <td>
                   <p>
-                    Pointer such that <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>,
-                    <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-                    + <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>)</code>
-                    is a valid range. For a non-empty vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-                    == &amp;<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
+                    Pointer such that <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+                    <span class="special">+</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput"><span class="special">)</span></code></code> is a valid range.
+                    For a non-empty vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+                    <span class="special">==</span> <span class="special">&amp;</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
                   </p>
                 </td>
 </tr>
@@ -929,11 +935,10 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
                 </td>
 <td>
                   <p>
-                    Const pointer such that <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>,
-                    <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-                    + <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>)</code>
-                    is a valid range. For a non-empty vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-                    == &amp;<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
+                    Const pointer such that <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+                    <span class="special">+</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput"><span class="special">)</span></code></code> is a valid range.
+                    For a non-empty vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+                    <span class="special">==</span> <span class="special">&amp;</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
                   </p>
                 </td>
 </tr>
@@ -1241,7 +1246,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_size_type_.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.static_vector_size_type_.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">count &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">count</span> <span class="special">&lt;=</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_size_type_.h3"></a>
@@ -1344,7 +1350,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_size_type__value_type_const___.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.static_vector_size_type__value_type_const___.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">count &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">count</span> <span class="special">&lt;=</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_size_type__value_type_const___.h3"></a>
@@ -1368,7 +1375,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
 </h5></div></div></div>
 <p>
             Constructs a <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>
-            containing copy of a range <code class="literal">[first, last)</code>.
+            containing copy of a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span></code></code>.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_iterator__iterator_.h0"></a>
@@ -1447,10 +1454,11 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="literal">distance(first, last) &lt;= Capacity</code>
+                <code class="literal"><code class="computeroutput"><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">&lt;=</span>
+                </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
               </li>
 <li class="listitem">
-                Iterator must meet the <code class="literal">ForwardTraversalIterator</code>
+                Iterator must meet the <code class="literal"><code class="computeroutput"><span class="identifier">ForwardTraversalIterator</span></code></code>
                 concept.
               </li>
 </ul></div>
@@ -1613,7 +1621,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_static_vector______const___.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.static_vector_static_vector______const___.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">other.size() &lt;= Capacity</code>.
+            <code class="literal"><code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;=</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_static_vector______const___.h3"></a>
@@ -1698,12 +1706,14 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">true</code> and Value's move constructor throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+                and Value's move constructor throws.
               </li>
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">false</code> and Value's copy constructor throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">false</span></code></code>
+                and Value's copy constructor throws.
               </li>
 </ul></div>
 <h6>
@@ -1782,7 +1792,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_static_vector_________.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.static_vector_static_vector_________.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">other.size() &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;=</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.static_vector_static_vector_________.h3"></a>
@@ -1790,12 +1800,14 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">true</code> and Value's move constructor throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+                and Value's move constructor throws.
               </li>
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">false</code> and Value's copy constructor throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">false</span></code></code>
+                and Value's copy constructor throws.
               </li>
 </ul></div>
 <h6>
@@ -1980,7 +1992,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.operator__static_vector______const___.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.operator__static_vector______const___.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">other.size() &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;=</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.operator__static_vector______const___.h3"></a>
@@ -2065,14 +2077,14 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">true</code> and Value's move constructor or move assignment
-                throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+                and Value's move constructor or move assignment throws.
               </li>
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">false</code> and Value's copy constructor or copy
-                assignment throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">false</span></code></code>
+                and Value's copy constructor or copy assignment throws.
               </li>
 </ul></div>
 <h6>
@@ -2151,7 +2163,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.operator__static_vector_________.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.operator__static_vector_________.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">other.size() &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;=</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.operator__static_vector_________.h3"></a>
@@ -2159,14 +2171,14 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">true</code> and Value's move constructor or move assignment
-                throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+                and Value's move constructor or move assignment throws.
               </li>
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">false</code> and Value's copy constructor or copy
-                assignment throws.
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">false</span></code></code>
+                and Value's copy constructor or copy assignment throws.
               </li>
 </ul></div>
 <h6>
@@ -2245,14 +2257,14 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">true</code> and Value's move constructor or move assignment
-                throws,
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+                and Value's move constructor or move assignment throws,
               </li>
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">false</code> and Value's copy constructor or copy
-                assignment throws,
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">false</span></code></code>
+                and Value's copy constructor or copy assignment throws,
               </li>
 </ul></div>
 <h6>
@@ -2331,8 +2343,9 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.swap_static_vector________.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.swap_static_vector________.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">other.size() &lt;= Capacity &amp;&amp; <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-            &lt;= other.capacity()</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">other</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;=</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a><code class="computeroutput">
+            <span class="special">&amp;&amp;</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+            <span class="special">&lt;=</span> <span class="identifier">other</span><span class="special">.</span><span class="identifier">capacity</span><span class="special">()</span></code></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.swap_static_vector________.h3"></a>
@@ -2340,14 +2353,14 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">true</code> and Value's move constructor or move assignment
-                throws,
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+                and Value's move constructor or move assignment throws,
               </li>
 <li class="listitem">
-                If <code class="literal">boost::has_nothrow_move&lt;Value&gt;::value</code>
-                is <code class="literal">false</code> and Value's copy constructor or copy
-                assignment throws,
+                If <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_nothrow_move</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span></code></code>
+                is <code class="literal"><code class="computeroutput"><span class="keyword">false</span></code></code>
+                and Value's copy constructor or copy assignment throws,
               </li>
 </ul></div>
 <h6>
@@ -2422,7 +2435,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.resize_size_type_.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.resize_size_type_.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">count &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">count</span> <span class="special">&lt;=</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.resize_size_type_.h3"></a>
@@ -2524,7 +2538,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.resize_size_type__value_type_const___.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.resize_size_type__value_type_const___.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">count &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">count</span> <span class="special">&lt;=</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.resize_size_type__value_type_const___.h3"></a>
@@ -2605,7 +2620,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.reserve_size_type_.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.reserve_size_type_.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">count &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">count</span> <span class="special">&lt;=</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.reserve_size_type_.h3"></a>
@@ -2687,8 +2703,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.push_back_value_type_const___.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.push_back_value_type_const___.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-            &lt; Capacity</code>
+            <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+            <span class="special">&lt;</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.push_back_value_type_const___.h3"></a>
@@ -2770,8 +2786,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.push_back_value_type____.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.push_back_value_type____.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-            &lt; Capacity</code>
+            <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+            <span class="special">&lt;</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.push_back_value_type____.h3"></a>
@@ -2806,7 +2822,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.pop_back__.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.pop_back__.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">!empty()</code>
+            <code class="literal"><code class="computeroutput"><span class="special">!</span><span class="identifier">empty</span><span class="special">()</span></code></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.pop_back__.h2"></a>
@@ -2908,13 +2924,12 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="literal">position</code> must be a valid iterator of <code class="literal">*this</code>
-                in range <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a>,
-                <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a></code>].
+                <code class="literal"><code class="computeroutput"><span class="identifier">position</span></code></code>
+                must be a valid iterator of <code class="literal"><code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code></code> in range <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a><code class="computeroutput"><span class="special">]</span></code></code>.
               </li>
 <li class="listitem">
-                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-                &lt; Capacity</code>
+                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+                <span class="special">&lt;</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
               </li>
 </ul></div>
 <h6>
@@ -3022,13 +3037,12 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="literal">position</code> must be a valid iterator of <code class="literal">*this</code>
-                in range <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a>,
-                <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a></code>].
+                <code class="literal"><code class="computeroutput"><span class="identifier">position</span></code></code>
+                must be a valid iterator of <code class="literal"><code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code></code> in range <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a><code class="computeroutput"><span class="special">]</span></code></code>.
               </li>
 <li class="listitem">
-                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-                &lt; Capacity</code>
+                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+                <span class="special">&lt;</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
               </li>
 </ul></div>
 <h6>
@@ -3150,13 +3164,13 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="literal">position</code> must be a valid iterator of <code class="literal">*this</code>
-                in range <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a>,
-                <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a></code>].
+                <code class="literal"><code class="computeroutput"><span class="identifier">position</span></code></code>
+                must be a valid iterator of <code class="literal"><code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code></code> in range <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a><code class="computeroutput"><span class="special">]</span></code></code>.
               </li>
 <li class="listitem">
-                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-                + count &lt;= Capacity</code>
+                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+                <span class="special">+</span> <span class="identifier">count</span>
+                <span class="special">&lt;=</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
               </li>
 </ul></div>
 <h6>
@@ -3185,7 +3199,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           Iterator, Iterator)</a>
 </h5></div></div></div>
 <p>
-            Inserts a copy of a range <code class="literal">[first, last)</code> at position.
+            Inserts a copy of a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span></code></code>
+            at position.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.insert_iterator__iterator__iterator_.h0"></a>
@@ -3285,15 +3300,17 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="literal">position</code> must be a valid iterator of <code class="literal">*this</code>
-                in range <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a>,
-                <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a></code>].
+                <code class="literal"><code class="computeroutput"><span class="identifier">position</span></code></code>
+                must be a valid iterator of <code class="literal"><code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code></code> in range <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a><code class="computeroutput"><span class="special">]</span></code></code>.
               </li>
 <li class="listitem">
-                <code class="literal">distance(first, last) &lt;= Capacity</code>
+                <code class="literal"><code class="computeroutput"><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">&lt;=</span>
+                </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
               </li>
 <li class="listitem">
-                <code class="literal">Iterator</code> must meet the concept.
+                <code class="literal"><code class="computeroutput"><span class="identifier">Iterator</span></code></code>
+                must meet the <code class="literal"><code class="computeroutput"><span class="identifier">ForwardTraversalIterator</span></code></code>
+                concept.
               </li>
 </ul></div>
 <h6>
@@ -3302,7 +3319,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                If Value's constructor and assignment taking a dereferenced <code class="literal">Iterator</code>.
+                If Value's constructor and assignment taking a dereferenced <code class="literal"><code class="computeroutput"><span class="identifier">Iterator</span></code></code>.
               </li>
 <li class="listitem">
                 If Value's move constructor or move assignment throws.
@@ -3379,9 +3396,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.erase_iterator_.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.erase_iterator_.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">position</code> must be a valid iterator of <code class="literal">*this</code>
-            in range <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a>,
-            <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a>)</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">position</span></code></code>
+            must be a valid iterator of <code class="literal"><code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code></code> in range <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a><code class="computeroutput"><span class="special">)</span></code></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.erase_iterator_.h3"></a>
@@ -3404,7 +3420,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           iterator)</a>
 </h5></div></div></div>
 <p>
-            Erases Values from a range <code class="literal">[first, last)</code>.
+            Erases Values from a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span></code></code>.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.erase_iterator__iterator_.h0"></a>
@@ -3484,12 +3500,12 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="literal">first</code> and <code class="literal">last</code> must define
-                a valid range
+                <code class="literal"><code class="computeroutput"><span class="identifier">first</span></code></code>
+                and <code class="literal"><code class="computeroutput"><span class="identifier">last</span></code></code>
+                must define a valid range
               </li>
 <li class="listitem">
-                iterators must be in range <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a>,
-                <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a></code>]
+                iterators must be in range <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a><code class="computeroutput"><span class="special">]</span></code></code>
               </li>
 </ul></div>
 <h6>
@@ -3513,7 +3529,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           Iterator)</a>
 </h5></div></div></div>
 <p>
-            Assigns a range <code class="literal">[first, last)</code> of Values to this container.
+            Assigns a range <code class="literal"><code class="computeroutput"><span class="special">[</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span></code></code>
+            of Values to this container.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.assign_iterator__iterator_.h0"></a>
@@ -3593,7 +3610,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.assign_iterator__iterator_.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.assign_iterator__iterator_.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">distance(first, last) &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">&lt;=</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.assign_iterator__iterator_.h3"></a>
@@ -3694,7 +3711,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.assign_size_type__value_type_const___.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.assign_size_type__value_type_const___.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">count &lt;= Capacity</code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">count</span> <span class="special">&lt;=</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.assign_size_type__value_type_const___.h3"></a>
@@ -3717,8 +3735,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           &amp;&amp;...)</a>
 </h5></div></div></div>
 <p>
-            Inserts a Value constructed with <code class="literal">std::forward&lt;Args&gt;(args)</code>...
-            in the end of the container.
+            Inserts a Value constructed with <code class="literal"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">forward</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;(</span><span class="identifier">args</span><span class="special">)</span></code></code>... in the end of the container.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.emplace_back_args_______.h0"></a>
@@ -3778,8 +3795,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.emplace_back_args_______.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.emplace_back_args_______.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-            &lt; Capacity</code>
+            <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+            <span class="special">&lt;</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.emplace_back_args_______.h3"></a>
@@ -3802,8 +3819,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           Args &amp;&amp;...)</a>
 </h5></div></div></div>
 <p>
-            Inserts a Value constructed with <code class="literal">std::forward&lt;Args&gt;(args)</code>...
-            before position.
+            Inserts a Value constructed with <code class="literal"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">forward</span><span class="special">&lt;</span><span class="identifier">Args</span><span class="special">&gt;(</span><span class="identifier">args</span><span class="special">)</span></code></code>... before position.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.emplace_iterator__args_______.h0"></a>
@@ -3882,13 +3898,12 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </h6>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-                <code class="literal">position</code> must be a valid iterator of <code class="literal">*this</code>
-                in range <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a>,
-                <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a></code>]
+                <code class="literal"><code class="computeroutput"><span class="identifier">position</span></code></code>
+                must be a valid iterator of <code class="literal"><code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code></code> in range <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628">begin()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc">end()</a><code class="computeroutput"><span class="special">]</span></code></code>
               </li>
 <li class="listitem">
-                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>
-                &lt; Capacity</code>
+                <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput">
+                <span class="special">&lt;</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844">capacity()</a></code>
               </li>
 </ul></div>
 <h6>
@@ -3998,7 +4013,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">i &lt; <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">i</span> <span class="special">&lt;</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.h3"></a>
@@ -4012,7 +4028,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.throws"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.throws">Throws</a>
           </h6>
 <p>
-            <code class="literal">std::out_of_range</code> exception by default.
+            <code class="literal"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">out_of_range</span></code></code> exception by
+            default.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.h5"></a>
@@ -4085,7 +4102,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.precondition_s0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.precondition_s0">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">i &lt; <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">i</span> <span class="special">&lt;</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.h9"></a>
@@ -4099,7 +4117,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.throws0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.throws0">Throws</a>
           </h6>
 <p>
-            <code class="literal">std::out_of_range</code> exception by default.
+            <code class="literal"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">out_of_range</span></code></code> exception by
+            default.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.at_size_type_.h11"></a>
@@ -4172,7 +4191,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.operator_____size_type_.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.operator_____size_type_.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">i &lt; <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">i</span> <span class="special">&lt;</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.operator_____size_type_.h3"></a>
@@ -4259,7 +4279,8 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.operator_____size_type_.precondition_s0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.operator_____size_type_.precondition_s0">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">i &lt; <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
+            <code class="literal"><code class="computeroutput"><span class="identifier">i</span> <span class="special">&lt;</span>
+            </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a></code>
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.operator_____size_type_.h9"></a>
@@ -4301,7 +4322,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.front__.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.front__.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">!empty</code>()
+            <code class="literal"><code class="computeroutput"><span class="special">!</span><span class="identifier">empty</span></code></code>()
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.front__.h2"></a>
@@ -4343,7 +4364,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.front__.precondition_s0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.front__.precondition_s0">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">!empty</code>()
+            <code class="literal"><code class="computeroutput"><span class="special">!</span><span class="identifier">empty</span></code></code>()
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.front__.h7"></a>
@@ -4385,7 +4406,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.back__.precondition_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.back__.precondition_s_">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">!empty</code>()
+            <code class="literal"><code class="computeroutput"><span class="special">!</span><span class="identifier">empty</span></code></code>()
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.back__.h2"></a>
@@ -4427,7 +4448,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
             <span class="phrase"><a name="staticvector.static_vector.reference.boost_container_static_vector.back__.precondition_s0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.back__.precondition_s0">Precondition(s)</a>
           </h6>
 <p>
-            <code class="literal">!empty</code>()
+            <code class="literal"><code class="computeroutput"><span class="special">!</span><span class="identifier">empty</span></code></code>()
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.back__.h7"></a>
@@ -4456,11 +4477,10 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
 <a name="staticvector.static_vector.reference.boost_container_static_vector.data__"></a><a name="classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.data__" title="data()">data()</a>
 </h5></div></div></div>
 <p>
-            Pointer such that <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>,
-            <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-            + <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>)</code>
-            is a valid range. For a non-empty vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-            == &amp;<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
+            Pointer such that <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+            <span class="special">+</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput"><span class="special">)</span></code></code> is a valid range. For a non-empty
+            vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+            <span class="special">==</span> <span class="special">&amp;</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.data__.h0"></a>
@@ -4488,11 +4508,10 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
 <a name="staticvector.static_vector.reference.boost_container_static_vector.data0"></a><a name="classboost_1_1container_1_1static__vector_1a3ac0ed788bfecd5103183f0b705d602d"></a><a class="link" href="reference.html#staticvector.static_vector.reference.boost_container_static_vector.data0" title="data()">data()</a>
 </h5></div></div></div>
 <p>
-            Const pointer such that <code class="literal">[<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>,
-            <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-            + <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a>)</code>
-            is a valid range. For a non-empty vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a>
-            == &amp;<a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
+            Const pointer such that <code class="literal"><code class="computeroutput"><span class="special">[</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput"><span class="special">,</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+            <span class="special">+</span> </code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3">size()</a><code class="computeroutput"><span class="special">)</span></code></code> is a valid range. For a non-empty
+            vector <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce">data()</a><code class="computeroutput">
+            <span class="special">==</span> <span class="special">&amp;</span></code><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137">front()</a></code>.
           </p>
 <h6>
 <a name="staticvector.static_vector.reference.boost_container_static_vector.data__.h3"></a>
@@ -5114,6 +5133,855 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
           </p>
 </div>
 </div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member" title="static_vector non-member functions (boost::container::)">static_vector
+        non-member functions (boost::container::)</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Function
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#group__static__vector__non__member_1ga15ee6a27a72ac7e54851e55098e2c463"><code class="computeroutput"><span class="keyword">operator</span><span class="special">==(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;,</span>
+                    <span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Checks if contents of two static_vectors are equal.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#group__static__vector__non__member_1gacb9b370bfc7d1652821e2b0c96b57a59"><code class="computeroutput"><span class="keyword">operator</span><span class="special">!=(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;,</span>
+                    <span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Checks if contents of two static_vectors are not equal.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#group__static__vector__non__member_1ga60109c1f2d34d115b9eb43a7878fa000"><code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;,</span>
+                    <span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Lexicographically compares static_vectors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#group__static__vector__non__member_1ga8223e957e30a57debc636213334634dc"><code class="computeroutput"><span class="keyword">operator</span><span class="special">&gt;(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;,</span>
+                    <span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Lexicographically compares static_vectors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#group__static__vector__non__member_1ga55c998e59f82229852f3452fc3d7626f"><code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;=(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;,</span>
+                    <span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Lexicographically compares static_vectors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#group__static__vector__non__member_1ga0f02374ff1234b74ba9c68cd5247cd0d"><code class="computeroutput"><span class="keyword">operator</span><span class="special">&gt;=(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;,</span>
+                    <span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="keyword">const</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Lexicographically compares static_vectors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <a class="link" href="reference.html#group__static__vector__non__member_1gaee8c63afec740b9ce45f5814561988f9"><code class="computeroutput"><span class="identifier">swap</span><span class="special">(</span><span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span>
+                    <span class="special">&amp;,</span> <span class="identifier">static_vector</span><span class="special">&lt;...&gt;</span> <span class="special">&amp;)</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Swaps contents of two static_vectors.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___"></a><a name="group__static__vector__non__member_1ga15ee6a27a72ac7e54851e55098e2c463"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___" title="operator==(static_vector&lt;...&gt; const &amp;, static_vector&lt;...&gt; const &amp;)">operator==(static_vector&lt;...&gt;
+          const &amp;, static_vector&lt;...&gt; const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Checks if contents of two static_vectors are equal.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h0"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis">Synopsis</a>
+          </h6>
+<pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">V</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C2</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S2</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
+<code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">x</span></code><code class="computeroutput"><span class="special">,</span></code> <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">y</span></code><code class="computeroutput"><span class="special">)</span></code>
+</pre>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h1"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s_">Parameter(s)</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">x</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The first <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">y</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The second <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h2"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns">Returns</a>
+          </h6>
+<p>
+            <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+            if containers have the same size and elements in both containers are
+            equal.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h3"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity">Complexity</a>
+          </h6>
+<p>
+            Linear O(N).
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st0"></a><a name="group__static__vector__non__member_1gacb9b370bfc7d1652821e2b0c96b57a59"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st0" title="operator!=(static_vector&lt;...&gt; const &amp;, static_vector&lt;...&gt; const &amp;)">operator!=(static_vector&lt;...&gt;
+          const &amp;, static_vector&lt;...&gt; const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Checks if contents of two static_vectors are not equal.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h4"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis0">Synopsis</a>
+          </h6>
+<pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">V</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C2</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S2</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
+<code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="keyword">operator</span><span class="special">!=</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">x</span></code><code class="computeroutput"><span class="special">,</span></code> <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">y</span></code><code class="computeroutput"><span class="special">)</span></code>
+</pre>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h5"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s0">Parameter(s)</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">x</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The first <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">y</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The second <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h6"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns0">Returns</a>
+          </h6>
+<p>
+            <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+            if containers have different size or elements in both containers are
+            not equal.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h7"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity0">Complexity</a>
+          </h6>
+<p>
+            Linear O(N).
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___"></a><a name="group__static__vector__non__member_1ga60109c1f2d34d115b9eb43a7878fa000"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___" title="operator&lt;(static_vector&lt;...&gt; const &amp;, static_vector&lt;...&gt; const &amp;)">operator&lt;(static_vector&lt;...&gt;
+          const &amp;, static_vector&lt;...&gt; const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Lexicographically compares static_vectors.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h0"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.synopsis">Synopsis</a>
+          </h6>
+<pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">V</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C2</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S2</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
+<code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="keyword">operator</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">x</span></code><code class="computeroutput"><span class="special">,</span></code> <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">y</span></code><code class="computeroutput"><span class="special">)</span></code>
+</pre>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h1"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.parameter_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.parameter_s_">Parameter(s)</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">x</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The first <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">y</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The second <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h2"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.returns"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.returns">Returns</a>
+          </h6>
+<p>
+            <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+            if x compares lexicographically less than y.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h3"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.complexity"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.complexity">Complexity</a>
+          </h6>
+<p>
+            Linear O(N).
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st1"></a><a name="group__static__vector__non__member_1ga8223e957e30a57debc636213334634dc"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st1" title="operator&gt;(static_vector&lt;...&gt; const &amp;, static_vector&lt;...&gt; const &amp;)">operator&gt;(static_vector&lt;...&gt;
+          const &amp;, static_vector&lt;...&gt; const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Lexicographically compares static_vectors.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h4"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.synopsis0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.synopsis0">Synopsis</a>
+          </h6>
+<pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">V</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C2</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S2</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
+<code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="keyword">operator</span><span class="special">&gt;</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">x</span></code><code class="computeroutput"><span class="special">,</span></code> <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">y</span></code><code class="computeroutput"><span class="special">)</span></code>
+</pre>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h5"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.parameter_s0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.parameter_s0">Parameter(s)</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">x</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The first <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">y</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The second <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h6"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.returns0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.returns0">Returns</a>
+          </h6>
+<p>
+            <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+            if y compares lexicographically less than x.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.h7"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.complexity0"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator__static_vector______const____static_vector______const___.complexity0">Complexity</a>
+          </h6>
+<p>
+            Linear O(N).
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st2"></a><a name="group__static__vector__non__member_1ga55c998e59f82229852f3452fc3d7626f"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st2" title="operator&lt;=(static_vector&lt;...&gt; const &amp;, static_vector&lt;...&gt; const &amp;)">operator&lt;=(static_vector&lt;...&gt;
+          const &amp;, static_vector&lt;...&gt; const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Lexicographically compares static_vectors.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h8"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis1"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis1">Synopsis</a>
+          </h6>
+<pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">V</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C2</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S2</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
+<code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="keyword">operator</span><span class="special">&lt;=</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">x</span></code><code class="computeroutput"><span class="special">,</span></code> <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">y</span></code><code class="computeroutput"><span class="special">)</span></code>
+</pre>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h9"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s1"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s1">Parameter(s)</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">x</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The first <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">y</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The second <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h10"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns1"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns1">Returns</a>
+          </h6>
+<p>
+            <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+            if y don't compare lexicographically less than x.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h11"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity1"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity1">Complexity</a>
+          </h6>
+<p>
+            Linear O(N).
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st3"></a><a name="group__static__vector__non__member_1ga0f02374ff1234b74ba9c68cd5247cd0d"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator_static_vector_const_st3" title="operator&gt;=(static_vector&lt;...&gt; const &amp;, static_vector&lt;...&gt; const &amp;)">operator&gt;=(static_vector&lt;...&gt;
+          const &amp;, static_vector&lt;...&gt; const &amp;)</a>
+</h5></div></div></div>
+<p>
+            Lexicographically compares static_vectors.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h12"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis2"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.synopsis2">Synopsis</a>
+          </h6>
+<pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">V</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C2</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S2</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
+<code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="keyword">operator</span><span class="special">&gt;=</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">x</span></code><code class="computeroutput"><span class="special">,</span></code> <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span> <span class="special">&gt;</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">y</span></code><code class="computeroutput"><span class="special">)</span></code>
+</pre>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h13"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s2"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.parameter_s2">Parameter(s)</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">x</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The first <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span>
+                      <span class="special">&gt;</span> <span class="keyword">const</span>
+                      <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">y</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The second <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h14"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns2"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.returns2">Returns</a>
+          </h6>
+<p>
+            <code class="literal"><code class="computeroutput"><span class="keyword">true</span></code></code>
+            if x don't compare lexicographically less than y.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.h15"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity2"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.operator___static_vector______const____static_vector______const___.complexity2">Complexity</a>
+          </h6>
+<p>
+            Linear O(N).
+          </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________"></a><a name="group__static__vector__non__member_1gaee8c63afec740b9ce45f5814561988f9"></a><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________" title="swap(static_vector&lt;...&gt; &amp;, static_vector&lt;...&gt; &amp;)">swap(static_vector&lt;...&gt;
+          &amp;, static_vector&lt;...&gt; &amp;)</a>
+</h5></div></div></div>
+<p>
+            Swaps contents of two static_vectors.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.h0"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.description"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.description">Description</a>
+          </h6>
+<p>
+            This function calls <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a12cdeec047f6d310fe6a1746ddbf41d1">static_vector::swap()</a>.
+          </p>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.h1"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.synopsis"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.synopsis">Synopsis</a>
+          </h6>
+<pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">V</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S1</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C2</span></code><code class="computeroutput"><span class="special">,</span></code>
+         <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">S2</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
+<code class="computeroutput"><span class="keyword">void</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="identifier">swap</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span> <span class="special">&gt;</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">x</span></code><code class="computeroutput"><span class="special">,</span></code> <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span> <span class="special">&gt;</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">y</span></code><code class="computeroutput"><span class="special">)</span></code>
+</pre>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.h2"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.parameter_s_"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.parameter_s_">Parameter(s)</a>
+          </h6>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                    <p>
+                      Type
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Name
+                    </p>
+                  </th>
+<th>
+                    <p>
+                      Description
+                    </p>
+                  </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C1</span><span class="special">,</span> <span class="identifier">S1</span>
+                      <span class="special">&gt;</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">x</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The first <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">static_vector</span><span class="special">&lt;</span> <span class="identifier">V</span><span class="special">,</span> <span class="identifier">C2</span><span class="special">,</span> <span class="identifier">S2</span>
+                      <span class="special">&gt;</span> <span class="special">&amp;</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      <code class="computeroutput"><span class="identifier">y</span></code>
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      The second <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
+                    </p>
+                  </td>
+</tr>
+</tbody>
+</table></div>
+<h6>
+<a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.h3"></a>
+            <span class="phrase"><a name="staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.complexity"></a></span><a class="link" href="reference.html#staticvector.static_vector.reference.group__static__vector__non__member.swap_static_vector_________static_vector________.complexity">Complexity</a>
+          </h6>
+<p>
+            Linear O(N).
+          </p>
+</div>
+</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
@@ -5125,7 +5993,7 @@ A hybrid of <code class="literal">boost::container::vector</code> and <code clas
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="introduction.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a>
+<a accesskey="p" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../static_vector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a>
 </div>
 </body>
 </html>

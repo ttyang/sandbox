@@ -44,6 +44,10 @@
 
 // TODO - change the name Strategy to NullAllocator, StaticAllocator, FakeAllocator or something similar?
 
+/**
+ * @defgroup static_vector_non_member static_vector non-member functions (boost::container::)
+ */
+
 namespace boost { namespace container {
 
 // Forward declaration
@@ -273,7 +277,7 @@ public:
         : m_size(0)
     {}
 
-    //! @pre <tt>count <= Capacity</tt>
+    //! @pre <tt>count <= capacity()</tt>
     //!
     //! @brief Constructs a static_vector containing count default constructed Values.
     //!
@@ -293,7 +297,7 @@ public:
         this->resize(count);                                                        // may throw
     }
 
-    //! @pre <tt>count <= Capacity</tt>
+    //! @pre <tt>count <= capacity()</tt>
     //!
     //! @brief Constructs a static_vector containing count copies of value.
     //!
@@ -315,7 +319,7 @@ public:
     }
 
     //! @pre
-    //!  @li <tt>distance(first, last) <= Capacity</tt>
+    //!  @li <tt>distance(first, last) <= capacity()</tt>
     //!  @li Iterator must meet the \c ForwardTraversalIterator concept.
     //!
     //! @brief Constructs a static_vector containing copy of a range <tt>[first, last)</tt>.
@@ -356,7 +360,7 @@ public:
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
     }
 
-    //! @pre <tt>other.size() <= Capacity</tt>.
+    //! @pre <tt>other.size() <= capacity()</tt>.
     //!
     //! @brief Constructs a copy of other static_vector.
     //!
@@ -396,7 +400,7 @@ public:
         return *this;
     }
 
-    //! @pre <tt>other.size() <= Capacity</tt>
+    //! @pre <tt>other.size() <= capacity()</tt>
     //!
     //! @brief Copy assigns Values stored in the other static_vector to this one.
     //!
@@ -446,7 +450,7 @@ public:
         this->move_ctor_dispatch(other, use_memop_in_swap_and_move());
     }
 
-    //! @pre <tt>other.size() <= Capacity</tt>
+    //! @pre <tt>other.size() <= capacity()</tt>
     //!
     //! @brief Move constructor. Moves Values stored in the other static_vector to this one.
     //!
@@ -508,7 +512,7 @@ public:
         return *this;
     }
 
-    //! @pre <tt>other.size() <= Capacity</tt>
+    //! @pre <tt>other.size() <= capacity()</tt>
     //!
     //! @brief Move assignment. Moves Values stored in the other static_vector to this one.
     //!
@@ -581,7 +585,7 @@ public:
         this->swap_dispatch(other, use_optimized_swap());
     }
 
-    //! @pre <tt>other.size() <= Capacity && size() <= other.capacity()</tt>
+    //! @pre <tt>other.size() <= capacity() && size() <= other.capacity()</tt>
     //!
     //! @brief Swaps contents of the other static_vector and this one.
     //!
@@ -615,7 +619,7 @@ public:
         this->swap_dispatch(other, use_optimized_swap()); 
     }
 
-    //! @pre <tt>count <= Capacity</tt>
+    //! @pre <tt>count <= capacity()</tt>
     //!
     //! @brief Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are default constructed.
@@ -647,7 +651,7 @@ public:
         m_size = count; // update end
     }
 
-    //! @pre <tt>count <= Capacity</tt>
+    //! @pre <tt>count <= capacity()</tt>
     //!
     //! @brief Inserts or erases elements at the end such that
     //!   the size becomes count. New elements are copy constructed from value.
@@ -679,7 +683,7 @@ public:
         m_size = count; // update end
     }
 
-    //! @pre <tt>count <= Capacity</tt>
+    //! @pre <tt>count <= capacity()</tt>
     //!
     //! @brief This call has no effect because the Capacity of this container is constant.
     //!
@@ -698,7 +702,7 @@ public:
         errh::check_capacity(*this, count);                                         // may throw
     }
 
-    //! @pre <tt>size() < Capacity</tt>
+    //! @pre <tt>size() < capacity()</tt>
     //!
     //! @brief Adds a copy of value at the end.
     //!
@@ -721,7 +725,7 @@ public:
         ++m_size; // update end
     }
 
-    //! @pre <tt>size() < Capacity</tt>
+    //! @pre <tt>size() < capacity()</tt>
     //!
     //! @brief Moves value to the end.
     //!
@@ -764,7 +768,7 @@ public:
 
     //! @pre
     //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
-    //!  @li <tt>size() < Capacity</tt>
+    //!  @li <tt>size() < capacity()</tt>
     //!
     //! @brief Inserts a copy of element at position.
     //!
@@ -787,7 +791,7 @@ public:
 
     //! @pre
     //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
-    //!  @li <tt>size() < Capacity</tt>
+    //!  @li <tt>size() < capacity()</tt>
     //!
     //! @brief Inserts a move-constructed element at position.
     //!
@@ -809,7 +813,7 @@ public:
 
     //! @pre
     //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
-    //!  @li <tt>size() + count <= Capacity</tt>
+    //!  @li <tt>size() + count <= capacity()</tt>
     //!
     //! @brief Inserts a count copies of value at position.
     //!
@@ -866,8 +870,8 @@ public:
 
     //! @pre
     //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>.
-    //!  @li <tt>distance(first, last) <= Capacity</tt>
-    //!  @li \c Iterator must meet the \cForwardTraversalIterator concept.
+    //!  @li <tt>distance(first, last) <= capacity()</tt>
+    //!  @li \c Iterator must meet the \c ForwardTraversalIterator concept.
     //!
     //! @brief Inserts a copy of a range <tt>[first, last)</tt> at position.
     //!
@@ -957,7 +961,7 @@ public:
         return first;
     }
 
-    //! @pre <tt>distance(first, last) <= Capacity</tt>
+    //! @pre <tt>distance(first, last) <= capacity()</tt>
     //!
     //! @brief Assigns a range <tt>[first, last)</tt> of Values to this container.
     //!
@@ -978,7 +982,7 @@ public:
         this->assign_dispatch(first, last, traversal());                            // may throw
     }
 
-    //! @pre <tt>count <= Capacity</tt>
+    //! @pre <tt>count <= capacity()</tt>
     //!
     //! @brief Assigns a count copies of value to this container.
     //!
@@ -1011,7 +1015,7 @@ public:
 
 #if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
 #if defined(BOOST_CONTAINER_PERFECT_FORWARDING) || defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
-    //! @pre <tt>size() < Capacity</tt>
+    //! @pre <tt>size() < capacity()</tt>
     //!
     //! @brief Inserts a Value constructed with
     //!   \c std::forward<Args>(args)... in the end of the container.
@@ -1038,7 +1042,7 @@ public:
 
     //! @pre
     //!  @li \c position must be a valid iterator of \c *this in range <tt>[begin(), end()]</tt>
-    //!  @li <tt>size() < Capacity</tt>
+    //!  @li <tt>size() < capacity()</tt>
     //!
     //! @brief Inserts a Value constructed with
     //!   \c std::forward<Args>(args)... before position
@@ -2154,49 +2158,119 @@ private:
 
 #endif // !BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION && !BOOST_CONTAINER_DOXYGEN_INVOKED
 
-// comparisons
-template<typename V, std::size_t C, typename S>
-bool operator== (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+//! @brief Checks if contents of two static_vectors are equal.
+//!
+//! @ingroup static_vector_non_member
+//!
+//! @param x    The first static_vector.
+//! @param y    The second static_vector.
+//!
+//! @return     \c true if containers have the same size and elements in both containers are equal.
+//!
+//! @par Complexity
+//!   Linear O(N).
+template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
+bool operator== (static_vector<V, C1, S1> const& x, static_vector<V, C2, S2> const& y)
 {
     return x.size() == y.size() && std::equal(x.begin(), x.end(), y.begin());
 }
 
-template<typename V, std::size_t C, typename S>
-bool operator< (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
-{
-    return std::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
-}
-
-template<typename V, std::size_t C, typename S>
-bool operator!= (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+//! @brief Checks if contents of two static_vectors are not equal.
+//!
+//! @ingroup static_vector_non_member
+//!
+//! @param x    The first static_vector.
+//! @param y    The second static_vector.
+//!
+//! @return     \c true if containers have different size or elements in both containers are not equal.
+//!
+//! @par Complexity
+//!   Linear O(N).
+template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
+bool operator!= (static_vector<V, C1, S1> const& x, static_vector<V, C2, S2> const& y)
 {
     return !(x==y);
 }
 
-template<typename V, std::size_t C, typename S>
-bool operator> (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+//! @brief Lexicographically compares static_vectors.
+//!
+//! @ingroup static_vector_non_member
+//!
+//! @param x    The first static_vector.
+//! @param y    The second static_vector.
+//!
+//! @return     \c true if x compares lexicographically less than y.
+//!
+//! @par Complexity
+//!   Linear O(N).
+template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
+bool operator< (static_vector<V, C1, S1> const& x, static_vector<V, C2, S2> const& y)
+{
+    return std::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
+}
+
+//! @brief Lexicographically compares static_vectors.
+//!
+//! @ingroup static_vector_non_member
+//!
+//! @param x    The first static_vector.
+//! @param y    The second static_vector.
+//!
+//! @return     \c true if y compares lexicographically less than x.
+//!
+//! @par Complexity
+//!   Linear O(N).
+template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
+bool operator> (static_vector<V, C1, S1> const& x, static_vector<V, C2, S2> const& y)
 {
     return y<x;
 }
 
-template<typename V, std::size_t C, typename S>
-bool operator<= (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+//! @brief Lexicographically compares static_vectors.
+//!
+//! @ingroup static_vector_non_member
+//!
+//! @param x    The first static_vector.
+//! @param y    The second static_vector.
+//!
+//! @return     \c true if y don't compare lexicographically less than x.
+//!
+//! @par Complexity
+//!   Linear O(N).
+template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
+bool operator<= (static_vector<V, C1, S1> const& x, static_vector<V, C2, S2> const& y)
 {
     return !(y<x);
 }
 
-template<typename V, std::size_t C, typename S>
-bool operator>= (static_vector<V, C, S> const& x, static_vector<V, C, S> const& y)
+//! @brief Lexicographically compares static_vectors.
+//!
+//! @ingroup static_vector_non_member
+//!
+//! @param x    The first static_vector.
+//! @param y    The second static_vector.
+//!
+//! @return     \c true if x don't compare lexicographically less than y.
+//!
+//! @par Complexity
+//!   Linear O(N).
+template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
+bool operator>= (static_vector<V, C1, S1> const& x, static_vector<V, C2, S2> const& y)
 {
     return !(x<y);
 }
 
-template<typename V, std::size_t C, typename S>
-inline void swap(static_vector<V, C, S> & x, static_vector<V, C, S> & y)
-{
-    x.swap(y);
-}
-
+//! @brief Swaps contents of two static_vectors.
+//!
+//! This function calls static_vector::swap().
+//!
+//! @ingroup static_vector_non_member
+//!
+//! @param x    The first static_vector.
+//! @param y    The second static_vector.
+//!
+//! @par Complexity
+//!   Linear O(N).
 template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
 inline void swap(static_vector<V, C1, S1> & x, static_vector<V, C2, S2> & y)
 {
