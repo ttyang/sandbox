@@ -37,12 +37,15 @@
 #include <boost/type_traits/alignment_of.hpp>
 #include <boost/type_traits/aligned_storage.hpp>
 
+#include <boost/type_traits/is_stateless.hpp>
+
 // TODO - use std::reverse_iterator and std::iterator_traits
 // instead Boost.Iterator to remove dependency?
 // or boost/detail/iterator.hpp ?
 #include <boost/iterator/reverse_iterator.hpp>
 
-// TODO - change the name Strategy to NullAllocator, StaticAllocator, FakeAllocator or something similar?
+// TODO statefull Strategy support
+// Members - co by Strategy nei zajmowala miejsca jesli nie potrzeba
 
 /**
  * @defgroup static_vector_non_member static_vector non-member functions (boost::container::)
@@ -51,21 +54,20 @@
 namespace boost { namespace container {
 
 // Forward declaration
-template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/>
+template <typename Value, std::size_t Capacity, typename Strategy>
 class static_vector;
 
-namespace static_vector_detail {
+namespace strategy {
     
 // TODO: Improve error messages
 //       possibly include N in the strategy, and provide size as an optoinal allocate_failed parameter?
 //       Example of current error with reserve(4) when capacity is 3:
 //          "boost/container/static_vector.hpp(66): size can't exceed the capacity"
 //       Could say
-//          "cannot reserve(4) due to fixed capacity of 3 elements"
-    
+//          "cannot reserve(4) due to fixed capacity of 3 elements"    
 
 template <typename Value>
-struct default_strategy/*fake_allocator*/
+struct def
 {
     typedef Value value_type;
     typedef std::size_t size_type;
@@ -81,8 +83,14 @@ struct default_strategy/*fake_allocator*/
     }
 };
 
+template <typename Value>
+bool operator==(def<Value> const&, def<Value> const&)
+{
+    return true;
+}
+
 template <typename Allocator>
-struct allocator_adaptor_strategy/*fake_allocator_adaptor*/
+struct allocator_adaptor
 {
     typedef typename Allocator::value_type value_type;
     typedef typename Allocator::size_type size_type;
@@ -92,11 +100,26 @@ struct allocator_adaptor_strategy/*fake_allocator_adaptor*/
     typedef typename Allocator::reference reference;
     typedef typename Allocator::const_reference const_reference;
 
+    allocator_adaptor() {}
+    explicit allocator_adaptor(Allocator const& a) : allocator(a) {}
+
     static void allocate_failed()
     {
         BOOST_ASSERT_MSG(false, "size can't exceed the capacity");
     }
+
+    Allocator allocator;
 };
+
+template <typename Allocator>
+bool operator==(allocator_adaptor<Allocator> const& s1, allocator_adaptor<Allocator> const& s2)
+{
+    return s1.allocator == s2.allocator;
+}
+
+} // namespace strategy
+
+namespace static_vector_detail {
 
 struct default_error_handler
 {
@@ -148,7 +171,7 @@ struct default_error_handler
     }
 };
 
-template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/>
+template <typename Value, std::size_t Capacity, typename Strategy>
 struct static_vector_traits
 {
     typedef typename Strategy::value_type value_type;
@@ -164,6 +187,61 @@ struct static_vector_traits
     typedef boost::false_type use_memop_in_swap_and_move;
     typedef boost::false_type use_optimized_swap;
 };
+
+template <typename Value, std::size_t Capacity, typename Strategy, bool IsStateless>
+struct members
+{
+    typedef static_vector_detail::static_vector_traits<
+        Value, Capacity, Strategy
+    > vt;
+
+    typedef typename vt::size_type size_type;
+
+    typedef boost::aligned_storage<
+        sizeof(Value[Capacity]),
+        boost::alignment_of<Value[Capacity]>::value
+    > aligned_storage_type;
+
+    members() : size(0) {}
+    members(Strategy const& st) : size(0), strategy(st) {}
+    members(size_type s) : size(s) {}
+    members(size_type s, Strategy const& st) : size(s), strategy(st) {}
+
+    Strategy get_strategy() { return strategy; }
+
+    size_type size;
+    aligned_storage_type storage;
+    Strategy strategy;
+};
+
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+template <typename Value, std::size_t Capacity, typename Strategy>
+struct members<Value, Capacity, Strategy, true>
+{
+    typedef static_vector_detail::static_vector_traits<
+        Value, Capacity, Strategy
+    > vt;
+
+    typedef typename vt::size_type size_type;
+
+    typedef boost::aligned_storage<
+        sizeof(Value[Capacity]),
+        boost::alignment_of<Value[Capacity]>::value
+    > aligned_storage_type;
+
+    members() : size(0) {}
+    members(Strategy const& st) : size(0){}
+    members(size_type s) : size(s) {}
+    members(size_type s, Strategy const& st) : size(s) {}
+
+    Strategy get_strategy() { return Strategy(); }
+
+    size_type size;
+    aligned_storage_type storage;
+};
+
+#endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 } // namespace static_vector_detail
 
@@ -198,29 +276,28 @@ struct static_vector_traits
  *         implements StaticVectorStrategy and has some similarities
  *         to an Allocator.
  */
-template <typename Value, std::size_t Capacity, typename Strategy/*FakeAllocator*/ = static_vector_detail::default_strategy<Value>/*fake_allocator*/ >
+template <typename Value, std::size_t Capacity, typename Strategy = strategy::def<Value> >
 class static_vector
 {
     typedef static_vector_detail::static_vector_traits<
         Value, Capacity, Strategy
     > vt;
-    
-    typedef typename vt::size_type stored_size_type;
+
     typedef typename vt::error_handler errh;
 
+    typedef static_vector_detail::members<
+        Value, Capacity, Strategy,
+        ::boost::is_stateless<Strategy>::value
+    > members_type;
+
     BOOST_MPL_ASSERT_MSG(
-        ( boost::is_unsigned<stored_size_type>::value &&
-          sizeof(typename boost::uint_value_t<Capacity>::least) <= sizeof(stored_size_type) ),
+        ( boost::is_unsigned<typename vt::size_type>::value &&
+          sizeof(typename boost::uint_value_t<Capacity>::least) <= sizeof(typename vt::size_type) ),
         SIZE_TYPE_IS_TOO_SMALL_FOR_SPECIFIED_CAPACITY,
         (static_vector)
     );
 
     BOOST_CONCEPT_ASSERT((concept::StaticVectorStrategy<Strategy>));
-
-    typedef boost::aligned_storage<
-        sizeof(Value[Capacity]),
-        boost::alignment_of<Value[Capacity]>::value
-    > aligned_storage_type;
 
     template <typename V, std::size_t C, typename S>
     friend class static_vector;
@@ -242,7 +319,7 @@ public:
     //! @brief The type of elements stored in the container.
     typedef typename vt::value_type value_type;
     //! @brief The unsigned integral type used by the container.
-    typedef stored_size_type size_type;
+    typedef typename vt::size_type size_type;
     //! @brief The pointers difference type.
     typedef typename vt::difference_type difference_type;
     //! @brief The pointer type.
@@ -274,7 +351,17 @@ public:
     //! @par Complexity
     //!   Constant O(1).
     static_vector()
-        : m_size(0)
+    {}
+
+    //! @brief Constructs an empty static_vector.
+    //!
+    //! @par Throws
+    //!   Nothing.
+    //!
+    //! @par Complexity
+    //!   Constant O(1).
+    static_vector(strategy_type const& s)
+        : m_members(s)
     {}
 
     //! @pre <tt>count <= capacity()</tt>
@@ -292,7 +379,6 @@ public:
     //! @par Complexity
     //!   Linear O(N).
     explicit static_vector(size_type count)
-        : m_size(0)
     {
         this->resize(count);                                                        // may throw
     }
@@ -313,7 +399,6 @@ public:
     //! @par Complexity
     //!   Linear O(N).
     static_vector(size_type count, value_type const& value)
-        : m_size(0)
     {
         this->resize(count, value);                                                 // may throw
     }
@@ -337,7 +422,6 @@ public:
     //!   Linear O(N).
     template <typename Iterator>
     static_vector(Iterator first, Iterator last)
-        : m_size(0)
     {
         BOOST_CONCEPT_ASSERT((boost_concepts::ForwardTraversal<Iterator>)); // Make sure you passed a ForwardIterator
         
@@ -354,7 +438,7 @@ public:
     //! @par Complexity
     //!   Linear O(N).
     static_vector(static_vector const& other)
-        : m_size(other.size())
+        : m_members(other.size())
     {
         namespace sv = static_vector_detail;
         sv::uninitialized_copy(other.begin(), other.end(), this->begin());          // may throw
@@ -376,7 +460,7 @@ public:
     //!   Linear O(N).
     template <std::size_t C, typename S>
     static_vector(static_vector<value_type, C, S> const& other)
-        : m_size(other.size())
+        : m_members(other.size())
     {
         errh::check_capacity(*this, other.size());                                  // may throw
         
@@ -470,7 +554,7 @@ public:
     //!   Linear O(N).
     template <std::size_t C, typename S>
     static_vector(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
-        : m_size(other.m_size)
+        : m_members(other.size())
     {
 // TODO - move only if pointers are the same
 
@@ -638,7 +722,7 @@ public:
     {
         namespace sv = static_vector_detail;
 
-        if ( count < m_size )
+        if ( count < m_members.size )
         {
             sv::destroy(this->begin() + count, this->end());
         }
@@ -648,7 +732,7 @@ public:
 
             sv::uninitialized_fill(this->end(), this->begin() + count);             // may throw
         }
-        m_size = count; // update end
+        m_members.size = count; // update end
     }
 
     //! @pre <tt>count <= capacity()</tt>
@@ -669,7 +753,7 @@ public:
     //!   Linear O(N).
     void resize(size_type count, value_type const& value)
     {
-        if ( count < m_size )
+        if ( count < m_members.size )
         {
             namespace sv = static_vector_detail;
             sv::destroy(this->begin() + count, this->end());
@@ -680,7 +764,7 @@ public:
             
             std::uninitialized_fill(this->end(), this->begin() + count, value);     // may throw
         }
-        m_size = count; // update end
+        m_members.size = count; // update end
     }
 
     //! @pre <tt>count <= capacity()</tt>
@@ -718,11 +802,11 @@ public:
     //!   Constant O(1).
     void push_back(value_type const& value)
     {
-        errh::check_capacity(*this, m_size + 1);                                    // may throw
+        errh::check_capacity(*this, m_members.size + 1);                                    // may throw
         
         namespace sv = static_vector_detail;
         sv::construct(this->end(), value);                                          // may throw
-        ++m_size; // update end
+        ++m_members.size; // update end
     }
 
     //! @pre <tt>size() < capacity()</tt>
@@ -741,11 +825,11 @@ public:
     //!   Constant O(1).
     void push_back(BOOST_RV_REF(value_type) value)
     {
-        errh::check_capacity(*this, m_size + 1);                                    // may throw
+        errh::check_capacity(*this, m_members.size + 1);                                    // may throw
 
         namespace sv = static_vector_detail;
         sv::construct(this->end(), value);                                          // may throw
-        ++m_size; // update end
+        ++m_members.size; // update end
     }
 
     //! @pre <tt>!empty()</tt>
@@ -763,7 +847,7 @@ public:
 
         namespace sv = static_vector_detail;
         sv::destroy(this->end() - 1);
-        --m_size; // update end
+        --m_members.size; // update end
     }
 
     //! @pre
@@ -833,12 +917,12 @@ public:
     iterator insert(iterator position, size_type count, value_type const& value)
     {
         errh::check_iterator_end_eq(*this, position);
-        errh::check_capacity(*this, m_size + count);                                // may throw
+        errh::check_capacity(*this, m_members.size + count);                                // may throw
 
         if ( position == this->end() )
         {
-            std::uninitialized_fill(position, position + count, value);             // may throw
-            m_size += count; // update end
+            std::uninitialized_fill(position, position + count, value);                     // may throw
+            m_members.size += count; // update end
         }
         else
         {
@@ -851,16 +935,16 @@ public:
             if ( count < static_cast<size_type>(to_move) )
             {
                 sv::uninitialized_move(this->end() - count, this->end(), this->end());          // may throw
-                m_size += count; // update end
+                m_members.size += count; // update end
                 sv::move_backward(position, position + to_move - count, this->end() - count);   // may throw
                 std::fill_n(position, count, value);                                            // may throw
             }
             else
             {
                 std::uninitialized_fill(this->end(), position + count, value);                  // may throw
-                m_size += count - to_move; // update end
+                m_members.size += count - to_move; // update end
                 sv::uninitialized_move(position, position + to_move, position + count);         // may throw
-                m_size += to_move; // update end
+                m_members.size += to_move; // update end
                 std::fill_n(position, to_move, value);                                          // may throw
             }
         }
@@ -921,7 +1005,7 @@ public:
 
         sv::move(position + 1, this->end(), position);                              // may throw
         sv::destroy(this->end() - 1);
-        --m_size;
+        --m_members.size;
 
         return position;
     }
@@ -956,7 +1040,7 @@ public:
 
         sv::move(last, this->end(), first);                                         // may throw
         sv::destroy(this->end() - n, this->end());
-        m_size -= n;
+        m_members.size -= n;
 
         return first;
     }
@@ -996,7 +1080,7 @@ public:
     //!   Linear O(N).
     void assign(size_type count, value_type const& value)
     {
-        if ( count < m_size )
+        if ( count < m_members.size )
         {
             namespace sv = static_vector_detail;
 
@@ -1007,10 +1091,10 @@ public:
         {
             errh::check_capacity(*this, count);                                     // may throw
 
-            std::fill_n(this->begin(), m_size, value);
+            std::fill_n(this->begin(), m_members.size, value);
             std::uninitialized_fill(this->end(), this->begin() + count, value);     // may throw
         }
-        m_size = count; // update end
+        m_members.size = count; // update end
     }
 
 #if !defined(BOOST_CONTAINER_STATIC_VECTOR_DISABLE_EMPLACE)
@@ -1033,11 +1117,11 @@ public:
     template<class ...Args>
     void emplace_back(Args &&...args)
     {
-        errh::check_capacity(*this, m_size + 1);                                    // may throw
+        errh::check_capacity(*this, m_members.size + 1);                                    // may throw
 
         namespace sv = static_vector_detail;
         sv::construct(this->end(), ::boost::forward<Args>(args)...);                // may throw
-        ++m_size; // update end
+        ++m_members.size; // update end
     }
 
     //! @pre
@@ -1064,12 +1148,12 @@ public:
         namespace sv = static_vector_detail;
 
         errh::check_iterator_end_eq(*this, position);
-        errh::check_capacity(*this, m_size + 1);                                    // may throw
+        errh::check_capacity(*this, m_members.size + 1);                                    // may throw
 
         if ( position == this->end() )
         {
             sv::construct(position, ::boost::forward<Args>(args)...);               // may throw
-            ++m_size; // update end
+            ++m_members.size; // update end
         }
         else
         {
@@ -1078,7 +1162,7 @@ public:
             // TODO - should move be used only if it's nonthrowing?
             value_type & r = *(this->end() - 1);
             sv::construct(this->end(), boost::move(r));                             // may throw
-            ++m_size; // update end
+            ++m_members.size; // update end
             sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
 
             aligned_storage<sizeof(value_type), alignment_of<value_type>::value> temp_storage;
@@ -1097,11 +1181,11 @@ public:
     BOOST_PP_EXPR_IF(n, template<) BOOST_PP_ENUM_PARAMS(n, class P) BOOST_PP_EXPR_IF(n, >)       \
     void emplace_back(BOOST_PP_ENUM(n, BOOST_CONTAINER_PP_PARAM_LIST, _))                        \
     {                                                                                            \
-        errh::check_capacity(*this, m_size + 1);                                    /*may throw*/\
+        errh::check_capacity(*this, m_members.size + 1);                                    /*may throw*/\
                                                                                                  \
         namespace sv = static_vector_detail;                                                     \
         sv::construct(this->end() BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
-        ++m_size; /*update end*/                                                                 \
+        ++m_members.size; /*update end*/                                                                 \
     }                                                                                            \
     //
     #define BOOST_PP_LOCAL_LIMITS (0, BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS)
@@ -1114,12 +1198,12 @@ public:
         namespace sv = static_vector_detail;                                                        \
                                                                                                     \
         errh::check_iterator_end_eq(*this, position);                                               \
-        errh::check_capacity(*this, m_size + 1);                                       /*may throw*/\
+        errh::check_capacity(*this, m_members.size + 1);                                       /*may throw*/\
                                                                                                     \
         if ( position == this->end() )                                                              \
         {                                                                                           \
             sv::construct(position BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
-            ++m_size; /*update end*/                                                                \
+            ++m_members.size; /*update end*/                                                                \
         }                                                                                           \
         else                                                                                        \
         {                                                                                           \
@@ -1128,7 +1212,7 @@ public:
                                                                                                     \
             value_type & r = *(this->end() - 1);                                                    \
             sv::construct(this->end(), boost::move(r));                                /*may throw*/\
-            ++m_size; /*update end*/                                                                \
+            ++m_members.size; /*update end*/                                                                \
             sv::move_backward(position, this->end() - 2, this->end() - 1);             /*may throw*/\
                                                                                                     \
             aligned_storage<sizeof(value_type), alignment_of<value_type>::value> temp_storage;      \
@@ -1158,7 +1242,7 @@ public:
     {
         namespace sv = static_vector_detail;
         sv::destroy(this->begin(), this->end());
-        m_size = 0; // update end
+        m_members.size = 0; // update end
     }
 
     //! @pre <tt>i < size()</tt>
@@ -1383,7 +1467,7 @@ public:
     //!
     //! @par Complexity
     //!   Constant O(1).
-    iterator end() { return this->begin() + m_size; }
+    iterator end() { return this->begin() + m_members.size; }
 
     //! @brief Returns const iterator to the one after the last element.
     //!
@@ -1394,7 +1478,7 @@ public:
     //!
     //! @par Complexity
     //!   Constant O(1).
-    const_iterator end() const { return this->begin() + m_size; }
+    const_iterator end() const { return this->begin() + m_members.size; }
 
     //! @brief Returns const iterator to the one after the last element.
     //!
@@ -1405,7 +1489,7 @@ public:
     //!
     //! @par Complexity
     //!   Constant O(1).
-    const_iterator cend() const { return this->cbegin() + m_size; }
+    const_iterator cend() const { return this->cbegin() + m_members.size; }
 
     //! @brief Returns reverse iterator to the first element of the reversed container.
     //!
@@ -1510,7 +1594,7 @@ public:
     //!
     //! @par Complexity
     //!   Constant O(1).
-    size_type size() const { return m_size; }
+    size_type size() const { return m_members.size; }
 
     //! @brief Queries if the container contains elements.
     //!
@@ -1522,7 +1606,7 @@ public:
     //!
     //! @par Complexity
     //!   Constant O(1).
-    bool empty() const { return 0 == m_size; }
+    bool empty() const { return 0 == m_members.size; }
 
     //! @brief Capacity is fixed so this call has no effects.
     //!
@@ -1533,6 +1617,8 @@ public:
     //!   Constant O(1).
     void shrink_to_fit() {}
 
+    strategy_type get_strategy() const { return m_members.strategy; }
+
 private:
 
     // @par Throws
@@ -1542,9 +1628,9 @@ private:
     template <std::size_t C, typename S>
     void move_ctor_dispatch(static_vector<value_type, C, S> & other, boost::true_type /*use_memop*/)
     {
-        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
-        m_size = other.m_size;
-        other.m_size = 0;
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_members.size);
+        m_members.size = other.m_members.size;
+        other.m_members.size = 0;
     }
 
     // @par Throws
@@ -1557,9 +1643,9 @@ private:
     {
         namespace sv = static_vector_detail;
         sv::uninitialized_move_if_noexcept(other.begin(), other.end(), this->begin());                  // may throw
-        m_size = other.m_size;
+        m_members.size = other.m_members.size;
         sv::destroy(other.begin(), other.end());        
-        other.m_size = 0;
+        other.m_members.size = 0;
     }
 
     // @par Throws
@@ -1571,8 +1657,8 @@ private:
     {
         this->clear();
 
-        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
-        boost::swap(m_size, other.m_size);
+        ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_members.size);
+        boost::swap(m_members.size, other.m_members.size);
     }
 
     // @par Throws
@@ -1584,18 +1670,18 @@ private:
     void move_assign_dispatch(static_vector<value_type, C, S> & other, boost::false_type /*use_memop*/)
     {
         namespace sv = static_vector_detail;
-        if ( m_size <= static_cast<size_type>(other.size()) )
+        if ( m_members.size <= static_cast<size_type>(other.size()) )
         {
-            sv::move_if_noexcept(other.begin(), other.begin() + m_size, this->begin());             // may throw
+            sv::move_if_noexcept(other.begin(), other.begin() + m_members.size, this->begin());             // may throw
             // TODO - perform uninitialized_copy first?
-            sv::uninitialized_move_if_noexcept(other.begin() + m_size, other.end(), this->end());   // may throw
+            sv::uninitialized_move_if_noexcept(other.begin() + m_members.size, other.end(), this->end());   // may throw
         }
         else
         {
             sv::move_if_noexcept(other.begin(), other.end(), this->begin());                        // may throw
             sv::destroy(this->begin() + other.size(), this->end());
         }
-        m_size = other.size(); // update end
+        m_members.size = other.size(); // update end
 
         other.clear();
     }
@@ -1609,9 +1695,12 @@ private:
     {
         typedef typename
         boost::mpl::if_c<
-            Capacity < C,
-            aligned_storage_type,
-            typename static_vector<value_type, C, S>::aligned_storage_type
+            (Capacity < C),
+            typename members_type::aligned_storage_type,
+            typename static_vector_detail::members<
+                value_type, C, S,
+            ::boost::is_stateless<S>::value
+            >::aligned_storage_type
         >::type
         storage_type;
         
@@ -1622,7 +1711,7 @@ private:
         ::memcpy(this->data(), other.data(), sizeof(Value) * other.size());
         ::memcpy(other.data(), temp_ptr, sizeof(Value) * this->size());
 
-        boost::swap(m_size, other.m_size);
+        boost::swap(m_members.size, other.m_members.size);
     }
 
     // @par Throws
@@ -1644,7 +1733,7 @@ private:
             swap_dispatch_impl(this->begin(), this->end(), other.begin(), other.end(), use_memop_in_swap_and_move()); // may throw
         else
             swap_dispatch_impl(other.begin(), other.end(), this->begin(), this->end(), use_memop_in_swap_and_move()); // may throw
-        boost::swap(m_size, other.m_size);
+        boost::swap(m_members.size, other.m_members.size);
     }
 
     // @par Throws
@@ -1705,12 +1794,12 @@ private:
         namespace sv = static_vector_detail;
 
         errh::check_iterator_end_eq(*this, position);
-        errh::check_capacity(*this, m_size + 1);                                    // may throw
+        errh::check_capacity(*this, m_members.size + 1);                                    // may throw
 
         if ( position == this->end() )
         {
             sv::construct(position, value);                                         // may throw
-            ++m_size; // update end
+            ++m_members.size; // update end
         }
         else
         {
@@ -1719,7 +1808,7 @@ private:
             // TODO - should move be used only if it's nonthrowing?
             value_type & r = *(this->end() - 1);
             sv::construct(this->end(), boost::move(r));                             // may throw
-            ++m_size; // update end
+            ++m_members.size; // update end
             sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
             sv::assign(position, value);                                            // may throw
         }
@@ -1744,14 +1833,14 @@ private:
         typename boost::iterator_difference<Iterator>::type
             count = std::distance(first, last);
 
-        errh::check_capacity(*this, m_size + count);                                             // may throw
+        errh::check_capacity(*this, m_members.size + count);                                             // may throw
 
         if ( position == this->end() )
         {
             namespace sv = static_vector_detail;
 
             sv::uninitialized_copy(first, last, position);                                      // may throw
-            m_size += count; // update end
+            m_members.size += count; // update end
         }
         else
         {
@@ -1776,16 +1865,16 @@ private:
             std::ptrdiff_t d = std::distance(position, this->begin() + Capacity);
             std::size_t count = sv::uninitialized_copy_s(first, last, position, d);                     // may throw
             
-            errh::check_capacity(*this, count <= static_cast<std::size_t>(d) ? m_size + count : Capacity + 1);  // may throw
+            errh::check_capacity(*this, count <= static_cast<std::size_t>(d) ? m_members.size + count : Capacity + 1);  // may throw
 
-            m_size += count;
+            m_members.size += count;
         }
         else
         {
             typename boost::iterator_difference<Iterator>::type
                 count = std::distance(first, last);
             
-            errh::check_capacity(*this, m_size + count);                                                // may throw
+            errh::check_capacity(*this, m_members.size + count);                                                // may throw
 
             this->insert_in_the_middle(position, first, last, count);                                   // may throw
         }
@@ -1808,7 +1897,7 @@ private:
         if ( count < to_move )
         {
             sv::uninitialized_move(this->end() - count, this->end(), this->end());              // may throw
-            m_size += count; // update end
+            m_members.size += count; // update end
             sv::move_backward(position, position + to_move - count, this->end() - count);       // may throw
             sv::copy(first, last, position);                                                    // may throw
         }
@@ -1818,9 +1907,9 @@ private:
             std::advance(middle_iter, to_move);
 
             sv::uninitialized_copy(middle_iter, last, this->end());                             // may throw
-            m_size += count - to_move; // update end
+            m_members.size += count - to_move; // update end
             sv::uninitialized_move(position, position + to_move, position + count);             // may throw
-            m_size += to_move; // update end
+            m_members.size += to_move; // update end
             sv::copy(first, middle_iter, position);                                             // may throw
         }
     }
@@ -1841,18 +1930,18 @@ private:
 
         errh::check_capacity(*this, s);                                     // may throw
 
-        if ( m_size <= static_cast<size_type>(s) )
+        if ( m_members.size <= static_cast<size_type>(s) )
         {
-            sv::copy(first, first + m_size, this->begin());                 // may throw
+            sv::copy(first, first + m_members.size, this->begin());                 // may throw
             // TODO - perform uninitialized_copy first?
-            sv::uninitialized_copy(first + m_size, last, this->end());      // may throw
+            sv::uninitialized_copy(first + m_members.size, last, this->end());      // may throw
         }
         else
         {
             sv::copy(first, last, this->begin());                           // may throw
             sv::destroy(this->begin() + s, this->end());
         }
-        m_size = s; // update end
+        m_members.size = s; // update end
     }
 
     // @par Throws
@@ -1878,21 +1967,20 @@ private:
 
         errh::check_capacity(*this, count <= static_cast<std::size_t>(d) ? s : Capacity + 1);               // may throw
 
-        m_size = s; // update end
+        m_members.size = s; // update end
     }
 
     pointer ptr()
     {
-        return pointer(static_cast<Value*>(m_storage.address()));
+        return pointer(static_cast<Value*>(m_members.storage.address()));
     }
 
     const_pointer ptr() const
     {
-        return const_pointer(static_cast<const Value*>(m_storage.address()));
+        return const_pointer(static_cast<const Value*>(m_members.storage.address()));
     }
 
-    stored_size_type m_size;
-    aligned_storage_type m_storage;
+    members_type m_members;
 };
 
 #if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
