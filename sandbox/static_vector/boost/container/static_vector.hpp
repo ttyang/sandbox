@@ -66,6 +66,9 @@ namespace strategy {
 //       Could say
 //          "cannot reserve(4) due to fixed capacity of 3 elements"    
 
+//! @brief Default strategy.
+//!
+//! @tparam Value   Type of value stored in the container.
 template <typename Value>
 struct def
 {
@@ -89,6 +92,9 @@ bool operator==(def<Value> const&, def<Value> const&)
     return true;
 }
 
+//! @brief Strategy adapted from allocator used to create a container object.
+//!
+//! @tparam Allocator   The type of allocator used to construct a container object.
 template <typename Allocator>
 struct allocator_adaptor
 {
@@ -100,8 +106,13 @@ struct allocator_adaptor
     typedef typename Allocator::reference reference;
     typedef typename Allocator::const_reference const_reference;
 
+    //! @brief The default constructor.
     allocator_adaptor() {}
-    explicit allocator_adaptor(Allocator const& a) : allocator(a) {}
+
+    //! @brief The default constructor.
+    //!
+    //! @param alloc    The allocator object used to construct a container object.
+    explicit allocator_adaptor(Allocator const& alloc) : allocator(alloc) {}
 
     static void allocate_failed()
     {
@@ -268,7 +279,7 @@ struct members<Value, Capacity, Strategy, true>
  *
  * @par Advanced Usage
  *  Error handling behavior can be modified to more closely match std::vector exception behavior
- *  when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
+ *  when exceeding bounds by providing an alternate Strategy and/or static_vector_traits specialization.
  *
  * @tparam Value    The type of element that will be stored.
  * @tparam Capacity The maximum number of elements static_vector can store, fixed at compile time.

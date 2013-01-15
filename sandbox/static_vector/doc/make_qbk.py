@@ -20,5 +20,7 @@ os.system("doxygen Doxyfile")
 
 os.system(cmd % ("classboost_1_1container_1_1static__vector", "static_vector"))
 os.system(cmd % ("group__static__vector__non__member", "static_vector_non_member"))
+os.system(cmd % ("structboost_1_1container_1_1strategy_1_1def", "strategy_def"))
+os.system(cmd % ("structboost_1_1container_1_1strategy_1_1allocator__adaptor", "strategy_allocator_adaptor"))
 
 os.system("b2") 
