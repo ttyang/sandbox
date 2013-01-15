@@ -35,7 +35,7 @@ namespace boost {
 #include "static_vector_test.hpp"
 
 template <typename V>
-struct bad_alloc_strategy /*bad_alloc_fake_allocator*/
+struct bad_alloc_strategy
     : public strategy::def<V>
 {
     static void allocate_failed()

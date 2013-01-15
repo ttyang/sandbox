@@ -4,7 +4,7 @@
 [section:boost_container_strategy_def boost::container::strategy::def]
 
 '''<indexterm><primary>boost</primary></indexterm><indexterm><primary>container</primary></indexterm><indexterm><primary>strategy</primary></indexterm><indexterm><primary>def</primary></indexterm>'''
-Default strategy. 
+The default strategy. 
 
 [heading Header]
 `#include <boost/container/static_vector.hpp>`
@@ -21,7 +21,7 @@ Default strategy.
 [heading Template parameter(s)]
 [table
 [[Parameter] [Description]]
-[[`Value`][Type of value stored in the container. ]]
+[[`Value`][Type of element stored in the container. ]]
 ]
 
 [endsect]

@@ -36,7 +36,7 @@
 <a name="staticvector.reference.boost_container_static_vector"></a><a name="classboost_1_1container_1_1static__vector"></a><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector" title="boost::container::static_vector">boost::container::static_vector</a>
 </h3></div></div></div>
 <p>
-        <a class="indexterm" name="id866804"></a><a class="indexterm" name="id866809"></a><a class="indexterm" name="id866814"></a>
+        <a class="indexterm" name="id894111"></a><a class="indexterm" name="id894116"></a><a class="indexterm" name="id894120"></a>
 A hybrid of <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="identifier">vector</span></code></code>
         and <code class="literal"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span></code></code> with fixed capacity.
       </p>
@@ -87,7 +87,7 @@ A hybrid of <code class="literal"><code class="computeroutput"><span class="iden
 <p>
         Error handling behavior can be modified to more closely match std::vector
         exception behavior when exceeding bounds by providing an alternate Strategy
-        and/or static_vector_traits specialization.
+        and static_vector_traits instantiation.
       </p>
 <h5>
 <a name="staticvector.reference.boost_container_static_vector.h3"></a>
@@ -366,19 +366,6 @@ A hybrid of <code class="literal"><code class="computeroutput"><span class="iden
 <td>
                 <p>
                   <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1ae0f7f391d06180aea516a6b03b3402c2"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">()</span></code></a>
-                </p>
-              </td>
-<td>
-                <p>
-                  Constructs an empty <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
-                </p>
-              </td>
-</tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1acbccc8d166f7c72aba8741aabf50b628"><code class="computeroutput"><span class="identifier">static_vector</span><span class="special">(</span><span class="identifier">strategy_type</span> <span class="keyword">const</span>
-                  <span class="special">&amp;)</span></code></a>
                 </p>
               </td>
 <td>
@@ -1165,15 +1152,6 @@ A hybrid of <code class="literal"><code class="computeroutput"><span class="iden
                 </p>
               </td>
 </tr>
-<tr>
-<td>
-                <p>
-                  <a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1ad21b9fcbebc27b04a318b217803c7028"><code class="computeroutput"><span class="identifier">get_strategy</span><span class="special">()</span></code></a>
-                </p>
-              </td>
-<td>
-              </td>
-</tr>
 </tbody>
 </table></div>
 <div class="section">
@@ -1199,78 +1177,6 @@ A hybrid of <code class="literal"><code class="computeroutput"><span class="iden
 <h6>
 <a name="staticvector.reference.boost_container_static_vector.static_vector__.h2"></a>
           <span class="phrase"><a name="staticvector.reference.boost_container_static_vector.static_vector__.complexity"></a></span><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.static_vector__.complexity">Complexity</a>
-        </h6>
-<p>
-          Constant O(1).
-        </p>
-</div>
-<div class="section">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___"></a><a name="classboost_1_1container_1_1static__vector_1acbccc8d166f7c72aba8741aabf50b628"></a><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___" title="static_vector(strategy_type const &amp;)">static_vector(strategy_type
-        const &amp;)</a>
-</h4></div></div></div>
-<p>
-          Constructs an empty <a class="link" href="reference.html#classboost_1_1container_1_1static__vector">static_vector</a>.
-        </p>
-<h6>
-<a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.h0"></a>
-          <span class="phrase"><a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.synopsis"></a></span><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.synopsis">Synopsis</a>
-        </h6>
-<pre class="programlisting"><code class="computeroutput"><span class="identifier">static_vector</span></code><code class="computeroutput"><span class="special">(</span></code><code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a041d1b8def12d8781f34f32a12fd53d0">strategy_type</a></code><code class="computeroutput"> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">s</span></code><code class="computeroutput"><span class="special">)</span></code>
-</pre>
-<h6>
-<a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.h1"></a>
-          <span class="phrase"><a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.parameter_s_"></a></span><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.parameter_s_">Parameter(s)</a>
-        </h6>
-<div class="informaltable"><table class="table">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-                  <p>
-                    Type
-                  </p>
-                </th>
-<th>
-                  <p>
-                    Name
-                  </p>
-                </th>
-<th>
-                  <p>
-                    Description
-                  </p>
-                </th>
-</tr></thead>
-<tbody><tr>
-<td>
-                  <p>
-                    <code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a041d1b8def12d8781f34f32a12fd53d0">strategy_type</a></code><code class="computeroutput">
-                    <span class="keyword">const</span> <span class="special">&amp;</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">s</span></code>
-                  </p>
-                </td>
-<td>
-                </td>
-</tr></tbody>
-</table></div>
-<h6>
-<a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.h2"></a>
-          <span class="phrase"><a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.throws"></a></span><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.throws">Throws</a>
-        </h6>
-<p>
-          Nothing.
-        </p>
-<h6>
-<a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.h3"></a>
-          <span class="phrase"><a name="staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.complexity"></a></span><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.static_vector_strategy_type_const___.complexity">Complexity</a>
         </h6>
 <p>
           Constant O(1).
@@ -5212,17 +5118,6 @@ A hybrid of <code class="literal"><code class="computeroutput"><span class="iden
           Constant O(1).
         </p>
 </div>
-<div class="section">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="staticvector.reference.boost_container_static_vector.get_strategy__"></a><a name="classboost_1_1container_1_1static__vector_1ad21b9fcbebc27b04a318b217803c7028"></a><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.get_strategy__" title="get_strategy()">get_strategy()</a>
-</h4></div></div></div>
-<h6>
-<a name="staticvector.reference.boost_container_static_vector.get_strategy__.h0"></a>
-          <span class="phrase"><a name="staticvector.reference.boost_container_static_vector.get_strategy__.synopsis"></a></span><a class="link" href="reference.html#staticvector.reference.boost_container_static_vector.get_strategy__.synopsis">Synopsis</a>
-        </h6>
-<pre class="programlisting"><code class="literal"><a class="link" href="reference.html#classboost_1_1container_1_1static__vector_1a041d1b8def12d8781f34f32a12fd53d0">strategy_type</a></code> <code class="computeroutput"><span class="identifier">get_strategy</span></code><code class="computeroutput"><span class="special">()</span></code>
-</pre>
-</div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -6080,8 +5975,8 @@ A hybrid of <code class="literal"><code class="computeroutput"><span class="iden
 <a name="staticvector.reference.reference.boost_container_strategy_def"></a><a name="structboost_1_1container_1_1strategy_1_1def"></a><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_def" title="boost::container::strategy::def">boost::container::strategy::def</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id912447"></a><a class="indexterm" name="id912452"></a><a class="indexterm" name="id912457"></a><a class="indexterm" name="id912461"></a>
-Default strategy.
+          <a class="indexterm" name="id939407"></a><a class="indexterm" name="id939412"></a><a class="indexterm" name="id939416"></a><a class="indexterm" name="id939421"></a>
+The default strategy.
         </p>
 <h6>
 <a name="staticvector.reference.reference.boost_container_strategy_def.h0"></a>
@@ -6130,7 +6025,7 @@ Default strategy.
                 </td>
 <td>
                   <p>
-                    Type of value stored in the container.
+                    Type of element stored in the container.
                   </p>
                 </td>
 </tr></tbody>
@@ -6141,18 +6036,25 @@ Default strategy.
 <a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor"></a><a name="structboost_1_1container_1_1strategy_1_1allocator__adaptor"></a><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor" title="boost::container::strategy::allocator_adaptor">boost::container::strategy::allocator_adaptor</a>
 </h4></div></div></div>
 <p>
-          <a class="indexterm" name="id912697"></a><a class="indexterm" name="id912701"></a><a class="indexterm" name="id912706"></a><a class="indexterm" name="id912711"></a>
-Strategy adapted from allocator used to create a container object.
+          <a class="indexterm" name="id939656"></a><a class="indexterm" name="id939661"></a><a class="indexterm" name="id939666"></a><a class="indexterm" name="id939671"></a>
+The strategy adapting info from passed Allocator.
         </p>
 <h6>
 <a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.h0"></a>
+          <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.description"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.description">Description</a>
+        </h6>
+<p>
+          This strategy defines the same types that are defined in the Allocator.
+        </p>
+<h6>
+<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.h1"></a>
           <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.header"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.header">Header</a>
         </h6>
 <p>
           <code class="computeroutput"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">container</span><span class="special">/</span><span class="identifier">static_vector</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code>
         </p>
 <h6>
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.h1"></a>
+<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.h2"></a>
           <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.synopsis"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.synopsis">Synopsis</a>
         </h6>
 <pre class="programlisting"><code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">Allocator</span></code><code class="computeroutput"><span class="special">&gt;</span></code>
@@ -6162,7 +6064,7 @@ Strategy adapted from allocator used to create a container object.
 <code class="computeroutput"><span class="special">};</span></code>
 </pre>
 <h6>
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.h2"></a>
+<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.h3"></a>
           <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.template_parameter_s_"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.template_parameter_s_">Template
           parameter(s)</a>
         </h6>
@@ -6191,135 +6093,11 @@ Strategy adapted from allocator used to create a container object.
                 </td>
 <td>
                   <p>
-                    The type of allocator used to construct a container object.
+                    The Allocator which will be adapted.
                   </p>
                 </td>
 </tr></tbody>
 </table></div>
-<h6>
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.h3"></a>
-          <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.constructor_s__and_destructor"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.constructor_s__and_destructor">Constructor(s)
-          and destructor</a>
-        </h6>
-<div class="informaltable"><table class="table">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-                  <p>
-                    Function
-                  </p>
-                </th>
-<th>
-                  <p>
-                    Description
-                  </p>
-                </th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-                  <p>
-                    <a class="link" href="reference.html#structboost_1_1container_1_1strategy_1_1allocator__adaptor_1a87cc156b8246ab93d0a72e69f5a8a160"><code class="computeroutput"><span class="identifier">allocator_adaptor</span><span class="special">()</span></code></a>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    The default constructor.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    <a class="link" href="reference.html#structboost_1_1container_1_1strategy_1_1allocator__adaptor_1abbb1a1cd5b713887d2e98fa74be9eb40"><code class="computeroutput"><span class="identifier">allocator_adaptor</span><span class="special">(</span><span class="identifier">Allocator</span> <span class="keyword">const</span>
-                    <span class="special">&amp;)</span></code></a>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    The default constructor.
-                  </p>
-                </td>
-</tr>
-</tbody>
-</table></div>
-<div class="section">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor__"></a><a name="structboost_1_1container_1_1strategy_1_1allocator__adaptor_1a87cc156b8246ab93d0a72e69f5a8a160"></a><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor__" title="allocator_adaptor()">allocator_adaptor()</a>
-</h5></div></div></div>
-<p>
-            The default constructor.
-          </p>
-<h6>
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor__.h0"></a>
-            <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor__.synopsis"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor__.synopsis">Synopsis</a>
-          </h6>
-<pre class="programlisting"><code class="computeroutput"><span class="identifier">allocator_adaptor</span></code><code class="computeroutput"><span class="special">()</span></code>
-</pre>
-</div>
-<div class="section">
-<div class="titlepage"><div><div><h5 class="title">
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___"></a><a name="structboost_1_1container_1_1strategy_1_1allocator__adaptor_1abbb1a1cd5b713887d2e98fa74be9eb40"></a><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___" title="allocator_adaptor(Allocator const &amp;)">allocator_adaptor(Allocator
-          const &amp;)</a>
-</h5></div></div></div>
-<p>
-            The default constructor.
-          </p>
-<h6>
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___.h0"></a>
-            <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___.synopsis"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___.synopsis">Synopsis</a>
-          </h6>
-<pre class="programlisting"><code class="computeroutput"><span class="identifier">allocator_adaptor</span></code><code class="computeroutput"><span class="special">(</span></code><code class="computeroutput"><span class="identifier">Allocator</span> <span class="keyword">const</span> <span class="special">&amp;</span></code> <code class="computeroutput"><span class="identifier">alloc</span></code><code class="computeroutput"><span class="special">)</span></code>
-</pre>
-<h6>
-<a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___.h1"></a>
-            <span class="phrase"><a name="staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___.parameter_s_"></a></span><a class="link" href="reference.html#staticvector.reference.reference.boost_container_strategy_allocator_adaptor.allocator_adaptor_allocator_const___.parameter_s_">Parameter(s)</a>
-          </h6>
-<div class="informaltable"><table class="table">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-                    <p>
-                      Type
-                    </p>
-                  </th>
-<th>
-                    <p>
-                      Name
-                    </p>
-                  </th>
-<th>
-                    <p>
-                      Description
-                    </p>
-                  </th>
-</tr></thead>
-<tbody><tr>
-<td>
-                    <p>
-                      <code class="computeroutput"><span class="identifier">Allocator</span> <span class="keyword">const</span> <span class="special">&amp;</span></code>
-                    </p>
-                  </td>
-<td>
-                    <p>
-                      <code class="computeroutput"><span class="identifier">alloc</span></code>
-                    </p>
-                  </td>
-<td>
-                    <p>
-                      The allocator object used to construct a container object.
-                    </p>
-                  </td>
-</tr></tbody>
-</table></div>
-</div>
 </div>
 </div>
 </div>

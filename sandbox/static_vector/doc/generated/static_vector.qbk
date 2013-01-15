@@ -15,7 +15,7 @@ A [link classboost_1_1container_1_1static__vector static_vector] is a sequence t
 Insertion beyond the capacity and out of bounds errors result in undefined behavior unless otherwise specified. In this respect if [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] == [link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 capacity()], then [link classboost_1_1container_1_1static__vector_1ae61c0bcedf9162c63c8b738ddfaed93d static_vector::push_back()] behaves like std::vector pop_front() if [link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()] == [link classboost_1_1container_1_1static__vector_1aa408660722a22b80104613e28c514fc8 empty()]. The reason for this difference is because unlike vectors, [link classboost_1_1container_1_1static__vector static_vector] does not perform allocation.
 
 [heading Advanced Usage]
-Error handling behavior can be modified to more closely match std::vector exception behavior when exceeding bounds by providing an alternate Strategy and/or static_vector_traits specialization.
+Error handling behavior can be modified to more closely match std::vector exception behavior when exceeding bounds by providing an alternate Strategy and static_vector_traits instantiation.
 
 [heading Header]
 `#include <boost/container/static_vector.hpp>`
@@ -60,7 +60,6 @@ Error handling behavior can be modified to more closely match std::vector except
 [table
 [[Function][Description]]
 [[[link classboost_1_1container_1_1static__vector_1ae0f7f391d06180aea516a6b03b3402c2 `static_vector()`]][Constructs an empty [link classboost_1_1container_1_1static__vector static_vector]. ]]
-[[[link classboost_1_1container_1_1static__vector_1acbccc8d166f7c72aba8741aabf50b628 `static_vector(strategy_type const &)`]][Constructs an empty [link classboost_1_1container_1_1static__vector static_vector]. ]]
 [[[link classboost_1_1container_1_1static__vector_1ab6461f56b1a46dc3e708e22d24b262c5 `static_vector(size_type)`]][Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing count default constructed Values. ]]
 [[[link classboost_1_1container_1_1static__vector_1a5f0a8f8d5a685d0d9ed9c54e202c7c3c `static_vector(size_type, value_type const &)`]][Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing count copies of value. ]]
 [[[link classboost_1_1container_1_1static__vector_1a5e2c5c81fe53874667e3b9c2c07757b3 `static_vector(Iterator, Iterator)`]][Constructs a [link classboost_1_1container_1_1static__vector static_vector] containing copy of a range [^`[first, last)`]. ]]
@@ -124,7 +123,6 @@ Error handling behavior can be modified to more closely match std::vector except
 [[[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 `size()`]][Returns the number of stored elements. ]]
 [[[link classboost_1_1container_1_1static__vector_1aa408660722a22b80104613e28c514fc8 `empty()`]][Queries if the container contains elements. ]]
 [[[link classboost_1_1container_1_1static__vector_1a4d89dc588ace1ce15c307a923a89f1b5 `shrink_to_fit()`]][Capacity is fixed so this call has no effects. ]]
-[[[link classboost_1_1container_1_1static__vector_1ad21b9fcbebc27b04a318b217803c7028 `get_strategy()`]][]]
 ]
 
 [#classboost_1_1container_1_1static__vector_1ae0f7f391d06180aea516a6b03b3402c2]
@@ -137,29 +135,6 @@ Constructs an empty [link classboost_1_1container_1_1static__vector static_vecto
 `static_vector``()`
 ]
 
-[heading Throws]
-Nothing.
-
-[heading Complexity]
-Constant O(1). 
-
-[endsect]
-
-[#classboost_1_1container_1_1static__vector_1acbccc8d166f7c72aba8741aabf50b628]
-[section static_vector(strategy_type const &)]
-Constructs an empty [link classboost_1_1container_1_1static__vector static_vector]. 
-
-[heading Synopsis]
-[pre
-
-`static_vector``(`[^[link classboost_1_1container_1_1static__vector_1a041d1b8def12d8781f34f32a12fd53d0 strategy_type]]` const &` `s``)`
-]
-
-[heading Parameter(s)]
-[table 
-[[Type][Name][Description]]
-[[[^[link classboost_1_1container_1_1static__vector_1a041d1b8def12d8781f34f32a12fd53d0 strategy_type]]` const &`][ `s` ][]]
-]
 [heading Throws]
 Nothing.
 
@@ -1611,18 +1586,6 @@ Nothing.
 
 [heading Complexity]
 Constant O(1). 
-
-[endsect]
-
-[#classboost_1_1container_1_1static__vector_1ad21b9fcbebc27b04a318b217803c7028]
-[section get_strategy()]
-
-
-[heading Synopsis]
-[pre
-
-[^[link classboost_1_1container_1_1static__vector_1a041d1b8def12d8781f34f32a12fd53d0 strategy_type]] `get_strategy``()`
-]
 
 [endsect]
 
