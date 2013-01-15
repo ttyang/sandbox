@@ -480,8 +480,6 @@ public:
     static_vector(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
         : m_size(other.m_size)
     {
-// TODO - move only if pointers are the same
-
         errh::check_capacity(*this, other.size());                                  // may throw
 
         typedef typename
@@ -541,8 +539,6 @@ public:
     template <std::size_t C, typename S>
     static_vector & operator=(BOOST_RV_REF_3_TEMPL_ARGS(static_vector, value_type, C, S) other)
     {
-// TODO - move only if pointers are the same
-
         errh::check_capacity(*this, other.size());                                  // may throw
 
         typedef typename
@@ -583,8 +579,6 @@ public:
     //!   Linear O(N).
     void swap(static_vector & other)
     {
-// TODO - move only if pointers are the same
-
         typedef typename
         static_vector_detail::static_vector_traits<
             Value, Capacity, Strategy
@@ -614,8 +608,6 @@ public:
     template <std::size_t C, typename S>
     void swap(static_vector<value_type, C, S> & other)
     {
-// TODO - move only if pointers are the same
-
         errh::check_capacity(*this, other.size());
         errh::check_capacity(other, this->size());
 
