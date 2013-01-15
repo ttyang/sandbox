@@ -638,8 +638,6 @@ void test_sv_elem(T const& t)
     v.insert(v.begin(), V(N/2, t));
     v.insert(v.end(), V(N/2, t));
     v.emplace_back(N/2, t);
-
-    std::cout << typeid(v).name() << "\n" << N << " * " << sizeof(T) << " = " << sizeof(v) << "\n----------------------------\n";
 }
 
 #ifdef BOOST_SINGLE_HEADER_UTF
