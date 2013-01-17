@@ -72,57 +72,57 @@ Error handling behavior can be modified to more closely match std::vector except
 
 [heading Member(s)]
 [table
-[[Function][Description]]
-[[[link classboost_1_1container_1_1static__vector_1a22aae352c5cfe7f9ccb0fda5a900ec98 `operator=(const static_vector &)`]][Copy assigns Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
-[[[link classboost_1_1container_1_1static__vector_1a58b56229fbbb996c394d89db80f8751d `operator=(static_vector<...> const &)`]][Copy assigns Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
-[[[link classboost_1_1container_1_1static__vector_1a736084d326ffa4d50ec2dd15fd4dadca `operator=(static_vector &&)`]][Move assignment. Moves Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
-[[[link classboost_1_1container_1_1static__vector_1a03eaa538061845c7477ea5aba4f5fd7e `operator=(static_vector<...> &&)`]][Move assignment. Moves Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
-[[[link classboost_1_1container_1_1static__vector_1a12cdeec047f6d310fe6a1746ddbf41d1 `swap(static_vector &)`]][Swaps contents of the other [link classboost_1_1container_1_1static__vector static_vector] and this one. ]]
-[[[link classboost_1_1container_1_1static__vector_1a7a668affb50dad8ae4c92bff03ae9f22 `swap(static_vector<...> &)`]][Swaps contents of the other [link classboost_1_1container_1_1static__vector static_vector] and this one. ]]
-[[[link classboost_1_1container_1_1static__vector_1acf7bf2c6ce597df2bfde495d9ee1bebd `resize(size_type)`]][Inserts or erases elements at the end such that the size becomes count. New elements are default constructed. ]]
-[[[link classboost_1_1container_1_1static__vector_1a19cd77b2fdcda815b780e65b2fb66cc9 `resize(size_type, value_type const &)`]][Inserts or erases elements at the end such that the size becomes count. New elements are copy constructed from value. ]]
-[[[link classboost_1_1container_1_1static__vector_1a9553bdd8a9f3f98fdbdd3a5a46fb9474 `reserve(size_type)`]][This call has no effect because the Capacity of this container is constant. ]]
-[[[link classboost_1_1container_1_1static__vector_1ae61c0bcedf9162c63c8b738ddfaed93d `push_back(value_type const &)`]][Adds a copy of value at the end. ]]
-[[[link classboost_1_1container_1_1static__vector_1a8d23922fd8d2bd57b8125253e8a06c4d `push_back(value_type &&)`]][Moves value to the end. ]]
-[[[link classboost_1_1container_1_1static__vector_1a7be88e699c34a01953279e8f5b9deec4 `pop_back()`]][Destroys last value and decreases the size. ]]
-[[[link classboost_1_1container_1_1static__vector_1a949c881458809c08e0c6de6f54871fdf `insert(iterator, value_type const &)`]][Inserts a copy of element at position. ]]
-[[[link classboost_1_1container_1_1static__vector_1a93e722fcda2a5454901292642fcabfba `insert(iterator, value_type &&)`]][Inserts a move-constructed element at position. ]]
-[[[link classboost_1_1container_1_1static__vector_1a6381368d09a3b93c1bc6c28199f9810c `insert(iterator, size_type, value_type const &)`]][Inserts a count copies of value at position. ]]
-[[[link classboost_1_1container_1_1static__vector_1a7f3daa5ea1faae1f75f2f33f8fc5c15c `insert(iterator, Iterator, Iterator)`]][Inserts a copy of a range [^`[first, last)`] at position. ]]
-[[[link classboost_1_1container_1_1static__vector_1aa8ba2711fd2390953a10f02eb464d269 `erase(iterator)`]][Erases Value from position. ]]
-[[[link classboost_1_1container_1_1static__vector_1a2fc879a077c834f4305efc21706e033c `erase(iterator, iterator)`]][Erases Values from a range [^`[first, last)`]. ]]
-[[[link classboost_1_1container_1_1static__vector_1a5f820fa73c4728fed1df89da341b98cb `assign(Iterator, Iterator)`]][Assigns a range [^`[first, last)`] of Values to this container. ]]
-[[[link classboost_1_1container_1_1static__vector_1ac589c93c8b59e5712b0225a9b424f50f `assign(size_type, value_type const &)`]][Assigns a count copies of value to this container. ]]
-[[[link classboost_1_1container_1_1static__vector_1ac00c9401b86fdbf8816540ce92329f40 `emplace_back(Args &&...)`]][Inserts a Value constructed with [^`std::forward<Args>(args)`]... in the end of the container. ]]
-[[[link classboost_1_1container_1_1static__vector_1ae06ce1a29316261d44920ca0d3836dad `emplace(iterator, Args &&...)`]][Inserts a Value constructed with [^`std::forward<Args>(args)`]... before position. ]]
-[[[link classboost_1_1container_1_1static__vector_1a11ae430a28a7f9b9636f249bfc932a50 `clear()`]][Removes all elements from the container. ]]
-[[[link classboost_1_1container_1_1static__vector_1a2ab748bbf59967f381131dc2ded8878e `at(size_type)`]][Returns reference to the i-th element. ]]
-[[[link classboost_1_1container_1_1static__vector_1ad69bcb249614e043de9ad3c30848a046 `at(size_type)`]][Returns const reference to the i-th element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a969626193cf92a99f3b03b1ac96044dc `operator[](size_type)`]][Returns reference to the i-th element. ]]
-[[[link classboost_1_1container_1_1static__vector_1ab13ec3ee9ce46cf1700a2900bad77531 `operator[](size_type)`]][Returns const reference to the i-th element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 `front()`]][Returns reference to the first element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a2a1b6ca353a315e76c0f41cdb6440cf8 `front()`]][Returns const reference to the first element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a8b3295ab8d967460eb4ed6f87e827eb6 `back()`]][Returns reference to the last element. ]]
-[[[link classboost_1_1container_1_1static__vector_1aa3a259c979e7755ae410f5b5250e2bd4 `back()`]][Returns const reference to the first element. ]]
-[[[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce `data()`]][Pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
-[[[link classboost_1_1container_1_1static__vector_1a3ac0ed788bfecd5103183f0b705d602d `data()`]][Const pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
-[[[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 `begin()`]][Returns iterator to the first element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a5ad66643c38c5c0c5754b010011c0024 `begin()`]][Returns const iterator to the first element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a33bd2d5cff22aa5a88050026367416a6 `cbegin()`]][Returns const iterator to the first element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc `end()`]][Returns iterator to the one after the last element. ]]
-[[[link classboost_1_1container_1_1static__vector_1af619ba0152426c44cb59bd567c906139 `end()`]][Returns const iterator to the one after the last element. ]]
-[[[link classboost_1_1container_1_1static__vector_1ad98b548743fab88322301e7a724ff73e `cend()`]][Returns const iterator to the one after the last element. ]]
-[[[link classboost_1_1container_1_1static__vector_1a692f56e1145d27694f3f01462921e4ad `rbegin()`]][Returns reverse iterator to the first element of the reversed container. ]]
-[[[link classboost_1_1container_1_1static__vector_1a2cb882180fb82fe20104656b08ad0127 `rbegin()`]][Returns const reverse iterator to the first element of the reversed container. ]]
-[[[link classboost_1_1container_1_1static__vector_1a443d1701ea36063ebff8c350ed45bc20 `crbegin()`]][Returns const reverse iterator to the first element of the reversed container. ]]
-[[[link classboost_1_1container_1_1static__vector_1ad1fe8aaeafefaf37ba49801f1f769c93 `rend()`]][Returns reverse iterator to the one after the last element of the reversed container. ]]
-[[[link classboost_1_1container_1_1static__vector_1a660c0d82338d1c8c55546ece061cb7fa `rend()`]][Returns const reverse iterator to the one after the last element of the reversed container. ]]
-[[[link classboost_1_1container_1_1static__vector_1a9a5f65095c083b516585d1054338e850 `crend()`]][Returns const reverse iterator to the one after the last element of the reversed container. ]]
-[[[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 `capacity()`]][Returns container's capacity. ]]
-[[[link classboost_1_1container_1_1static__vector_1afe9bdc2c8fd236e17b946963f6497b83 `max_size()`]][Returns container's capacity. ]]
-[[[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 `size()`]][Returns the number of stored elements. ]]
-[[[link classboost_1_1container_1_1static__vector_1aa408660722a22b80104613e28c514fc8 `empty()`]][Queries if the container contains elements. ]]
-[[[link classboost_1_1container_1_1static__vector_1a4d89dc588ace1ce15c307a923a89f1b5 `shrink_to_fit()`]][Capacity is fixed so this call has no effects. ]]
+[[Modifier][Function][Description]]
+[[][[link classboost_1_1container_1_1static__vector_1a22aae352c5cfe7f9ccb0fda5a900ec98 `operator=(const static_vector &)`]][Copy assigns Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a58b56229fbbb996c394d89db80f8751d `operator=(static_vector<...> const &)`]][Copy assigns Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a736084d326ffa4d50ec2dd15fd4dadca `operator=(static_vector &&)`]][Move assignment. Moves Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a03eaa538061845c7477ea5aba4f5fd7e `operator=(static_vector<...> &&)`]][Move assignment. Moves Values stored in the other [link classboost_1_1container_1_1static__vector static_vector] to this one. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a12cdeec047f6d310fe6a1746ddbf41d1 `swap(static_vector &)`]][Swaps contents of the other [link classboost_1_1container_1_1static__vector static_vector] and this one. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a7a668affb50dad8ae4c92bff03ae9f22 `swap(static_vector<...> &)`]][Swaps contents of the other [link classboost_1_1container_1_1static__vector static_vector] and this one. ]]
+[[][[link classboost_1_1container_1_1static__vector_1acf7bf2c6ce597df2bfde495d9ee1bebd `resize(size_type)`]][Inserts or erases elements at the end such that the size becomes count. New elements are default constructed. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a19cd77b2fdcda815b780e65b2fb66cc9 `resize(size_type, value_type const &)`]][Inserts or erases elements at the end such that the size becomes count. New elements are copy constructed from value. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a9553bdd8a9f3f98fdbdd3a5a46fb9474 `reserve(size_type)`]][This call has no effect because the Capacity of this container is constant. ]]
+[[][[link classboost_1_1container_1_1static__vector_1ae61c0bcedf9162c63c8b738ddfaed93d `push_back(value_type const &)`]][Adds a copy of value at the end. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a8d23922fd8d2bd57b8125253e8a06c4d `push_back(value_type &&)`]][Moves value to the end. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a7be88e699c34a01953279e8f5b9deec4 `pop_back()`]][Destroys last value and decreases the size. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a949c881458809c08e0c6de6f54871fdf `insert(iterator, value_type const &)`]][Inserts a copy of element at position. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a93e722fcda2a5454901292642fcabfba `insert(iterator, value_type &&)`]][Inserts a move-constructed element at position. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a6381368d09a3b93c1bc6c28199f9810c `insert(iterator, size_type, value_type const &)`]][Inserts a count copies of value at position. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a7f3daa5ea1faae1f75f2f33f8fc5c15c `insert(iterator, Iterator, Iterator)`]][Inserts a copy of a range [^`[first, last)`] at position. ]]
+[[][[link classboost_1_1container_1_1static__vector_1aa8ba2711fd2390953a10f02eb464d269 `erase(iterator)`]][Erases Value from position. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a2fc879a077c834f4305efc21706e033c `erase(iterator, iterator)`]][Erases Values from a range [^`[first, last)`]. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a5f820fa73c4728fed1df89da341b98cb `assign(Iterator, Iterator)`]][Assigns a range [^`[first, last)`] of Values to this container. ]]
+[[][[link classboost_1_1container_1_1static__vector_1ac589c93c8b59e5712b0225a9b424f50f `assign(size_type, value_type const &)`]][Assigns a count copies of value to this container. ]]
+[[][[link classboost_1_1container_1_1static__vector_1ac00c9401b86fdbf8816540ce92329f40 `emplace_back(Args &&...)`]][Inserts a Value constructed with [^`std::forward<Args>(args)`]... in the end of the container. ]]
+[[][[link classboost_1_1container_1_1static__vector_1ae06ce1a29316261d44920ca0d3836dad `emplace(iterator, Args &&...)`]][Inserts a Value constructed with [^`std::forward<Args>(args)`]... before position. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a11ae430a28a7f9b9636f249bfc932a50 `clear()`]][Removes all elements from the container. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a2ab748bbf59967f381131dc2ded8878e `at(size_type)`]][Returns reference to the i-th element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1ad69bcb249614e043de9ad3c30848a046 `at(size_type)`]][Returns const reference to the i-th element. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a969626193cf92a99f3b03b1ac96044dc `operator[](size_type)`]][Returns reference to the i-th element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1ab13ec3ee9ce46cf1700a2900bad77531 `operator[](size_type)`]][Returns const reference to the i-th element. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 `front()`]][Returns reference to the first element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a2a1b6ca353a315e76c0f41cdb6440cf8 `front()`]][Returns const reference to the first element. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a8b3295ab8d967460eb4ed6f87e827eb6 `back()`]][Returns reference to the last element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1aa3a259c979e7755ae410f5b5250e2bd4 `back()`]][Returns const reference to the first element. ]]
+[[][[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce `data()`]][Pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a3ac0ed788bfecd5103183f0b705d602d `data()`]][Const pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]`, `[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` + `[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 size()]`)`] is a valid range. For a non-empty vector [^[link classboost_1_1container_1_1static__vector_1aa1fed11b189287b9e671ab935332c5ce data()]` == &`[link classboost_1_1container_1_1static__vector_1a88bab6629556db28aac8a3e3142e3137 front()]]. ]]
+[[][[link classboost_1_1container_1_1static__vector_1aa2cd3e93cea4913f4c7a9e2e8c5f6628 `begin()`]][Returns iterator to the first element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a5ad66643c38c5c0c5754b010011c0024 `begin()`]][Returns const iterator to the first element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a33bd2d5cff22aa5a88050026367416a6 `cbegin()`]][Returns const iterator to the first element. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a14db552be707d1da6b6a3298650316bc `end()`]][Returns iterator to the one after the last element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1af619ba0152426c44cb59bd567c906139 `end()`]][Returns const iterator to the one after the last element. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1ad98b548743fab88322301e7a724ff73e `cend()`]][Returns const iterator to the one after the last element. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a692f56e1145d27694f3f01462921e4ad `rbegin()`]][Returns reverse iterator to the first element of the reversed container. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a2cb882180fb82fe20104656b08ad0127 `rbegin()`]][Returns const reverse iterator to the first element of the reversed container. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a443d1701ea36063ebff8c350ed45bc20 `crbegin()`]][Returns const reverse iterator to the first element of the reversed container. ]]
+[[][[link classboost_1_1container_1_1static__vector_1ad1fe8aaeafefaf37ba49801f1f769c93 `rend()`]][Returns reverse iterator to the one after the last element of the reversed container. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a660c0d82338d1c8c55546ece061cb7fa `rend()`]][Returns const reverse iterator to the one after the last element of the reversed container. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1a9a5f65095c083b516585d1054338e850 `crend()`]][Returns const reverse iterator to the one after the last element of the reversed container. ]]
+[[`static`][[link classboost_1_1container_1_1static__vector_1aabaf12d350a1b5457ba8ae4176819844 `capacity()`]][Returns container's capacity. ]]
+[[`static`][[link classboost_1_1container_1_1static__vector_1afe9bdc2c8fd236e17b946963f6497b83 `max_size()`]][Returns container's capacity. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1af2a0e0148e73a8b6799ac7af3a26d6a3 `size()`]][Returns the number of stored elements. ]]
+[[ `const`][[link classboost_1_1container_1_1static__vector_1aa408660722a22b80104613e28c514fc8 `empty()`]][Queries if the container contains elements. ]]
+[[][[link classboost_1_1container_1_1static__vector_1a4d89dc588ace1ce15c307a923a89f1b5 `shrink_to_fit()`]][Capacity is fixed so this call has no effects. ]]
 ]
 
 [#classboost_1_1container_1_1static__vector_1ae0f7f391d06180aea516a6b03b3402c2]
@@ -153,7 +153,8 @@ Constructs a [link classboost_1_1container_1_1static__vector static_vector] cont
 `static_vector``(`[^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]] `count``)`
 ]
 
-[heading Parameter(s)]
+[heading Modifier(s)]
+``explicit ``[heading Parameter(s)]
 [table 
 [[Type][Name][Description]]
 [[[^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]]][ `count` ][The number of values which will be contained in the container.]]
@@ -1049,7 +1050,8 @@ Returns const reference to the i-th element.
 [^[link classboost_1_1container_1_1static__vector_1a05ebdcd801a4e03109a709ab91981e4a const_reference]] `at``(`[^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]] `i``)`
 ]
 
-[heading Parameter(s)]
+[heading Modifier(s)]
+``const ``[heading Parameter(s)]
 [table 
 [[Type][Name][Description]]
 [[[^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]]][ `i` ][The element's index.]]
@@ -1105,7 +1107,8 @@ Returns const reference to the i-th element.
 [^[link classboost_1_1container_1_1static__vector_1a05ebdcd801a4e03109a709ab91981e4a const_reference]] `operator[]``(`[^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]] `i``)`
 ]
 
-[heading Parameter(s)]
+[heading Modifier(s)]
+``const ``[heading Parameter(s)]
 [table 
 [[Type][Name][Description]]
 [[[^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]]][ `i` ][The element's index.]]
@@ -1156,7 +1159,8 @@ Returns const reference to the first element.
 [^[link classboost_1_1container_1_1static__vector_1a05ebdcd801a4e03109a709ab91981e4a const_reference]] `front``()`
 ]
 
-[heading Precondition(s)]
+[heading Modifier(s)]
+``const ``[heading Precondition(s)]
 [^`!empty`]()
 
 [heading Returns]
@@ -1202,7 +1206,8 @@ Returns const reference to the first element.
 [^[link classboost_1_1container_1_1static__vector_1a05ebdcd801a4e03109a709ab91981e4a const_reference]] `back``()`
 ]
 
-[heading Precondition(s)]
+[heading Modifier(s)]
+``const ``[heading Precondition(s)]
 [^`!empty`]()
 
 [heading Returns]
@@ -1243,7 +1248,8 @@ Const pointer such that [^`[`[link classboost_1_1container_1_1static__vector_1aa
 `const Value *` `data``()`
 ]
 
-[heading Throws]
+[heading Modifier(s)]
+``const ``[heading Throws]
 Nothing.
 
 [heading Complexity]
@@ -1281,7 +1287,8 @@ Returns const iterator to the first element.
 [^[link classboost_1_1container_1_1static__vector_1af9d23146b9e766c7ea2453a48ca63eae const_iterator]] `begin``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_iterator to the first element contained in the vector.
 [heading Throws]
 Nothing.
@@ -1301,7 +1308,8 @@ Returns const iterator to the first element.
 [^[link classboost_1_1container_1_1static__vector_1af9d23146b9e766c7ea2453a48ca63eae const_iterator]] `cbegin``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_iterator to the first element contained in the vector.
 [heading Throws]
 Nothing.
@@ -1341,7 +1349,8 @@ Returns const iterator to the one after the last element.
 [^[link classboost_1_1container_1_1static__vector_1af9d23146b9e766c7ea2453a48ca63eae const_iterator]] `end``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_iterator pointing to the one after the last element contained in the vector.
 [heading Throws]
 Nothing.
@@ -1361,7 +1370,8 @@ Returns const iterator to the one after the last element.
 [^[link classboost_1_1container_1_1static__vector_1af9d23146b9e766c7ea2453a48ca63eae const_iterator]] `cend``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_iterator pointing to the one after the last element contained in the vector.
 [heading Throws]
 Nothing.
@@ -1401,7 +1411,8 @@ Returns const reverse iterator to the first element of the reversed container.
 [^[link classboost_1_1container_1_1static__vector_1aedca56b1b3e41ef352f7cc5c4dabdcd4 const_reverse_iterator]] `rbegin``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_reverse_iterator pointing to the beginning of the reversed [link classboost_1_1container_1_1static__vector static_vector].
 [heading Throws]
 Nothing.
@@ -1421,7 +1432,8 @@ Returns const reverse iterator to the first element of the reversed container.
 [^[link classboost_1_1container_1_1static__vector_1aedca56b1b3e41ef352f7cc5c4dabdcd4 const_reverse_iterator]] `crbegin``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_reverse_iterator pointing to the beginning of the reversed [link classboost_1_1container_1_1static__vector static_vector].
 [heading Throws]
 Nothing.
@@ -1461,7 +1473,8 @@ Returns const reverse iterator to the one after the last element of the reversed
 [^[link classboost_1_1container_1_1static__vector_1aedca56b1b3e41ef352f7cc5c4dabdcd4 const_reverse_iterator]] `rend``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_reverse_iterator pointing to the one after the last element of the reversed [link classboost_1_1container_1_1static__vector static_vector].
 [heading Throws]
 Nothing.
@@ -1481,7 +1494,8 @@ Returns const reverse iterator to the one after the last element of the reversed
 [^[link classboost_1_1container_1_1static__vector_1aedca56b1b3e41ef352f7cc5c4dabdcd4 const_reverse_iterator]] `crend``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 const_reverse_iterator pointing to the one after the last element of the reversed [link classboost_1_1container_1_1static__vector static_vector].
 [heading Throws]
 Nothing.
@@ -1501,7 +1515,8 @@ Returns container's capacity.
 [^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]] `capacity``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``static ``[heading Returns]
 container's capacity.
 [heading Throws]
 Nothing.
@@ -1521,7 +1536,8 @@ Returns container's capacity.
 [^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]] `max_size``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``static ``[heading Returns]
 container's capacity.
 [heading Throws]
 Nothing.
@@ -1541,7 +1557,8 @@ Returns the number of stored elements.
 [^[link classboost_1_1container_1_1static__vector_1a4805729a79dc41f690c279636e20b31e size_type]] `size``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 Number of elements contained in the container.
 [heading Throws]
 Nothing.
@@ -1561,7 +1578,8 @@ Queries if the container contains elements.
 `bool` `empty``()`
 ]
 
-[heading Returns]
+[heading Modifier(s)]
+``const ``[heading Returns]
 true if the number of elements contained in the container is equal to 0.
 [heading Throws]
 Nothing.
