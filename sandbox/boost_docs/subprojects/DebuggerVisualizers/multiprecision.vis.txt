@@ -110,18 +110,28 @@ boost::multiprecision::number<boost::multiprecision::backends::cpp_int_backend<0
 
 boost::multiprecision::number<boost::multiprecision::backends::cpp_dec_float<*,*,void>,*>{
    preview(
-      #if($e.m_backend.exp != 0)(
+      #if($e.m_backend.fpclass == 0)(
+         #if($e.m_backend.exp != 0)(
+            #if($e.m_backend.neg)(
+               #("-", [$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...e", [$e.m_backend.exp,d])
+            ) #else(
+               #([$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...e", [$e.m_backend.exp,d])
+            )
+         )#else(
+            #if($e.m_backend.neg)(
+               #("-", [$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...")
+            ) #else(
+               #([$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...")
+            )
+         )
+      )#elif($e.m_backend.fpclass == 1)(
          #if($e.m_backend.neg)(
-            #("-", [$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...e", [$e.m_backend.exp,d])
-         ) #else(
-            #([$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...e", [$e.m_backend.exp,d])
+            "-INF"
+         )#else(
+            "+INF"
          )
       )#else(
-         #if($e.m_backend.neg)(
-            #("-", [$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...")
-         ) #else(
-            #([$e.m_backend.data.elems[0],u], ".", [$e.m_backend.data.elems[1],u], [$e.m_backend.data.elems[2],u], "...")
-         )
+         "NaN"
       )
    )
    children(
