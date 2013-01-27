@@ -61,9 +61,5 @@ Exceptions can be disabled for cases where they are either not supported or desi
 
 [include generated/varray.qbk]
 [include generated/varray_non_member.qbk]
-[section:reference Predefined strategies]
-[include generated/strategy_def.qbk]
-[include generated/strategy_allocator_adaptor.qbk]
-[endsect]
 
 [endsect]

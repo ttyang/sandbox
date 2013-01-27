@@ -43,7 +43,7 @@
 #include <boost/iterator/reverse_iterator.hpp>
 
 /**
- * @defgroup varray_non_member varray non-member functions (boost::container::)
+ * @defgroup varray_non_member varray non-member functions
  */
 
 namespace boost { namespace container { namespace container_detail {
