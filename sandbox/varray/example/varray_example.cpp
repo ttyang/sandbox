@@ -28,11 +28,10 @@ int main(int argc, char** argv){
   three.push_back(2);    // size: 2
   three.push_back(3);    // size: 3
   
-  //three.reserve(4);    // no effect, fixed capacity: 3
-  //three.push_back(3);  // size: 4, behavior depends on strategy, assert by default
+  //three.reserve(4);    // assert/no effect, fixed capacity: 3
+  //three.push_back(3);  // assert/undefined behavior, fixed capacity: 3
   
   three.pop_back();      // size: 2
-  three.shrink_to_fit(); // no effect, fixed capacity: 3
   
   return 0;
 }
