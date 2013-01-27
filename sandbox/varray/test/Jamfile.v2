@@ -1,0 +1,34 @@
+# Boost.Container varray
+#
+# Copyright (c) 2012-2013 Adam Wulkiewicz, Lodz, Poland.
+#
+# Use, modification and distribution is subject to the Boost Software License,
+# Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+import testing ;
+
+project boost-container-varray-test
+    :
+    requirements
+        <include>.
+        <include>..
+        <include>../..
+        <toolset>msvc:<asynch-exceptions>on
+    ;
+
+test-suite boost-container-varray
+    : [ run varray_test.cpp ]
+    ;
+
+test-suite boost-container-varray_interprocess
+    : [ run varray_interprocess_test.cpp /boost/thread//boost_thread
+        :  # additional args
+        :  # test-files
+        :  # requirements
+        <toolset>acc:<linkflags>-lrt
+        <toolset>acc-pa_risc:<linkflags>-lrt
+        <toolset>gcc-mingw:<linkflags>"-lole32 -loleaut32 -lpsapi -ladvapi32"
+        <host-os>hpux,<toolset>gcc:<linkflags>"-Wl,+as,mpas"
+    ] : <threading>multi
+    ;

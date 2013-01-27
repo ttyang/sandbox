@@ -1,0 +1,69 @@
+[/
+ / Copyright (c) 2012-2013 Adam Wulkiewicz
+ / Copyright (c) 2012 Andrew Hundt
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[library StaticVector
+    [quickbook 1.5]
+    [authors [Wulkiewicz, Adam], [Hundt, Andrew]]
+    [copyright 2012-2013 Adam Wulkiewicz, 2011-2013 Andrew Hundt]
+    [id varray]
+    [category containers]
+    [purpose Containers library]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[section:introduction Introduction]
+
+`varray` is a sequence container like `boost::container::vector` with contiguous storage that can
+change in size, along with the static allocation, low overhead, and fixed capacity of `boost::array`.
+
+The number of elements in a varray may vary dynamically up to a fixed capacity
+because elements are stored within the object itself similarly to an array. However, objects are 
+initialized as they are inserted into varray unlike C arrays or `std::array` which must construct
+all elements on instantiation. The behavior of varray enables the use of statically allocated
+elements in cases with complex object lifetime requirements that would otherwise not be trivially 
+possible. For example values stored in `varray` may not define default constructor or copy constructor.
+
+[heading Example]
+[import ../example/varray_example.cpp]
+[varray_example_cpp]
+
+[heading Implementation details]
+Like containers in `Boost.Container` library, this container implements move semantics and C++11 `std::vector`
+methods like `emplace()`. Implementation uses Boost.Move library and it works on compilers without r-value
+references suport. If the compiler doesn't support variadic templates `BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS`
+`emplace()` and `emplace_back()` overloads are generated.
+
+[heading Runtime Complexity]
+* random access to elements
+* constant time insertion and removal of elements at the end 
+* linear time insertion and removal of elements at the beginning or in the middle. 
+
+[heading Use Cases]
+varray is well suited for use in a buffer, the internal implementation of of other
+classes, or use cases where there is a fixed limit to the number of elements that must be stored. 
+Embedded and realtime applications where allocation either may not be available or acceptable 
+are a particular case where varray can be beneficial.
+
+Exceptions can be disabled for cases where they are either not supported or desired.
+
+[endsect]
+
+[section:reference Reference]
+
+[include generated/varray.qbk]
+[include generated/varray_non_member.qbk]
+[section:reference Predefined strategies]
+[include generated/strategy_def.qbk]
+[include generated/strategy_allocator_adaptor.qbk]
+[endsect]
+
+[endsect]

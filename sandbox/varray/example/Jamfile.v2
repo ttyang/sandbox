@@ -1,0 +1,23 @@
+# Boost.Container varray
+#
+# Copyright (c) 2012-2013 Adam Wulkiewicz, Lodz, Poland.
+#
+# Use, modification and distribution is subject to the Boost Software License,
+# Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+import testing ;
+
+project boost-container-varray-examples
+    :
+    requirements
+        <include>..
+        <include>../..
+        <toolset>msvc:<asynch-exceptions>on
+    ;
+
+exe varray_example : varray_example.cpp ;
+exe varray_set_example : varray_set_example.cpp ;
+exe times : times.cpp ;
+#exe interprocess : interprocess.cpp ;
+#exe bench_static_vector : bench_static_vector.cpp ;
