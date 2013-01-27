@@ -61,11 +61,10 @@
   <span class="identifier">three</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="number">2</span><span class="special">);</span>    <span class="comment">// size: 2</span>
   <span class="identifier">three</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>    <span class="comment">// size: 3</span>
 
-  <span class="comment">//three.reserve(4);    // no effect, fixed capacity: 3</span>
-  <span class="comment">//three.push_back(3);  // size: 4, behavior depends on strategy, assert by default</span>
+  <span class="comment">//three.reserve(4);    // assert/no effect, fixed capacity: 3</span>
+  <span class="comment">//three.push_back(3);  // assert/undefined behavior, fixed capacity: 3</span>
 
   <span class="identifier">three</span><span class="special">.</span><span class="identifier">pop_back</span><span class="special">();</span>      <span class="comment">// size: 2</span>
-  <span class="identifier">three</span><span class="special">.</span><span class="identifier">shrink_to_fit</span><span class="special">();</span> <span class="comment">// no effect, fixed capacity: 3</span>
 
   <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
