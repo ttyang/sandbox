@@ -10,7 +10,7 @@
 [[[link group__varray__non__member_1ga10d2ce7ca29d0665a59cb96215b49440 `operator>(varray<...> const &, varray<...> const &)`]][Lexicographically compares varrays. ]]
 [[[link group__varray__non__member_1ga9dc9344081e4f2e6636cfe6080e06c56 `operator<=(varray<...> const &, varray<...> const &)`]][Lexicographically compares varrays. ]]
 [[[link group__varray__non__member_1ga421e358bc22b19e49fd63fb462c35c5d `operator>=(varray<...> const &, varray<...> const &)`]][Lexicographically compares varrays. ]]
-[[[link group__varray__non__member_1gac4af1128111dd5e63afc195f8b3e0ec4 `swap(varray<...> &, varray<...> &)`]][Swaps contents of two varrays. ]]
+[[[link group__varray__non__member_1ga2145a9f7be85a7a4e3919d2ce2eb0de9 `swap(container::varray<...> &, container::varray<...> &)`]][Swaps contents of two varrays. ]]
 ]
 
 [#group__varray__non__member_1gaba927647f8414bfa8109140f6b9d5a9c]
@@ -163,24 +163,24 @@ Linear O(N).
 
 [endsect]
 
-[#group__varray__non__member_1gac4af1128111dd5e63afc195f8b3e0ec4]
-[section swap(varray<...> &, varray<...> &)]
+[#group__varray__non__member_1ga2145a9f7be85a7a4e3919d2ce2eb0de9]
+[section swap(container::varray<...> &, container::varray<...> &)]
 Swaps contents of two varrays. 
 
 [heading Description]
-This function calls [link classboost_1_1container_1_1varray_1a002fb09972d8a2f11673265d0d06a100 varray::swap()].[heading Synopsis]
+This function calls [link group__varray__non__member_1ga2145a9f7be85a7a4e3919d2ce2eb0de9 varray::swap()].[heading Synopsis]
 [pre
 `template<``typename V``,`
          `std::size_t C1``,`
          `std::size_t C2``>`
-`void boost::container::swap``(``varray< V, C1 > &` `x``,` `varray< V, C2 > &` `y``)`
+`void boost::swap``(``container::varray< V, C1 > &` `x``,` `container::varray< V, C2 > &` `y``)`
 ]
 
 [heading Parameter(s)]
 [table 
 [[Type][Name][Description]]
-[[`varray< V, C1 > &`][ `x` ][The first varray. ]]
-[[`varray< V, C2 > &`][ `y` ][The second varray.]]
+[[`container::varray< V, C1 > &`][ `x` ][The first varray. ]]
+[[`container::varray< V, C2 > &`][ `y` ][The second varray.]]
 ]
 [heading Complexity]
 Linear O(N). 

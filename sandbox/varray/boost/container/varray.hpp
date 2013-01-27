@@ -971,6 +971,12 @@ bool operator<= (varray<V, C1> const& x, varray<V, C2> const& y);
 template<typename V, std::size_t C1, std::size_t C2>
 bool operator>= (varray<V, C1> const& x, varray<V, C2> const& y);
 
+#endif // BOOST_CONTAINER_DOXYGEN_INVOKED
+
+}} // namespace boost::container
+
+namespace boost {
+
 //! @brief Swaps contents of two varrays.
 //!
 //! This function calls varray::swap().
@@ -983,11 +989,13 @@ bool operator>= (varray<V, C1> const& x, varray<V, C2> const& y);
 //! @par Complexity
 //!   Linear O(N).
 template<typename V, std::size_t C1, std::size_t C2>
-inline void swap(varray<V, C1> & x, varray<V, C2> & y);
+inline void swap(container::varray<V, C1> & x,
+                 container::varray<V, C2> & y)
+{
+    x.swap(y);
+}
 
-#endif // BOOST_CONTAINER_DOXYGEN_INVOKED
-
-}} // namespace boost::container
+} // namespace boost
 
 #include <boost/container/detail/config_end.hpp>
 

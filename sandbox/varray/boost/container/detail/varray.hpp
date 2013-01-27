@@ -984,14 +984,14 @@ public:
         {
             namespace sv = varray_detail;
 
-            std::fill_n(this->begin(), count, value);
+            std::fill_n(this->begin(), count, value);                               // may throw
             sv::destroy(this->begin() + count, this->end());
         }
         else
         {
             errh::check_capacity(*this, count);                                     // may throw
 
-            std::fill_n(this->begin(), m_size, value);
+            std::fill_n(this->begin(), m_size, value);                              // may throw
             std::uninitialized_fill(this->end(), this->begin() + count, value);     // may throw
         }
         m_size = count; // update end
@@ -1507,15 +1507,6 @@ public:
     //! @par Complexity
     //!   Constant O(1).
     bool empty() const { return 0 == m_size; }
-
-    //! @brief Capacity is fixed so this call has no effects.
-    //!
-    //! @par Throws
-    //!   Nothing.
-    //!
-    //! @par Complexity
-    //!   Constant O(1).
-    void shrink_to_fit() {}
 
 private:
 
@@ -2123,7 +2114,6 @@ public:
     size_type max_size() const { return 0; }
     size_type size() const { return 0; }
     bool empty() const { return true; }
-    void shrink_to_fit() {}
 
 private:
 
@@ -2242,6 +2232,10 @@ bool operator>= (varray<V, C1, S1> const& x, varray<V, C2, S2> const& y)
     return !(x<y);
 }
 
+}}} // namespace boost::container::container_detail
+
+namespace boost {
+
 //! @brief Swaps contents of two varrays.
 //!
 //! This function calls varray::swap().
@@ -2254,12 +2248,13 @@ bool operator>= (varray<V, C1, S1> const& x, varray<V, C2, S2> const& y)
 //! @par Complexity
 //!   Linear O(N).
 template<typename V, std::size_t C1, typename S1, std::size_t C2, typename S2>
-inline void swap(varray<V, C1, S1> & x, varray<V, C2, S2> & y)
+inline void swap(container::container_detail::varray<V, C1, S1> & x,
+                 container::container_detail::varray<V, C2, S2> & y)
 {
     x.swap(y);
 }
 
-}}} // namespace boost::container::container_detail
+} // namespace boost
 
 #include <boost/container/detail/config_end.hpp>
 
