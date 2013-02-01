@@ -562,6 +562,33 @@ void construct(I pos, BOOST_FWD_REF(Args) ...args)
 
 #else // !BOOST_NO_VARIADIC_TEMPLATES
 
+// construct(I)
+
+template <typename I>
+inline
+void construct_dispatch(I pos,
+                        ::boost::mpl::bool_<true> const& /*empty_constr*/)
+{}
+
+template <typename I>
+inline
+void construct_dispatch(I pos,
+                        ::boost::mpl::bool_<false> const& /*empty_constr*/)
+{
+    typedef typename ::boost::iterator_value<I>::type V;
+    new (static_cast<void*>(::boost::addressof(*pos))) V();                      // may throw
+}
+
+template <typename I>
+inline
+void construct(I pos)
+{
+    typedef typename ::boost::iterator_value<I>::type V;
+    typedef typename ::boost::has_trivial_constructor<V>::type empty_constr;
+
+    construct_dispatch(pos, empty_constr());                                   // may throw
+}
+
 // BOOST_NO_RVALUE_REFERENCES -> P0 const& p0
 // !BOOST_NO_RVALUE_REFERENCES -> P0 && p0
 // which means that version with one parameter may take V const& v

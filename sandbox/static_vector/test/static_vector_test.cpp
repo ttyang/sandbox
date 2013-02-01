@@ -583,6 +583,22 @@ void test_swap_and_move_nd()
 }
 
 template <typename T, size_t N>
+void test_emplace_0p()
+{
+    //emplace_back()
+    {
+        static_vector<T, N, bad_alloc_strategy<T> > v;
+
+        for (int i = 0 ; i < int(N) ; ++i )
+            v.emplace_back();
+        BOOST_CHECK(v.size() == N);
+#ifndef BOOST_NO_EXCEPTIONS
+        BOOST_CHECK_THROW(v.emplace_back(), std::bad_alloc);
+#endif
+    }
+}
+
+template <typename T, size_t N>
 void test_emplace_2p()
 {
     //emplace_back(pos, int, int)
@@ -745,6 +761,9 @@ int test_main(int, char* [])
     BOOST_CHECK(counting_value::count() == 0);
     test_swap_and_move_nd<shptr_value, 10>();
     test_swap_and_move_nd<copy_movable, 10>();
+
+    test_emplace_0p<counting_value, 10>();
+    BOOST_CHECK(counting_value::count() == 0);
 
     test_emplace_2p<counting_value, 10>();
     BOOST_CHECK(counting_value::count() == 0);
