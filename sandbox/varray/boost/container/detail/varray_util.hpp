@@ -464,9 +464,13 @@ O move_if_noexcept(I first, I last, O dst)
 
 template <typename I>
 inline
-void uninitialized_fill_dispatch(I /*first*/, I /*last*/,
+void uninitialized_fill_dispatch(I first, I last,
                                  boost::true_type const& /*has_trivial_constructor*/)
-{}
+{
+    typedef typename boost::iterator_value<I>::type value_type;
+    for ( ; first != last ; ++first )
+        new (boost::addressof(*first)) value_type();
+}
 
 template <typename I>
 inline
@@ -501,27 +505,10 @@ void uninitialized_fill(I first, I last)
 
 template <typename I>
 inline
-void construct_dispatch(I pos,
-                        ::boost::mpl::bool_<true> const& /*empty_constr*/)
-{}
-
-template <typename I>
-inline
-void construct_dispatch(I pos,
-                        ::boost::mpl::bool_<false> const& /*empty_constr*/)
-{
-    typedef typename ::boost::iterator_value<I>::type V;
-    new (static_cast<void*>(::boost::addressof(*pos))) V();                      // may throw
-}
-
-template <typename I>
-inline
 void construct(I pos)
 {
-    typedef typename ::boost::iterator_value<I>::type V;
-    typedef typename ::boost::has_trivial_constructor<V>::type empty_constr;
-
-    construct_dispatch(pos, empty_constr());                                    // may throw
+    typedef typename ::boost::iterator_value<I>::type value_type;
+    new (static_cast<void*>(::boost::addressof(*pos))) value_type();                      // may throw
 }
 
 // construct(I, V)
