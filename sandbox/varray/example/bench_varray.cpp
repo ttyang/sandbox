@@ -94,10 +94,10 @@ int main()
         std::cout << "varray benchmark:\n";
         cpu_times tsv = time_it<boost::container::varray<boost::container::varray<std::size_t,N>,N > >();
         
-        std::cout << "vector benchmark with stack allocation\n";
+        std::cout << "vector benchmark\n";
         cpu_times tvs = time_it<boost::container::vector<boost::container::vector<std::size_t> > >();
         
-        std::cout << "vector benchmark\n";
+        std::cout << "vector benchmark with stack allocation\n";
         cpu_times tv = time_it<boost::container::vector<boost::container::vector<std::size_t,boost::signals2::detail::stack_allocator<std::size_t,N> > > >();
         
         std::cout << "varray/vector total time comparison:"
