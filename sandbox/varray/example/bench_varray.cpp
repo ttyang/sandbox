@@ -27,7 +27,7 @@
 
 #ifdef _POSIX_VERSION
 #include <sys/resource.h>
-#endif
+#endif // _POSIX_VERSION
 using boost::timer::cpu_timer;
 using boost::timer::cpu_times;
 using boost::timer::nanosecond_type;
@@ -97,6 +97,14 @@ cpu_times time_it()
     return totalTime.elapsed();
 }
 
+void compare_times(cpu_times time_numerator, cpu_times time_denominator){
+    std::cout
+    << "\n  wall          = " << ((double)time_numerator.wall/(double)time_denominator.wall)
+    << "\n  user          = " << ((double)time_numerator.user/(double)time_denominator.user)
+    << "\n  system        = " << ((double)time_numerator.system/(double)time_denominator.system)
+    << "\n  (user+system) = " << ((double)(time_numerator.system+time_numerator.user)/(double)(time_denominator.system+time_denominator.user)) << "\n\n";
+}
+
 int main()
 {
 // increase the stack space on posix platforms
@@ -125,25 +133,15 @@ std::cout << (result ? "failed to set stack size limit to: " : "set stack size l
         std::cout << "std::vector benchmark\n";
         cpu_times time_standard_vector = time_it<std::vector<std::vector<std::size_t> > >();
         
-        std::cout << "varray/boost::container::vector total time comparison:"
-        << "\n  wall          = " << ((double)time_varray.wall/(double)time_boost_vector.wall)
-        << "\n  user          = " << ((double)time_varray.user/(double)time_boost_vector.user)
-        << "\n  system        = " << ((double)time_varray.system/(double)time_boost_vector.system)
-        << "\n  (user+system) = " << ((double)(time_varray.system+time_varray.user)/(double)(time_boost_vector.system+time_boost_vector.user)) << "\n\n";
+        std::cout << "varray/boost::container::vector total time comparison:";
+        compare_times(time_varray, time_boost_vector);
         
+        std::cout << "varray/(boost::container::vector + stack_allocator) total time comparison:";
+        compare_times(time_varray, time_boost_vector_stack);
         
-        std::cout << "varray/(boost::container::vector + stack_allocator) total time comparison:"
-        << "\n  wall          = " << ((double)time_varray.wall/(double)time_boost_vector_stack.wall)
-        << "\n  user          = " << ((double)time_varray.user/(double)time_boost_vector_stack.user)
-        << "\n  system        = " << ((double)time_varray.system/(double)time_boost_vector_stack.system)
-        << "\n  (user+system) = " << ((double)(time_varray.system+time_varray.user)/(double)(time_boost_vector_stack.system+time_boost_vector_stack.user)) << "\n\n";
+        std::cout << "varray/std::vector total time comparison:";
+        compare_times(time_varray,time_standard_vector);
         
-        
-        std::cout << "varray/std::vector total time comparison:"
-        << "\n  wall          = " << ((double)time_varray.wall/(double)time_standard_vector.wall)
-        << "\n  user          = " << ((double)time_varray.user/(double)time_standard_vector.user)
-        << "\n  system        = " << ((double)time_varray.system/(double)time_standard_vector.system)
-        << "\n  (user+system) = " << ((double)(time_varray.system+time_varray.user)/(double)(time_standard_vector.system+time_standard_vector.user)) << '\n';
     }catch(std::exception e){
         std::cout << e.what();
     }
