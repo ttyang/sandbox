@@ -25,11 +25,14 @@
 #include <algorithm>
 #include <exception>
 
+#ifdef _POSIX_VERSION
+#include <sys/resource.h>
+#endif
 using boost::timer::cpu_timer;
 using boost::timer::cpu_times;
 using boost::timer::nanosecond_type;
 
-static const std::size_t N = 720; // note: if N is too large you will run out of stack space. It is possible to increase the stack limit on some platforms.
+static const std::size_t N = 1000; // note: if N is too large you will run out of stack space. It is possible to increase the stack limit on some platforms.
 
 extern bool some_test;
 
@@ -37,6 +40,7 @@ template<typename T>
 T get_set(std::size_t)
 {
     T s;
+    s.reserve(N);
     for (std::size_t i = 0; i < N; ++i)
         s.push_back(std::rand());
         
@@ -49,6 +53,7 @@ template<typename T>
 T generate()
 {
     T v;
+    v.reserve(N);
     for (std::size_t i = 0; i < N; ++i)
         v.push_back(get_set<typename T::value_type>(i));
     if (some_test)
@@ -59,27 +64,33 @@ T generate()
 template<typename T>
 cpu_times time_it()
 {
-    cpu_timer totalTime, stepTime;
-    {
+    cpu_timer sortTime,rotateTime,destructionTime;
+    sortTime.stop();rotateTime.stop();destructionTime.stop();
+    cpu_timer totalTime, constructTime;
+    for(std::size_t i = 0; i< N; ++i){
+        
+      constructTime.resume();
+      {
         T v = generate<T>();
-        totalTime.stop(); stepTime.stop();
-        std::cout << "  construction took " << boost::timer::format(stepTime.elapsed());
+        constructTime.stop();
         
-        totalTime.resume(); stepTime.start();
+        sortTime.resume();
         std::sort(v.begin(), v.end());
-        totalTime.stop(); stepTime.stop();
-        std::cout << "  sort took         " << boost::timer::format(stepTime.elapsed());
+        sortTime.stop();
         
-        totalTime.resume(); stepTime.start();
+        rotateTime.resume();
         std::rotate(v.begin(), v.begin() + v.size()/2, v.end());
-        totalTime.stop(); stepTime.stop();
-        std::cout << "  rotate took       " << boost::timer::format(stepTime.elapsed());
+        rotateTime.stop();
         
-        totalTime.resume(); stepTime.start();
+        destructionTime.resume();
+      }
+      destructionTime.stop();
     }
-    
-    totalTime.stop(); stepTime.stop();
-    std::cout << "  destruction took  " << boost::timer::format(stepTime.elapsed());
+    totalTime.stop();
+    std::cout << "  construction took " << boost::timer::format(constructTime.elapsed());
+    std::cout << "  sort took         " << boost::timer::format(sortTime.elapsed());
+    std::cout << "  rotate took       " << boost::timer::format(rotateTime.elapsed());
+    std::cout << "  destruction took  " << boost::timer::format(destructionTime.elapsed());
     std::cout << "  done\n" << std::endl;
     
     std::cout << "  Total time =      " << boost::timer::format(totalTime.elapsed()) << "\n\n\n";
@@ -88,23 +99,51 @@ cpu_times time_it()
 
 int main()
 {
+// increase the stack space on posix platforms
+#ifdef _POSIX_VERSION
+rlimit stack_limit;
+std::size_t min_size(1000000);
+std::size_t min_diff(10000);
+stack_limit.rlim_cur = (sizeof(std::size_t)*2)*N*N + min_size;
+stack_limit.rlim_max = stack_limit.rlim_cur + min_diff;
+
+int result = setrlimit(RLIMIT_STACK, &stack_limit);
+std::cout << (result ? "failed to set stack size limit to: " : "set stack size limit to: ") << stack_limit.rlim_cur << " bytes" << std::endl;
+#endif // _POSIX_VERSION
     try {
         std::cout << "N = " << N << "\n\n";
         
         std::cout << "varray benchmark:\n";
-        cpu_times tsv = time_it<boost::container::varray<boost::container::varray<std::size_t,N>,N > >();
+        cpu_times time_varray = time_it<boost::container::varray<boost::container::varray<std::size_t,N>,N > >();
         
-        std::cout << "vector benchmark\n";
-        cpu_times tvs = time_it<boost::container::vector<boost::container::vector<std::size_t> > >();
+        std::cout << "boost::container::vector benchmark\n";
+        cpu_times time_boost_vector = time_it<boost::container::vector<boost::container::vector<std::size_t> > >();
         
-        std::cout << "vector benchmark with stack allocation\n";
-        cpu_times tv = time_it<boost::container::vector<boost::container::vector<std::size_t,boost::signals2::detail::stack_allocator<std::size_t,N> > > >();
+        std::cout << "boost::container::vector benchmark with stack_allocator\n";
+        cpu_times time_boost_vector_stack = time_it<boost::container::vector<boost::container::vector<std::size_t,boost::signals2::detail::stack_allocator<std::size_t,N> > > >();
         
-        std::cout << "varray/vector total time comparison:"
-        << "\n  wall          = " << ((double)tsv.wall/(double)tv.wall)
-        << "\n  user          = " << ((double)tsv.user/(double)tv.user)
-        << "\n  system        = " << ((double)tsv.system/(double)tv.system)
-        << "\n  (user+system) = " << ((double)(tsv.system+tsv.user)/(double)(tv.system+tv.user)) << '\n';
+        std::cout << "std::vector benchmark\n";
+        cpu_times time_standard_vector = time_it<std::vector<std::vector<std::size_t> > >();
+        
+        std::cout << "varray/boost::container::vector total time comparison:"
+        << "\n  wall          = " << ((double)time_varray.wall/(double)time_boost_vector.wall)
+        << "\n  user          = " << ((double)time_varray.user/(double)time_boost_vector.user)
+        << "\n  system        = " << ((double)time_varray.system/(double)time_boost_vector.system)
+        << "\n  (user+system) = " << ((double)(time_varray.system+time_varray.user)/(double)(time_boost_vector.system+time_boost_vector.user)) << "\n\n";
+        
+        
+        std::cout << "varray/(boost::container::vector + stack_allocator) total time comparison:"
+        << "\n  wall          = " << ((double)time_varray.wall/(double)time_boost_vector_stack.wall)
+        << "\n  user          = " << ((double)time_varray.user/(double)time_boost_vector_stack.user)
+        << "\n  system        = " << ((double)time_varray.system/(double)time_boost_vector_stack.system)
+        << "\n  (user+system) = " << ((double)(time_varray.system+time_varray.user)/(double)(time_boost_vector_stack.system+time_boost_vector_stack.user)) << "\n\n";
+        
+        
+        std::cout << "varray/std::vector total time comparison:"
+        << "\n  wall          = " << ((double)time_varray.wall/(double)time_standard_vector.wall)
+        << "\n  user          = " << ((double)time_varray.user/(double)time_standard_vector.user)
+        << "\n  system        = " << ((double)time_varray.system/(double)time_standard_vector.system)
+        << "\n  (user+system) = " << ((double)(time_varray.system+time_varray.user)/(double)(time_standard_vector.system+time_standard_vector.user)) << '\n';
     }catch(std::exception e){
         std::cout << e.what();
     }
