@@ -170,6 +170,7 @@ struct varray_traits
 
     typedef boost::false_type use_memop_in_swap_and_move;
     typedef boost::false_type use_optimized_swap;
+    typedef boost::false_type disable_trivial_init;
 };
 
 /**
@@ -621,6 +622,7 @@ public:
     void resize(size_type count)
     {
         namespace sv = varray_detail;
+        typedef typename vt::disable_trivial_init dti;
 
         if ( count < m_size )
         {
@@ -630,7 +632,7 @@ public:
         {
             errh::check_capacity(*this, count);                                     // may throw
 
-            sv::uninitialized_fill(this->end(), this->begin() + count);             // may throw
+            sv::uninitialized_fill(this->end(), this->begin() + count, dti()); // may throw
         }
         m_size = count; // update end
     }

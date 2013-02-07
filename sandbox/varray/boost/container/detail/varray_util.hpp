@@ -465,17 +465,26 @@ O move_if_noexcept(I first, I last, O dst)
 template <typename I>
 inline
 void uninitialized_fill_dispatch(I first, I last,
-                                 boost::true_type const& /*has_trivial_constructor*/)
+                                 boost::true_type const& /*has_trivial_constructor*/,
+                                 boost::true_type const& /*disable_trivial_init*/)
+{}
+
+template <typename I>
+inline
+void uninitialized_fill_dispatch(I first, I last,
+                                 boost::true_type const& /*has_trivial_constructor*/,
+                                 boost::false_type const& /*disable_trivial_init*/)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     for ( ; first != last ; ++first )
         new (boost::addressof(*first)) value_type();
 }
 
-template <typename I>
+template <typename I, typename DisableTrivialInit>
 inline
 void uninitialized_fill_dispatch(I first, I last,
-                                 boost::false_type const& /*has_trivial_constructor*/)
+                                 boost::false_type const& /*has_trivial_constructor*/,
+                                 DisableTrivialInit const& /*not_used*/)
 {
     typedef typename boost::iterator_value<I>::type value_type;
     I it = first;
@@ -493,12 +502,12 @@ void uninitialized_fill_dispatch(I first, I last,
     BOOST_CATCH_END
 }
 
-template <typename I>
+template <typename I, typename DisableTrivialInit>
 inline
-void uninitialized_fill(I first, I last)
+void uninitialized_fill(I first, I last, DisableTrivialInit const& disable_trivial_init)
 {
     typedef typename boost::iterator_value<I>::type value_type;
-    uninitialized_fill_dispatch(first, last, has_trivial_constructor<value_type>());     // may throw
+    uninitialized_fill_dispatch(first, last, has_trivial_constructor<value_type>(), disable_trivial_init);     // may throw
 }
 
 // construct(I)
