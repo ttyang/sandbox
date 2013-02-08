@@ -196,30 +196,24 @@ array_host
         index_t const axis_size=my_array.size(axis_now);
         bool const is_leaf=axis_now==my_axis_end;
         index_t const axis_stride=my_array.stride(axis_now);
-        if(0 == axis_size)
+        a_viz.visit_pre(is_leaf, axis_now);
+        for(index_t i=0; i<axis_size; ++i)
         {
-            a_viz.visit_empty(is_leaf, axis_now);
-        }
-        else
-        {//0 < axis_size
-            for(index_t i=0; i<axis_size; ++i)
+            a_viz.visit_pre(is_leaf, axis_now, i);
+            if(is_leaf)
             {
-                a_viz.visit_pre(is_leaf, axis_now, i);
-                if(is_leaf)
-                {
-                    a_viz.visit_node(my_array.my_data[offset]);
-                }
-                else
-                {
-                    this->accept_off_ax
-                      ( a_viz
-                      , offset
-                      , axis_now+my_axis_dir
-                      );
-                }
-                offset+=axis_stride;
+                a_viz.visit_node(my_array.my_data[offset]);
             }
-        }//0 < axis_size
+            else
+            {
+                this->accept_off_ax
+                  ( a_viz
+                  , offset
+                  , axis_now+my_axis_dir
+                  );
+            }
+            offset+=axis_stride;
+        }
         a_viz.visit_post(is_leaf, axis_now);
     }
 };  
@@ -258,7 +252,7 @@ print_array
     , my_indent(a_indent)
     {}
     
-    void visit_empty( bool is_leaf, index_t axis)
+    void visit_pre( bool is_leaf, index_t axis)
     {
         my_sout<<std::left<<std::setw(my_indent)<<"{";
     }
@@ -267,7 +261,6 @@ print_array
     {
         if(index==0)
         {
-            my_sout<<std::left<<std::setw(my_indent)<<"{";
         }
         else
         {

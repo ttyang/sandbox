@@ -65,7 +65,6 @@ struct iter_stride
     }
 };  
 
-#include <cassert>
 #include "array_dyn.hpp"
 
   template
@@ -92,23 +91,40 @@ reduce_axis
    *    http://aplwiki.com/LearnApl/AplOperators#Reduce_and_scan  
    */
 {
-    assert(a_source.my_dir == dir_rev);
     unsigned const rank=a_source.rank();
-    enum{outer,oper,inner};
-    std::vector<loop> loops(inner+1);
-    if(oper_axis==0)
+    enum
+      { outer //outer loop axis tag (larger strides).
+      , oper    //oper axis tag.
+      , inner //inner loop axis tag (smaller strides).
+      };
+  //[following assumes a_source.my_dir==dir_rev.
+    unsigned max_stride_axis=0;//axis with maximum stride.
+    unsigned min_stride_axis=rank-1;//axis with minimum stride.
+    int greater_axis=-1;//axis increment to axis with greater stride.
+  //]preceding assumed a_source.my_dir==dir_rev.
+    if(a_source.my_dir != dir_rev)
     {
+      //Adjust if above assumption about a_source.my_dir wrong.
+        std::swap(min_stride_axis,max_stride_axis);
+        greater_axis=1;
+    }
+    std::vector<loop> loops(inner+1);
+    if(oper_axis==max_stride_axis)
+    {
+      //Since oper_axis already at maximum stride,
+      //created a pseudo axis of size 1 and stride 1
+      //so that outer loop just executes once.
         loops[outer].stride=1;
         loops[outer].limit =1;
     }
     else
     {
-        loops[outer].stride=a_source.stride(oper_axis-1);
+        loops[outer].stride=a_source.stride(oper_axis+greater_axis);
         loops[outer].limit =a_source.size  ();
     }
     loops[oper ].stride=a_source.stride(oper_axis);
     loops[oper ].limit =a_source.size  (oper_axis)*loops[oper].stride;
-    loops[inner].stride=a_source.stride(rank-1   );
+    loops[inner].stride=a_source.stride(min_stride_axis);
     loops[inner].limit =a_source.stride(oper_axis);
       auto
     shape_target=a_source.shape()

@@ -393,7 +393,7 @@ box_domain
         for( unsigned i=0; i<n && result; ++i,++index_iter)
         {
             index_t index_i=*index_iter;
-            result = 0<=index_i && index_i<size(i);
+            result = index_i<size(i);
         }
         return result;
     }
