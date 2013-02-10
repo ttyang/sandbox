@@ -42,8 +42,6 @@
 
 // TODO - move vectors iterators optimization to the other, optional file instead of checking defines?
 
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
-
 #if defined(BOOST_CONTAINER_VARRAY_ENABLE_VECTORS_OPTIMIZATION) && !defined(BOOST_NO_EXCEPTIONS)
 #include <vector>
 #include <boost/container/vector.hpp>
@@ -110,17 +108,7 @@ struct are_elements_contiguous<
 
 }}} // namespace boost::container::varray_detail
 
-#endif // !BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-
 namespace boost { namespace container { namespace varray_detail {
-
-// TODO
-// Does BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION checks have any sense?
-// Boost.MPL and Boost.Container might not be used but
-// Boost.Iterator also uses partial specialization
-// and in fact iterator_traits won't work if there is no partial specialization
-
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION)
 
 template <typename I, typename O>
 struct are_corresponding :
@@ -507,17 +495,35 @@ inline
 void uninitialized_fill(I first, I last, DisableTrivialInit const& disable_trivial_init)
 {
     typedef typename boost::iterator_value<I>::type value_type;
-    uninitialized_fill_dispatch(first, last, has_trivial_constructor<value_type>(), disable_trivial_init);     // may throw
+    uninitialized_fill_dispatch(first, last, boost::has_trivial_constructor<value_type>(), disable_trivial_init);     // may throw
 }
 
 // construct(I)
 
 template <typename I>
 inline
-void construct(I pos)
+void construct_dispatch(boost::mpl::bool_<true> const& /*dont_init*/, I pos)
+{}
+
+template <typename I>
+inline
+void construct_dispatch(boost::mpl::bool_<false> const& /*dont_init*/, I pos)
 {
     typedef typename ::boost::iterator_value<I>::type value_type;
     new (static_cast<void*>(::boost::addressof(*pos))) value_type();                      // may throw
+}
+
+template <typename DisableTrivialInit, typename I>
+inline
+void construct(DisableTrivialInit const&, I pos)
+{
+    typedef typename ::boost::iterator_value<I>::type value_type;
+    typedef typename ::boost::mpl::and_<
+        boost::has_trivial_constructor<value_type>,
+        DisableTrivialInit
+    >::type dont_init;
+
+    construct_dispatch(dont_init(), pos);                                                // may throw
 }
 
 // construct(I, V)
@@ -539,9 +545,10 @@ void construct_dispatch(I pos, P const& p,
     new (static_cast<void*>(boost::addressof(*pos))) V(p);                      // may throw
 }
 
-template <typename I, typename P>
+template <typename DisableTrivialInit, typename I, typename P>
 inline
-void construct(I pos, P const& p)
+void construct(DisableTrivialInit const&,
+               I pos, P const& p)
 {
     typedef typename
     ::boost::mpl::and_<
@@ -555,9 +562,9 @@ void construct(I pos, P const& p)
 
 // Needed by push_back(V &&)
 
-template <typename I, typename P>
+template <typename DisableTrivialInit, typename I, typename P>
 inline
-void construct(I pos, BOOST_RV_REF(P) p)
+void construct(DisableTrivialInit const&, I pos, BOOST_RV_REF(P) p)
 {
     typedef typename
     ::boost::mpl::and_<
@@ -575,9 +582,11 @@ void construct(I pos, BOOST_RV_REF(P) p)
 #if !defined(BOOST_CONTAINER_VARRAY_DISABLE_EMPLACE)
 #if !defined(BOOST_NO_VARIADIC_TEMPLATES)
 
-template <typename I, class ...Args>
+template <typename DisableTrivialInit, typename I, class ...Args>
 inline
-void construct(I pos, BOOST_FWD_REF(Args) ...args)
+void construct(DisableTrivialInit const&,
+               I pos,
+               BOOST_FWD_REF(Args) ...args)
 {
     typedef typename boost::iterator_value<I>::type V;
     new (static_cast<void*>(boost::addressof(*pos))) V(::boost::forward<Args>(args)...);    // may throw
@@ -590,9 +599,10 @@ void construct(I pos, BOOST_FWD_REF(Args) ...args)
 // which means that version with one parameter may take V const& v
 
 #define BOOST_PP_LOCAL_MACRO(n)                                                                     \
-template <typename I, typename P BOOST_PP_ENUM_TRAILING_PARAMS(n, typename P) >                     \
+template <typename DisableTrivialInit, typename I, typename P BOOST_PP_ENUM_TRAILING_PARAMS(n, typename P) >  \
 inline                                                                                              \
-void construct(I pos,                                                                               \
+void construct(DisableTrivialInit const&,                                                           \
+               I pos,                                                                               \
                BOOST_CONTAINER_PP_PARAM(P, p)                                                       \
                BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_LIST, _))                         \
 {                                                                                                   \
@@ -647,114 +657,6 @@ void assign(I pos, BOOST_RV_REF(V) v)
     *pos = v;                                                                     // may throw
 }
 
-#else // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-
-template <typename I, typename O>
-inline O copy(I first, I last, O dst)
-{
-    return std::copy(first, last, dst);                                         // may throw
-}
-
-template <typename I, typename F>
-inline F uninitialized_copy(I first, I last, F dst)
-{
-    return std::uninitialized_copy(first, last, dst);                           // may throw
-}
-
-template <typename I, typename O>
-inline O move(I first, I last, O dst)
-{
-    return std::copy(first, last, dst);                                         // may throw
-}
-
-template <typename BDI, typename BDO>
-inline BDO move_backward(BDI first, BDI last, BDO dst)
-{
-    return std::copy_backward(first, last, dst);                                // may throw
-}
-
-template <typename I, typename O>
-inline O uninitialized_move(I first, I last, O dst)
-{
-    //return boost::uninitialized_move(first, last, dst);                         // may throw
-
-    O o = dst;
-
-    BOOST_TRY
-    {
-        typedef typename std::iterator_traits<O>::value_type value_type;
-        for (; first != last; ++first, ++o )
-            new (boost::addressof(*o)) value_type(boost::move(*first));
-    }
-    BOOST_CATCH(...)
-    {
-        destroy(dst, o);
-        BOOST_RETHROW;
-    }
-    BOOST_CATCH_END
-
-    return dst;
-}
-
-template <typename I, typename O>
-inline O uninitialized_move_if_noexcept(I first, I last, O dst)
-{
-    return uninitialized_copy(first, last, dst);                                    // may throw
-}
-
-template <typename I, typename O>
-inline O move_if_noexcept(I first, I last, O dst)
-{
-    return copy(first, last, dst);                                                  // may throw
-}
-
-template <typename I>
-inline void destroy(I first, I last)
-{
-    typedef typename boost::iterator_value<I>::type value_type;
-    for ( ; first != last ; ++first )
-        first->~value_type();
-}
-
-template <typename I>
-inline void destroy(I pos)
-{
-    typedef typename boost::iterator_value<I>::type value_type;
-    pos->~value_type();
-}
-
-template <typename I>
-inline void uninitialized_fill(I first, I last)
-{
-    typedef typename boost::iterator_value<I>::type value_type;
-    I it = first;
-    
-    BOOST_TRY
-    {
-        for ( ; it != last ; ++it )
-            new (boost::addressof(*it)) value_type();                           // may throw
-    }
-    BOOST_CATCH(...)
-    {
-        destroy(first, it);
-        BOOST_RETHROW;
-    }
-    BOOST_CATCH_END
-}
-
-template <typename I, typename V>
-inline void construct(I pos, V const& v)
-{
-    new (static_cast<void*>(boost::addressof(*pos))) V(v);                      // may throw
-}
-
-template <typename I, typename V>
-inline void assign(I pos, V const& v)
-{
-    *pos = v;                                                                   // may throw
-}
-
-#endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 // uninitialized_copy_s
 
@@ -771,7 +673,8 @@ inline std::size_t uninitialized_copy_s(I first, I last, F dest, std::size_t max
             if ( max_count <= count )
                 return (std::numeric_limits<std::size_t>::max)();
 
-            construct(it, *first);                                              // may throw
+            // dummy 0 as DisableTrivialInit
+            construct(0, it, *first);                                              // may throw
         }
     }
     BOOST_CATCH(...)

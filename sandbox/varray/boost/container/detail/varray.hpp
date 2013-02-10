@@ -704,10 +704,12 @@ public:
     //!   Constant O(1).
     void push_back(value_type const& value)
     {
+        typedef typename vt::disable_trivial_init dti;
+
         errh::check_capacity(*this, m_size + 1);                                    // may throw
         
         namespace sv = varray_detail;
-        sv::construct(this->end(), value);                                          // may throw
+        sv::construct(dti(), this->end(), value);                                          // may throw
         ++m_size; // update end
     }
 
@@ -727,10 +729,12 @@ public:
     //!   Constant O(1).
     void push_back(BOOST_RV_REF(value_type) value)
     {
+        typedef typename vt::disable_trivial_init dti;
+
         errh::check_capacity(*this, m_size + 1);                                    // may throw
 
         namespace sv = varray_detail;
-        sv::construct(this->end(), value);                                          // may throw
+        sv::construct(dti(), this->end(), value);                                          // may throw
         ++m_size; // update end
     }
 
@@ -1017,12 +1021,14 @@ public:
     //! @par Complexity
     //!   Constant O(1).
     template<class ...Args>
-    void emplace_back(Args &&...args)
+    void emplace_back(BOOST_FWD_REF(Args) ...args)
     {
+        typedef typename vt::disable_trivial_init dti;
+
         errh::check_capacity(*this, m_size + 1);                                    // may throw
 
         namespace sv = varray_detail;
-        sv::construct(this->end(), ::boost::forward<Args>(args)...);                // may throw
+        sv::construct(dti(), this->end(), ::boost::forward<Args>(args)...);                // may throw
         ++m_size; // update end
     }
 
@@ -1045,8 +1051,10 @@ public:
     //! @par Complexity
     //!   Constant or linear.
     template<class ...Args>
-    iterator emplace(iterator position, Args &&...args)
+    iterator emplace(iterator position, BOOST_FWD_REF(Args) ...args)
     {
+        typedef typename vt::disable_trivial_init dti;
+
         namespace sv = varray_detail;
 
         errh::check_iterator_end_eq(*this, position);
@@ -1054,7 +1062,7 @@ public:
 
         if ( position == this->end() )
         {
-            sv::construct(position, ::boost::forward<Args>(args)...);               // may throw
+            sv::construct(dti(), position, ::boost::forward<Args>(args)...);               // may throw
             ++m_size; // update end
         }
         else
@@ -1063,13 +1071,13 @@ public:
 
             // TODO - should move be used only if it's nonthrowing?
             value_type & r = *(this->end() - 1);
-            sv::construct(this->end(), boost::move(r));                             // may throw
+            sv::construct(dti(), this->end(), boost::move(r));                             // may throw
             ++m_size; // update end
             sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
 
             aligned_storage<sizeof(value_type), alignment_of<value_type>::value> temp_storage;
             value_type * val_p = static_cast<value_type *>(temp_storage.address());
-            sv::construct(val_p, ::boost::forward<Args>(args)...);                  // may throw
+            sv::construct(dti(), val_p, ::boost::forward<Args>(args)...);                  // may throw
             sv::scoped_destructor<value_type> d(val_p);
             sv::assign(position, ::boost::move(*val_p));                            // may throw
         }
@@ -1083,10 +1091,12 @@ public:
     BOOST_PP_EXPR_IF(n, template<) BOOST_PP_ENUM_PARAMS(n, class P) BOOST_PP_EXPR_IF(n, >)       \
     void emplace_back(BOOST_PP_ENUM(n, BOOST_CONTAINER_PP_PARAM_LIST, _))                        \
     {                                                                                            \
+        typedef typename vt::disable_trivial_init dti;                                           \
+                                                                                                 \
         errh::check_capacity(*this, m_size + 1);                                    /*may throw*/\
                                                                                                  \
         namespace sv = varray_detail;                                                     \
-        sv::construct(this->end() BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
+        sv::construct(dti(), this->end() BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
         ++m_size; /*update end*/                                                                 \
     }                                                                                            \
     //
@@ -1097,14 +1107,15 @@ public:
     BOOST_PP_EXPR_IF(n, template<) BOOST_PP_ENUM_PARAMS(n, class P) BOOST_PP_EXPR_IF(n, >)          \
     iterator emplace(iterator position BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_LIST, _)) \
     {                                                                                               \
-        namespace sv = varray_detail;                                                        \
+        typedef typename vt::disable_trivial_init dti;                                              \
+        namespace sv = varray_detail;                                                               \
                                                                                                     \
         errh::check_iterator_end_eq(*this, position);                                               \
         errh::check_capacity(*this, m_size + 1);                                       /*may throw*/\
                                                                                                     \
         if ( position == this->end() )                                                              \
         {                                                                                           \
-            sv::construct(position BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
+            sv::construct(dti(), position BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
             ++m_size; /*update end*/                                                                \
         }                                                                                           \
         else                                                                                        \
@@ -1113,13 +1124,13 @@ public:
             /* TODO - should move be used only if it's nonthrowing? */                              \
                                                                                                     \
             value_type & r = *(this->end() - 1);                                                    \
-            sv::construct(this->end(), boost::move(r));                                /*may throw*/\
+            sv::construct(dti(), this->end(), boost::move(r));                                /*may throw*/\
             ++m_size; /*update end*/                                                                \
             sv::move_backward(position, this->end() - 2, this->end() - 1);             /*may throw*/\
                                                                                                     \
             aligned_storage<sizeof(value_type), alignment_of<value_type>::value> temp_storage;      \
             value_type * val_p = static_cast<value_type *>(temp_storage.address());                 \
-            sv::construct(val_p BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
+            sv::construct(dti(), val_p BOOST_PP_ENUM_TRAILING(n, BOOST_CONTAINER_PP_PARAM_FORWARD, _) ); /*may throw*/\
             sv::scoped_destructor<value_type> d(val_p);                                             \
             sv::assign(position, ::boost::move(*val_p));                               /*may throw*/\
         }                                                                                           \
@@ -1677,6 +1688,7 @@ private:
     template <typename V>
     iterator priv_insert(iterator position, V & value)
     {
+        typedef typename vt::disable_trivial_init dti;
         namespace sv = varray_detail;
 
         errh::check_iterator_end_eq(*this, position);
@@ -1684,7 +1696,7 @@ private:
 
         if ( position == this->end() )
         {
-            sv::construct(position, value);                                         // may throw
+            sv::construct(dti(), position, value);                                         // may throw
             ++m_size; // update end
         }
         else
@@ -1693,7 +1705,7 @@ private:
 
             // TODO - should move be used only if it's nonthrowing?
             value_type & r = *(this->end() - 1);
-            sv::construct(this->end(), boost::move(r));                             // may throw
+            sv::construct(dti(), this->end(), boost::move(r));                             // may throw
             ++m_size; // update end
             sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
             sv::assign(position, value);                                            // may throw
@@ -1870,7 +1882,7 @@ private:
     aligned_storage_type m_storage;
 };
 
-#if !defined(BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION) && !defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
+#if !defined(BOOST_CONTAINER_DOXYGEN_INVOKED)
 
 template<typename Value, typename Strategy>
 class varray<Value, 0, Strategy>
@@ -2130,7 +2142,7 @@ private:
     }
 };
 
-#endif // !BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION && !BOOST_CONTAINER_DOXYGEN_INVOKED
+#endif // !BOOST_CONTAINER_DOXYGEN_INVOKED
 
 //! @brief Checks if contents of two varrays are equal.
 //!
