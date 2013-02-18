@@ -76,48 +76,50 @@ namespace boost {
 
     enum rational_checktype {rational_no_checking, rational_check_for_overflow};
 
+namespace detail {
 // This is just a helper function for the overflow checking path.
 // For a given integer type (signed), multiply 2 values into separate 'high'
 // and 'low' variables of the same type.
-template <typename IntType, rational_checktype CheckingMode>
-void mul2Int(IntType& resHi, IntType& resLo, IntType F1, IntType F2)
+template <typename IntType>
+void mul2int(IntType& res_hi, IntType& res_lo, IntType f1, IntType f2)
 {
-    BOOST_STATIC_ASSERT(CheckingMode==rational_no_checking || (CheckingMode==rational_check_for_overflow && ::std::numeric_limits<IntType>::is_signed));
+    BOOST_STATIC_ASSERT(::std::numeric_limits<IntType>::is_signed);
+    BOOST_STATIC_ASSERT(((sizeof(IntType)*CHAR_BIT) & 1) == 0);
     const IntType zero(0);    
    
     // Operate on positive values, and track sign for final result.
     // This requires Inttype be signed.
-    bool signNeg = false;
-    if(F1<zero) {
-        F1=~F1; ++F1; signNeg = !signNeg;
+    bool sign_neg = false;
+    if(f1<zero) {
+        f1=-f1; sign_neg = !sign_neg;
     }
-    if(F2<zero){
-        F2=~F2; ++F2; signNeg = !signNeg;
+    if(f2<zero){
+        f2=-f2; sign_neg = !sign_neg;
     }
 
-    const int halfnumB = sizeof(IntType)*CHAR_BIT/2;
-    const IntType LoHalfMask = (((IntType)(1))<<halfnumB)-(IntType)(1);
-    IntType F1H = (F1>>halfnumB)&LoHalfMask, F1L = F1&LoHalfMask,
-            F2H = (F2>>halfnumB)&LoHalfMask, F2L = F2&LoHalfMask;
+    const int half_num_bits = sizeof(IntType)*CHAR_BIT/2;
+    const IntType lo_half_mask = (((IntType)(1))<<half_num_bits)-(IntType)(1);
+    IntType f1h = (f1>>half_num_bits)&lo_half_mask, f1l = f1&lo_half_mask,
+            f2h = (f2>>half_num_bits)&lo_half_mask, f2l = f2&lo_half_mask;
 
-    resLo = F1L * F2L;
+    res_lo = f1l * f2l;
 
-    IntType Acc = (resLo >> halfnumB) & LoHalfMask;
-    Acc += F1L * F2H;
-    Acc += F1H * F2L;
+    IntType acc = (res_lo >> half_num_bits) & lo_half_mask;
+    acc += f1l * f2h;
+    acc += f1h * f2l;
 
-    resLo = (resLo & LoHalfMask) + ((Acc & LoHalfMask) << halfnumB);
-    Acc = (Acc>>halfnumB) & LoHalfMask;
-    resHi = Acc + F1H * F2H;
+    res_lo = (res_lo & lo_half_mask) + ((acc & lo_half_mask) << half_num_bits);
+    acc = (acc>>half_num_bits) & lo_half_mask;
+    res_hi = acc + f1h * f2h;
 
-    if(signNeg)
+    if(sign_neg)
     {
-        resLo = ~resLo;
-        resHi = ~resHi;
-        resLo += 1;
-        if(resLo == 0)
+        res_lo = ~res_lo;
+        res_hi = ~res_hi;
+        res_lo += 1;
+        if(res_lo == 0)
         {
-    	    resHi++;
+    	    res_hi++;
         }
     }
 }
@@ -125,53 +127,55 @@ void mul2Int(IntType& resHi, IntType& resLo, IntType F1, IntType F2)
 // This is just a helper function for the overflow checking path.
 // Add two "high","low" operands to a "high","low" result.
 // Returns true if over/underflow occured ("high","low" sum cannot hold correct result).
-template <typename IntType, rational_checktype CheckingMode>
-bool add2Int(IntType& resHi, IntType& resLo, IntType F1H, IntType F1L, IntType F2H, IntType F2L)
+template <typename IntType>
+bool add2int(IntType& res_hi, IntType& res_lo, IntType f1h, IntType f1l, IntType f2h, IntType f2l)
 {
-    BOOST_STATIC_ASSERT(CheckingMode==rational_no_checking || (CheckingMode==rational_check_for_overflow && ::std::numeric_limits<IntType>::is_signed));
+    BOOST_STATIC_ASSERT(::std::numeric_limits<IntType>::is_signed);
     bool overflow = false;
-    const int numBits = sizeof(IntType)*CHAR_BIT;
-    const IntType MSBfMask = (IntType)(((IntType)(1)) << (numBits-1));
+    const int num_bits = sizeof(IntType)*CHAR_BIT;
+    const IntType msb_mask = (IntType)(((IntType)(1)) << (num_bits-1));
     const IntType zero(0);    
     const IntType one(1);    
    
     // This requires Inttype be signed.
-    if(F1L<zero)
+    if(f1l<zero)
     {
-        if(F2L<zero)
+        if(f2l<zero)
         {   // Both low parts are negative, 1 will always carry to high part
-            resLo = F1L+F2L;
-            resHi = F1H+F2H+one;
+            res_lo = f1l+f2l;
+            res_hi = f1h+f2h+one;
         }
         else
-        {   // F1L negative, F2L positive
-            F1L &= ~MSBfMask;
-            resLo = F1L+F2L;
-            if(resLo&MSBfMask) resHi = F1H+F2H+one;
-            else               resHi = F1H+F2H;
-            resLo += MSBfMask;
+        {   // f1l negative, f2l positive
+            f1l &= ~msb_mask;
+            res_lo = f1l+f2l;
+            if(res_lo&msb_mask) res_hi = f1h+f2h+one;
+            else                res_hi = f1h+f2h;
+            res_lo += msb_mask;
         }
     }
     else
     {
-        if(F2L<zero)
-        {   // F1L positive, F2L negative
-            F2L &= ~MSBfMask;
-            resLo = F1L+F2L;
-            if(resLo&MSBfMask) resHi = F1H+F2H+one;
-            else               resHi = F1H+F2H;
-            resLo += MSBfMask;
+        if(f2l<zero)
+        {   // f1l positive, f2l negative
+            f2l &= ~msb_mask;
+            res_lo = f1l+f2l;
+            if(res_lo&msb_mask) res_hi = f1h+f2h+one;
+            else                res_hi = f1h+f2h;
+            res_lo += msb_mask;
         }
         else
         {   // Both low parts are positive, 1 will never carry to high part
-            resLo = F1L+F2L;
-            resHi = F1H+F2H;
+            res_lo = f1l+f2l;
+            res_hi = f1h+f2h;
         }
     }
-    if(((resHi^F1H) & ((~(F1H^F2H))) & MSBfMask))
+    if(((res_hi^f1h) & ((~(f1h^f2h))) & msb_mask))
         overflow = true;
     return overflow;
 }
+
+} // namespace detail
 
 } // namespace boost
 
@@ -356,11 +360,11 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator+= (co
 {
     if(CheckingMode==rational_check_for_overflow)
     {
-        const int numBits = sizeof(IntType)*CHAR_BIT;
+        const int num_bits = sizeof(IntType)*CHAR_BIT;
         const IntType zero(0);
         const IntType one(1);
         const IntType neg1(-1);
-        IntType part1H,part1L,part2H,part2L,newnumH,T;
+        IntType part1_h,part1_l,part2_h,part2_l,new_num_h,tmp;
 
         // Protect against self-modification
         IntType r_num = r.num;
@@ -375,11 +379,11 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator+= (co
             r_den_g /= g;
         }
 
-        mul2Int<IntType, CheckingMode>(part1H,part1L,   num,  r_den_g);
-        mul2Int<IntType, CheckingMode>(part2H,part2L, r_num,    den);
-        bool  ovfl = add2Int<IntType, CheckingMode>(newnumH,  num,part1H,part1L,part2H,part2L);
-        T = num>>(numBits-1);
-        if(newnumH!=T)
+        detail::mul2int<IntType>(part1_h,part1_l,   num,  r_den_g);
+        detail::mul2int<IntType>(part2_h,part2_l, r_num,    den);
+        bool  ovfl = detail::add2int<IntType/*, CheckingMode*/>(new_num_h,  num,part1_h,part1_l,part2_h,part2_l);
+        tmp = num>>(num_bits-1);
+        if(new_num_h!=tmp)
             throw rational_overflow();
 
         g = math::gcd(num, g);
@@ -389,8 +393,8 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator+= (co
             r_den /= g;
         }
 
-        mul2Int<IntType, CheckingMode>(part1H,den,   den,  r_den);
-        if((part1H!=zero) || (den<zero))
+        detail::mul2int<IntType>(part1_h,den,   den,  r_den);
+        if((part1_h!=zero) || (den<zero))
             throw rational_overflow();
     }
     else
@@ -476,7 +480,7 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator*= (co
 
     if(CheckingMode==rational_check_for_overflow)
     {
-        const int numBits = sizeof(IntType)*CHAR_BIT;
+        const int num_bits = sizeof(IntType)*CHAR_BIT;
         const IntType one = IntType(1);
         const IntType zero = IntType(0);
         IntType num_gcd1=num, den_gcd2=den, signbits;
@@ -488,11 +492,11 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator*= (co
             den_gcd2 /= gcd2;
             r_num    /= gcd2;
         }
-        mul2Int<IntType, CheckingMode>(signbits,num, num_gcd1, r_num);
-        if(IntType(num>>(numBits-1)) != signbits)
+        detail::mul2int<IntType>(signbits,num, num_gcd1, r_num);
+        if(IntType(num>>(num_bits-1)) != signbits)
             throw rational_overflow();
 
-        mul2Int<IntType, CheckingMode>(signbits,den, den_gcd2, r_den);
+        detail::mul2int<IntType>(signbits,den, den_gcd2, r_den);
         if((signbits!=zero) || (den<zero))
             throw rational_overflow();
     }
@@ -526,7 +530,7 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator/= (co
 
     if(CheckingMode==rational_check_for_overflow)
     {
-        const int numBits = sizeof(IntType)*CHAR_BIT;
+        const int num_bits = sizeof(IntType)*CHAR_BIT;
         const IntType one = IntType(1);
         IntType num_gcd1=num, den_gcd2=den, signbits;
         if(gcd1!=one) {
@@ -537,25 +541,25 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator/= (co
             den_gcd2 /= gcd2;
             r_den    /= gcd2;
         }
-        mul2Int<IntType, CheckingMode>(signbits,num, num_gcd1, r_den);
-        if(IntType(num>>(numBits-1)) != signbits)
+        detail::mul2int<IntType>(signbits,num, num_gcd1, r_den);
+        if(IntType(num>>(num_bits-1)) != signbits)
             throw rational_overflow();
 
-        mul2Int<IntType, CheckingMode>(signbits,den, den_gcd2, r_num);
-        if(IntType(den>>(numBits-1)) != signbits)
+        detail::mul2int<IntType>(signbits,den, den_gcd2, r_num);
+        if(IntType(den>>(num_bits-1)) != signbits)
             throw rational_overflow();
 
         if (den < zero)
         {
-            IntType negden = ~den; ++negden;
-            IntType negnum = ~num; ++negnum;
-            if(den == negden) // den never zero here
+            IntType neg_den = ~den; ++neg_den;
+            IntType neg_num = ~num; ++neg_num;
+            if(den == neg_den) // den never zero here
                 throw rational_overflow();
-            if(num && (num == negnum))
+            if(num && (num == neg_num))
                 throw rational_overflow();
 
-            num = negnum;
-            den = negden;
+            num = neg_num;
+            den = neg_den;
         }
     }
     else
@@ -675,18 +679,18 @@ bool rational<IntType, CheckingMode>::operator< (const rational<IntType, Checkin
 
     if(CheckingMode==rational_check_for_overflow)
     {
-        IntType ProdLeftH, ProdLeftL, ProdRghtH, ProdRghtL;
-        mul2Int<IntType, CheckingMode>(ProdLeftH, ProdLeftL, num, r.den);
-        mul2Int<IntType, CheckingMode>(ProdRghtH, ProdRghtL, r.num, den);
-        if(ProdLeftH < ProdRghtH)
+        IntType prod_left_h, prod_left_l, prod_right_h, prod_right_l;
+        detail::mul2int<IntType>(prod_left_h, prod_left_l, num, r.den);
+        detail::mul2int<IntType>(prod_right_h, prod_right_l, r.num, den);
+        if(prod_left_h < prod_right_h)
             return true;
-        else if(ProdLeftH == ProdRghtH)
+        else if(prod_left_h == prod_right_h)
         {
-            const int numBits = sizeof(IntType)*CHAR_BIT;
-            const IntType MSBfMask = (IntType)(((IntType)(1)) << (numBits-1));
-            ProdLeftL ^= MSBfMask; // Convert to signed
-            ProdRghtL ^= MSBfMask; // Convert to signed
-            return ProdLeftL < ProdRghtL;
+            const int num_bits = sizeof(IntType)*CHAR_BIT;
+            const IntType msb_mask = (IntType)(((IntType)(1)) << (num_bits-1));
+            prod_left_l ^= msb_mask; // Convert to signed
+            prod_right_l ^= msb_mask; // Convert to signed
+            return prod_left_l < prod_right_l;
         }
         else 
             return false;
@@ -775,18 +779,18 @@ bool rational<IntType, CheckingMode>::operator< (param_type i) const
 {
     if(CheckingMode==rational_check_for_overflow)
     {
-        IntType ProdLeftH, ProdLeftL, ProdRghtH, ProdRghtL;
-        mul2Int<IntType, CheckingMode>(ProdLeftH, ProdLeftL, num, IntType(1));
-        mul2Int<IntType, CheckingMode>(ProdRghtH, ProdRghtL, i, den);
-        if(ProdLeftH < ProdRghtH)
+        IntType prod_left_h, prod_left_l, prod_right_h, prod_right_l;
+        detail::mul2int<IntType>(prod_left_h, prod_left_l, num, IntType(1));
+        detail::mul2int<IntType>(prod_right_h, prod_right_l, i, den);
+        if(prod_left_h < prod_right_h)
             return true;
-        else if(ProdLeftH == ProdRghtH)
+        else if(prod_left_h == prod_right_h)
         {
-            const int numBits = sizeof(IntType)*CHAR_BIT;
-            const IntType MSBfMask = (IntType)(((IntType)(1)) << (numBits-1));
-            ProdLeftL ^= MSBfMask; // Convert to signed
-            ProdRghtL ^= MSBfMask; // Convert to signed
-            return ProdLeftL < ProdRghtL;
+            const int num_bits = sizeof(IntType)*CHAR_BIT;
+            const IntType msb_mask = (IntType)(((IntType)(1)) << (num_bits-1));
+            prod_left_l ^= msb_mask; // Convert to signed
+            prod_right_l ^= msb_mask; // Convert to signed
+            return prod_left_l < prod_right_l;
         }
         else 
             return false;
@@ -863,17 +867,17 @@ void rational<IntType, CheckingMode>::normalize()
     // Ensure that the denominator is positive
     if (den < zero)
     {
-        IntType negden = ~den; ++negden;
-        IntType negnum = ~num; ++negnum;
+        IntType neg_den = ~den; ++neg_den;
+        IntType neg_num = ~num; ++neg_num;
         if(CheckingMode==rational_check_for_overflow)
         {
-            if(den == negden)  // den never zero here
+            if(den == neg_den)  // den never zero here
                 throw rational_overflow();
-            if(num == negnum)  // num never zero here
+            if(num == neg_num)  // num never zero here
                 throw rational_overflow();
         }
-        den = negden;
-        num = negnum;
+        den = neg_den;
+        num = neg_num;
     }
 
     BOOST_ASSERT( this->test_invariant() );
