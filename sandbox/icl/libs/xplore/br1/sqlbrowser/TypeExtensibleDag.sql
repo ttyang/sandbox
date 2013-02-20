@@ -19,7 +19,8 @@ create table Attribute (key integer primary key, refObjectType integer, name var
 create table VarCharObject (refObject integer, refAttribute integer, value varchar, primary key (refObject, refAttribute));
 create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute));
 
-
+-- Addition for optimized indexable access. Specifically for fast order by 
+create table ObjectTable (key integer refObjectType primary key, name varchar);
 
 
 
