@@ -268,6 +268,7 @@ struct cons {
   cons& operator=(std::pair<T1, T2> & t)
   {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(const_cast<const std::pair<T1, T2> &>(t))); return *this;}
 
+  // needed for const templated other
   template <class HT2, class TT2>
   cons& operator=(const cons<HT2, TT2> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, TT2> > &>(t)); return *this;}
@@ -337,6 +338,10 @@ struct cons {
   template <class HT2, class TT2>
   cons( BOOST_RV_REF_2_TEMPL_ARGS(cons, HT2, TT2) u ) : head(::boost::move(u.head)), tail(::boost::move(u.tail)) {}
 
+  // implicit version may be deleted in C++11
+  cons( const cons& u ) : head(u.head), tail(u.tail) {}
+  cons( BOOST_RV_REF(cons) u ) : head(::boost::move(u.head)), tail(::boost::move(u.tail)) {}
+
   template <class HT2, class TT2>
   cons& operator=( BOOST_COPY_ASSIGN_REF_2_TEMPL_ARGS(cons, HT2, TT2) u ) {
     head=u.head; tail=u.tail; return *this;
@@ -394,6 +399,7 @@ struct cons<HT, null_type> {
   cons& operator=(cons<HT2, null_type> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, null_type> > &>(const_cast<const cons<HT2, null_type> &>(t))); return *this;}
 
+  // needed for const templated other
   template <class HT2>
   cons& operator=(const cons<HT2, null_type> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, null_type> > &>(t)); return *this;}
@@ -445,6 +451,10 @@ struct cons<HT, null_type> {
   cons( const cons<HT2, null_type>& u ) : head(u.head) {}
   template <class HT2>
   cons( BOOST_RV_REF_2_TEMPL_ARGS(cons, HT2, null_type) u ) : head(::boost::move(u.head)) {}
+
+  // implicit version may be deleted in C++11
+  cons( const cons& u ) : head(u.head) {}
+  cons( BOOST_RV_REF(cons) u ) : head(::boost::move(u.head)) {}
 
   template <class HT2>
   cons& operator=(BOOST_COPY_ASSIGN_REF_2_TEMPL_ARGS(cons, HT2, null_type) u )
@@ -668,6 +678,10 @@ public:
   tuple(BOOST_RV_REF_BEG tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> BOOST_RV_REF_END p)
       : inherited(boost::move(static_cast<typename tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9>::inherited &>(p)))
   {}
+
+  // implicit version may be deleted in C++11
+  tuple(const tuple & p) : inherited(p) {}
+  tuple(BOOST_RV_REF(tuple) p) : inherited(boost::move(static_cast<inherited &>(p))) {}
 
   template<class U1, class U2>
   tuple(const cons<U1, U2>& p) : inherited(p) {}
