@@ -1,0 +1,23 @@
+# Boost.Tuple
+#
+# Copyright (c) 2013 Adam Wulkiewicz, Lodz, Poland.
+#
+# Use, modification and distribution is subject to the Boost Software License,
+# Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+import testing ;
+
+project boost-tuple-move-test
+    :
+    requirements
+        <include>.
+        <include>..
+        <include>../..
+        <include>../../..
+    ;
+
+test-suite boost-tuple-move
+    :
+    [ run tuple_move.cpp ]
+    ;
