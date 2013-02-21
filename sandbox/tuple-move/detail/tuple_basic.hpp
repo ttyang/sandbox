@@ -534,6 +534,21 @@ class tuple :
   public detail::map_tuple_to_cons<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type
 {
     BOOST_COPYABLE_AND_MOVABLE(tuple)
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+    template <class HT2, class TT2>
+    tuple& operator=(cons<HT2, TT2> & t)
+    {  this->operator=(static_cast<const ::boost::rv<cons<HT2, TT2> > &>(const_cast<const cons<HT2, TT2> &>(t))); return *this;}
+    template <class U1, class U2>
+    tuple& operator=(std::pair<U1, U2> & t)
+    {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(const_cast<const std::pair<T1, T2> &>(t))); return *this;}
+
+    template <class HT2, class TT2>
+    tuple& operator=(const cons<HT2, TT2> & t)
+    {  this->operator=(static_cast<const ::boost::rv<cons<HT2, TT2> > &>(t)); return *this;}
+    template <class U1, class U2>
+    tuple& operator=(const std::pair<U1, U2> & t)
+    {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(t)); return *this;}
+#endif
 
 public:
   typedef typename
@@ -639,16 +654,28 @@ public:
   tuple(BOOST_RV_REF_2_TEMPL_ARGS(cons, U1, U2) p) : inherited(p) {}
 
   template <class U1, class U2>
-  tuple& operator=(const cons<U1, U2>& k) {
+  tuple& operator=(BOOST_COPY_ASSIGN_REF_2_TEMPL_ARGS(cons, U1, U2) k) {
     inherited::operator=(k);
+    return *this;
+  }
+  template <class U1, class U2>
+  tuple& operator=(BOOST_RV_REF_2_TEMPL_ARGS(cons, U1, U2) k) {
+    inherited::operator=(boost::move(k));
     return *this;
   }
 
   template <class U1, class U2>
-  tuple& operator=(const std::pair<U1, U2>& k) {
+  tuple& operator=(BOOST_COPY_ASSIGN_REF_2_TEMPL_ARGS(std::pair, U1, U2) k) {
     BOOST_STATIC_ASSERT(length<tuple>::value == 2);// check_length = 2
     this->head = k.first;
     this->tail.head = k.second;
+    return *this;
+  }
+  template <class U1, class U2>
+  tuple& operator=(BOOST_RV_REF_2_TEMPL_ARGS(std::pair, U1, U2) k) {
+    BOOST_STATIC_ASSERT(length<tuple>::value == 2);// check_length = 2
+    this->head = boost::move(k.first);
+    this->tail.head = boost::move(k.second);
     return *this;
   }
 
