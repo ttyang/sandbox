@@ -7,6 +7,8 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
 #include <boost/test/included/test_exec_monitor.hpp>
 #include <boost/test/impl/execution_monitor.ipp>
 
@@ -221,3 +223,12 @@ int test_main(int, char* [])
 
     return 0;
 }
+
+#else // #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+int test_main(int, char* [])
+{
+    return 0;
+}
+
+#endif // #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
