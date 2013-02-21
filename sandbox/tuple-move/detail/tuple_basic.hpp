@@ -65,7 +65,7 @@ template <class Then, class Else> struct IF<false, Then, Else> {
 } // end detail
 
 // - cons forward declaration -----------------------------------------------
-template <class HT, class TT> class cons;
+template <class HT, class TT> struct cons;
 
 
 // - tuple forward declaration -----------------------------------------------
@@ -255,21 +255,32 @@ template <> struct wrap_non_storeable_type<void> {
 } // detail
 
 template <class HT, class TT>
-class cons {
-
-  BOOST_COPYABLE_AND_MOVABLE(cons)
+struct cons {
 
 #ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
-public:
+
+  cons& operator=(cons & t)
+  {  this->operator=(static_cast<const ::boost::rv<cons> &>(const_cast<const cons &>(t))); return *this;}
   template <class HT2, class TT2>
   cons& operator=(cons<HT2, TT2> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, TT2> > &>(const_cast<const cons<HT2, TT2> &>(t))); return *this;}
   template <class T1, class T2>
   cons& operator=(std::pair<T1, T2> & t)
   {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(const_cast<const std::pair<T1, T2> &>(t))); return *this;}
-#endif
 
-public:
+  template <class HT2, class TT2>
+  cons& operator=(const cons<HT2, TT2> & t)
+  {  this->operator=(static_cast<const ::boost::rv<cons<HT2, TT2> > &>(t)); return *this;}
+  template <class T1, class T2>
+  cons& operator=(const std::pair<T1, T2> & t)
+  {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(t)); return *this;}
+
+  operator ::boost::rv<cons>&()
+  {  return *static_cast< ::boost::rv<cons>* >(this);  }
+  operator const ::boost::rv<cons>&() const
+  {  return *static_cast<const ::boost::rv<cons>* >(this);  }
+
+#endif
 
   typedef HT head_type;
   typedef TT tail_type;
@@ -374,18 +385,24 @@ public:
 };
 
 template <class HT>
-class cons<HT, null_type> {
-
-  BOOST_COPYABLE_AND_MOVABLE(cons)
+struct cons<HT, null_type> {
 
 #ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
-public:
+  cons& operator=(cons & t)
+  {  this->operator=(static_cast<const ::boost::rv<cons> &>(const_cast<const cons &>(t))); return *this;}
   template <class HT2>
   cons& operator=(cons<HT2, null_type> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, null_type> > &>(const_cast<const cons<HT2, null_type> &>(t))); return *this;}
-#endif
 
-public:
+  template <class HT2>
+  cons& operator=(const cons<HT2, null_type> & t)
+  {  this->operator=(static_cast<const ::boost::rv<cons<HT2, null_type> > &>(t)); return *this;}
+
+  operator ::boost::rv<cons>&()
+  {  return *static_cast< ::boost::rv<cons>* >(this);  }
+  operator const ::boost::rv<cons>&() const
+  {  return *static_cast<const ::boost::rv<cons>* >(this);  }
+#endif
 
   typedef HT head_type;
   typedef null_type tail_type;
