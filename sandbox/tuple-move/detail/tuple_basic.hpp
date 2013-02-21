@@ -533,6 +533,8 @@ template <class T0, class T1, class T2, class T3, class T4,
 class tuple :
   public detail::map_tuple_to_cons<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type
 {
+    BOOST_COPYABLE_AND_MOVABLE(tuple)
+
 public:
   typedef typename
     detail::map_tuple_to_cons<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>::type inherited;
@@ -633,6 +635,8 @@ public:
 
   template<class U1, class U2>
   tuple(const cons<U1, U2>& p) : inherited(p) {}
+  template<class U1, class U2>
+  tuple(BOOST_RV_REF_2_TEMPL_ARGS(cons, U1, U2) p) : inherited(p) {}
 
   template <class U1, class U2>
   tuple& operator=(const cons<U1, U2>& k) {
