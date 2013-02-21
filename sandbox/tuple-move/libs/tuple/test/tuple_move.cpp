@@ -19,10 +19,10 @@ public:
     enum state_type {def_ctor, copy_ctor, move_ctor, copy_assign, move_assign};
     
     cm() : last(def_ctor) {}
-    cm(const cm & o) : last(copy_ctor) {}
-    cm(BOOST_RV_REF(cm) o) : last(move_ctor) {}
-    cm & operator=(BOOST_COPY_ASSIGN_REF(cm) o) { last = copy_assign; return *this; }
-    cm & operator=(BOOST_RV_REF(cm) o) { last = move_assign; return *this; }
+    cm(const cm &) : last(copy_ctor) {}
+    cm(BOOST_RV_REF(cm)) : last(move_ctor) {}
+    cm & operator=(BOOST_COPY_ASSIGN_REF(cm)) { last = copy_assign; return *this; }
+    cm & operator=(BOOST_RV_REF(cm)) { last = move_assign; return *this; }
 
     state_type last_op() { return last; }
 
@@ -35,12 +35,35 @@ int test_main(int, char* [])
     using namespace boost;
     using namespace boost::tuples;
 
+    std::pair<cm, int> pi;
+    std::pair<cm, float> pf;
+    const std::pair<cm, int> cpi;
+    const std::pair<cm, float> cpf;
     cons<cm, cons<int, null_type> > ci;
     cons<cm, cons<float, null_type> > cf;
     const cons<cm, cons<int, null_type> > cci;
     const cons<cm, cons<float, null_type> > ccf;
+    tuple<cm, int> ti;
+    tuple<cm, float> tf;
+    const tuple<cm, int> cti;
+    const tuple<cm, float> ctf;
 
-    // tuples::cons ctor
+    bool pi_move_enabled =
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+        !boost::enable_move_utility_emulation< std::pair<cm, int> >::value ||
+        boost::has_move_emulation_enabled< std::pair<cm, int> >::value;
+#else
+        true;
+#endif
+    bool pf_move_enabled =
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+        !boost::enable_move_utility_emulation< std::pair<cm, float> >::value ||
+        boost::has_move_emulation_enabled< std::pair<cm, float> >::value;
+#else
+        true;
+#endif
+
+    // tuples::cons( tuples::cons )
     cons<cm, cons<int, null_type> > cc1(ci);
     BOOST_CHECK(get<0>(cc1).last_op() == cm::copy_ctor);
     cons<cm, cons<int, null_type> > cc2(boost::move(ci));
@@ -58,7 +81,7 @@ int test_main(int, char* [])
     cons<cm, cons<int, null_type> > cc8(boost::move(ccf));
     BOOST_CHECK(get<0>(cc8).last_op() == cm::copy_ctor);
 
-    // tuples::cons assignment
+    // tuples::cons = tuples::cons
     ci = ci;
     BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
     ci = boost::move(ci);
@@ -76,7 +99,31 @@ int test_main(int, char* [])
     ci = boost::move(ccf);
     BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
 
-    // tuple ctor taking tuples::cons
+    // tuples::cons = std::pair
+    ci = pi;
+    BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+    ci = boost::move(pi);
+    if ( pi_move_enabled )
+        BOOST_CHECK(get<0>(ci).last_op() == cm::move_assign);
+    else
+        BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+    ci = pf;
+    BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+    ci = boost::move(pf);
+    if ( pf_move_enabled )
+        BOOST_CHECK(get<0>(ci).last_op() == cm::move_assign);
+    else
+        BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+    ci = cpi;
+    BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+    ci = boost::move(cpi);
+    BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+    ci = cpf;
+    BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+    ci = boost::move(cpf);
+    BOOST_CHECK(get<0>(ci).last_op() == cm::copy_assign);
+
+    // tuple( tuples::cons )
     tuple<cm, int> tt1(ci);
     BOOST_CHECK(get<0>(tt1).last_op() == cm::copy_ctor);
     tuple<cm, int> tt2(move(ci));
@@ -94,12 +141,7 @@ int test_main(int, char* [])
     tuple<cm, int> tt8(move(ccf));
     BOOST_CHECK(get<0>(tt8).last_op() == cm::copy_ctor);
 
-    tuple<cm, int> ti;
-    tuple<cm, float> tf;
-    const tuple<cm, int> cti;
-    const tuple<cm, float> ctf;
-
-    // tuple ctor taking tuple
+    // tuple( tuple )
     tuple<cm, int> tt9(ti);
     BOOST_CHECK(get<0>(tt9).last_op() == cm::copy_ctor);
     tuple<cm, int> tt10(move(ti));
@@ -116,6 +158,66 @@ int test_main(int, char* [])
     BOOST_CHECK(get<0>(tt15).last_op() == cm::copy_ctor);
     tuple<cm, int> tt16(move(ctf));
     BOOST_CHECK(get<0>(tt16).last_op() == cm::copy_ctor);
+
+    // tuple = tuple
+    ti = ti;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(ti);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::move_assign);
+    ti = tf;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(tf);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::move_assign);
+    ti = cti;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(cti);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = ctf;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(ctf);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+
+    // tuple = tuples::cons
+    ti = ci;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(ci);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::move_assign);
+    ti = cf;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(cf);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::move_assign);
+    ti = cci;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(cci);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = ccf;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(ccf);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+
+    // tuple = std::pair
+    ti = pi;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(pi);
+    if ( pi_move_enabled )
+        BOOST_CHECK(get<0>(ti).last_op() == cm::move_assign);
+    else
+        BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = pf;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(pf);
+    if ( pf_move_enabled )
+        BOOST_CHECK(get<0>(ti).last_op() == cm::move_assign);
+    else
+        BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = cpi;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(cpi);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = cpf;
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+    ti = boost::move(cpf);
+    BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
 
     return 0;
 }

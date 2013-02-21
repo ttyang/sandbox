@@ -545,6 +545,7 @@ class tuple :
 {
   BOOST_COPYABLE_AND_MOVABLE(tuple)
 #ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+public:
   template <class U0, class U1, class U2, class U3, class U4, class U5, class U6, class U7, class U8, class U9>
   tuple& operator=(tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> & t) {
     typedef tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> Tup;
@@ -567,10 +568,10 @@ class tuple :
 
   template <class U1, class U2>
   tuple& operator=(std::pair<U1, U2> & t)
-  {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(const_cast<const std::pair<T1, T2> &>(t))); return *this;}
+  {  this->operator=(static_cast<const ::boost::rv<std::pair<U1, U2> > &>(const_cast<const std::pair<U1, U2> &>(t))); return *this;}
   template <class U1, class U2>
   tuple& operator=(const std::pair<U1, U2> & t)
-  {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(t)); return *this;}
+  {  this->operator=(static_cast<const ::boost::rv<std::pair<U1, U2> > &>(t)); return *this;}
 #endif
 
 public:
@@ -676,7 +677,7 @@ public:
   {}
   template <class U0, class U1, class U2, class U3, class U4, class U5, class U6, class U7, class U8, class U9>
   tuple(BOOST_RV_REF_BEG tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> BOOST_RV_REF_END p)
-      : inherited(boost::move(static_cast<typename tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9>::inherited &>(p)))
+      : inherited(::boost::move(static_cast<typename tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9>::inherited &>(p)))
   {}
 
   // implicit version may be deleted in C++11
@@ -688,6 +689,27 @@ public:
   template<class U1, class U2>
   tuple(BOOST_RV_REF_2_TEMPL_ARGS(cons, U1, U2) p) : inherited(boost::move(p)) {}
 
+  template <class U0, class U1, class U2, class U3, class U4, class U5, class U6, class U7, class U8, class U9>
+  tuple& operator=(BOOST_COPY_ASSIGN_REF_BEG tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> BOOST_COPY_ASSIGN_REF_END k) {
+    inherited::operator=(static_cast<const typename tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9>::inherited &>(k));
+    return *this;
+  }
+  template <class U0, class U1, class U2, class U3, class U4, class U5, class U6, class U7, class U8, class U9>
+  tuple& operator=(BOOST_RV_REF_BEG tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> BOOST_RV_REF_END k) {
+    inherited::operator=(::boost::move(static_cast<typename tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9>::inherited &>(k)));
+    return *this;
+  }
+
+  // implicit version may be deleted in C++11
+  tuple& operator=(BOOST_COPY_ASSIGN_REF(tuple) k) {
+    inherited::operator=(static_cast<const inherited &>(k));
+    return *this;
+  }
+  tuple& operator=(BOOST_RV_REF(tuple) k) {
+    inherited::operator=(::boost::move(static_cast<inherited &>(k)));
+    return *this;
+  }
+
   template <class U1, class U2>
   tuple& operator=(BOOST_COPY_ASSIGN_REF_2_TEMPL_ARGS(cons, U1, U2) k) {
     inherited::operator=(k);
@@ -695,7 +717,7 @@ public:
   }
   template <class U1, class U2>
   tuple& operator=(BOOST_RV_REF_2_TEMPL_ARGS(cons, U1, U2) k) {
-    inherited::operator=(boost::move(k));
+    inherited::operator=(::boost::move(k));
     return *this;
   }
 
@@ -709,8 +731,8 @@ public:
   template <class U1, class U2>
   tuple& operator=(BOOST_RV_REF_2_TEMPL_ARGS(std::pair, U1, U2) k) {
     BOOST_STATIC_ASSERT(length<tuple>::value == 2);// check_length = 2
-    this->head = boost::move(k.first);
-    this->tail.head = boost::move(k.second);
+    this->head = ::boost::move(k.first);
+    this->tail.head = ::boost::move(k.second);
     return *this;
   }
 
