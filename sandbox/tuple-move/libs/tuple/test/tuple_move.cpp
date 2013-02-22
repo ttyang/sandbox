@@ -32,15 +32,10 @@ private:
     state_type last;
 };
 
+template <typename T>
 struct foo
 {
-    boost::tuple<int> t;
-};
-
-template <typename T>
-struct foot
-{
-    boost::tuple<T> t;
+    T t;
 };
 
 int test_main(int, char* [])
@@ -231,20 +226,43 @@ int test_main(int, char* [])
     BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
     ti = boost::move(cpf);
     BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
-
-    {
-        foo a, b;
-        a = b;
-    }
     
     {
-        foot<cm> a, b;
+        foo< boost::tuple<cm> > a, b;
         a = b;
         BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
         a = boost::move(b);
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
         BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
+#else
+        BOOST_CHECK(get<0>(a.t).last_op() == cm::move_assign);
+#endif
+        a = foo< boost::tuple<cm> >();
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+        BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
+#else
+        BOOST_CHECK(get<0>(a.t).last_op() == cm::move_assign);
+#endif
     }
     
+    {
+        foo< cons<cm, cons<int, null_type> > > a, b;
+        cm & cm_ref = boost::tuples::get<0>(a.t);
+        a = b;
+        BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
+        a = boost::move(b);
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+        BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
+#else
+        BOOST_CHECK(cm_ref.last_op() == cm::move_assign);
+#endif
+        a = foo< cons<cm, cons<int, null_type> > >();
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+        BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
+#else
+        BOOST_CHECK(cm_ref.last_op() == cm::move_assign);
+#endif
+    }
 
     return 0;
 }

@@ -258,9 +258,11 @@ template <class HT, class TT>
 struct cons {
 
 #ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
-
   cons& operator=(cons & t)
   {  this->operator=(static_cast<const ::boost::rv<cons> &>(const_cast<const cons &>(t))); return *this;}
+  cons& operator=(const cons & t)
+  {  this->operator=(static_cast<const ::boost::rv<cons> &>(t)); return *this;}
+
   template <class HT2, class TT2>
   cons& operator=(cons<HT2, TT2> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, TT2> > &>(const_cast<const cons<HT2, TT2> &>(t))); return *this;}
@@ -268,7 +270,6 @@ struct cons {
   cons& operator=(std::pair<T1, T2> & t)
   {  this->operator=(static_cast<const ::boost::rv<std::pair<T1, T2> > &>(const_cast<const std::pair<T1, T2> &>(t))); return *this;}
 
-  // needed for const templated other
   template <class HT2, class TT2>
   cons& operator=(const cons<HT2, TT2> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, TT2> > &>(t)); return *this;}
@@ -280,7 +281,6 @@ struct cons {
   {  return *static_cast< ::boost::rv<cons>* >(this);  }
   operator const ::boost::rv<cons>&() const
   {  return *static_cast<const ::boost::rv<cons>* >(this);  }
-
 #endif
 
   typedef HT head_type;
@@ -395,11 +395,12 @@ struct cons<HT, null_type> {
 #ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
   cons& operator=(cons & t)
   {  this->operator=(static_cast<const ::boost::rv<cons> &>(const_cast<const cons &>(t))); return *this;}
+  cons& operator=(const cons & t)
+  {  this->operator=(static_cast<const ::boost::rv<cons> &>(t)); return *this;}
+
   template <class HT2>
   cons& operator=(cons<HT2, null_type> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, null_type> > &>(const_cast<const cons<HT2, null_type> &>(t))); return *this;}
-
-  // needed for const templated other
   template <class HT2>
   cons& operator=(const cons<HT2, null_type> & t)
   {  this->operator=(static_cast<const ::boost::rv<cons<HT2, null_type> > &>(t)); return *this;}
@@ -546,6 +547,11 @@ class tuple :
   BOOST_COPYABLE_AND_MOVABLE(tuple)
 #ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
 public:
+  tuple& operator=(const tuple & t) {
+    this->operator=(static_cast<const ::boost::rv<tuple> &>(t));
+    return *this;
+  }
+
   template <class U0, class U1, class U2, class U3, class U4, class U5, class U6, class U7, class U8, class U9>
   tuple& operator=(tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> & t) {
     typedef tuple<U0, U1, U2, U3, U4, U5, U6, U7, U8, U9> Tup;
