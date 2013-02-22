@@ -32,6 +32,17 @@ private:
     state_type last;
 };
 
+struct foo
+{
+    boost::tuple<int> t;
+};
+
+template <typename T>
+struct foot
+{
+    boost::tuple<T> t;
+};
+
 int test_main(int, char* [])
 {
     using namespace boost;
@@ -220,6 +231,20 @@ int test_main(int, char* [])
     BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
     ti = boost::move(cpf);
     BOOST_CHECK(get<0>(ti).last_op() == cm::copy_assign);
+
+    {
+        foo a, b;
+        a = b;
+    }
+    
+    {
+        foot<cm> a, b;
+        a = b;
+        BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
+        a = boost::move(b);
+        BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
+    }
+    
 
     return 0;
 }
