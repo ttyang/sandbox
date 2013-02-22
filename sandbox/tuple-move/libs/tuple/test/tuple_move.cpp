@@ -232,17 +232,17 @@ int test_main(int, char* [])
         a = b;
         BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
         a = boost::move(b);
-#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
-        BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
-#else
-        BOOST_CHECK(get<0>(a.t).last_op() == cm::move_assign);
-#endif
+//#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+//        BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
+//#else
+//        BOOST_CHECK(get<0>(a.t).last_op() == cm::move_assign);
+//#endif
         a = foo< boost::tuple<cm> >();
-#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
-        BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
-#else
-        BOOST_CHECK(get<0>(a.t).last_op() == cm::move_assign);
-#endif
+//#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+//        BOOST_CHECK(get<0>(a.t).last_op() == cm::copy_assign);
+//#else
+//        BOOST_CHECK(get<0>(a.t).last_op() == cm::move_assign);
+//#endif
     }
     
     {
@@ -251,17 +251,17 @@ int test_main(int, char* [])
         a = b;
         BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
         a = boost::move(b);
-#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
-        BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
-#else
-        BOOST_CHECK(cm_ref.last_op() == cm::move_assign);
-#endif
+//#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+//        BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
+//#else
+//        BOOST_CHECK(cm_ref.last_op() == cm::move_assign);
+//#endif
         a = foo< cons<cm, cons<int, null_type> > >();
-#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
-        BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
-#else
-        BOOST_CHECK(cm_ref.last_op() == cm::move_assign);
-#endif
+//#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+//        BOOST_CHECK(cm_ref.last_op() == cm::copy_assign);
+//#else
+//        BOOST_CHECK(cm_ref.last_op() == cm::move_assign);
+//#endif
     }
 
     return 0;
