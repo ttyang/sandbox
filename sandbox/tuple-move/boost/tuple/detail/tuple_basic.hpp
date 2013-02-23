@@ -252,6 +252,29 @@ template <> struct wrap_non_storeable_type<void> {
   typedef non_storeable_type<void> type;
 };
 
+// These templates return reference if IsRef (stored type) is a reference
+// or rval reference if it isn't
+
+template <bool Cond, class T1, class T2> struct if_c { typedef T1 type; };
+template <class T1, class T2> struct if_c<false, T1, T2> { typedef T2 type; };
+
+template <bool IsRef> struct ref_or_move {
+    template <class T> inline static
+    T & apply(T & t) { return t; }
+};
+
+template <> struct ref_or_move<false> {
+    template <class T> inline static
+#ifdef BOOST_NO_CXX11_RVALUE_REFERENCES
+    typename if_c<
+      ::boost::has_move_emulation_enabled<T>::value, rv<T>&, T&
+    >::type
+#else
+    typename ::boost::remove_reference<T>::type &&
+#endif
+    apply(T & t) { return ::boost::move(t); }
+};
+
 } // detail
 
 template <class HT, class TT>
@@ -340,7 +363,9 @@ struct cons {
 
   // implicit version may be deleted in C++11
   cons( const cons& u ) : head(u.head), tail(u.tail) {}
-  cons( BOOST_RV_REF(cons) u ) : head(::boost::move(u.head)), tail(::boost::move(u.tail)) {}
+  cons( BOOST_RV_REF(cons) u )
+      : head(detail::ref_or_move< ::boost::is_reference<stored_head_type>::value >::apply(u.head))
+      , tail(::boost::move(u.tail)) {}
 
   template <class HT2, class TT2>
   cons& operator=( BOOST_COPY_ASSIGN_REF_2_TEMPL_ARGS(cons, HT2, TT2) u ) {
@@ -455,7 +480,7 @@ struct cons<HT, null_type> {
 
   // implicit version may be deleted in C++11
   cons( const cons& u ) : head(u.head) {}
-  cons( BOOST_RV_REF(cons) u ) : head(::boost::move(u.head)) {}
+  cons( BOOST_RV_REF(cons) u ) : head(detail::ref_or_move< ::boost::is_reference<stored_head_type>::value >::apply(u.head)) {}
 
   template <class HT2>
   cons& operator=(BOOST_COPY_ASSIGN_REF_2_TEMPL_ARGS(cons, HT2, null_type) u )

@@ -7,10 +7,10 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#define BOOST_INCLUDE_MAIN  // for testing, include rather than link
+#include <boost/test/test_tools.hpp>    // see "Header Implementation Option"
 
-#include <boost/test/included/test_exec_monitor.hpp>
-#include <boost/test/impl/execution_monitor.ipp>
+#ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 #include <boost/tuple/tuple.hpp>
 
