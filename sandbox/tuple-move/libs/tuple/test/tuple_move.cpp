@@ -264,6 +264,82 @@ int test_main(int, char* [])
 //#endif
     }
 
+    {
+        int dummy_t = 10;
+        int dummy_c = 20;
+
+        cons<int, cons<int&, null_type> > cir( cons<int, cons<int&, null_type> >(0, dummy_c) );
+        BOOST_CHECK(&boost::tuples::get<1>(cir) == &dummy_c);
+        
+        tuple<int, int&> tir = tuple<int, int&>(0, dummy_t);
+        BOOST_CHECK(&boost::get<1>(tir) == &dummy_t);
+
+        cir = cons<int, cons<int&, null_type> >(0, dummy_c);
+        BOOST_CHECK(&boost::tuples::get<1>(cir) == &dummy_c);
+
+        tir = tuple<int, int&>(0, dummy_t);
+        BOOST_CHECK(&boost::get<1>(tir) == &dummy_t);
+
+        cir = cir;
+        cir = boost::move(cir);
+        tir = boost::move(cir);
+        BOOST_CHECK(dummy_t = dummy_c);
+        tir = boost::move(tir);
+        tir = tir;        
+    }
+
+    {
+        int dummy_t = 10;
+        int dummy_c = 20;
+
+        cons<int, cons<int&, null_type> > cir( cons<float, cons<int&, null_type> >(0.0f, dummy_c) );
+        BOOST_CHECK(&boost::tuples::get<1>(cir) == &dummy_c);
+
+        tuple<int, int&> tir = tuple<float, int&>(0.0f, dummy_t);
+        BOOST_CHECK(&boost::get<1>(tir) == &dummy_t);
+
+        cir = cons<float, cons<int&, null_type> >(0.0f, dummy_c);
+        BOOST_CHECK(&boost::tuples::get<1>(cir) == &dummy_c);
+
+        tir = tuple<float, int&>(0.0f, dummy_t);
+        BOOST_CHECK(&boost::get<1>(tir) == &dummy_t);
+
+        cons<float, cons<int&, null_type> > cir2(0.0f, dummy_c);
+        tuple<float, int&> tir2(0.0f, dummy_t);
+        cir = cir2;
+        cir = boost::move(cir2);
+        tir = boost::move(cir2);
+        BOOST_CHECK(dummy_t == dummy_c);
+        tir = boost::move(tir2);
+        tir = tir2;
+    }
+
+    {
+        int dummy_t = 10;
+        int dummy_c = 20;
+
+        cons<int&, cons<int, null_type> > cir( cons<int&, cons<float, null_type> >(dummy_c, 0.0f) );
+        BOOST_CHECK(&boost::tuples::get<0>(cir) == &dummy_c);
+
+        tuple<int&, int> tir = tuple<int&, float>(dummy_t, 0.0f);
+        BOOST_CHECK(&boost::get<0>(tir) == &dummy_t);
+
+        cir = cons<int&, cons<float, null_type> >(dummy_c, 0.0f);
+        BOOST_CHECK(&boost::tuples::get<0>(cir) == &dummy_c);
+
+        tir = tuple<int&, float>(dummy_t, 0.0f);
+        BOOST_CHECK(&boost::get<0>(tir) == &dummy_t);
+
+        cons<int&, cons<float, null_type> > cir2(dummy_c, 0.0f);
+        tuple<int&, float> tir2(dummy_t, 0.0f);
+        cir = cir2;
+        cir = boost::move(cir2);
+        tir = boost::move(cir2);
+        BOOST_CHECK(dummy_t == dummy_c);
+        tir = boost::move(tir2);
+        tir = tir2;
+    }
+
     return 0;
 }
 
