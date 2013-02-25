@@ -20,6 +20,8 @@
 namespace boost
 {
 
+#include "policies.hpp"
+
 /** ----------------------------------------------------------------------------
  * A pool holds memory buffers that are allocated only once.
  *  
@@ -87,113 +89,10 @@ template<typename T, bool ThreadSafe = false, class Allocator = std::allocator<c
 class pool;
 
 /* -------------------------------------------------------------------------- */
-/* -- typedef boost::pools::policy                                         -- */
-/* -------------------------------------------------------------------------- */
-
-namespace pools
-{
-	/** --------------------------------------------------------------------------
-	 * Pool growth policy function.
-	 * The pool growth policy function controls how a pool grows if it runs out
-	 * of buffers. 
-	 * \param poolSize
-	 *        Current number of buffers allocated by the pool.
-	 * \return
-	 *        Number of new buffers the pool should allocate. The returned value
-	 *        can be zero, in which case the pool will no longer grow.
-	 * ------------------------------------------------------------------------ */
-	typedef size_t (*policy)(size_t poolSize);
-
-	/** --------------------------------------------------------------------------
-	 * No growth policy function.
-	 * This pools::policy function always return 0, regardless of the pool size.
-	 * Hence it describes a pool which never grows.
-	 * ----------------------------------------------------------------------- */
-	static size_t policy_no_growth(size_t)
-	{
-		return 0;
-	}
-
-	/** --------------------------------------------------------------------------
-	 * Constant growth policy function.
-	 * This pools::policy function returns a constant, regardless of the pool size.
-	 * Hence it describes a pool which grows linearly.
-	 * \tparam N 
-	 *         Value returned by the policy function. There is no default value
-	 *         for this parameter.
-	 * ------------------------------------------------------------------------- */
-	template<size_t N>
-	static size_t policy_constant_growth(size_t)
-	{
-		return N;
-	}
-
-	/** --------------------------------------------------------------------------
-	 * Exponential growth policy function.
-	 * This pools::policy function returns a multiple of the current pool size.
-	 * Hence it describes a pool which grows exponentially. An example of such
-	 * an exponential growth is a pool which doubles its size when it runs out 
-	 * of buffers.
-	 * \tparam M
-	 *         Numerator of the multiplicative factor applied to the pool size. 
-	 *         Given template parameter M, the pool size after
-	 *         growing will be M times the actual pool size. Use M = 2 for 
-   *         a pool that should double its size whenever it runs out of buffers.
-	 * \tparam N
-	 *         Denominator of the multiplicative factor applied to the pool size.
-	 *         Given template parameters M and N, the pool size after
-	 *         growing will be M/N times the actual pool size. It is required
-	 *         that N is greater than zero and M greater or equal than N.
-	 *         N has a default value, one. If M equals N, then the pool can
-	 *         not grow. Otherwise, this function ensures that the pool will grow by
-	 *         at least one buffer.
-	 * ------------------------------------------------------------------------- */
-	template<size_t M, size_t N>
-	static size_t policy_exponential_growth(size_t s)
-	{
-		/* -- Invalid parameters -- */
-
-		BOOST_STATIC_ASSERT(M >= N);
-		BOOST_STATIC_ASSERT(N > 0);
-
-		if (!N || M <= N)
-			return 0;
-
-		/* -- Compute M/N -- */
-
-		size_t Q = M / N;
-		size_t R = M % N;
-
-		/* -- Perform multiplication, taking care of overflows -- */
-
-		if (!Q || (std::numeric_limits<size_t>::max() / Q < s))
-			return 0;
-
-		size_t size = (R && (std::numeric_limits<size_t>::max() / R < s)) ? (Q * s + R * (s / N)) : (Q * s + R * s / N);
-
-		if (size < Q * s)
-			return 0;
-
-		/* -- Return result -- */
-
-		return size ? size : 1;
-	}
-
-	/** --------------------------------------------------------------------------
-	 * Exponential growth policy function with N = 1
-	 * ------------------------------------------------------------------------- */
-	template<size_t M>
-	static size_t policy_exponential_growth(size_t s)
-	{
-		return policy_exponential_growth<M, 1>(s);
-	}
-}
-
-/* -------------------------------------------------------------------------- */
 /* -- class boost::pool                                                    -- */
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe = false, class Allocator = std::allocator<char>>
+template<typename T, bool ThreadSafe, class Allocator>
 class pool
 {
 	private :
@@ -218,7 +117,7 @@ class pool
 		 * \param allocator
 		 *        Custom allocator instance.
 		 * ---------------------------------------------------------------------- */
-		pool(size_t initialPoolSize, size_t bufferSize = 1, pools::policy policy = pools::policy_no_growth, const Allocator& allocator = Allocator());
+		pool(const pools::policy& policy, size_t bufferSize = 1, const Allocator& allocator = Allocator());
 
 		/** ------------------------------------------------------------------------
 		 * Destroys a pool.
@@ -236,7 +135,7 @@ class pool
 
 	private :
 		/** ------------------------------------------------------------------------
-		 * Requests a pool buffer, \b without initialing it's content.
+		 * Requests a pool buffer, \b without initializing it's content.
 		 * This private function is used by the various flavors of pool::request().
 		 * ----------------------------------------------------------------------- */
 		T *request_core(void);
@@ -357,10 +256,10 @@ class pool
 /* -------------------------------------------------------------------------- */
 
 template<typename T, bool ThreadSafe, class Allocator>
-pool<T, ThreadSafe, Allocator>::pool(size_t initialPoolSize, size_t bufferSize, pools::policy policy, const Allocator& allocator)
+pool<T, ThreadSafe, Allocator>::pool(const pools::policy& policy, size_t bufferSize, const Allocator& allocator)
 	: _allocator(allocator), _policy(policy), _allocated(0), _requested(0), _size(bufferSize)
 {
-	grow(initialPoolSize);
+	grow(_policy.growth(0));
 }
 
 /* -------------------------------------------------------------------------- */
@@ -459,7 +358,7 @@ T *pool<T, ThreadSafe, Allocator>::request_core()
 	/* -- Try growing the pool if there is no free buffer availables -- */
 
 	if (_list.empty())
-		grow((*_policy)(_allocated));
+		grow(_policy.growth(_allocated));
 
 	/* -- Request a pointer from the free list -- */
 
