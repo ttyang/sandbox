@@ -1,4 +1,4 @@
-//          Copyright Stefan Strasser 2009 - 2010.
+//          Copyright Stefan Strasser 2009 - 2013.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -49,6 +49,14 @@ public:
             std::cerr << "ignored exception" << std::endl;
 #endif
         }
+    }
+    void close(){
+        this->flush_buffer();
+	this->base.close();
+    }
+    void reopen(std::string const &name){
+        BOOST_ASSERT(this->size==0);
+        this->base.reopen(name); 
     }
 private:
     static std::size_t const sector_size=512;

@@ -1,4 +1,4 @@
-//               Copyright Bob Walters 2010
+//               Copyright Stefan Strasser 2010 - 2013
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -11,9 +11,11 @@
 
 namespace boost{
 namespace transact{
-namespace detail{
 
 struct eof_exception : io_failure{};
+  
+  
+namespace detail{
 
 
 #ifdef _WIN32
@@ -68,7 +70,7 @@ public:
 			throw_io_failure("CreateFileA");
 		
 		//make sure the directory entry has reached the disk:
-		std::string dirname=filesystem::system_complete(name).parent_path().external_directory_string();
+		std::string dirname=filesystem::system_complete(name).parent_path().native();
 
 		creation_flags = OPEN_EXISTING;
 		flags = FILE_FLAG_BACKUP_SEMANTICS;
@@ -88,6 +90,9 @@ public:
 			CloseHandle(this->filedes);
 	}
 	
+	void close(); //TODO
+	void reopen(std::string const &name); //TODO
+	
 	void seek(size_type const &s) {
 		LARGE_INTEGER loc;
 		loc.QuadPart = s;
@@ -101,7 +106,7 @@ public:
 			throw_io_failure("WriteFile");
 		return (size_type)written;
 	}
-	
+	void flush(){}
 	void sync() { 
 		if (!direct_io && FlushFileBuffers(this->filedes) == 0)
 			throw_io_failure("FlushFileBuffers");
@@ -117,6 +122,8 @@ public:
 #error no POSIX synchronized IO available
 #endif
 
+
+
 // low-level ofile for Linux/Unix
 template <bool direct_io = false> // ignored on Posix API.
 class ofile {
@@ -124,29 +131,15 @@ public:
 	typedef unsigned int size_type;
 	static const bool has_direct_io = direct_io;
 
-	int filedes;
 	
-	ofile(std::string const &name) : filedes(-1) {
-		int flags=O_CREAT | O_WRONLY;
-#ifdef linux
-		flags|=O_NOATIME;
-#endif
-		this->filedes= open(name.c_str(),flags,S_IRUSR | S_IWUSR);
-		if(this->filedes==-1) throw io_failure();
-		
-		{ //make sure the directory entry has reached the disk:
-			std::string dirname=filesystem::path(name).directory_string();
-			if(dirname.empty()) dirname=".";
-			int dirfd= open(dirname.c_str(),O_RDONLY);
-			if(dirfd==-1) throw io_failure();
-			int ret=::fsync(dirfd);
-			if(::close(dirfd) != 0 || ret != 0) throw io_failure();
-		}
+	ofile(std::string const &name) : filedes(-1),name(name){
+	        this->open_();
+		this->sync_directory();
 	}
 	
 	~ofile() {
-        if(this->filedes != -1) ::close(this->filedes);
-    }
+            this->close();
+        }
 	
 	void seek(size_type const &s) {
 		if(::lseek(this->filedes,s,SEEK_SET) != off_t(s)) throw io_failure();
@@ -156,7 +149,7 @@ public:
 		if(::write(this->filedes,data,size) != ssize_t(size)) throw io_failure();
 		return size;
 	}
-	
+	void flush(){}
 	void sync() {
 #ifdef linux
 		if(::fdatasync(this->filedes) != 0) throw io_failure();
@@ -164,6 +157,47 @@ public:
 		if(::fsync(this->filedes) != 0) throw io_failure();
 #endif		
 	}
+	void close(){
+            if(this->filedes != -1){
+	        if(::close(this->filedes) != 0) throw io_failure();
+	    }
+    	    this->filedes=-1;
+	}
+	void reopen(std::string const &newname){
+	    BOOST_ASSERT(this->filedes == -1);
+	    filesystem::remove(this->name);
+	    this->name=newname;
+	    this->open_();
+	    sync_directory();
+	}
+	void rename(std::string const &newname){
+	    BOOST_ASSERT(this->filedes == -1);
+	    filesystem::rename(this->name,newname);
+	    this->name=newname;
+	    this->open_(0); //do not truncate file!
+	    sync_directory();	  
+	}
+private:
+    void sync_directory(){
+        //TODO optimization: directory entries are synced even if syncing is turning off,
+        //which is not passed to ofile
+        std::string dirname=filesystem::path(this->name).parent_path().native();
+        if(dirname.empty()) dirname=".";
+        int dirfd= open(dirname.c_str(),O_RDONLY);
+        if(dirfd==-1) throw io_failure();
+        int ret=::fsync(dirfd);
+        if(::close(dirfd) != 0 || ret != 0) throw io_failure();
+    }
+    void open_(int flags=O_CREAT | O_TRUNC){
+	flags|=O_WRONLY;
+#ifdef linux
+	flags|=O_NOATIME;
+#endif
+	this->filedes=open(this->name.c_str(),flags,S_IRUSR | S_IWUSR);
+	if(this->filedes==-1) throw io_failure();
+    }
+    int filedes;
+    std::string name;
 };
 
 #endif

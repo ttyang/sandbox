@@ -1,4 +1,4 @@
-//          Copyright Stefan Strasser 2009 - 2010.
+//          Copyright Stefan Strasser 2009 - 2013.
 //                Copyright Bob Walters 2010
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -52,7 +52,7 @@ template<class Base,std::size_t Capacity>
 class buffering_seq_ofile{
 public:
     typedef typename Base::size_type size_type;
-	static const bool direct_io = Base::has_direct_io;
+    static const bool has_direct_io = Base::has_direct_io;
 	
     explicit buffering_seq_ofile(std::string const &name)
         : base(name)
@@ -72,6 +72,14 @@ public:
         this->flush_buffer();
         this->base.flush();
     }
+    void close(){
+        this->flush_buffer();
+	this->base.close();
+    }
+    void reopen(std::string const &name){
+        BOOST_ASSERT(this->size==0);
+        this->base.reopen(name);
+    }
     void sync(){
         //don't flush buffer! caller is responsible to call flush() inside a mutex lock.
         this->base.sync();
@@ -88,25 +96,25 @@ public:
 private:
     void write_overflow(void const *data,std::size_t s){
         BOOST_ASSERT(this->size + s > Capacity);
-		if (direct_io) {
-			while (this->size + s > Capacity) {
-				std::size_t write=Capacity - this->size;
-				std::memcpy(this->buffer.data+this->size,data,write);
-				this->size=Capacity;
-				this->flush_buffer();
-				data = static_cast<char const *>(data)+write;
-				s-=write;
-			}
-			if (s) {
-				this->write(data,s);
-			}
-		}else if(this->size == 0){
+	if (has_direct_io) {
+		while (this->size + s > Capacity) {
+			std::size_t write=Capacity - this->size;
+			std::memcpy(this->buffer.data+this->size,data,write);
+			this->size=Capacity;
+			this->flush_full_buffer();
+			data = static_cast<char const *>(data)+write;
+			s-=write;
+		}
+		if (s) { //FIXME ???
+			this->write(data,s);
+		}
+	}else if(this->size == 0){
             this->base.write(data,s);
         }else{
             std::size_t write=Capacity - this->size;
             std::memcpy(this->buffer.data+this->size,data,write);
             this->size=Capacity;
-            this->flush_buffer();
+            this->flush_full_buffer();
             this->write(static_cast<char const *>(data)+write,s-write);
         }
     }
@@ -116,10 +124,15 @@ private:
             this->size=0;
         }
     }
+    void flush_full_buffer(){
+        BOOST_ASSERT(this->size == Capacity);
+	this->base.write(this->buffer.data,mpl::size_t<Capacity>());
+	this->size=0;
+    }
 
     Base base;
-	ofile_buffer<Capacity,direct_io> buffer;
-	std::size_t size;
+    ofile_buffer<Capacity,has_direct_io> buffer;
+    std::size_t size;
 };
 
 

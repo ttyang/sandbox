@@ -1,4 +1,4 @@
-//          Copyright Stefan Strasser 2009 - 2010.
+//          Copyright Stefan Strasser 2009 - 2013.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -10,6 +10,7 @@
 #include <fstream>
 #include <string>
 #include <boost/mpl/size_t.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/transact/exception.hpp>
 #include <boost/transact/detail/file.hpp>
 
@@ -25,8 +26,9 @@ namespace detail{
 class filebuf_seq_ofile{
 public:
     typedef unsigned int size_type;
-    explicit filebuf_seq_ofile(std::string const &name) : pos(0){
-        if(!this->buf.open(name.c_str(),std::ios::out | std::ios::binary)) throw io_failure();
+    static bool const has_direct_io=false;
+    explicit filebuf_seq_ofile(std::string const &name) : pos(0),name(name){
+        this->open();
     }
     void write(void const *data,mpl::size_t<1>){
         if(this->buf.sputc(*static_cast<char const *>(data)) == EOF) throw io_failure();
@@ -44,9 +46,23 @@ public:
     void sync(){
         throw unsupported_operation();
     }
+    void close(){
+        if(!this->buf.close()) throw io_failure();
+    }
+    void reopen(std::string const &newname){
+        BOOST_ASSERT(!this->buf.is_open());
+	filesystem::remove(this->name);
+	this->name=newname;
+	this->open();
+    }
 private:
+    void open(){
+        if(!this->buf.open(this->name.c_str(),std::ios::out | std::ios::binary)) throw io_failure();
+        this->pos=0; 
+    }
     std::filebuf buf;
     size_type pos;
+    std::string name;
 };
 
 class filebuf_seq_ifile{

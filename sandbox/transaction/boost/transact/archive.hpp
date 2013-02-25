@@ -1,4 +1,4 @@
-//          Copyright Stefan Strasser 2010.
+//          Copyright Stefan Strasser 2010 - 2013.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -12,8 +12,6 @@
 #include <boost/ref.hpp>
 #include <boost/assert.hpp>
 #include <boost/mpl/bool.hpp>
-#include <boost/serialization/is_bitwise_serializable.hpp>
-#include <boost/serialization/wrapper.hpp>
 #include <boost/archive/archive_exception.hpp>
 #include <boost/transact/array_extension.hpp>
 #include <iterator>
@@ -27,6 +25,7 @@
 #include <boost/archive/basic_binary_oarchive.hpp>
 #include <boost/archive/impl/basic_binary_iarchive.ipp>
 #include <boost/archive/impl/basic_binary_oarchive.ipp>
+#include <boost/serialization/wrapper.hpp>
 #include <string>
 
 #endif
@@ -220,16 +219,16 @@ public:
     explicit basic_char_oarchive(OutputIterator const &out) : out(out){}
     template<class Size>
     void save_binary(void const *vdata,Size size){
-        this->save_binary(static_cast<char const *>(vdata),size,typename array_extension<OutputIterator>::type());
+        this->save_binary(static_cast<char const *>(vdata),size,typename has_array_extension<OutputIterator>::type());
     }
 private:
     template<class Size>
     void save_binary(char const *data,Size size,mpl::true_){
-        this->out.assign(data,size);
+        this->out=this->out.insert(data,size);
     }
     template<class Size>
     void save_binary(char const *data,Size size,mpl::false_){
-        std::copy(data,data+size,this->out);
+        this->out=std::copy(data,data+size,this->out);
     }
 
     OutputIterator out;
@@ -240,34 +239,43 @@ class basic_char_iarchive : public basic_iarchive<Derived>{
 public:
     basic_char_iarchive(InputIterator const &begin,InputIterator const &end)
         : in(begin), end(end){
-        BOOST_ASSERT(end - begin >= 0);
     }
     template<class Size>
     void load_binary(void *vdata,Size size){
         char *data=static_cast<char *>(vdata);
-        this->load_binary(
-            data,
-            size,
-            typename std::iterator_traits<InputIterator>::iterator_category(),
-            typename continuous_values<InputIterator>::type()
-        );
+	this->load_binary(data,size,typename has_array_extension<InputIterator>::type());
     }
 private:
     template<class Size>
-    void load_binary(char *data,Size size,std::random_access_iterator_tag,mpl::true_ contvals){
-        if(std::size_t(this->end - this->in) < size) throw archive::archive_exception(archive::archive_exception::stream_error);
+    void load_binary(char *data,Size size,mpl::true_ arrayex){
+        this->in=this->in.extract(data,size);
+    }
+    template<class Size>
+    void load_binary(char *data,Size size,mpl::false_ arrayex){
+        this->load_binary(
+            data,
+            size,
+	    arrayex,
+            typename std::iterator_traits<InputIterator>::iterator_category(),
+            typename has_contiguous_values<InputIterator>::type()
+        );      
+    }
+    template<class Size>
+    void load_binary(char *data,Size size,mpl::false_ arrayex,std::random_access_iterator_tag,mpl::true_ contvals){
+        if(std::size_t(this->end - this->in) < size) throw archive::archive_exception(archive::archive_exception::input_stream_error);
         std::memcpy(data,&*this->in,size);
         this->in+=size;
     }
     template<class Size>
-    void load_binary(char *data,Size size,std::random_access_iterator_tag,mpl::false_ contvals){
-        if(std::size_t(this->end - this->in) < size) throw archive::archive_exception(archive::archive_exception::stream_error);
+    void load_binary(char *data,Size size,mpl::false_ arrayex,std::random_access_iterator_tag,mpl::false_ contvals){
+        //FIXME:
+        if(std::size_t(this->end - this->in) < size) throw archive::archive_exception(archive::archive_exception::input_stream_error);
         std::copy(data,data+size,this->in);
     }
     template<class Size,class Category>
-    void load_binary(char *data,Size size,Category,mpl::false_ contvals){
+    void load_binary(char *data,Size size,mpl::false_ arrayex,Category,mpl::false_ contvals){
         for(std::size_t c=0;c<size;++c){
-            if(this->in == this->end) throw archive::archive_exception(archive::archive_exception::stream_error);
+            if(this->in == this->end) throw archive::archive_exception(archive::archive_exception::input_stream_error);
             *data++=*this->in++;
         }
     }
@@ -331,7 +339,7 @@ public:
             data,
             size,
             typename std::iterator_traits<InputIterator>::iterator_category(),
-            typename continuous_values<InputIterator>::type()
+            typename has_contiguous_values<InputIterator>::type()
         );
     }
     void save(std::type_info const *type){
@@ -352,7 +360,8 @@ private:
     }
     template<class Size>
     void save_binary(char const *data,Size size,std::random_access_iterator_tag,mpl::false_ contvals){
-        if((std::size_t(this->end - this->in) < size) || (!std::equal(data,data+size,this->in))) this->equal_=false;
+        //FIXME: invalid iterator:
+        if((std::size_t(this->end - this->in) < size) || (!std::equal(data,data+size,this->in))) this->equal_=false; 
         else this->in+=size;
     }
     template<class Size,class Category>

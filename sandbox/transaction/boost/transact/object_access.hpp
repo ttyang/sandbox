@@ -24,6 +24,7 @@
 
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/version.hpp>
+#include <boost/archive/impl/archive_serializer_map.ipp>
 
 #endif
 
@@ -238,11 +239,21 @@ private:
 
 
 template<class Archive,class T>
+void serialize(Archive &ar,T &t,mpl::true_ saving){
+    archive::save(ar.serialization_archive(),t);
+}
+template<class Archive,class T>
+void serialize(Archive &ar,T &t,mpl::false_ saving){
+    archive::load(ar.serialization_archive(),t);
+}
+
+
+template<class Archive,class T>
 void serialize(Archive &ar,T &t,constructed_tag){
 #ifdef NO_BOOST_SERIALIZATION
     sizeof(boost_serialization_required<T>);
 #else
-    serialization::serialize_adl(ar.serialization_archive(),t,serialization::version<T>::value);
+    detail::serialize(ar,t,typename Archive::is_saving());
 #endif
 }
 

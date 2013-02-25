@@ -1,4 +1,4 @@
-//          Copyright Stefan Strasser 2009 - 2010.
+//          Copyright Stefan Strasser 2009 - 2013.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -142,22 +142,29 @@ private:
         boost::transact::basic_transaction<TXMGR> ___tx; \
         while(true){ \
             try{ \
+                // call ___tx.commit() at the end of this scope unless an exception is thrown: \
                 boost::transact::detail::commit_on_destruction<TXMGR> ___commit(___tx); \
                 try{ \
                     do{ \
-                        ___control=1; \
+		        ___control=1; \
+		        // force the following user code to be exactly one statement or {} \
                         if(false);else
 
 #define BOOST_TRANSACT_BASIC_RETRY(TXMGR) \
+                        // if this point is reached, the user code above neither used \
+                        // "break" nor "continue". exit while-loop with ___control==0 \
                         ___control=0; \
                         break; \
+                    // if this point is reached, the user code above used "continue". \
+                    // commit the transaction but record the user intent by ___control==2 \
                     }while((___control=2),false); \
+                    break; \
                 }catch(...){ \
                     ___commit.nullify(); \
                     throw; \
                 } \
-                break; \
             }catch(boost::transact::isolation_exception &___i){ \
+                // transaction must be repeated: \
                 ___i.unwind<TXMGR>(); \
                 ___tx.restart(); \
                 do{ \
@@ -172,6 +179,7 @@ private:
             } \
         }; \
         BOOST_ASSERT(___control == 0); \
+    // force the use of a semicolon: \
     }void()
 
 #define BOOST_TRANSACT_BASIC_END_RETRY_IN_LOOP(TXMGR) \

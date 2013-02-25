@@ -1,4 +1,4 @@
-//          Copyright Stefan Strasser 2009 - 2010.
+//          Copyright Stefan Strasser 2009 - 2013.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -27,7 +27,7 @@ namespace detail{
 
 //does. the inserted 1536 bytes of garbage even need to be synced.
 
-//TODO optimization: not tested on windows.
+//TODO optimization: not performance tested on windows.
 
 template<class Base>
 class aligning_seq_ofile{
@@ -50,6 +50,15 @@ public:
     size_type position() const{
         if(this->sectors <= max_sectors) return this->base.position() + this->sectors * sector_size;
         else return this->base.position();
+    }
+    void close(){
+        this->flush_buffer();
+	this->sectors=0;
+        this->base.close();
+    }
+    void reopen(std::string const &name){
+        BOOST_ASSERT(this->sectors==0);
+        this->base.reopen(name);
     }
     void flush(){
         BOOST_ASSERT(this->base.position() % sector_size == 0);

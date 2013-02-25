@@ -115,15 +115,15 @@ public:
     //insert(this->end(), ...) is not the same thing. even though the end() == end()
     //comparison can be optimized away if inlined, size must be statically known to get
     //an intrinsic memcpy for PODs.
-    template<class Size>
-    void push_back(T const *src,Size size){
+    template<class InputIterator,class Size>
+    void push_back(InputIterator src,Size size){
         this->reserve_add(size);
         copy_construct_n(this->end_,src,size);
         this->end_+=size;
     }
 
     //extension to in-place construct a new element. elements of vectors with Expand==false
-    //don't need to be copyconstructible using this:
+    //don't need to be copyconstructible using this: FIXME use c++11
     template<class InPlaceFactory>
     void push_back(InPlaceFactory const &fac){
         this->reserve_add(mpl::size_t<1>());
@@ -165,20 +165,23 @@ private:
             throw;
         }
     }
-    template<class Size>
-    static void copy_construct_n(T *dest,T const *src,Size n){
-        copy_construct_n(dest,src,n,typename is_pod<T>::type());
+    template<class InputIterator,class Size>
+    static void copy_construct_n(T *dest,InputIterator src,Size n){
+        copy_construct_n(
+            dest,src,n,
+            mpl::bool_<is_pod<T>::value && has_contiguous_values<InputIterator>::value>()
+	);
     }
-    template<class Size>
-    static void copy_construct_n(T *dest,T const *src,Size n,true_type pod){
-        std::memcpy(dest,src,sizeof(T)*std::size_t(n));
+    template<class InputIterator,class Size>
+    static void copy_construct_n(T *dest,InputIterator src,Size n,true_type pod){
+        std::memcpy(dest,&*src,sizeof(T)*std::size_t(n));
     }
-    template<class Size>
-    static void copy_construct_n(T *dest,T const *src,Size n,false_type pod){
+    template<class InputIterator,class Size>
+    static void copy_construct_n(T *dest,InputIterator src,Size n,false_type pod){
         std::size_t c;
         try{
             for(c=0;c<n;++c){
-                new (dest+c) T(src[c]);
+                new (dest+c) T(*src++);
             }
         }catch(...){
             destruct(dest,dest+c);
@@ -243,7 +246,7 @@ private:
 }
 
 template<class T,std::size_t EmbeddedSize,bool Expand>
-struct array_extension<detail::embedded_vector<T,EmbeddedSize,Expand> > : mpl::true_{};
+struct has_array_extension<detail::embedded_vector<T,EmbeddedSize,Expand> > : mpl::true_{};
 
 }
 }
