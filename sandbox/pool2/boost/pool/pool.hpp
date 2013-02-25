@@ -13,8 +13,15 @@
 #include <memory>     // std::allocator
 #include <vector>     // std::vector
 
+#include <boost/tr1/type_traits.hpp>
+
 #ifdef BOOST_POOL_VALGRIND
 	#include <valgrind/memcheck.h>
+#endif
+
+#ifdef BOOST_MSVC
+	#pragma warning(push)
+	#pragma warning(disable: 4127)  // Conditional expression is constant
 #endif
 
 namespace boost
@@ -282,6 +289,11 @@ pool<T, ThreadSafe, Allocator>::~pool()
 template<typename T, bool ThreadSafe, class Allocator>
 void pool<T, ThreadSafe, Allocator>::purge()
 {
+	/* -- Do not bother in case of POD buffers -- */
+
+	if (std::tr1::has_trivial_destructor<T>::value)
+		return;
+
 	/* -- If there is no outstanding buffers, there is nothing to do -- */
 
 	if (!_requested)
@@ -471,5 +483,9 @@ void pool<T, ThreadSafe, Allocator>::release(T *buffer)
 /* -------------------------------------------------------------------------- */
 
 };
+
+#ifdef BOOST_MSVC
+	#pragma warning(pop)
+#endif
 
 #endif
