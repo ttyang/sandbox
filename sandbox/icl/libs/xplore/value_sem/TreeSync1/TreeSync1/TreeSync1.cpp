@@ -44,10 +44,11 @@ void draw(const collection& col, std::ostream& out, size_t pos)
 template<class Type>
 void draw(const Vec<Type>& obj, std::ostream& out, size_t pos)
 {
+  typedef typename Vec<Type>::const_iterator citer;
   out << std::string(pos,' ') 
     //<< type_name(obj) << "{\n";
     << "<Vec>[" << obj.name() << "](" << obj.uuid() << ","  << obj.time() << ")\n";
-  for(coll_citer it = obj.begin(); it != obj.end(); ++it)
+  for(citer it = obj.begin(); it != obj.end(); ++it)
     draw(*it, out, pos+2);
 
   out << std::string(pos,' ') 
@@ -63,31 +64,45 @@ int _tmain(int argc, _TCHAR* argv[])
 
   coll.push_back(42);
 
+  //--- Playlist --------------------
   Playlist pl1(1, 2, " pl_1 ");
-  pl1.push_back(Playable<int>(43));
-  pl1.push_back(Playable<int>(44));
+    pl1.push_back(Playable<int>(11));
+    pl1.push_back(Playable<int>(12));
 
-  Playlist pl2(2, 4, " pl_2 ");
-  pl2.push_back(Playable<int>(53));
-  pl2.push_back(Playable<int>(54));
-  //draw(pl, std::cout, 0);
+  Playlist pl2(2, 5, " pl_2 ");
+    pl2.push_back(Playable<int>(21));
+    pl2.push_back(Playable<int>(22));
+
+  Playlist pl3(3, 3, " pl_3 ");
+    pl2.push_back(Playable<int>(31));
 
 
-  Playlists pls1(3, 3, " pls_1 ");
-  pls1.push_back(pl1);
-  Playlists pls2(4, 3, " pls_1 ");
-  pls2.push_back(pl2);
+  //--- Playlists -------------------
+  Playlists pls1(4, 0, " pls_1 ");
+    pls1.push_back(pl1);
+    pls1.push_back(pl3);
 
-  Node<Playlist> node1(5, " node_1 ", pls1);
-  NodeList nodes1(5, 2, " nodes_1 ");
-  nodes1.push_back(node1);
+  Playlists pls2(5, 0, " pls_1 ");
+    pls2.push_back(pl2);
+    pls2.push_back(pl3);
 
-  Node<Playlist> node2(6, " node_2 ", pls2, nodes1);
-  
-  //coll.push_back(node1);
-  //coll.push_back(node2);
+  //--- Nodes -----------------------
+  Node<Playlist> node1(6, " node_1 ", pls1);
+    NodeList nodes1(7, 2, " nodes_1 ");
+      nodes1.push_back(node1);
+
+  Node<Playlist> node2(8, " node_2 ", pls2, nodes1);
+
+  //=================================
   draw(node2, std::cout, 0);
 
-	return 0;
+  std::cout << "========================================\n";
+  //Node<Playlist> merged = merge(node1, node2);
+  //draw(merged, std::cout, 0);
+
+  sort(node2);
+  draw(node2, std::cout, 0);
+
+  return 0;
 }
 
