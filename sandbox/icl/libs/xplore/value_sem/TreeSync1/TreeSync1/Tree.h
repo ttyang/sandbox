@@ -212,6 +212,13 @@ void draw(const Node<Type>& obj, std::ostream& out, size_t pos)
 }
 
 
+template<class Type, class Selector> struct Ordering
+{
+  Ordering(const Selector& select): m_select(select){}
+  bool operator()(Type const& lhs, Type const& rhs){ m_select(lhs) < m_select(rhs); }
+  Selector m_select;
+};
+
 template<class Type>
 Node<Type> merge(const Node<Type>& lhs, const Node<Type>& rhs)
 {
