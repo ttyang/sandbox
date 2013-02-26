@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\NIBuild\3rdparty\boost-1.51.0-R4"
+				AdditionalIncludeDirectories="C:\NIBuild\3rdparty\boost-1.51.0-R4; C:\cygwin\home\jofa\dev\boost\trunk"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

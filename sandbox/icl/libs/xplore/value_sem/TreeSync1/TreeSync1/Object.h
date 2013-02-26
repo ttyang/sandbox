@@ -58,8 +58,8 @@ private:
 
     bool is_less_(concept const& rhs)const 
     { 
-     //return is_less(m_model, dynamic_cast<model const&>(rhs).m_model);
-     return m_model < dynamic_cast<model const&>(rhs).m_model;
+      //return is_less(m_model, dynamic_cast<model const&>(rhs).m_model);
+      return m_model < dynamic_cast<model const&>(rhs).m_model;
     }
 
     void draw_(std::ostream& out, size_t pos)const

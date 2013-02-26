@@ -65,24 +65,25 @@ int _tmain(int argc, _TCHAR* argv[])
   coll.push_back(42);
 
   //--- Playlist --------------------
-  Playlist pl1(1, 2, " pl_1 ");
+  Playlist pl1(3, 2, " pl_1 ");
     pl1.push_back(Playable<int>(11));
-    pl1.push_back(Playable<int>(12));
+    pl1.push_back(Playable<int>(10));
 
   Playlist pl2(2, 5, " pl_2 ");
     pl2.push_back(Playable<int>(21));
-    pl2.push_back(Playable<int>(22));
+    pl2.push_back(Playable<int>(20));
 
-  Playlist pl3(3, 3, " pl_3 ");
+  Playlist pl3(1, 3, " pl_3 ");
     pl2.push_back(Playable<int>(31));
 
 
   //--- Playlists -------------------
   Playlists pls1(4, 0, " pls_1 ");
     pls1.push_back(pl1);
+    pls1.push_back(pl2);
     pls1.push_back(pl3);
 
-  Playlists pls2(5, 0, " pls_1 ");
+  Playlists pls2(5, 0, " pls_2 ");
     pls2.push_back(pl2);
     pls2.push_back(pl3);
 

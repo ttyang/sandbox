@@ -1,13 +1,17 @@
 #pragma once
 
 #include <ostream>
+#include <iterator>
 #include <vector>
+#include <boost/utility/enable_if.hpp>
 #include "std_algorithm.h"
 #include "Object.h"
 
 typedef int tUuid;
 typedef int tTime;
 
+template<class ContentT, class UuidT = int, class TimeT = int>
+class Node;
 
 template<class Uuid, class Time = int>
 class Playable
@@ -61,10 +65,12 @@ operator << (std::basic_ostream<CharType, CharTraits> &stream, Playable<Uuid> co
 }
 
 
-template<class Type, class Uuid = int, class Time = int>
+template<class Type, class UuidT = int, class TimeT = int>
 struct Vec
 {
-  typedef std::vector<Type>              tVector;
+  typedef std::vector<Type>                    tVector;
+  typedef UuidT                                Uuid;
+  typedef TimeT                                Time;
 
   typedef typename tVector::size_type          size_type;
   typedef typename tVector::value_type         value_type;
@@ -141,11 +147,97 @@ bool operator < (Vec<Type,Uuid,Time> const& lhs, Vec<Type,Uuid,Time> const& rhs)
   return lhs.time() < rhs.time();
 }
 
-template<class Content, class Uuid = int, class Time = int>
+//-----------------------------------------------------------------
+// Concept Dateable something that is universally identifiable
+// and has a timestamp, so it can be synchronized
+template<class ModelT> struct Syncable_ModeledBy
+{
+    static const bool value = false;
+    typedef typename ModelT Model;
+    typedef typename Model::Uuid Uuid;
+    typedef typename Model::Time Time;
+    static Uuid uuid(Model const&);
+    static Time time(Model const&);
+};
+
+template<class UuidT, class TimeT> 
+struct Syncable_ModeledBy<Playable<UuidT,TimeT> >
+{
+    static const bool value = true;
+    typedef typename Playable<UuidT> Model;
+    typedef typename Model::Uuid Uuid;
+    typedef typename Model::Time Time;
+    static Uuid uuid(Model const& object){ return object.uuid() };
+    static Time time(Model const& object){ return object.time() };
+};
+
+template<class ElementT, class UuidT, class TimeT> 
+struct Syncable_ModeledBy<Vec<ElementT,UuidT,TimeT> >
+{
+    static const bool value = true;
+    typedef typename Vec<ElementT,UuidT,TimeT> Model;
+    typedef typename Model::Uuid Uuid;
+    typedef typename Model::Time Time;
+    static Uuid uuid(Model const& object){ return object.uuid(); }
+    static Time time(Model const& object){ return object.time(); }
+};
+
+template<class ContentT,class UuidT, class TimeT> 
+struct Syncable_ModeledBy<Node<ContentT,UuidT,TimeT> >
+{
+    static const bool value = true;
+    typedef typename Node<ContentT,UuidT,TimeT> Model;
+    typedef typename Model::Uuid Uuid;
+    typedef typename Model::Time Time;
+    static Uuid uuid(Model const& object){ return object.uuid(); }
+    static Time time(Model const& object){ return object.time(); }
+};
+
+template<class Model>
+typename boost::enable_if<Syncable_ModeledBy<Model>,
+typename Syncable_ModeledBy<Model>::Uuid>::type uuid(Model const& object)
+{
+    return Syncable_ModeledBy<Model>::uuid(object);
+}
+
+template<class Model>
+typename boost::enable_if<Syncable_ModeledBy<Model>,
+typename Syncable_ModeledBy<Model>::Time>::type time(Model const& object)
+{
+    return Syncable_ModeledBy<Model>::time(object);
+}
+
+template<class Model>
+typename boost::enable_if<Syncable_ModeledBy<Model>,
+bool>::type less_for_time(Model const& lhs, Model const& rhs)
+{
+    return time(lhs) < time(rhs);
+}
+
+template<class Model>
+typename boost::enable_if<Syncable_ModeledBy<Model>,
+bool>::type less_for_uuid(Model const& lhs, Model const& rhs)
+{
+    return uuid(lhs) < uuid(rhs);
+}
+
+template<class Syncable>
+struct LessForUuid : std::binary_function<Syncable const&, Syncable const&, bool>
+{
+    bool operator()(Syncable const& lhs, Syncable const& rhs)
+    { return less_for_uuid(lhs, rhs); }
+};
+
+
+//-----------------------------------------------------------------
+
+template<class ContentT, class UuidT = int, class TimeT = int>
 class Node
 {
 public:
-  typedef Content      ContentType;
+  typedef ContentT     Content;
+  typedef UuidT        Uuid;
+  typedef TimeT        Time;
   typedef Vec<Content> ContentVec;
   typedef Vec<Node>    NodeVec;
 
@@ -288,13 +380,13 @@ template<class Type> struct Sorter
 template<class Type>
 void sortElements(Node<Type>& val)
 {
-  std::sort( val.elements_begin(), val.elements_end());
+  std::sort( val.elements_begin(), val.elements_end(), LessForUuid<Type>());
 }
 
 template<class Type>
 void sortNodes(Node<Type>& val)
 {
-  std::sort( val.nodes_begin(), val.nodes_end());
+  std::sort( val.nodes_begin(), val.nodes_end(), LessForUuid<Node<Type> >());
   std::for_each(val.nodes_begin(), val.nodes_end(), Sorter<Node<Type> >());
 }
 
