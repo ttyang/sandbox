@@ -18,6 +18,7 @@
 // David Abrahams.
 
 // Revision history:
+// 2013 02 23 Adam Wulkiewicz: Added move-semantics
 // 2002 05 01 Hugo Duncan: Fix for Borland after Jaakko's previous changes
 // 2002 04 18 Jaakko: tuple element types can be void or plain function
 //                    types, as long as no object is created.
