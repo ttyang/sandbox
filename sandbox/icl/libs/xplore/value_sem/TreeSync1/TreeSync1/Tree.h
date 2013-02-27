@@ -53,7 +53,9 @@ template<class Mergable>
 struct Merger
 {
   Mergable operator()(Mergable const& lhs, Mergable const& rhs)
-  { return merge(lhs, rhs); }
+  { 
+      return merge(lhs, rhs); 
+  }
 };
 
 
@@ -80,7 +82,7 @@ struct Vec
   typedef typename tVector::iterator           iterator;
   typedef typename tVector::const_iterator     const_iterator;
 
-  Vec(): m_uuid(), m_time(), m_name(), m_vector() {}
+  Vec(): m_uuid(), m_time(), m_name("empty"), m_vector() {}
   Vec(Uuid const& uuid, Time const& time, std::string const& name)
     : m_uuid(uuid), m_time(time), m_name(name), m_vector() {}
 
@@ -225,7 +227,9 @@ template<class Syncable>
 struct LessForUuid : std::binary_function<Syncable const&, Syncable const&, bool>
 {
     bool operator()(Syncable const& lhs, Syncable const& rhs)
-    { return less_for_uuid(lhs, rhs); }
+    { 
+        return less_for_uuid(lhs, rhs); 
+    }
 };
 
 

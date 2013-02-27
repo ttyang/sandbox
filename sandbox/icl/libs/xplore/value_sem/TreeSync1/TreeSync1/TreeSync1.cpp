@@ -67,21 +67,21 @@ int _tmain(int argc, _TCHAR* argv[])
   //--- Playlist --------------------
   Playlist pl1(3, 2, " pl_1 ");
     pl1.push_back(Playable<int>(11));
-    pl1.push_back(Playable<int>(10));
+    //pl1.push_back(Playable<int>(10));
 
   Playlist pl2(2, 5, " pl_2 ");
     pl2.push_back(Playable<int>(21));
     pl2.push_back(Playable<int>(20));
 
   Playlist pl3(1, 3, " pl_3 ");
-    pl2.push_back(Playable<int>(31));
+    pl3.push_back(Playable<int>(31));
 
 
   //--- Playlists -------------------
   Playlists pls1(4, 0, " pls_1 ");
     pls1.push_back(pl1);
-    pls1.push_back(pl2);
-    pls1.push_back(pl3);
+    //pls1.push_back(pl2);
+    //pls1.push_back(pl3);
 
   Playlists pls2(5, 0, " pls_2 ");
     pls2.push_back(pl2);
@@ -89,20 +89,26 @@ int _tmain(int argc, _TCHAR* argv[])
 
   //--- Nodes -----------------------
   Node<Playlist> node1(6, " node_1 ", pls1);
-    NodeList nodes1(7, 2, " nodes_1 ");
-      nodes1.push_back(node1);
+  NodeList nodes1(7, 2, " nodes_1 ");
+    nodes1.push_back(node1);
 
   Node<Playlist> node2(8, " node_2 ", pls2, nodes1);
 
   //=================================
-  draw(node2, std::cout, 0);
+  draw(node1, std::cout, 0);
 
   std::cout << "========================================\n";
   //Node<Playlist> merged = merge(node1, node2);
   //draw(merged, std::cout, 0);
 
-  sort(node2);
-  draw(node2, std::cout, 0);
+  sort(node1);
+  draw(node1, std::cout, 0);
+
+  Node<Playlist> node3 = node1;
+  Node<Playlist> merged = merge(node3, node2);
+
+  std::cout << "========================================\n";
+  draw(node3, std::cout, 0);
 
   return 0;
 }
