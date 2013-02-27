@@ -3,21 +3,21 @@
 #include <ostream>
 #include <iterator>
 #include <vector>
+#include <boost/function.hpp>
 #include <boost/utility/enable_if.hpp>
 #include "std_algorithm.h"
-#include "Object.h"
+//#include "Object.h"
 
 typedef int tUuid;
 typedef int tTime;
 
-template<class ContentT, class UuidT = int, class TimeT = int>
-class Node;
+template<class ContentT, class UuidT, class TimeT> class Node;
 
 template<class Uuid, class Time = int>
 class Playable
 {
 public:
-  Playable(Uuid uuid)
+  Playable(Uuid uuid = 0)
     : m_uuid(uuid)
   {  }
 
@@ -35,26 +35,13 @@ bool operator < (Playable<Uuid,Time> const& lhs, Playable<Uuid,Time> const& rhs)
   return lhs.time() < rhs.time();
 }
 
-template<class Comparable>
-struct Minimum
-{
-  Comparable operator()(Comparable const& lhs, Comparable const& rhs)
-  { return rhs < lhs ? rhs : lhs; }
-};
-
-template<class Comparable>
-struct Maximum
-{
-  Comparable operator()(Comparable const& lhs, Comparable const& rhs)
-  { return lhs < rhs ? rhs : lhs; }
-};
 
 template<class Mergable>
 struct Merger
 {
   Mergable operator()(Mergable const& lhs, Mergable const& rhs)
   { 
-      return merge(lhs, rhs); 
+      return std::move(merge(lhs, rhs)); 
   }
 };
 
@@ -76,22 +63,25 @@ struct Vec
 
   typedef typename tVector::size_type          size_type;
   typedef typename tVector::value_type         value_type;
-  typedef Type                                 ValueType;
+  //CL typedef Type                                 ValueType;
   typedef typename tVector::const_reference    const_reference;
 
   typedef typename tVector::iterator           iterator;
   typedef typename tVector::const_iterator     const_iterator;
 
   Vec(): m_uuid(), m_time(), m_name("empty"), m_vector() {}
-  Vec(Uuid const& uuid, Time const& time, std::string const& name)
-    : m_uuid(uuid), m_time(time), m_name(name), m_vector() {}
+
+  Vec(Uuid const& uuid, Time const& time, std::string const& name, size_type capac = 4)
+    : m_uuid(uuid), m_time(time), m_name(name), m_vector(capac) 
+  {
+  }
 
   Vec(Vec const& val) : m_vector(val.m_vector)
     , m_uuid(val.m_uuid)
     , m_time(val.m_time)
     , m_name(val.m_name)
   {
-    //std::cout << "c() ";
+    std::cout << "c() ";
   }
 
   Vec(Vec&& val): m_vector(std::move(val.m_vector))
@@ -121,7 +111,12 @@ struct Vec
   void reserve(size_type size){ m_vector.reserve(size); }
   size_type size()const { return m_vector.size(); }
 
-  //void push_back(const value_type& val)
+  void emplace_back(const Type& val)
+  {
+    m_time = std::move(std::max(m_time, val.time()));
+    m_vector.emplace_back(val); 
+  }
+
   void push_back(const Type& val)
   {
     //JODO 
@@ -135,6 +130,7 @@ struct Vec
 
   void setUuid(Uuid const& uuid){ m_uuid = uuid; }
   void setTime(Time const& time){ m_time = time; }
+  void setName(std::string const& name){ m_name = name; }
   void name(std::string const& name)const { m_name = name; }
 
   Uuid m_uuid;
@@ -146,7 +142,7 @@ struct Vec
 template<class Type, class Uuid, class Time>
 bool operator < (Vec<Type,Uuid,Time> const& lhs, Vec<Type,Uuid,Time> const& rhs)
 {
-  return lhs.time() < rhs.time();
+  return lhs.uuid() < rhs.uuid();
 }
 
 //-----------------------------------------------------------------
@@ -224,11 +220,23 @@ bool>::type less_for_uuid(Model const& lhs, Model const& rhs)
 }
 
 template<class Syncable>
-struct LessForUuid : std::binary_function<Syncable const&, Syncable const&, bool>
+struct LessForUuid : std::binary_function<Syncable, Syncable, bool>
 {
     bool operator()(Syncable const& lhs, Syncable const& rhs)
     { 
         return less_for_uuid(lhs, rhs); 
+    }
+};
+
+template<class Syncable>
+struct LessForTime : std::binary_function<Syncable, Syncable, bool>
+{
+    typedef Syncable first_argument_type; 
+    typedef Syncable second_argument_type; 
+
+    bool operator()(Syncable const& lhs, Syncable const& rhs)
+    { 
+        return less_for_time(lhs, rhs); 
     }
 };
 
@@ -250,7 +258,6 @@ public:
 
   typedef typename NodeVec::const_iterator node_const_iterator;
   typedef typename NodeVec::iterator       node_iterator;
-
 
   Node( Uuid const& uuid = 0, std::string const& name = std::string()
       , const ContentVec& content = ContentVec(), const NodeVec& children = NodeVec())
@@ -278,9 +285,18 @@ public:
   Time        time()const { return m_time; }
   std::string name()const { return m_name; }
 
+  Uuid        contentUuid()const { return m_content.uuid(); }
+  Time        contentTime()const { return m_content.time(); }
+  std::string contentName()const { return m_content.name(); }
+
+  Uuid        childrenUuid()const { return m_children.uuid(); }
+  Time        childrenTime()const { return m_children.time(); }
+  std::string childrenName()const { return m_children.name(); }
+
   void        setUuid(Uuid const& uuid) { m_uuid=uuid; }
   void        setTime(Time const& time) { m_time=time; }
   void        setName(std::string& name){ m_name=name; }
+
   void        setContent(ContentVec content){ m_content = std::move(content); };
   void        setChildren(NodeVec nodes){ m_children = std::move(nodes); };
 
@@ -294,6 +310,14 @@ private:
   ContentVec  m_content;
   NodeVec     m_children;
 };
+
+
+template<class Type, class Uuid, class Time>
+bool operator < (Node<Type,Uuid,Time> const& lhs, Node<Type,Uuid,Time> const& rhs)
+{
+  return lhs.uuid() < rhs.uuid();
+}
+
 
 
 template<class Type>
@@ -322,6 +346,7 @@ Node<Type> merge(const Node<Type>& lhs, const Node<Type>& rhs)
   Node<Type> merged;
   merged.setUuid(lhs.uuid());
   merged.setTime(std::max(lhs.time(), rhs.time()));
+  merged.setName(lhs.name());
 
   merged.setContent(mergeElements(lhs, rhs));
   merged.setChildren(mergeNodes(lhs, rhs));
@@ -334,15 +359,20 @@ template<class Type>
 typename Node<Type>::ContentVec mergeElements(Node<Type>const& lhs, Node<Type>const& rhs)
 {
   typedef Node<Type>::ContentVec  Elements;
-  typedef Elements::ValueType     ElementType;
+  typedef Elements::value_type    Element;
 
   Elements merged;
   merged.reserve(lhs.element_count() + rhs.element_count());
+  merged.setUuid(lhs.contentUuid());
+  merged.setName(lhs.contentName());
+  merged.setTime(std::max(lhs.contentTime(), rhs.contentTime()));
 
   std::general_union( lhs.elements_begin(), lhs.elements_end()
                     , rhs.elements_begin(), rhs.elements_end()
-                    , Maximum<ElementType>()
-                    , std::back_inserter(merged) );
+                    , std::back_inserter(merged)
+                    , LessForUuid<Element>()
+                    , std::Maximum<LessForTime<Element> >() 
+                    );
 
   return std::move(merged);
 }
@@ -352,15 +382,20 @@ template<class Type>
 typename Node<Type>::NodeVec mergeNodes(Node<Type>const& lhs, Node<Type>const& rhs)
 {
   typedef Node<Type>::NodeVec Nodes;
-  typedef typename Nodes::ValueType NodeType;
+  typedef typename Nodes::value_type NodeType;
 
   Nodes merged;
   merged.reserve(lhs.node_count() + rhs.node_count());
+  merged.setUuid(lhs.childrenUuid());
+  merged.setName(lhs.childrenName());
+  merged.setTime(std::max(lhs.childrenTime(), rhs.childrenTime()));
   
   std::general_union( lhs.nodes_begin(), lhs.nodes_end()
                     , rhs.nodes_begin(), rhs.nodes_end()
+                    , std::back_inserter(merged)
+                    , LessForUuid<NodeType>()
                     , Merger<NodeType>()
-                    , std::back_inserter(merged) );
+                    );
                     
   return std::move(merged);
 }
@@ -390,8 +425,7 @@ void sortElements(Node<Type>& val)
 template<class Type>
 void sortNodes(Node<Type>& val)
 {
-  std::sort( val.nodes_begin(), val.nodes_end(), LessForUuid<Node<Type> >());
   std::for_each(val.nodes_begin(), val.nodes_end(), Sorter<Node<Type> >());
+  std::sort( val.nodes_begin(), val.nodes_end(), LessForUuid<Node<Type> >());
 }
-
 

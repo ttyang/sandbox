@@ -78,9 +78,13 @@ private:
   std::unique_ptr<concept> m_value;
 };
 
-//                                     friend enabled gate to polymorphic objects
-bool operator < (object const& lhs, object const& rhs){ return is_less(lhs, rhs); }
-
+/*
+//                                     friend enabled gate to polymorphic objects!!
+bool operator < (object const& lhs, object const& rhs)
+{ 
+  return is_less(lhs, rhs); 
+}
+*/
 
 //  30:13 unsave operator= using delete / new. (defects)
 //  30:25 operator= via unique_ptr and reset.
