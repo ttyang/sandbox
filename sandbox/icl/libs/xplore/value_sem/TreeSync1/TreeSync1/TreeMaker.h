@@ -1,15 +1,16 @@
 #pragma once
 
-#include "Tree.h"
+#include "Syncable/Vector.h"
+#include "Syncable/Node.h"
+#include "Syncable/Playable.h"
 
-typedef Vec<Playable<int> >   Playlist;
-typedef Vec<Playlist>         Playlists;
-typedef Vec<Node<Playlist> >  NodeList;
+typedef Vector<Playable<int> >   Playlist;
+typedef Vector<Playlist>         Playlists;
+typedef Vector<Node<Playlist> >  NodeList;
 
 
 Playlists content_1(int uuid, std::string const& name)
 {
-
       Playlist pl1(3, 2, " pl_1 ");
         pl1.emplace_back(Playable<int>(11));
 
@@ -20,7 +21,6 @@ Playlists content_1(int uuid, std::string const& name)
   Playlists pls1(uuid, 0, name);
     pls1.emplace_back(std::move(pl1));
     pls1.emplace_back(std::move(pl2));
-    //pls1.emplace_back(Playlist(3, 2, " pl_1 ").emplace_back(Playable<int>(11)));
 
   return std::move(pls1);
 }
@@ -38,17 +38,17 @@ Playlists content_2(int uuid, std::string const& name)
         pl2.emplace_back(Playable<int>(21));
 
   Playlists pls1(uuid, 0, name);
-    pls1.emplace_back(pl1);
-    pls1.emplace_back(pl2);
+    pls1.emplace_back(std::move(pl1));
+    pls1.emplace_back(std::move(pl2));
 
   return std::move(pls1);
 }
 
 NodeList children_0(int uuid, int time, std::string const& name, Playlists pls)
 {
-      Node<Playlist> node(6, "node_1", pls);
+      //CL Node<Playlist> node(6, "node_1", pls);
   NodeList nodes1(uuid, time, " nodes_1 ");
-      nodes1.emplace_back(node);
+      nodes1.emplace_back(Node<Playlist>(6, "node_1", std::move(pls)));
   return std::move(nodes1);
 }
 

@@ -44,7 +44,9 @@ struct Maximum : std::binary_function<typename Less::first_argument_type, typena
   typedef typename Less::first_argument_type first_argument_type;
 
   Comparable operator()(Comparable const& lhs, Comparable const& rhs)
-  { return Less()(lhs,rhs) ? rhs : lhs; }
+  { 
+      return Less()(lhs,rhs) ? rhs : lhs; 
+  }
 };
 
 
