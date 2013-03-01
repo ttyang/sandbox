@@ -82,7 +82,7 @@ public:
 
   void        setUuid(Uuid const& uuid) { m_uuid=uuid; }
   void        setTime(Time const& time) { m_time=time; }
-  void        setName(std::string& name){ m_name=name; }
+  void        setName(std::string const& name){ m_name=name; }
 
   void        setContent(ContentVec content){ m_content = std::move(content); };
   void        setChildren(NodeVec nodes){ m_children = std::move(nodes); };
