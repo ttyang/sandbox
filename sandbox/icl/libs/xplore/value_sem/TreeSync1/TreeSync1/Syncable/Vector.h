@@ -8,9 +8,9 @@ template<class Type, class UuidT = int, class TimeT = int>
 class Vector
 {
 public:
-  typedef std::vector<Type>                    tVector;
   typedef UuidT                                Uuid;
   typedef TimeT                                Time;
+  typedef std::vector<Type>                    tVector;
 
   typedef typename tVector::size_type          size_type;
   typedef typename tVector::value_type         value_type;
@@ -89,20 +89,12 @@ private:
   tVector m_vector;  
 };
 
-/*CL
-template<class Type, class Uuid, class Time>
-bool operator < (Vector<Type,Uuid,Time> const& lhs, Vector<Type,Uuid,Time> const& rhs)
-{
-  return lhs.uuid() < rhs.uuid();
-}
-*/
-
 
 template<class ElementT, class UuidT, class TimeT> 
 struct Syncable_ModeledBy<Vector<ElementT,UuidT,TimeT> >
 {
     static const bool value = true;
-    typedef typename Vector<ElementT,UuidT,TimeT> Model;
+    typedef Vector<ElementT,UuidT,TimeT> Model;
     typedef typename Model::Uuid Uuid;
     typedef typename Model::Time Time;
     static Uuid uuid(Model const& object){ return object.uuid(); }

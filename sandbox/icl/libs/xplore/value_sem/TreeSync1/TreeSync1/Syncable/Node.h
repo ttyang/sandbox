@@ -12,8 +12,8 @@ public:
   typedef ContentT        Content;
   typedef UuidT           Uuid;
   typedef TimeT           Time;
-  typedef Vector<Content> ContentVec;
-  typedef Vector<Node>    NodeVec;
+  typedef Vector<Content,Uuid,Time> ContentVec;
+  typedef Vector<Node,Uuid,Time>    NodeVec;
 
   typedef typename ContentVec::const_iterator element_const_iterator;
   typedef typename ContentVec::iterator element_iterator;
@@ -117,7 +117,7 @@ template<class ContentT,class UuidT, class TimeT>
 struct Syncable_ModeledBy<Node<ContentT,UuidT,TimeT> >
 {
     static const bool value = true;
-    typedef typename Node<ContentT,UuidT,TimeT> Model;
+    typedef Node<ContentT,UuidT,TimeT> Model;
     typedef typename Model::Uuid Uuid;
     typedef typename Model::Time Time;
     static Uuid uuid(Model const& object){ return object.uuid(); }

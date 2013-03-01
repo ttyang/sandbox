@@ -2,7 +2,7 @@
 
 #include "Syncable/Vector.h"
 #include "Syncable/Node.h"
-#include "Syncable/Playable.h"
+#include "Playable.h"
 
 typedef Vector<Playable<int> >   Playlist;
 typedef Vector<Playlist>         Playlists;

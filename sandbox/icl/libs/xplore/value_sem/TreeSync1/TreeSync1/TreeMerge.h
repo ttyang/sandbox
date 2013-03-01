@@ -7,7 +7,7 @@
 #include "Syncable/Syncable_Concept.h"
 #include "Syncable/Vector.h"
 #include "Syncable/Node.h"
-#include "Syncable/Playable.h"
+#include "Playable.h"
 
 template<class Mergable>
 struct Merger
@@ -22,7 +22,7 @@ template<class Type, class UuidT, class TimeT>
 Node<Type,UuidT,TimeT>
 merge(Node<Type,UuidT,TimeT>const& lhs, Node<Type,UuidT,TimeT>const& rhs)
 {
-  typedef typename Node<Type,UuidT,TimeT> NodeT;
+  typedef Node<Type,UuidT,TimeT> NodeT;
   typedef typename NodeT::ContentVec ContentVec;
   NodeT merged;
   merged.setUuid(lhs.uuid());
@@ -40,9 +40,9 @@ template<class Type, class UuidT, class TimeT>
 typename Node<Type,UuidT,TimeT>::ContentVec
 mergeElements(Node<Type,UuidT,TimeT>const& lhs, Node<Type,UuidT,TimeT>const& rhs)
 {
-  typedef typename Node<Type,UuidT,TimeT> NodeT;
-  typedef NodeT::ContentVec               Elements;
-  typedef Elements::value_type            Element;
+  typedef Node<Type,UuidT,TimeT>          NodeT;
+  typedef typename NodeT::ContentVec      Elements;
+  typedef typename Elements::value_type   Element;
 
   Elements merged;
   merged.reserve(lhs.element_count() + rhs.element_count());
@@ -65,7 +65,7 @@ template<class Type, class UuidT, class TimeT>
 typename Node<Type,UuidT,TimeT>::NodeVec
 mergeNodes(Node<Type,UuidT,TimeT>const& lhs, Node<Type,UuidT,TimeT>const& rhs)
 {
-  typedef Node<Type>::NodeVec Nodes;
+  typedef typename Node<Type>::NodeVec Nodes;
   typedef typename Nodes::value_type NodeType;
 
   Nodes merged;

@@ -1,7 +1,3 @@
-// TreeSync1.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
 #include <iostream>
 
 #include "TreeMerge.h"
@@ -28,7 +24,8 @@ void draw(const Vector<Type>& obj, std::ostream& out, size_t pos)
 
 
 
-int _tmain(int argc, _TCHAR* argv[])
+//CL int _tmain(int argc, _TCHAR* argv[])
+int main()
 {
   std::cout << "Hello concept\n";
 
