@@ -1,0 +1,347 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:binode_container `binode_container<NodeGenerator,T,Balancer>`]
+
+[section Description]
+TODO.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__binode_container__header__>
+``
+
+Forward-declared:
+
+``
+#include <__binode_container__forward_header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__binode_container__typeof_header__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Default]]
+    [
+        [`NodeGenerator`]
+        [
+            A __Node_Type_Generator__ that takes in the value type and returns
+            a __Binary_Tree_Node__ model.
+        ]
+        []
+    ]
+    [
+        [`T`]
+        [The value type.]
+        []
+    ]
+    [
+        [`Balancer`]
+        [TODO.]
+        [__red_black_balancer__]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Front_Insertion_Sequence__
+  * __Back_Insertion_Sequence__
+  * __Indexable_Container__ if the value associated with __count_key__ exists
+    for the return type of `NodeGenerator`
+  * __Default_Constructible__ if `T` is __Default_Constructible__
+  * __Copy_Constructible__ if `T` is __Copy_Constructible__
+  * __Assignable__ if `T` is __Copy_Constructible__ and __Movable__
+  * __Movable__ if `T` is __Movable__
+
+[endsect]
+
+[section:members Public Members]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [Value type]
+        [[reference__binode_container__value_type]]
+        [__Container__]
+    ]
+    [
+        [Reference type]
+        [[reference__binode_container__reference]]
+        [__Container__]
+    ]
+    [
+        [Reference-to-const type]
+        [[reference__binode_container__const_reference]]
+        [__Container__]
+    ]
+    [
+        [Pointer type]
+        [[reference__binode_container__pointer]]
+        [__Container__]
+    ]
+    [
+        [Pointer-to-const type]
+        [[reference__binode_container__const_pointer]]
+        [__Container__]
+    ]
+    [
+        [Node type]
+        [[reference__binode_container__node]]
+        [`binode_container`]
+    ]
+]
+
+Also, given:
+[reference__binode_container__transform_function]
+
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [Iterator type]
+        [[reference__binode_container__iterator]]
+        [__Container__]
+    ]
+    [
+        [Immutable iterator type]
+        [[reference__binode_container__const_iterator]]
+        [__Container__]
+    ]
+    [
+        [Reverse iterator type]
+        [[reference__binode_container__reverse_iterator]]
+        [__Reversible_Container__]
+    ]
+    [
+        [Immutable reverse iterator type]
+        [[reference__binode_container__const_reverse_iterator]]
+        [__Reversible_Container__]
+    ]
+    [
+        [Size type]
+        [[reference__binode_container__size_type]]
+        [__Container__]
+    ]
+    [
+        [Allocator type]
+        [[reference__binode_container__allocator_type]]
+        [`binode_container`]
+    ]
+    [
+        [Default constructor]
+        [[reference__binode_container__default_ctor]]
+        [__Default_Constructible__]
+    ]
+    [
+        [Constructor with allocator]
+        [[reference__binode_container__ctor_w_alloc]]
+        [`binode_container`]
+    ]
+    [
+        [Copy constructor]
+        [[reference__binode_container__copy_ctor]]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Copy constructor with allocator]
+        [[reference__binode_container__copy_ctor_w_alloc]]
+        [`binode_container`]
+    ]
+    [
+        [Move constructor]
+        [``
+            binode_container(binode_container&& source);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Move constructor with allocator]
+        [``
+            binode_container(
+                binode_container&& source
+              , allocator_type const& allocator
+            );
+        ``]
+        [`binode_container`]
+    ]
+    [
+        [Copy assignment operator]
+        [[reference__binode_container__copy_assign]]
+        [__Assignable__]
+    ]
+    [
+        [Move assignment operator]
+        [``
+            binode_container& operator=(binode_container&& source);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Destructor]
+        [[reference__binode_container__dtor]]
+        [`binode_container`]
+    ]
+    [
+        [Root node read-only access]
+        [[reference__binode_container__data__const]]
+        [`binode_container`]
+    ]
+    [
+        [Root node access]
+        [[reference__binode_container__data]]
+        [`binode_container`]
+    ]
+    [
+        [Beginning of read-only range]
+        [[reference__binode_container__cbegin]]
+        [__Container__]
+    ]
+    [
+        [Beginning of range]
+        [[reference__binode_container__begin]]
+        [__Container__]
+    ]
+    [
+        [End of read-only range]
+        [[reference__binode_container__cend]]
+        [__Container__]
+    ]
+    [
+        [End of range]
+        [[reference__binode_container__end]]
+        [__Container__]
+    ]
+    [
+        [Beginning of read-only reverse range]
+        [[reference__binode_container__crbegin]]
+        [__Reversible_Container__]
+    ]
+    [
+        [Beginning of reverse range]
+        [[reference__binode_container__rbegin]]
+        [__Reversible_Container__]
+    ]
+    [
+        [End of read-only reverse range]
+        [[reference__binode_container__crend]]
+        [__Reversible_Container__]
+    ]
+    [
+        [End of reverse range]
+        [[reference__binode_container__rend]]
+        [__Reversible_Container__]
+    ]
+    [
+        [Back read-only access]
+        [[reference__binode_container__cback]]
+        [__Sequence__]
+    ]
+    [
+        [Back access]
+        [[reference__binode_container__back]]
+        [__Sequence__]
+    ]
+    [
+        [Back insertion]
+        [[reference__binode_container__push_back]]
+        [__Back_Insertion_Sequence__]
+    ]
+    [
+        [Back emplacement]
+        [[reference__binode_container__emplace_back]]
+        [__Back_Insertion_Sequence__]
+    ]
+    [
+        [Back removal]
+        [[reference__binode_container__pop_back]]
+        [__Back_Insertion_Sequence__]
+    ]
+    [
+        [Front read-only access]
+        [[reference__binode_container__cfront]]
+        [__Sequence__]
+    ]
+    [
+        [Front access]
+        [[reference__binode_container__front]]
+        [__Sequence__]
+    ]
+    [
+        [Front insertion]
+        [[reference__binode_container__push_front]]
+        [__Front_Insertion_Sequence__]
+    ]
+    [
+        [Front emplacement]
+        [[reference__binode_container__emplace_front]]
+        [__Front_Insertion_Sequence__]
+    ]
+    [
+        [Front removal]
+        [[reference__binode_container__pop_front]]
+        [__Front_Insertion_Sequence__]
+    ]
+    [
+        [Insertion]
+        [[reference__binode_container__insert]]
+        [__Sequence__]
+    ]
+    [
+        [Emplacement]
+        [[reference__binode_container__emplace]]
+        [__Sequence__]
+    ]
+    [
+        [Erasure]
+        [[reference__binode_container__erase]]
+        [__Sequence__]
+    ]
+    [
+        [Range erasure]
+        [[reference__binode_container__erase_range]]
+        [__Sequence__]
+    ]
+    [
+        [Empty container query]
+        [[reference__binode_container__empty]]
+        [__Container__]
+    ]
+    [
+        [Remove all elements]
+        [[reference__binode_container__clear]]
+        [__Sequence__]
+    ]
+    [
+        [Size query]
+        [[reference__binode_container__size]]
+        [__Container__]
+    ]
+    [
+        [Element read-only access]
+        [[reference__binode_container__index_operator__const]]
+        [__Indexable_Container__]
+    ]
+    [
+        [Element access]
+        [[reference__binode_container__index_operator]]
+        [__Indexable_Container__]
+    ]
+]
+[endsect] [/ Members]
+
+[section Test]
+<__test_containers_cpp__>
+[endsect]
+
+[endsect] [/ binode_container]
+

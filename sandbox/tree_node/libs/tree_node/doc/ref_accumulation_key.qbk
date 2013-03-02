@@ -1,0 +1,86 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:accumulation_key `accumulation_key`]
+
+[section Synopsis]
+[reference__accumulation_key]
+[endsect]
+
+[section Description]
+Use this type to access statistical data stored in __Tree_Node__ objects of
+types ultimately inheriting from __tree_node_with_accumulation_base__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__accumulation_key__header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__accumulation_key__typeof_header__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Key`]
+        [The type used to access the data to be accumulated.]
+        [
+            [^_result_of__has_key_<Node,Key>] must evaluate to __mpl_true__ for
+            some `Node node` storing the desired data.
+        ]
+        [__data_key__]
+    ]
+    [
+        [`Tag`]
+        [The type of the actual computation.]
+        [It must be a valid __Boost_Accumulators__ feature.]
+        [__accumulators_tag_sum__]
+    ]
+    [
+        [`IncludesAllDescendants`]
+        [
+            Configures the __tree_node_with_accumulation_base__ to include all
+            descendants of a target node for statistical evaluation if set to
+            __mpl_true__; otherwise, only the node's immediate children will be
+            included.
+        ]
+        [It must model the __Boolean_Integral_Constant__ concept.]
+        [__mpl_true__]
+    ]
+    [
+        [`IncludesRoot`]
+        [
+            Configures the __tree_node_with_accumulation_base__ to include a
+            target node along with its children/descendants for statistical
+            evaluation if set to __mpl_true__; otherwise, the node will be
+            excluded from evaluation.
+        ]
+        [It must model the __Boolean_Integral_Constant__ concept.]
+        [__mpl_true__]
+    ]
+    [
+        [`Value`]
+        [
+            The type of the accumulated result.  If left unspecified, the
+            __tree_node_with_accumulation_base__ will use the type of the data
+            to be accumulated.
+        ]
+        []
+        [`void`]
+    ]
+]
+[endsect]
+
+[endsect] [/ accumulation_key]
+

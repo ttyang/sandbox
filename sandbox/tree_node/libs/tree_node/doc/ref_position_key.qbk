@@ -1,0 +1,34 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:position_key `position_key`]
+
+[section Synopsis]
+[reference__position_key]
+[endsect]
+
+[section Description]
+Use this type to access the iterator that points to a __Tree_Node__ object in
+its parent's collection of children.  The __Tree_Node__ type must ultimately
+inherit from __tree_node_with_position_base__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__position_key__header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__position_key__typeof_header__>
+``
+[endsect]
+
+[endsect] [/ position_key]
+

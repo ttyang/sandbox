@@ -1,0 +1,478 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Indexable Iterator</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.4">
+<link rel="up" href="../concepts.html" title="Concepts">
+<link rel="prev" href="indexable_container.html" title="Indexable Container">
+<link rel="next" href="../reference.html" title="Reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="indexable_container.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.concepts.indexable_iterator"></a><a class="link" href="indexable_iterator.html" title="Indexable Iterator">Indexable Iterator</a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.indexable_iterator.description"></a><a class="link" href="indexable_iterator.html#tree_node.concepts.indexable_iterator.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          An <span class="bold"><strong>Indexable Iterator</strong></span> is an iterator that
+          provides both increment and decrement as well as sublinear-time operators
+          for moving forward and backward in arbitrary-sized steps. The runtime complexity
+          requirement is the only major difference between an <span class="bold"><strong>Indexable
+          Iterator</strong></span> and a <a href="http://www.sgi.com/tech/stl/RandomAccessIterator.html" target="_top"><span class="bold"><strong>Random Access Iterator</strong></span></a>.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.indexable_iterator.refinement_of"></a><a class="link" href="indexable_iterator.html#tree_node.concepts.indexable_iterator.refinement_of" title="Refinement of">Refinement
+        of</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="http://www.sgi.com/tech/stl/BidirectionalIterator.html" target="_top"><span class="bold"><strong>Bidirectional Iterator</strong></span></a>
+<span class="special">*</span> <a href="http://www.sgi.com/tech/stl/LessThanComparable.html" target="_top"><span class="bold"><strong>Less-Than Comparable</strong></span></a>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.indexable_iterator.types"></a><a class="link" href="indexable_iterator.html#tree_node.concepts.indexable_iterator.types" title="Associated Types">Associated
+        Types</a>
+</h4></div></div></div>
+<p>
+          No additional types beyond those defined in the <a href="http://www.sgi.com/tech/stl/BidirectionalIterator.html" target="_top"><span class="bold"><strong>Bidirectional Iterator</strong></span></a> and <a href="http://www.sgi.com/tech/stl/LessThanComparable.html" target="_top"><span class="bold"><strong>Less-Than Comparable</strong></span></a> concepts.
+        </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl class="variablelist">
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Iterator</span></code></span></dt>
+<dd><p>
+              A type that models the <span class="bold"><strong>Indexable Iterator</strong></span>
+              concept.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">i</span></code>, <code class="computeroutput"><span class="identifier">j</span></code></span></dt>
+<dd><p>
+              Objects of type <code class="computeroutput"><span class="identifier">Iterator</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">T</span></code></span></dt>
+<dd><p>
+              The value type of <code class="computeroutput"><span class="identifier">Iterator</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">t</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">T</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Distance</span></code></span></dt>
+<dd><p>
+              The distance type of <code class="computeroutput"><span class="identifier">Iterator</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">n</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Distance</span></code>.
+            </p></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.indexable_iterator.expressions"></a><a class="link" href="indexable_iterator.html#tree_node.concepts.indexable_iterator.expressions" title="Valid Expressions and Semantics">Valid
+        Expressions and Semantics</a>
+</h4></div></div></div>
+<p>
+          In addition to the expressions defined in the <a href="http://www.sgi.com/tech/stl/BidirectionalIterator.html" target="_top"><span class="bold"><strong>Bidirectional Iterator</strong></span></a> concept, the following
+          expressions must be valid.
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Return Type
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Semantics
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Type Requirements
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Precondition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Postcondition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                    Complexity</a>
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Iterator addition assignment
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span> <span class="special">+=</span>
+                    <span class="identifier">n</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">X</span><span class="special">&amp;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    If <code class="computeroutput"><span class="identifier">n</span> <span class="special">&gt;</span>
+                    <span class="number">0</span></code>, equivalent to executing
+                    <code class="computeroutput"><span class="special">++</span><span class="identifier">i</span></code>
+                    <code class="computeroutput"><span class="identifier">n</span></code> times. If
+                    <code class="computeroutput"><span class="identifier">n</span> <span class="special">&lt;</span>
+                    <span class="number">0</span></code>, equivalent to executing
+                    <code class="computeroutput"><span class="special">--</span><span class="identifier">i</span></code>
+                    <code class="computeroutput"><span class="identifier">n</span></code> times. If
+                    <code class="computeroutput"><span class="identifier">n</span> <span class="special">==</span>
+                    <span class="number">0</span></code>, this is a null operation.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Including <code class="computeroutput"><span class="identifier">i</span></code> itself,
+                    there must be <code class="computeroutput"><span class="identifier">n</span></code>
+                    dereferenceable or past-the-end iterators following or preceding
+                    <code class="computeroutput"><span class="identifier">i</span></code>, depending
+                    on whether <code class="computeroutput"><span class="identifier">n</span></code>
+                    is positive or negative.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span></code> is dereferenceable
+                    or past-the-end.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Iterator addition
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span> <span class="special">+</span>
+                    <span class="identifier">n</span></code> or <code class="computeroutput"><span class="identifier">n</span> <span class="special">+</span>
+                    <span class="identifier">i</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">X</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Equivalent to <code class="computeroutput"><span class="special">{</span> <span class="identifier">X</span> <span class="identifier">tmp</span>
+                    <span class="special">=</span> <span class="identifier">i</span><span class="special">;</span> <span class="keyword">return</span>
+                    <span class="identifier">tmp</span> <span class="special">+=</span>
+                    <span class="identifier">n</span><span class="special">;</span>
+                    <span class="special">}</span></code>. The two forms <code class="computeroutput"><span class="identifier">i</span> <span class="special">+</span>
+                    <span class="identifier">n</span></code> and <code class="computeroutput"><span class="identifier">n</span> <span class="special">+</span>
+                    <span class="identifier">i</span></code> are identical.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Same as for <code class="computeroutput"><span class="identifier">i</span> <span class="special">+=</span> <span class="identifier">n</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The result is dereferenceable or past-the-end.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Iterator subtraction assignment
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span> <span class="special">-=</span>
+                    <span class="identifier">n</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">X</span><span class="special">&amp;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Equivalent to <code class="computeroutput"><span class="identifier">i</span> <span class="special">+=</span> <span class="special">(-</span><span class="identifier">n</span><span class="special">)</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Including <code class="computeroutput"><span class="identifier">i</span></code> itself,
+                    there must be <code class="computeroutput"><span class="identifier">n</span></code>
+                    dereferenceable or past-the-end iterators preceding or following
+                    <code class="computeroutput"><span class="identifier">i</span></code>, depending
+                    on whether <code class="computeroutput"><span class="identifier">n</span></code>
+                    is positive or negative.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span></code> is dereferenceable
+                    or past-the-end.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Iterator subtraction
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span> <span class="special">-</span>
+                    <span class="identifier">n</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">X</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Equivalent to <code class="computeroutput"><span class="special">{</span> <span class="identifier">X</span> <span class="identifier">tmp</span>
+                    <span class="special">=</span> <span class="identifier">i</span><span class="special">;</span> <span class="keyword">return</span>
+                    <span class="identifier">tmp</span> <span class="special">-=</span>
+                    <span class="identifier">n</span><span class="special">;</span>
+                    <span class="special">}</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Same as for <code class="computeroutput"><span class="identifier">i</span> <span class="special">-=</span> <span class="identifier">n</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The result is dereferenceable or past-the-end.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Difference
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span> <span class="special">-</span>
+                    <span class="identifier">j</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Distance</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns a number <code class="computeroutput"><span class="identifier">n</span></code>
+                    such that <code class="computeroutput"><span class="identifier">i</span> <span class="special">==</span> <span class="identifier">j</span>
+                    <span class="special">+</span> <span class="identifier">n</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Either <code class="computeroutput"><span class="identifier">i</span></code> is reachable
+                    from <code class="computeroutput"><span class="identifier">j</span></code> or <code class="computeroutput"><span class="identifier">j</span></code> is reachable from <code class="computeroutput"><span class="identifier">i</span></code>, or both.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Element operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span><span class="special">[</span><span class="identifier">n</span><span class="special">]</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Convertible to <code class="computeroutput"><span class="identifier">T</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Equivalent to <code class="computeroutput"><span class="special">*(</span><span class="identifier">i</span> <span class="special">+</span>
+                    <span class="identifier">n</span><span class="special">)</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span> <span class="special">+</span>
+                    <span class="identifier">n</span></code> exists and is dereferenceable.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Element assignment
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span><span class="special">[</span><span class="identifier">n</span><span class="special">]</span>
+                    <span class="special">=</span> <span class="identifier">t</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Convertible to <code class="computeroutput"><span class="identifier">T</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Equivalent to <code class="computeroutput"><span class="special">*(</span><span class="identifier">i</span> <span class="special">+</span>
+                    <span class="identifier">n</span><span class="special">)</span></code>.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">X</span></code> is mutable.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span> <span class="special">+</span>
+                    <span class="identifier">n</span></code> exists and is dereferenceable.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">i</span><span class="special">[</span><span class="identifier">n</span><span class="special">]</span></code>
+                    is a copy of <code class="computeroutput"><span class="identifier">t</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          In addition, the domain of the less-than comparison expression <code class="computeroutput"><span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">j</span></code> is the group of iterators that are
+          reachable from each other: that is, either <code class="computeroutput"><span class="identifier">i</span></code>
+          is reachable from <code class="computeroutput"><span class="identifier">j</span></code> or
+          <code class="computeroutput"><span class="identifier">j</span></code> is reachable from <code class="computeroutput"><span class="identifier">i</span></code>, or both.
+        </p>
+<p>
+          The <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> and <a href="http://www.sgi.com/tech/stl/ReverseIterator.html" target="_top"><span class="bold"><strong>Reverse Iterator</strong></span></a> requirements that the increment
+          and decrement operators must exhibit constant time complexity have been
+          relaxed; they now need only exhibit linear time complexity with respect
+          to the number of descendants in the worst case.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.indexable_iterator.models"></a><a class="link" href="indexable_iterator.html#tree_node.concepts.indexable_iterator.models" title="Models">Models</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="identifier">The</span> <span class="identifier">iterator</span> <span class="identifier">types</span> <span class="identifier">of</span> <a class="link" href="../reference/binode_container.html" title="binode_container&lt;NodeGenerator,T,Balancer&gt;"><code class="computeroutput"><span class="identifier">tree_node</span><span class="special">::</span><span class="identifier">binode_container</span></code></a><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">iterator</span> <span class="identifier">types</span> <span class="identifier">of</span> <a class="link" href="../reference/binode_assoc_container.html" title="binode_associative_container&lt; NodeGenerator , T1 , T2 , IsMultipleAssociative , CompareSelector , Balancer &gt;"><code class="computeroutput"><span class="identifier">tree_node</span><span class="special">::</span><span class="identifier">binode_associative_container</span></code></a><span class="special">.</span>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011-2013 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="indexable_container.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

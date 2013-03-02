@@ -1,0 +1,34 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:height_key `height_key`]
+
+[section Synopsis]
+[reference__height_key]
+[endsect]
+
+[section Description]
+Use this type to access the [*height] of a __Tree_Node__ object, or the
+magnitude of the difference in ply between it and its deepest descendant.  The
+__Tree_Node__ type must ultimately inherit from __tree_node_with_height_base__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__height_key__header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__height_key__typeof_header__>
+``
+[endsect]
+
+[endsect] [/ height_key]
+

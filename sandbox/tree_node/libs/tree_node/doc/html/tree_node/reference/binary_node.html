@@ -1,0 +1,1144 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>binary_node&lt;T,Size,AllocatorSelector&gt;</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.4">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="avl_balancer.html" title="avl_balancer">
+<link rel="next" href="binary_node_gen.html" title="binary_node_gen&lt;Size,AllocatorSelector&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="avl_balancer.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="binary_node_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.reference.binary_node"></a><a class="link" href="binary_node.html" title="binary_node&lt;T,Size,AllocatorSelector&gt;"><code class="computeroutput"><span class="identifier">binary_node</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">Size</span><span class="special">,</span><span class="identifier">AllocatorSelector</span><span class="special">&gt;</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.description"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          This class template is suitable for classes or algorithms that require
+          a binary tree node data structure. Objects of this type can be stored by
+          value.
+        </p>
+<p>
+          If the user data type models the <a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/concepts/associative_sequence.html" target="_top"><span class="bold"><strong>Fusion Associative Sequence</strong></span></a> concept, then
+          each of the elements within can be also be obtained through key-value access
+          and set through key-value modification as defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept; more specifically, for
+          some object <code class="computeroutput"><span class="identifier">node</span></code> of type
+          <code class="computeroutput"><span class="identifier">Node</span></code> such that <code class="computeroutput"><span class="identifier">Node</span></code> is a template instantiation of
+          <code class="computeroutput"><span class="identifier">binary_node</span></code>, then for any
+          type <code class="computeroutput"><span class="identifier">Key</span></code> such that <code class="literal"><a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/intrinsic/functions/has_key.html" target="_top">fusion::has_key</a>&lt;Key&gt;(get&lt;<a class="link" href="data_key.html" title="data_key">tree_node::data_key</a>&gt;(node))</code>
+          returns <code class="computeroutput"><span class="keyword">true</span></code>, so does <code class="literal"><a class="link" href="has_key.html" title="has_key()">tree_node::has_key</a>&lt;Key&gt;(node)</code>.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.definition"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.definition" title="Where defined">Where defined</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/binary_node.hpp" target="_top">boost/tree_node/binary_node.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          Forward-declared:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/binary_node_fwd.hpp" target="_top">boost/tree_node/binary_node_fwd.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          To register under <a href="http://www.boost.org/doc/html/typeof.html" target="_top"><span class="bold"><strong>Boost.Typeof</strong></span></a>:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/typeof/boost/tree_node/binary_node.hpp" target="_top">boost/typeof/boost/tree_node/binary_node.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.tpl_param"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.tpl_param" title="Template Parameters">Template
+        Parameters</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Parameter
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Default
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">T</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type of the user data to be stored in a <code class="computeroutput"><span class="identifier">binary_node</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Size</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The size type.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">uint32_t</span></code>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">AllocatorSelector</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
+                    takes in <code class="computeroutput"><span class="identifier">binary_node</span></code>
+                    and returns either an allocator model or a mutable reference
+                    to one.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://svn.boost.org/svn/boost/sandbox/container_gen/libs/container_gen/doc/html/container_gen/reference/selectors.html" target="_top"><code class="computeroutput"><span class="identifier">std_allocator_selector</span></code></a>
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.model_of"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.model_of" title="Model of">Model of</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+<span class="special">*</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> <span class="keyword">and</span> <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.public_bases"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.public_bases" title="Public Base Classes">Public
+        Base Classes</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">binary_node_base</span><span class="special">&lt;</span>
+    <span class="identifier">binary_node</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">Size</span><span class="special">,</span><span class="identifier">AllocatorSelector</span><span class="special">&gt;</span>
+  <span class="special">,</span> <span class="identifier">T</span>
+  <span class="special">,</span> <span class="identifier">Size</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap1</span><span class="special">&lt;</span>
+        <span class="identifier">AllocatorSelector</span>
+      <span class="special">,</span> <span class="identifier">binary_node</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">Size</span><span class="special">,</span><span class="identifier">AllocatorSelector</span><span class="special">&gt;</span>
+    <span class="special">&gt;::</span><span class="identifier">type</span>
+<span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.members"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.members" title="Public Members">Public Members</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Definition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Where defined
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Super type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="identifier">binary_node_base</span><span class="special">&lt;</span>
+            <span class="identifier">binary_node</span>
+          <span class="special">,</span> <span class="identifier">T</span>
+          <span class="special">,</span> <span class="identifier">Size</span>
+          <span class="special">,</span> <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap1</span><span class="special">&lt;</span>
+                <span class="identifier">AllocatorSelector</span>
+              <span class="special">,</span> <span class="identifier">binary_node</span>
+            <span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="special">&gt;</span>
+        <span class="identifier">super_t</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Data type, allocator type, allocator reference type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">traits</span>
+        <span class="identifier">traits</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Pointer type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">pointer</span>
+        <span class="identifier">pointer</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Pointer-to-const type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">const_pointer</span>
+        <span class="identifier">const_pointer</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Iterator type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">iterator</span>
+        <span class="identifier">iterator</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/non_assoc_tree_node.html" title="Non-Associative Tree Node"><span class="bold"><strong>Non-Associative Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Immutable iterator type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">const_iterator</span>
+        <span class="identifier">const_iterator</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/non_assoc_tree_node.html" title="Non-Associative Tree Node"><span class="bold"><strong>Non-Associative Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Reverse iterator type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">reverse_iterator</span>
+        <span class="identifier">reverse_iterator</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/reversible_tree_node.html" title="Reversible Tree Node"><span class="bold"><strong>Reversible Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Immutable reverse iterator type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">const_reverse_iterator</span>
+        <span class="identifier">const_reverse_iterator</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/reversible_tree_node.html" title="Reversible Tree Node"><span class="bold"><strong>Reversible Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Size type
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">size_type</span>
+        <span class="identifier">size_type</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Emplacement constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">...</span><span class="identifier">Args</span><span class="special">&gt;</span>
+<span class="keyword">explicit</span> <span class="identifier">binary_node</span><span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;</span> <span class="special">...</span><span class="identifier">args</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Emplacement constructor with allocator
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">...</span><span class="identifier">Args</span><span class="special">&gt;</span>
+<span class="keyword">explicit</span> <span class="identifier">binary_node</span><span class="special">(</span>
+    <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">container</span><span class="special">::</span><span class="identifier">allocator_arg_t</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">allocator_reference</span> <span class="identifier">allocator</span>
+  <span class="special">,</span> <span class="identifier">Args</span><span class="special">&amp;&amp;</span> <span class="special">...</span><span class="identifier">args</span>
+<span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">binary_node</span></code>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Copy constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">binary_node</span><span class="special">(</span><span class="identifier">binary_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Copy constructor with allocator
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">binary_node</span><span class="special">(</span>
+    <span class="identifier">binary_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">allocator_reference</span> <span class="identifier">allocator</span>
+<span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">binary_node</span></code>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Move constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">binary_node</span><span class="special">(</span><span class="identifier">binary_node</span><span class="special">&amp;&amp;</span> <span class="identifier">source</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Move constructor with allocator
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">binary_node</span><span class="special">(</span>
+    <span class="identifier">binary_node</span><span class="special">&amp;&amp;</span> <span class="identifier">source</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">allocator_reference</span> <span class="identifier">allocator</span>
+<span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">binary_node</span></code>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Copy assignment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">binary_node</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">binary_node</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Move assignment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">binary_node</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">binary_node</span><span class="special">&amp;&amp;);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Parent access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_pointer</span> <span class="identifier">get_parent_ptr</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Parent access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">pointer</span> <span class="identifier">get_parent_ptr</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Left child creation
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">...</span><span class="identifier">Args</span><span class="special">&gt;</span>
+<span class="identifier">iterator</span> <span class="identifier">emplace_left</span><span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;</span> <span class="special">...</span><span class="identifier">args</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Left child copy creation
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">iterator</span> <span class="identifier">insert_left</span><span class="special">(</span><span class="identifier">Derived</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">child</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child creation
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="special">...</span><span class="identifier">Args</span><span class="special">&gt;</span>
+<span class="identifier">iterator</span> <span class="identifier">emplace_right</span><span class="special">(</span><span class="identifier">Args</span><span class="special">&amp;&amp;</span> <span class="special">...</span><span class="identifier">args</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child copy creation
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">iterator</span> <span class="identifier">insert_right</span><span class="special">(</span><span class="identifier">Derived</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">child</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Left child access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_pointer</span> <span class="identifier">get_left_child_ptr</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Left child access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">pointer</span> <span class="identifier">get_left_child_ptr</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_pointer</span> <span class="identifier">get_right_child_ptr</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">pointer</span> <span class="identifier">get_right_child_ptr</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range begin access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_iterator</span> <span class="identifier">cbegin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">const_iterator</span> <span class="identifier">begin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range begin access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">iterator</span> <span class="identifier">begin</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range past-the-end access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_iterator</span> <span class="identifier">cend</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">const_iterator</span> <span class="identifier">end</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range past-the-end access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">iterator</span> <span class="identifier">end</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children reverse range begin access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_reverse_iterator</span> <span class="identifier">crbegin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">const_reverse_iterator</span> <span class="identifier">rbegin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/reversible_tree_node.html" title="Reversible Tree Node"><span class="bold"><strong>Reversible Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children reverse range begin access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">reverse_iterator</span> <span class="identifier">rbegin</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/reversible_tree_node.html" title="Reversible Tree Node"><span class="bold"><strong>Reversible Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children reverse range past-the-end access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_reverse_iterator</span> <span class="identifier">crend</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">const_reverse_iterator</span> <span class="identifier">rend</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/reversible_tree_node.html" title="Reversible Tree Node"><span class="bold"><strong>Reversible Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children reverse range past-the-end access
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">reverse_iterator</span> <span class="identifier">rend</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/reversible_tree_node.html" title="Reversible Tree Node"><span class="bold"><strong>Reversible Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range size query
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">size_type</span> <span class="identifier">size</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Rotate left
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">pointer</span> <span class="identifier">rotate_left</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Rotate right
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">pointer</span> <span class="identifier">rotate_right</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove left child
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">bool</span> <span class="identifier">erase_left</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove right child
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">bool</span> <span class="identifier">erase_right</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Leaf node query
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">bool</span> <span class="identifier">empty</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove all children
+                  </p>
+                </td>
+<td>
+                  <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">void</span> <span class="identifier">clear</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.non_members"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.non_members" title="Non-Members">Non-Members</a>
+</h4></div></div></div>
+<p>
+          Same as those defined in <a class="link" href="binary_node_base.html" title="binary_node_base&lt;Derived,T,Selector&gt;"><code class="computeroutput"><span class="identifier">tree_node</span><span class="special">::</span><span class="identifier">binary_node_base</span></code></a>.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.example"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.example" title="Example">Example</a>
+</h4></div></div></div>
+<p>
+          &lt;<a href="../../../../example/binary_node.cpp" target="_top">example/binary_node.cpp</a>&gt;
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.binary_node.test"></a><a class="link" href="binary_node.html#tree_node.reference.binary_node.test" title="Test">Test</a>
+</h4></div></div></div>
+<p>
+          &lt;<a href="../../../../test/binary_node.cpp" target="_top">test/binary_node.cpp</a>&gt;
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011-2013 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="avl_balancer.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="binary_node_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

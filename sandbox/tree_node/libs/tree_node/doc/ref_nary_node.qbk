@@ -1,0 +1,271 @@
+[/=============================================================================
+    Copyright (C) 2011-2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:nary_node `nary_node<T,Selector>`]
+
+[section Description]
+This class template is suitable for classes or algorithms that require a tree
+node data structure that can handle an arbitrary number of children.  Objects
+of this type can be stored by value.
+
+If the user data type models the __Fusion_Associative_Sequence__ concept, then
+each of the elements within can be also be obtained through key-value access
+and set through key-value modification as defined by the __Tree_Node__ concept;
+more specifically, for some object `node` of type `Node` such that `Node` is a
+template instantiation of `nary_node`, then for any type `Key` such that
+[^_fusion_has_key_<Key>(get<_data_key_>(node))] returns `true`, so does
+[^_has_key_<Key>(node)].
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__nary_node__header__>
+``
+
+Forward-declared:
+
+``
+#include <__nary_node__forward_header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__nary_node__typeof_header__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`T`]
+        [The type of the user data to be stored in an `nary_node`.]
+        []
+        []
+    ]
+    [
+        [`Selector`]
+        [The type that determines the child container type.]
+        [[^_is_recursive_selector_<Selector>] must return __mpl_true__.]
+        [__ptr_dequeS__]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __N_ary_Tree_Node__
+  * __Reversible_Tree_Node__ if [^_container_gen_<Selector,nary_node>::type]
+    returns a __Reversible_Container__ model
+  * __Default_Constructible__ if `T` is __Default_Constructible__
+  * __Copy_Constructible__ if `T` is __Copy_Constructible__
+  * __Assignable__ if `T` is __Copy_Constructible__ and __Movable__
+  * __Movable__ if `T` is __Movable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__nary_node__bases]
+[endsect]
+
+[section:members Public Members]
+Given:
+[reference__nary_node_base__children]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [Super type]
+        [[reference__nary_node__super_t]]
+        [__Tree_Node__]
+    ]
+    [
+        [Data type, allocator type, allocator reference type]
+        [[reference__nary_node__traits]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer type]
+        [[reference__nary_node__pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer-to-const type]
+        [[reference__nary_node__const_pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Iterator type]
+        [[reference__nary_node__iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Immutable iterator type]
+        [[reference__nary_node__const_iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Reverse iterator type]
+        [[reference__nary_node__reverse_iterator]]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Immutable reverse iterator type]
+        [[reference__nary_node__const_reverse_iterator]]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Emplacement constructor]
+        [[reference__nary_node__emplacement_ctor]]
+        [__Tree_Node__]
+    ]
+    [
+        [Emplacement constructor with allocator]
+        [[reference__nary_node__emplacement_ctor_w_allocator]]
+        [`nary_node`]
+    ]
+    [
+        [Copy constructor]
+        [``
+            nary_node(nary_node const& copy);
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Copy constructor with allocator]
+        [``
+            nary_node(
+                nary_node const& copy
+              , typename traits::allocator_reference allocator
+            );
+        ``]
+        [`nary_node`]
+    ]
+    [
+        [Move constructor]
+        [``
+            nary_node(nary_node&& source);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Move constructor with allocator]
+        [``
+            nary_node(
+                nary_node&& source
+              , typename traits::allocator_reference allocator
+            );
+        ``]
+        [`nary_node`]
+    ]
+    [
+        [Copy assignment operator]
+        [``
+            nary_node& operator=(nary_node const&);
+        ``]
+        [__Assignable__]
+    ]
+    [
+        [Move assignment operator]
+        [``
+            nary_node& operator=(nary_node&&);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr]]
+        [__Tree_Node__]
+    ]
+    [
+        [Child creation]
+        [[reference__nary_node_base__emplace]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Child copy creation]
+        [[reference__nary_node_base__insert]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__cbegin]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__begin]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__cend]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__end]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children reverse range begin access]
+        [[reference__nary_node_base__crbegin]]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children reverse range begin access]
+        [[reference__nary_node_base__rbegin]]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children reverse range past-the-end access]
+        [[reference__nary_node_base__crend]]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children reverse range past-the-end access]
+        [[reference__nary_node_base__rend]]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children range size query]
+        [[reference__nary_node_base__size]]
+        [__Tree_Node__]
+    ]
+    [
+        [Leaf node query]
+        [[reference__nary_node_base__empty]]
+        [__Tree_Node__]
+    ]
+    [
+        [Remove all children]
+        [[reference__nary_node_base__clear]]
+        [__Tree_Node__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-Members]
+Same as those defined in __nary_node_base__.
+[endsect]
+
+[section Example]
+<__example_nary_node_cpp__>
+[endsect]
+
+[section Test]
+<__test_nary_node_cpp__>
+[endsect]
+
+[endsect] [/ nary_node]
+

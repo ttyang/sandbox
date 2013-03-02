@@ -1,0 +1,76 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:with_accumulation_gen `with_accumulation_gen<BaseGenerator>`]
+
+[section Synopsis]
+[reference__with_accumulation_gen]
+[endsect]
+
+[section Description]
+TODO.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__with_accumulation__header__>
+``
+[endsect]
+
+[section:model_of Model of]
+__Node_Type_Generator__
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Default]]
+    [
+        [`BaseGenerator`]
+        [
+            The __Base_Type_Generator__ from whose return type
+            __tree_node_with_accumulation__ will ultimately inherit.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:expressions Expression Semantics]
+Let `Key` be the key type.
+Let `Data` be the user data type.
+Let `BaseGenerator` be a valid `with_accumulation_gen` template argument.
+
+``
+    typedef _mpl_apply_wrap2_<
+        with_accumulator_gen<BaseGenerator>
+      , Key
+      , Data
+    >::type r;
+``
+
+[*Return type:]
+[^_tree_node_with_accumulation_<BaseGenerator,Key,Data>]
+
+``
+    typedef _mpl_apply_wrap1_<
+        with_accumulation_gen<BaseGenerator>
+      , Data
+    >::type r;
+``
+
+[*Return type:]
+[^_tree_node_with_accumulation_<BaseGenerator,Data,void>]
+
+[endsect]
+
+[section Complexity]
+Compile time.
+[endsect]
+
+[endsect] [/ with_accumulation_gen]
+

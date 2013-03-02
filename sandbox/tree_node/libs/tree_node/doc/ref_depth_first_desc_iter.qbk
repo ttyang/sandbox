@@ -1,0 +1,278 @@
+[/=============================================================================
+    Copyright (C) 2011-2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:depth_first_desc_iter
+    `depth_first_descendant_iterator<Node,IsReverse>`
+]
+
+[section Synopsis]
+[reference__depth_first_descendant_iterator]
+[endsect]
+
+[section Description]
+This iterator traverses the specified root node and all its descendants in
+depth-first fashion, e.g. given the following tree representation:
+
+``
+      A
+      |
+  C---+---B
+  |       |
++-+-+   +-+-+
+|   |   |   |
+D   E   F   G
+``
+
+This iterator will traverse the tree nodes in the following order:
+
+``
+C  pre_order_traversal
+D  pre_order_traversal
+D  post_order_traversal
+E  pre_order_traversal
+E  post_order_traversal
+C  post_order_traversal
+B  pre_order_traversal
+F  pre_order_traversal
+F  post_order_traversal
+G  pre_order_traversal
+G  post_order_traversal
+B  post_order_traversal
+``
+
+The traversal state conversion operator of this iterator will yield each value
+in the column on the right at the appropriate iteration.
+
+This iterator can also be used to traverse the tree nodes in reverse:
+
+``
+B  post_order_traversal
+G  post_order_traversal
+G  pre_order_traversal
+F  post_order_traversal
+F  pre_order_traversal
+B  pre_order_traversal
+C  post_order_traversal
+E  post_order_traversal
+E  pre_order_traversal
+D  post_order_traversal
+D  pre_order_traversal
+C  pre_order_traversal
+``
+
+This iterator is ideal for algorithms that need to perform both preprocessing
+and postprocessing of a tree node, e.g. non-recursive copy constructors.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__depth_first_descendant_iterator__header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__depth_first_descendant_iterator__typeof_header__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Node`]
+        [The type of a tree node.]
+        [
+            It must model the __Tree_Node__ concept, but it can be
+            `const`-qualified.
+        ]
+        []
+    ]
+    [
+        [`IsReverse`]
+        [
+            Configures the `depth_first_descendant_iterator` to traverse tree
+            nodes in reverse depth-first fashion if equivalent to __mpl_true__;
+            otherwise, the nodes will be traversed in depth-first fashion.
+        ]
+        [It must model the __Boolean_Integral_Constant__ concept.]
+        [__mpl_false__]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Tree_Node_Descendant_Iterator__
+  * __Bidirectional_Iterator__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Value type]
+        [``
+            typedef ... value_type;
+        ``]
+        [__Tree_Node_Descendant_Iterator__]
+    ]
+    [
+        [Reference type]
+        [``
+            typedef ... reference;
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pointer type]
+        [``
+            typedef ... pointer;
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Distance type]
+        [``
+            typedef ... difference_type;
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Iterator category]
+        [``
+            typedef ... iterator_category;
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Default constructor]
+        [``
+            depth_first_descendant_iterator();
+        ``]
+        [__Default_Constructible__]
+    ]
+    [
+        [Constructor from node]
+        [``
+            depth_first_descendant_iterator(Node&);
+        ``]
+        [__Tree_Node_Descendant_Iterator__]
+    ]
+    [
+        [Conversion constructor]
+        [``
+            template <typename N>
+            depth_first_descendant_iterator(
+                depth_first_descendant_iterator<N> const&
+            );
+        ``]
+        [`depth_first_descendant_iterator`]
+    ]
+    [
+        [Copy constructor]
+        [``
+            depth_first_descendant_iterator(
+                depth_first_descendant_iterator const&
+            );
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [``
+            depth_first_descendant_iterator&
+                operator=(depth_first_descendant_iterator const&);
+        ``]
+        [__Assignable__]
+    ]
+    [
+        [Dereference operator]
+        [``
+            reference operator*() const;
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Indirection operator]
+        [``
+            pointer operator->() const;
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pre-increment operator]
+        [``
+            depth_first_descendant_iterator& operator++();
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Post-increment operator]
+        [``
+            depth_first_descendant_iterator operator++(int);
+        ``]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pre-decrement operator]
+        [``
+            depth_first_descendant_iterator& operator--();
+        ``]
+        [__Bidirectional_Iterator__]
+    ]
+    [
+        [Post-decrement operator]
+        [``
+            depth_first_descendant_iterator operator--(int);
+        ``]
+        [__Bidirectional_Iterator__]
+    ]
+    [
+        [Traversal state conversion operator]
+        [``
+            operator _traversal_state_() const;
+        ``]
+        [__Tree_Node_Iterator__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Definition][Description]]
+    [
+        [Iterator creation]
+        [[reference__make_depth_first_descendant_iterator]]
+        [
+            Constructs and returns a `depth_first_descendant_iterator` that
+            will iterate through the descendants of the specified node.
+        ]
+    ]
+    [
+        [Iteration]
+        [[reference__make_depth_first_descendant_reverse_iterator]]
+        [
+            Constructs and returns a `depth_first_descendant_iterator` that
+            will iterate through the descendants of the specified node in
+            reverse order.
+        ]
+    ]
+]
+[endsect]
+
+[endsect] [/ depth_first_descendant_iterator]
+

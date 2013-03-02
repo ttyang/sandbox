@@ -1,0 +1,354 @@
+[/=============================================================================
+    Copyright (C) 2011-2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:nary_node_base `nary_node_base<Derived,T,Selector>`]
+
+[section Description]
+The __nary_node__ class template inherits its functionality from this class
+template.  They differ only with regard to template parameters: the
+__nary_node__ class template is meant to be used directly as a data structure,
+while `nary_node_base` is more suitable as a base class template from which
+__Tree_Node__ adaptor class templates can derive via the __nary_node_base_gen__
+__Base_Type_Generator__.
+
+If the user data type models the __Fusion_Associative_Sequence__ concept, then
+each of the elements within can be also be obtained through key-value access
+and set through key-value modification as defined by the __Tree_Node__ concept;
+more specifically, for some object `node` of type `Node` such that `Node`
+inherits from `nary_node_base`, then for any type `Key` such that
+[^_fusion_has_key_<Key>(get<_data_key_>(node))] returns `true`, so does
+[^_has_key_<Key>(node)].
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__nary_node__header__>
+``
+
+Forward-declared:
+
+``
+#include <__nary_node__forward_header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__nary_node__typeof_header__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements]]
+    [
+        [`Derived`]
+        [The most descendant type that will inherit from this one.]
+        []
+    ]
+    [
+        [`T`]
+        [The user data type.]
+        []
+    ]
+    [
+        [`Selector`]
+        [The type that determines the child container type.]
+        [[^_is_recursive_selector_<Selector>] must return __mpl_true__.]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __N_ary_Tree_Node__
+  * __Reversible_Tree_Node__ if [^_container_gen_<Selector,Derived>::type]
+    returns a __Reversible_Container__ model
+  * __Base_Tree_Node__
+  * __Default_Constructible__ if `T` is __Default_Constructible__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__nary_node_base__bases]
+[endsect]
+
+[section:members Members]
+Given:
+[reference__nary_node_base__children]
+[table
+    [[Name][Definition][Scope][Where defined]]
+    [
+        [Super type]
+        [[reference__nary_node_base__super_t]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Data type, allocator type, allocator reference type]
+        [[reference__nary_node_base__traits]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer type]
+        [[reference__nary_node_base__pointer]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer-to-const type]
+        [[reference__nary_node_base__const_pointer]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Iterator type]
+        [[reference__nary_node_base__iterator]]
+        [`public`]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Immutable iterator type]
+        [[reference__nary_node_base__const_iterator]]
+        [`public`]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Reverse iterator type]
+        [[reference__nary_node_base__reverse_iterator]]
+        [`public`]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Immutable reverse iterator type]
+        [[reference__nary_node_base__const_reverse_iterator]]
+        [`public`]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Emplacement constructor]
+        [[reference__nary_node_base__emplacement_ctor]]
+        [`protected`]
+        [__Tree_Node__]
+    ]
+    [
+        [Emplacement constructor with allocator]
+        [[reference__nary_node_base__emplacement_ctor_w_allocator]]
+        [`protected`]
+        [`nary_node_base`]
+    ]
+    [
+        [Derived copy constructor]
+        [[reference__nary_node_base__derived_copy_ctor]]
+        [`protected`]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [Derived copy constructor with allocator]
+        [[reference__nary_node_base__derived_copy_ctor_w_allocator]]
+        [`nary_node_base`]
+    ]
+    [
+        [Derived move constructor]
+        [``
+            nary_node_base(Derived&& source);
+        ``]
+        [`protected`]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [Derived move constructor with allocator]
+        [``
+            nary_node_base(
+                Derived&& source
+              , typename traits::allocator_reference allocator
+            );
+        ``]
+        [`protected`]
+        [`nary_node_base`]
+    ]
+    [
+        [Copy or move notification]
+        [[reference__nary_node_base__on_post_copy_or_move]]
+        [`protected`]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [Derived copy assignment]
+        [[reference__nary_node_base__copy_assign]]
+        [`protected`]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [Derived move assignment]
+        [``
+            Derived& operator=(Derived&&);
+        ``]
+        [`protected`]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [User data member read-only access]
+        [[reference__nary_node_base__key_value_operator__const]]
+        [`public`]
+        [`nary_node_base`]
+    ]
+    [
+        [User data member access]
+        [[reference__nary_node_base__key_value_operator]]
+        [`public`]
+        [`nary_node_base`]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr__const]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Child creation]
+        [[reference__nary_node_base__emplace]]
+        [`public`]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Child copy creation]
+        [[reference__nary_node_base__insert]]
+        [`public`]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__cbegin]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__begin]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__cend]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__end]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Children reverse range begin access]
+        [[reference__nary_node_base__crbegin]]
+        [`public`]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children reverse range begin access]
+        [[reference__nary_node_base__rbegin]]
+        [`public`]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children reverse range past-the-end access]
+        [[reference__nary_node_base__crend]]
+        [`public`]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children reverse range past-the-end access]
+        [[reference__nary_node_base__rend]]
+        [`public`]
+        [__Reversible_Tree_Node__]
+    ]
+    [
+        [Children range size query]
+        [[reference__nary_node_base__size]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Leaf node query]
+        [[reference__nary_node_base__empty]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Remove all children]
+        [[reference__nary_node_base__clear]]
+        [`public`]
+        [__Tree_Node__]
+    ]
+    [
+        [Derived access]
+        [``
+            const_pointer get_derived() const;
+        ``]
+        [`public`]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [Derived access]
+        [``
+            pointer get_derived();
+        ``]
+        [`public`]
+        [__Base_Tree_Node__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-Members]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [User data read-only access]
+        [[reference__nary_node_base__at_data_key__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [user data access]
+        [[reference__nary_node_base__at_data_key]]
+        [__Tree_Node__]
+    ]
+    [
+        [User data modification]
+        [[reference__nary_node_base__put_data]]
+        [__Tree_Node__]
+    ]
+    [
+        [Key-value read-only access]
+        [[reference__nary_node_base__key_value_operator__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Key-value access]
+        [[reference__nary_node_base__key_value_operator]]
+        [__Tree_Node__]
+    ]
+    [
+        [Key-value modification]
+        [[reference__nary_node_base__put]]
+        [__Tree_Node__]
+    ]
+]
+[endsect] [/ Non-Members]
+
+[endsect] [/ nary_node_base]
+

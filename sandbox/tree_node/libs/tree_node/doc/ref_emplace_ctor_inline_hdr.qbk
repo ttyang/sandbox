@@ -1,0 +1,74 @@
+[/=============================================================================
+    Copyright (C) 2012-2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:emplace_ctor_inline_hdr `BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_HDR`]
+
+[section Synopsis]
+[reference__macro__emplacement_ctor_header]
+[reference__macro__emplacement_ctor_base_fwd]
+[reference__macro__emplacement_ctor_inline_header]
+[endsect]
+
+[section Description]
+Defined only if the compiler does not support perfect forwarding, this macro
+expands to the header of a constructor that emulates it along witht the first
+part of its initialization list.
+[endsect]
+
+[section Usage]
+``
+class Derived : public Base
+{
+    int some_member;
+
+    void post_construct(int);
+
+ public:
+#if defined BOOST_CONTAINER_PERFECT_FORWARDING
+    template <typename ...Args>
+    inline explicit Derived(Args&& ...args)
+      : Base(boost::forward<Args>(args)...)
+      , some_member(0)
+    {
+        this->post_construct(this->some_member);
+    }
+#else
+#define YOUR_MACRO(z, n, Tuple) \
+    BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_HEADER(z, n, Tuple) \
+      , some_member(0) \
+    { \
+        this->post_construct(this->some_member); \
+    } \
+//!
+    _PP_REPEAT_(
+        BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS
+      , YOUR_MACRO
+      , (Derived, Base)
+    )
+#undef YOUR_MACRO
+#endif
+};
+``
+[endsect]
+
+[section Arguments]
+  * /z/ -- The next available __PP_REPEAT__ dimension.
+  * /n/ -- The number of arguments that the current iteration's constructor
+    will accept.
+  * /Derived/ -- The name of the enclosing type.
+  * /Base/ -- The name of the type from which `Derived` inherits.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__preprocessor__header__>
+``
+[endsect]
+
+[endsect] [/ BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_HDR]
+

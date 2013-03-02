@@ -1,0 +1,33 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:red_black_flag_key `red_flag_key` and `black_flag_key`]
+
+[section Synopsis]
+[reference__red_black_flag_key]
+[endsect]
+
+[section Description]
+Use these types to query the red-or-black flag stored in __Tree_Node__ objects
+of types ultimately inheriting from __tree_node_with_red_black_flag_base__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__red_black_flag_key__header__>
+``
+
+To register under __Boost_Typeof__:
+
+``
+#include <__red_black_flag_key__typeof_header__>
+``
+[endsect]
+
+[endsect] [/ red_black_flag_key]
+

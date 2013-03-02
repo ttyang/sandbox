@@ -1,0 +1,69 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:emplace_ctor_w_alloc_i_def
+    `BOOST_TREE_NODE_EMPLACEMENT_CTOR_W_ALLOC_INLINE_DEF`
+]
+
+[section Synopsis]
+[reference__macro__emplacement_ctor_w_alloc_inline_def]
+[endsect]
+
+[section Description]
+Defined only if the compiler does not support perfect forwarding, and meant to
+be used in the `public` scope of a __Tree_Node__ model that inherits from a
+__Base_Tree_Node__ and defines no additional members, this macro expands to the
+inline definition of a constructor that will emulate it.  Uses
+__TREE_NODE_EMPLACEMENT_CTOR_W_ALLOC_INLINE_HEADER__.
+[endsect]
+
+[section Usage]
+``
+class Derived : public Base
+{
+ public:
+    typedef typename Base::traits traits;
+
+#if defined BOOST_CONTAINER_PERFECT_FORWARDING
+    template <typename ...Args>
+    inline explicit Derived(
+        boost::container::allocator_arg_t
+      , typename traits::allocator_reference allocator
+      , Args&& ...args
+    ) : Base(
+            boost::container::allocator_arg
+          , allocator
+          , boost::forward<Args>(args)...
+        )
+    {
+        Base::on_post_emplacement_construct();
+    }
+#else
+    _PP_REPEAT_(
+        BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS
+      , BOOST_TREE_NODE_EMPLACEMENT_CTOR_W_ALLOC_INLINE_DEF
+      , (Derived, Base)
+    )
+#endif
+};
+``
+[endsect]
+
+[section Arguments]
+  * /Derived/ -- The name of the enclosing type.
+  * /Base/ -- The name of the type from which `Derived` inherits.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__preprocessor__header__>
+``
+[endsect]
+
+[endsect] [/ BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_DEF]
+

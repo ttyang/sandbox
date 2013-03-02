@@ -1,0 +1,35 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:value_at_key `result_of::value_at_key<Node,Key>`]
+
+[section Synopsis]
+[reference__tree_node__result_of__value_at_key]
+[endsect]
+
+[section Description]
+Let `Node` be a (possibly `const`-qualified) __Tree_Node__ model.
+Let `Key` be a type for which [^_result_of__has_key_<Node,Key>] evaluates to
+__mpl_true__.
+
+``
+    typedef result_of::value_at_key<Node,Key>::type r;
+``
+
+[*Return type:] The actual element type associated with key type `Key` in
+`Node`.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__value_at_key__header__>
+``
+[endsect]
+
+[endsect] [/ value_at_key]
+

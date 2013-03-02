@@ -1,0 +1,26 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:advance_binary `advance_binary()`]
+
+[section Synopsis]
+[reference__tree_node__advance_binary]
+[endsect]
+
+[section Description]
+
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__advance_binary__header__>
+``
+[endsect]
+
+[endsect] [/ advance_binary]
+

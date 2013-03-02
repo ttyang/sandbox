@@ -1,0 +1,161 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:reversible_tree_node Reversible Tree Node]
+
+[section Description]
+Objects of types that model both the __Tree_Node_Iterator__ and
+__Bidirectional_Iterator__ concepts can iterate over objects of types that
+model this concept.
+[endsect]
+
+[section Refinement of]
+__Tree_Node__
+[endsect]
+
+[variablelist Notation
+    [[`Node`][A type that models the [*Reversible Tree Node] concept.]]
+    [[`node`][An object of type `Node::pointer`.]]
+    [[`const_node`][An object of type `Node::const_pointer`.]]
+]
+
+[section:types Associated Types]
+Two new types are introduced.
+
+[table
+    [[Name][Expression][Description][Requirements]]
+    [
+        [Reverse iterator type]
+        [`Node::reverse_iterator`]
+        [
+            The type of iterator used to iterate in reverse through the
+            children of a `Node` object.
+        ]
+        [
+            It must model the __Bidirectional_Iterator__ concept, and it must
+            be convertible to `Node::const_reverse_iterator`.
+        ]
+    ]
+    [
+        [Immutable reverse iterator type]
+        [`Node::const_reverse_iterator`]
+        [
+            The type of iterator used to iterate in reverse through the
+            children of a `Node const` object.
+        ]
+        [
+            It must model the __Bidirectional_Iterator__ concept, and it must
+            /not/ point to a mutable object.
+        ]
+    ]
+]
+
+In addition, the requirements for the iterator types are strengthened: they
+must also model the __Bidirectional_Iterator__ concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Tree_Node__ concept, the
+following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Return Type]
+        [Semantics]
+        [Type Requirements]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Children reverse range begin access]
+        [`const_node->rbegin()`]
+        [`Node::const_reverse_iterator`]
+        [
+            Returns an iterator pointing to the beginning of the reverse range
+            of children of the tree node.  If the range is empty, then the
+            iterator points past-the-end.
+        ]
+        []
+        [Constant]
+    ]
+    [
+        [Children reverse range begin access]
+        [`node->rbegin()`]
+        [`Node::reverse_iterator`]
+        [
+            Returns an iterator pointing to the beginning of the reverse range
+            of children of the tree node.  If the range is empty, then the
+            iterator points past-the-end.
+        ]
+        []
+        [Constant]
+    ]
+    [
+        [Children reverse range past-the-end access]
+        [`const_node->rend()`]
+        [`Node::const_reverse_iterator`]
+        [
+            Returns an iterator pointing past the end of the reverse range of
+            children of the tree node.
+        ]
+        []
+        [Constant]
+    ]
+    [
+        [Children reverse range past-the-end access]
+        [`node->rend()`]
+        [`Node::reverse_iterator`]
+        [
+            Returns an iterator pointing past the end of the reverse range of
+            children of the tree node.
+        ]
+        []
+        [Constant]
+    ]
+]
+[endsect] [/ Valid Expressions and Semantics]
+
+[section Models]
+
+  * __binary_node__
+  * __binary_node_base__
+  * __nary_node__ if [^_container_gen_<Selector,_nary_node_>::type] returns a
+    __Reversible_Container__ model
+  * __nary_node_base__ if [^_container_gen_<Selector,Derived>::type] returns a
+    __Reversible_Container__ model
+  * __associative_node__ if
+    [^_container_gen_<Selector,Key,_associative_node_>::type] returns a
+    __Reversible_Container__ model
+  * __associative_node_base__ if [^_container_gen_<Selector,Key,Derived>::type]
+    returns a __Reversible_Container__ model
+  * __tree_node_with_accumulation__ if `BaseGenerator` returns a [*Reversible
+    Tree Node] model
+  * __tree_node_with_accumulation_base__ if `BaseGenerator` returns a
+    [*Reversible Tree Node] model
+  * __tree_node_with_count__ if `BaseGenerator` returns a [*Reversible Tree
+    Node] model
+  * __tree_node_with_count_base__ if `BaseGenerator` returns a [*Reversible
+    Tree Node] model
+  * __tree_node_with_height__ if `BaseGenerator` returns a [*Reversible Tree
+    Node] model
+  * __tree_node_with_height_base__ if `BaseGenerator` returns a [*Reversible
+    Tree Node] model
+  * __tree_node_with_position__ if `BaseGenerator` returns a [*Reversible Tree
+    Node] model
+  * __tree_node_with_position_base__ if `BaseGenerator` returns a [*Reversible
+    Tree Node] model
+  * __tree_node_with_red_black_flag__ if `BaseGenerator` returns a [*Reversible
+    Tree Node] model
+  * __tree_node_with_red_black_flag_base__ if `BaseGenerator` returns a
+    [*Reversible Tree Node] model
+
+[endsect]
+
+[endsect] [/ Reversible Tree Node]
+

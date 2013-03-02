@@ -1,0 +1,26 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:binary_upper_bound `binary_upper_bound()`]
+
+[section Synopsis]
+[reference__tree_node__binary_upper_bound]
+[endsect]
+
+[section Description]
+
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__binary_upper_bound__header__>
+``
+[endsect]
+
+[endsect] [/ binary_upper_bound]
+
