@@ -1,0 +1,57 @@
+
+/**************************************************************/
+/* WARNING:   FILE AUTOMATICALLY GENERATED, DO NOT MODIFY IT! */
+/* Instead modify the generation script "keyword/generate.py" */
+/**************************************************************/
+
+#ifndef BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_HPP_
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_HPP_
+
+#include <boost/contract/detail/preprocessor/keyword/facilities/is.hpp>
+#include <boost/contract/detail/preprocessor/keyword/facilities/add.hpp>
+#include <boost/contract/detail/preprocessor/keyword/facilities/remove.hpp>
+
+// PRIVATE //
+
+// These are not local macros -- DO NOT #UNDEF.
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_IS_bitand (1) /* unary */
+#define bitand_BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_IS (1) /* unary */
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_REMOVE_bitand /* nothing */
+#define bitand_BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_REMOVE /* nothing */
+
+// PUBLIC //
+
+// Is.
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_BITAND_FRONT(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_IS_FRONT(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_IS_)
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_BITAND_BACK(token) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_IS_BACK(token, \
+            _BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_IS)
+
+// Remove.
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_REMOVE_FRONT(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_BITAND_FRONT, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_REMOVE_)
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_REMOVE_BACK(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_REMOVE_BACK(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_BITAND_BACK, \
+            _BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_REMOVE)
+
+// Add.
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_ADD_FRONT(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_ADD_FRONT(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_BITAND_FRONT, bitand)
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_BITAND_ADD_BACK(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_ADD_BACK(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_BITAND_BACK, bitand)
+
+#endif // #include guard
+

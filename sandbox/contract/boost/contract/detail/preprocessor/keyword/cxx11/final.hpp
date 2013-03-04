@@ -1,0 +1,57 @@
+
+/**************************************************************/
+/* WARNING:   FILE AUTOMATICALLY GENERATED, DO NOT MODIFY IT! */
+/* Instead modify the generation script "keyword/generate.py" */
+/**************************************************************/
+
+#ifndef BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_HPP_
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_HPP_
+
+#include <boost/contract/detail/preprocessor/keyword/facilities/is.hpp>
+#include <boost/contract/detail/preprocessor/keyword/facilities/add.hpp>
+#include <boost/contract/detail/preprocessor/keyword/facilities/remove.hpp>
+
+// PRIVATE //
+
+// These are not local macros -- DO NOT #UNDEF.
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_IS_final (1) /* unary */
+#define final_BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_IS (1) /* unary */
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_REMOVE_final /* nothing */
+#define final_BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_REMOVE /* nothing */
+
+// PUBLIC //
+
+// Is.
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_FINAL_FRONT(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_IS_FRONT(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_IS_)
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_FINAL_BACK(token) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_IS_BACK(token, \
+            _BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_IS)
+
+// Remove.
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_REMOVE_FRONT(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_FINAL_FRONT, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_REMOVE_)
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_REMOVE_BACK(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_REMOVE_BACK(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_FINAL_BACK, \
+            _BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_REMOVE)
+
+// Add.
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_ADD_FRONT(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_ADD_FRONT(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_FINAL_FRONT, final)
+
+#define BOOST_CONTRACT_DETAIL_PP_KEYWORD_FINAL_ADD_BACK(tokens) \
+    BOOST_CONTRACT_DETAIL_PP_KEYWORD_FACILITY_ADD_BACK(tokens, \
+            BOOST_CONTRACT_DETAIL_PP_KEYWORD_IS_FINAL_BACK, final)
+
+#endif // #include guard
+
