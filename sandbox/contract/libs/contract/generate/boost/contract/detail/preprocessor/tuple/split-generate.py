@@ -23,7 +23,7 @@ def data(max_size):
     s = ''
     for size in range(1, max_size + 1):
         s = s + '''
-#define CONTRACT_DETAIL_PP_TUPLE_SPLIT_{0}({1}) \\
+#define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_{0}({1}) \\
     ({1}) , /* comma splits */ \
 '''.format(size, placeholders(0, size))
     return s
@@ -44,8 +44,8 @@ h.write('''
 /*************************************************************/
 // Used: #define BOOST_PP_LIMIT_TUPLE {0}
 
-#ifndef CONTRACT_DETAIL_PP_TUPLE_SPLIT_HPP_
-#define CONTRACT_DETAIL_PP_TUPLE_SPLIT_HPP_
+#ifndef BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_HPP_
+#define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_HPP_
 
 #include <boost/preprocessor/limits.hpp>
 #if BOOST_PP_LIMIT_TUPLE != {0}
@@ -56,28 +56,29 @@ h.write('''
 
 // Own version of PP_CAT for reentrancy.
 #if ~BOOST_PP_CONFIG_FLAGS() & BOOST_PP_CONFIG_MWCC()
-#   define CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_(a, b) \\
-        CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_(a, b)
+#   define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_(a, b) \\
+        BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_(a, b)
 #else
-#   define CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_(a, b) \\
-        CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_OO_((a, b))
-#   define CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_OO_(par) \\
-        CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_ ## par
+#   define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_(a, b) \\
+        BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_OO_((a, b))
+#   define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_OO_(par) \\
+        BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_ ## par
 #endif
 #if ~BOOST_PP_CONFIG_FLAGS() & BOOST_PP_CONFIG_MSVC()
-#   define CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_(a, b) \\
+#   define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_(a, b) \\
         a ## b
 #else
-#   define CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_(a, b) \\
-        CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_II_(~, a ## b)
-#   define CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_II_(p, res) \\
+#   define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_I_(a, b) \\
+        BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_II_(~, a ## b)
+#   define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_II_(p, res) \\
         res
 #endif
 
 // PUBLIC //
 
-#define CONTRACT_DETAIL_PP_TUPLE_SPLIT(size) \\
-    CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_(CONTRACT_DETAIL_PP_TUPLE_SPLIT_, size)
+#define BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT(size) \\
+    BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_CAT_( \\
+            BOOST_CONTRACT_DETAIL_PP_TUPLE_SPLIT_, size)
 
 // DATA //
 {1}
