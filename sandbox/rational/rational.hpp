@@ -119,7 +119,7 @@ void mul2int(IntType& res_hi, IntType& res_lo, IntType f1, IntType f2)
         res_lo += 1;
         if(res_lo == 0)
         {
-    	    res_hi++;
+            res_hi++;
         }
     }
 }
@@ -214,13 +214,9 @@ public:
     explicit rational_overflow() : std::domain_error("rational error: over or underflow") {}
 };
 
+
+
 template <typename IntType, rational_checktype CheckingMode=rational_no_checking>
-class rational;
-
-template <typename IntType, rational_checktype CheckingMode>
-rational<IntType, CheckingMode> abs(const rational<IntType, CheckingMode>& r);
-
-template <typename IntType, rational_checktype CheckingMode>
 class rational :
     less_than_comparable < rational<IntType, CheckingMode>,
     equality_comparable < rational<IntType, CheckingMode>,
@@ -311,6 +307,122 @@ public:
     bool operator>  (param_type i) const;
     bool operator== (param_type i) const;
 
+    rational& assignNoNorm(param_type n, param_type d) { num = n; den = d; return *this;}
+
+private:
+    // Implementation - numerator and denominator (normalized).
+    // Other possibilities - separate whole-part, or sign, fields?
+    IntType num;
+    IntType den;
+
+    // Representation note: Fractions are kept in normalized form at all
+    // times. Normalized form is defined as gcd(num,den) == 1 and den > 0.
+    // In particular, note that the implementation of abs() below relies
+    // on den always being positive.
+    bool test_invariant() const
+    {
+        return  ( this->den > int_type(0) ) && ( math::gcd(this->num, this->den) == int_type(1) );
+    }
+
+    void normalize();
+};
+
+
+
+// Partially specialize the class for the overflow checking.
+template <typename IntType> 
+class rational<IntType, rational_check_for_overflow> :
+    less_than_comparable < rational<IntType, rational_check_for_overflow>,
+    equality_comparable < rational<IntType, rational_check_for_overflow>,
+    less_than_comparable2 < rational<IntType, rational_check_for_overflow>, IntType,
+    equality_comparable2 < rational<IntType, rational_check_for_overflow>, IntType,
+    addable < rational<IntType, rational_check_for_overflow>,
+    subtractable < rational<IntType, rational_check_for_overflow>,
+    multipliable < rational<IntType, rational_check_for_overflow>,
+    dividable < rational<IntType, rational_check_for_overflow>,
+    addable2 < rational<IntType, rational_check_for_overflow>, IntType,
+    subtractable2 < rational<IntType, rational_check_for_overflow>, IntType,
+    subtractable2_left < rational<IntType, rational_check_for_overflow>, IntType,
+    multipliable2 < rational<IntType, rational_check_for_overflow>, IntType,
+    dividable2 < rational<IntType, rational_check_for_overflow>, IntType,
+    dividable2_left < rational<IntType, rational_check_for_overflow>, IntType,
+    incrementable < rational<IntType, rational_check_for_overflow>,
+    decrementable < rational<IntType, rational_check_for_overflow>
+    > > > > > > > > > > > > > > > >
+{
+    // Class-wide pre-conditions
+    BOOST_STATIC_ASSERT( ::std::numeric_limits<IntType>::is_specialized );
+
+    // Checking for overflow requires IntType be signed.
+    BOOST_STATIC_ASSERT( ::std::numeric_limits<IntType>::is_signed);
+
+    // Helper types
+    typedef typename boost::call_traits<IntType>::param_type param_type;
+
+    struct helper { IntType parts[2]; };
+    typedef IntType (helper::* bool_type)[2];
+
+public:
+    typedef IntType int_type;
+    rational() : num(0), den(1) {}
+    rational(param_type n) : num(n), den(1) {}
+    rational(param_type n, param_type d) : num(n), den(d) {normalize();}
+
+    // Default copy constructor and assignment are fine
+
+    // Add assignment from IntType
+    rational& operator=(param_type i) { num = i; den = 1; return *this; }
+
+    // Assign in place
+    rational& assign(param_type n, param_type d);
+
+    // Access to representation
+    inline IntType numerator() const { return num; }
+    inline IntType denominator() const { return den; }
+
+    // Arithmetic assignment operators
+    rational& operator+= (const rational& r);
+    rational& operator-= (const rational& r);
+    rational& operator*= (const rational& r);
+    rational& operator/= (const rational& r);
+
+    rational& operator+= (param_type i);
+    rational& operator-= (param_type i);
+    rational& operator*= (param_type i);
+    rational& operator/= (param_type i);
+
+    // Increment and decrement
+    const rational& operator++();
+    const rational& operator--();
+
+    // Operator not
+    bool operator!() const { return !num; }
+
+    // Boolean conversion
+    
+#if BOOST_WORKAROUND(__MWERKS__,<=0x3003)
+    // The "ISO C++ Template Parser" option in CW 8.3 chokes on the
+    // following, hence we selectively disable that option for the
+    // offending memfun.
+#pragma parse_mfunc_templ off
+#endif
+
+    operator bool_type() const { return operator !() ? 0 : &helper::parts; }
+
+#if BOOST_WORKAROUND(__MWERKS__,<=0x3003)
+#pragma parse_mfunc_templ reset
+#endif
+
+    // Comparison operators
+    bool operator<  (const rational& r) const;
+    bool operator== (const rational& r) const;
+
+    bool operator<  (param_type i) const;
+    bool operator>  (param_type i) const;
+    bool operator== (param_type i) const;
+
+    rational& assignNoNorm(param_type n, param_type d) { num = n; den = d; return *this;}
+
 private:
     // Implementation - numerator and denominator (normalized).
     // Other possibilities - separate whole-part, or sign, fields?
@@ -334,141 +446,162 @@ inline rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::assign(
     normalize();
     return *this;
 }
+template <typename IntType>
+inline rational<IntType, rational_check_for_overflow>& rational<IntType, rational_check_for_overflow>::assign(param_type n, param_type d)
+{
+    num = n;
+    den = d;
+    normalize();
+    return *this;
+}
 
-// Unary plus and minus
+// Unary plus (for any/all CheckingMode's)
 template <typename IntType, rational_checktype CheckingMode>
 inline rational<IntType, CheckingMode> operator+ (const rational<IntType, CheckingMode>& r)
 {
     return r;
 }
 
+// Unary minus
 template <typename IntType, rational_checktype CheckingMode>
-inline rational<IntType, CheckingMode> operator- (const rational<IntType, CheckingMode>& r)
+rational<IntType, CheckingMode>
+operator- (const rational<IntType, CheckingMode>& r)
 {
-    IntType negnumer = ~r.numerator(); ++negnumer;
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        if(negnumer && (r.numerator() == negnumer))
-            throw rational_overflow();
-    }
-    return rational<IntType, CheckingMode>(negnumer, r.denominator());
+    rational<IntType, CheckingMode> retRational;
+    retRational.assignNoNorm(-r.numerator(), r.denominator());
+    return retRational;
 }
+template <typename IntType>
+rational<IntType, rational_check_for_overflow> operator- (const rational<IntType, rational_check_for_overflow>& r)
+{
+    IntType negnumer = -r.numerator();
+    if(negnumer && (r.numerator() == negnumer))
+        throw rational_overflow();
+
+    rational<IntType, rational_check_for_overflow> retRational;
+    retRational.assignNoNorm(negnumer, r.denominator());
+    return retRational;
+}
+
+
+template <typename IntType, rational_checktype CheckingMode>
+rational<IntType, CheckingMode> abs(const rational<IntType, CheckingMode>& r);
 
 // Arithmetic assignment operators
 template <typename IntType, rational_checktype CheckingMode>
-rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator+= (const rational<IntType, CheckingMode>& r)
+    rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator+= (const rational<IntType, CheckingMode>& r)
 {
-    if(CheckingMode==rational_check_for_overflow)
+    // This calculation avoids overflow, and minimises the number of expensive
+    // calculations. Thanks to Nickolay Mladenov for this algorithm.
+    //
+    // Proof:
+    // We have to compute a/b + c/d, where gcd(a,b)=1 and gcd(b,c)=1.
+    // Let g = gcd(b,d), and b = b1*g, d=d1*g. Then gcd(b1,d1)=1
+    //
+    // The result is (a*d1 + c*b1) / (b1*d1*g).
+    // Now we have to normalize this ratio.
+    // Let's assume h | gcd((a*d1 + c*b1), (b1*d1*g)), and h > 1
+    // If h | b1 then gcd(h,d1)=1 and hence h|(a*d1+c*b1) => h|a.
+    // But since gcd(a,b1)=1 we have h=1.
+    // Similarly h|d1 leads to h=1.
+    // So we have that h | gcd((a*d1 + c*b1) , (b1*d1*g)) => h|g
+    // Finally we have gcd((a*d1 + c*b1), (b1*d1*g)) = gcd((a*d1 + c*b1), g)
+    // Which proves that instead of normalizing the result, it is better to
+    // divide num and den by gcd((a*d1 + c*b1), g)
+
+    // Protect against self-modification
+    IntType r_num = r.num;
+    IntType r_den = r.den;
+
+    IntType g = math::gcd(den, r_den);
+    den /= g;  // = b1 from the calculations above
+    num = num * (r_den / g) + r_num * den;
+    g = math::gcd(num, g);
+    num /= g;
+    den *= r_den/g;
+
+    return *this;
+}
+template <typename IntType>
+rational<IntType, rational_check_for_overflow>& rational<IntType, rational_check_for_overflow>::operator+= (const rational<IntType, rational_check_for_overflow>& r)
+{
+    const int num_bits = sizeof(IntType)*CHAR_BIT;
+    const IntType zero(0);
+    const IntType one(1);
+    const IntType neg1(-1);
+    IntType part1_h,part1_l,part2_h,part2_l,new_num_h,tmp;
+
+    // Protect against self-modification
+    IntType r_num = r.num;
+    IntType r_den = r.den;
+    IntType r_den_g = r.den;
+
+    IntType g = math::gcd(den, r_den);
+
+    if(g != one)
     {
-        const int num_bits = sizeof(IntType)*CHAR_BIT;
-        const IntType zero(0);
-        const IntType one(1);
-        const IntType neg1(-1);
-        IntType part1_h,part1_l,part2_h,part2_l,new_num_h,tmp;
-
-        // Protect against self-modification
-        IntType r_num = r.num;
-        IntType r_den = r.den;
-        IntType r_den_g = r.den;
-
-        IntType g = math::gcd(den, r_den);
-
-        if(g != one)
-        {
-            den /= g;
-            r_den_g /= g;
-        }
-
-        detail::mul2int<IntType>(part1_h,part1_l,   num,  r_den_g);
-        detail::mul2int<IntType>(part2_h,part2_l, r_num,    den);
-        bool  ovfl = detail::add2int<IntType/*, CheckingMode*/>(new_num_h,  num,part1_h,part1_l,part2_h,part2_l);
-        tmp = num>>(num_bits-1);
-        if(new_num_h!=tmp)
-            throw rational_overflow();
-
-        g = math::gcd(num, g);
-        if(g!=one)
-        {
-            num /= g;
-            r_den /= g;
-        }
-
-        detail::mul2int<IntType>(part1_h,den,   den,  r_den);
-        if((part1_h!=zero) || (den<zero))
-            throw rational_overflow();
+        den /= g;
+        r_den_g /= g;
     }
-    else
+
+    detail::mul2int<IntType>(part1_h,part1_l,   num,  r_den_g);
+    detail::mul2int<IntType>(part2_h,part2_l, r_num,    den);
+    bool  ovfl = detail::add2int<IntType>(new_num_h,  num,part1_h,part1_l,part2_h,part2_l);
+    tmp = num>>(num_bits-1);
+    if(new_num_h!=tmp)
+        throw rational_overflow();
+
+    g = math::gcd(num, g);
+    if(g!=one)
     {
-        // This calculation avoids overflow, and minimises the number of expensive
-        // calculations. Thanks to Nickolay Mladenov for this algorithm.
-        //
-        // Proof:
-        // We have to compute a/b + c/d, where gcd(a,b)=1 and gcd(b,c)=1.
-        // Let g = gcd(b,d), and b = b1*g, d=d1*g. Then gcd(b1,d1)=1
-        //
-        // The result is (a*d1 + c*b1) / (b1*d1*g).
-        // Now we have to normalize this ratio.
-        // Let's assume h | gcd((a*d1 + c*b1), (b1*d1*g)), and h > 1
-        // If h | b1 then gcd(h,d1)=1 and hence h|(a*d1+c*b1) => h|a.
-        // But since gcd(a,b1)=1 we have h=1.
-        // Similarly h|d1 leads to h=1.
-        // So we have that h | gcd((a*d1 + c*b1) , (b1*d1*g)) => h|g
-        // Finally we have gcd((a*d1 + c*b1), (b1*d1*g)) = gcd((a*d1 + c*b1), g)
-        // Which proves that instead of normalizing the result, it is better to
-        // divide num and den by gcd((a*d1 + c*b1), g)
-
-        // Protect against self-modification
-        IntType r_num = r.num;
-        IntType r_den = r.den;
-
-        IntType g = math::gcd(den, r_den);
-        den /= g;  // = b1 from the calculations above
-        num = num * (r_den / g) + r_num * den;
-        g = math::gcd(num, g);
         num /= g;
-        den *= r_den/g;
+        r_den /= g;
     }
+
+    detail::mul2int<IntType>(part1_h,den,   den,  r_den);
+    if((part1_h!=zero) || (den<zero))
+        throw rational_overflow();
 
     return *this;
 }
 
 template <typename IntType, rational_checktype CheckingMode>
-rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator-= (const rational<IntType, CheckingMode>& r)
+rational<IntType, CheckingMode>&
+rational<IntType, CheckingMode>::operator-= (const rational<IntType, CheckingMode>& r)
 {
-    if(CheckingMode==rational_check_for_overflow)
-    {   
-        if((num==r.num) && (den==r.den)) {
-            num = IntType(0);
-            den = IntType(1);
-            return *this;
-        }
-            
-        // Negate the denominator (which is safe), and use constructor 'normalize' to check for overflow.
-        IntType negrden = ~r.den; ++negrden;
-        rational<IntType, CheckingMode> negOperand(r.num, negrden);
-        return operator+= (negOperand);
-    }
-    else
-    {
-        // Protect against self-modification
-        IntType r_num = r.num;
-        IntType r_den = r.den;
+    // Protect against self-modification
+    IntType r_num = r.num;
+    IntType r_den = r.den;
 
-        // This calculation avoids overflow, and minimises the number of expensive
-        // calculations. It corresponds exactly to the += case above
-        IntType g = math::gcd(den, r_den);
-        den /= g;
-        num = num * (r_den / g) - r_num * den;
-        g = math::gcd(num, g);
-        num /= g;
-        den *= r_den/g;
+    // This calculation avoids overflow, and minimises the number of expensive
+    // calculations. It corresponds exactly to the += case above
+    IntType g = math::gcd(den, r_den);
+    den /= g;
+    num = num * (r_den / g) - r_num * den;
+    g = math::gcd(num, g);
+    num /= g;
+    den *= r_den/g;
 
+    return *this;
+}
+template <typename IntType>
+rational<IntType, rational_check_for_overflow>& rational<IntType, rational_check_for_overflow>::operator-= (const rational<IntType, rational_check_for_overflow>& r)
+{
+    if((num==r.num) && (den==r.den)) {
+        num = IntType(0);
+        den = IntType(1);
         return *this;
     }
+            
+    // Negate the denominator (which is safe), and use constructor 'normalize' to check for overflow.
+    IntType negrden = ~r.den; ++negrden;
+    rational<IntType, rational_check_for_overflow> negOperand(r.num, negrden);
+    return operator+= (negOperand);
 }
 
 template <typename IntType, rational_checktype CheckingMode>
-rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator*= (const rational<IntType, CheckingMode>& r)
+rational<IntType, CheckingMode>&
+rational<IntType, CheckingMode>::operator*= (const rational<IntType, CheckingMode>& r)
 {
     // Protect against self-modification
     IntType r_num = r.num;
@@ -478,38 +611,46 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator*= (co
     IntType gcd1 = math::gcd(num, r_den);
     IntType gcd2 = math::gcd(r_num, den);
 
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        const int num_bits = sizeof(IntType)*CHAR_BIT;
-        const IntType one = IntType(1);
-        const IntType zero = IntType(0);
-        IntType num_gcd1=num, den_gcd2=den, signbits;
-        if(gcd1!=one) {
-            num_gcd1 /= gcd1;
-            r_den    /= gcd1;
-        }
-        if(gcd2!=one) {
-            den_gcd2 /= gcd2;
-            r_num    /= gcd2;
-        }
-        detail::mul2int<IntType>(signbits,num, num_gcd1, r_num);
-        if(IntType(num>>(num_bits-1)) != signbits)
-            throw rational_overflow();
+    num = (num/gcd1) * (r_num/gcd2);
+    den = (den/gcd2) * (r_den/gcd1);
+    return *this;
+}
+template <typename IntType>
+rational<IntType, rational_check_for_overflow>& rational<IntType, rational_check_for_overflow>::operator*= (const rational<IntType, rational_check_for_overflow>& r)
+{
+    // Protect against self-modification
+    IntType r_num = r.num;
+    IntType r_den = r.den;
 
-        detail::mul2int<IntType>(signbits,den, den_gcd2, r_den);
-        if((signbits!=zero) || (den<zero))
-            throw rational_overflow();
+    // Avoid overflow and preserve normalization
+    IntType gcd1 = math::gcd(num, r_den);
+    IntType gcd2 = math::gcd(r_num, den);
+
+    const int num_bits = sizeof(IntType)*CHAR_BIT;
+    const IntType one = IntType(1);
+    const IntType zero = IntType(0);
+    IntType num_gcd1=num, den_gcd2=den, signbits;
+    if(gcd1!=one) {
+        num_gcd1 /= gcd1;
+        r_den    /= gcd1;
     }
-    else
-    {
-        num = (num/gcd1) * (r_num/gcd2);
-        den = (den/gcd2) * (r_den/gcd1);
+    if(gcd2!=one) {
+        den_gcd2 /= gcd2;
+        r_num    /= gcd2;
     }
+    detail::mul2int<IntType>(signbits,num, num_gcd1, r_num);
+    if(IntType(num>>(num_bits-1)) != signbits)
+        throw rational_overflow();
+
+    detail::mul2int<IntType>(signbits,den, den_gcd2, r_den);
+    if((signbits!=zero) || (den<zero))
+        throw rational_overflow();
     return *this;
 }
 
 template <typename IntType, rational_checktype CheckingMode>
-rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator/= (const rational<IntType, CheckingMode>& r)
+rational<IntType, CheckingMode>&
+rational<IntType, CheckingMode>::operator/= (const rational<IntType, CheckingMode>& r)
 {
     // Protect against self-modification
     IntType r_num = r.num;
@@ -528,80 +669,127 @@ rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator/= (co
     IntType gcd1 = math::gcd(num, r_num);
     IntType gcd2 = math::gcd(r_den, den);
 
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        const int num_bits = sizeof(IntType)*CHAR_BIT;
-        const IntType one = IntType(1);
-        IntType num_gcd1=num, den_gcd2=den, signbits;
-        if(gcd1!=one) {
-            num_gcd1 /= gcd1;
-            r_num    /= gcd1;
-        }
-        if(gcd2!=one) {
-            den_gcd2 /= gcd2;
-            r_den    /= gcd2;
-        }
-        detail::mul2int<IntType>(signbits,num, num_gcd1, r_den);
-        if(IntType(num>>(num_bits-1)) != signbits)
-            throw rational_overflow();
+    num = (num/gcd1) * (r_den/gcd2);
+    den = (den/gcd2) * (r_num/gcd1);
 
-        detail::mul2int<IntType>(signbits,den, den_gcd2, r_num);
-        if(IntType(den>>(num_bits-1)) != signbits)
-            throw rational_overflow();
-
-        if (den < zero)
-        {
-            IntType neg_den = ~den; ++neg_den;
-            IntType neg_num = ~num; ++neg_num;
-            if(den == neg_den) // den never zero here
-                throw rational_overflow();
-            if(num && (num == neg_num))
-                throw rational_overflow();
-
-            num = neg_num;
-            den = neg_den;
-        }
+    if (den < zero) {
+        num = -num;
+        den = -den;
     }
-    else
-    {
-        num = (num/gcd1) * (r_den/gcd2);
-        den = (den/gcd2) * (r_num/gcd1);
+    return *this;
+}
+template <typename IntType>
+rational<IntType, rational_check_for_overflow>& rational<IntType, rational_check_for_overflow>::operator/= (const rational<IntType, rational_check_for_overflow>& r)
+{
+    // Protect against self-modification
+    IntType r_num = r.num;
+    IntType r_den = r.den;
 
-        if (den < zero) {
-            num = -num;
-            den = -den;
-        }
+    // Avoid repeated construction
+    const IntType zero(0);
+
+    // Trap division by zero
+    if (r_num == zero)
+        throw bad_rational();
+    if (num == zero)
+        return *this;
+
+    // Avoid overflow and preserve normalization
+    IntType gcd1 = math::gcd(num, r_num);
+    IntType gcd2 = math::gcd(r_den, den);
+
+    const int num_bits = sizeof(IntType)*CHAR_BIT;
+    const IntType one = IntType(1);
+    IntType num_gcd1=num, den_gcd2=den, signbits;
+    if(gcd1!=one) {
+        num_gcd1 /= gcd1;
+        r_num    /= gcd1;
+    }
+    if(gcd2!=one) {
+        den_gcd2 /= gcd2;
+        r_den    /= gcd2;
+    }
+    detail::mul2int<IntType>(signbits,num, num_gcd1, r_den);
+    if(IntType(num>>(num_bits-1)) != signbits)
+        throw rational_overflow();
+
+    detail::mul2int<IntType>(signbits,den, den_gcd2, r_num);
+    if(IntType(den>>(num_bits-1)) != signbits)
+        throw rational_overflow();
+
+    if (den < zero)
+    {
+        IntType neg_den = ~den; ++neg_den;
+        IntType neg_num = ~num; ++neg_num;
+        if(den == neg_den) // den never zero here
+            throw rational_overflow();
+        if(num && (num == neg_num))
+            throw rational_overflow();
+
+        num = neg_num;
+        den = neg_den;
     }
     return *this;
 }
 
 // Mixed-mode operators
 template <typename IntType, rational_checktype CheckingMode>
+    inline rational<IntType, CheckingMode>&
+rational<IntType, CheckingMode>::operator+= (param_type i)
+{
+    num += i * den;
+    return *this;
+}
+template <typename IntType>
+inline rational<IntType, rational_check_for_overflow>&
+rational<IntType, rational_check_for_overflow>::operator+= (param_type i)
+{
+    return operator+= (rational<IntType, rational_check_for_overflow>(i));
+}
+
+template <typename IntType, rational_checktype CheckingMode>
+    inline rational<IntType, CheckingMode>&
+rational<IntType, CheckingMode>::operator-= (param_type i)
+{
+    num -= i * den;
+    return *this;
+}
+
+template <typename IntType>
+inline rational<IntType, rational_check_for_overflow>&
+rational<IntType, rational_check_for_overflow>::operator-= (param_type i)
+{
+    return operator-= (rational<IntType, rational_check_for_overflow>(i));
+}
+
+
+template <typename IntType, rational_checktype CheckingMode>
 inline rational<IntType, CheckingMode>&
 rational<IntType, CheckingMode>::operator*= (param_type i)
 {
-    if(CheckingMode==rational_check_for_overflow)
-        return operator*= (rational<IntType, CheckingMode>(i));
-
     // Avoid overflow and preserve normalization
     IntType gcd = math::gcd(i, den);
-    num *= i / gcd;
+     num *= i / gcd;
     den /= gcd;
 
     return *this;
+}
+template <typename IntType>
+inline rational<IntType, rational_check_for_overflow>&
+rational<IntType, rational_check_for_overflow>::operator*= (param_type i)
+{
+    return operator*= (rational<IntType, rational_check_for_overflow>(i));
 }
 
 template <typename IntType, rational_checktype CheckingMode>
 inline rational<IntType, CheckingMode>&
 rational<IntType, CheckingMode>::operator/= (param_type i)
 {
-    if(CheckingMode==rational_check_for_overflow)
-        return operator/= (rational<IntType, CheckingMode>(i));
-
     // Avoid repeated construction
     IntType const zero(0);
 
-    if (i == zero) throw bad_rational();
+    if (i == zero) 
+        throw bad_rational();
     if (num == zero) return *this;
 
     // Avoid overflow and preserve normalization
@@ -616,39 +804,27 @@ rational<IntType, CheckingMode>::operator/= (param_type i)
 
     return *this;
 }
-
-template <typename IntType, rational_checktype CheckingMode>
-inline rational<IntType, CheckingMode>&
-rational<IntType, CheckingMode>::operator+= (param_type i)
+template <typename IntType>
+inline rational<IntType, rational_check_for_overflow>&
+rational<IntType, rational_check_for_overflow>::operator/= (param_type i)
 {
-    if(CheckingMode==rational_check_for_overflow)
-        return operator+= (rational<IntType, CheckingMode>(i));
-
-    num += i * den;
-    return *this;
+    return operator/= (rational<IntType, rational_check_for_overflow>(i));
 }
 
-template <typename IntType, rational_checktype CheckingMode>
-inline rational<IntType, CheckingMode>&
-rational<IntType, CheckingMode>::operator-= (param_type i)
-{
-    if(CheckingMode==rational_check_for_overflow)
-        return operator-= (rational<IntType, CheckingMode>(i));
-
-    num -= i * den;
-    return *this;
-}
 
 // Increment and decrement
 template <typename IntType, rational_checktype CheckingMode>
-inline const rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator++()
+const rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator++()
+{ 
+    num += den;
+    return *this;
+}
+template <typename IntType>
+const rational<IntType, rational_check_for_overflow>& rational<IntType, rational_check_for_overflow>::operator++()
 {
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        const IntType zero( 0 );
-        if((num>zero) && (IntType(num + den) < zero))
-            throw rational_overflow();
-    }
+    const IntType zero( 0 );
+    if((num>zero) && (IntType(num + den) < zero))
+        throw rational_overflow();
 
     // This can never denormalise the fraction
     num += den;
@@ -656,14 +832,17 @@ inline const rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::o
 }
 
 template <typename IntType, rational_checktype CheckingMode>
-inline const rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator--()
+const rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::operator--()
 {
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        const IntType zero( 0 );
-        if((num<zero) && (IntType(num - den) >= zero))
-            throw rational_overflow();
-    }
+    num -= den;
+    return *this;
+}
+template <typename IntType>
+inline const rational<IntType, rational_check_for_overflow>& rational<IntType, rational_check_for_overflow>::operator--()
+{
+    const IntType zero( 0 );
+    if((num<zero) && (IntType(num - den) >= zero))
+        throw rational_overflow();
 
     // This can never denormalise the fraction
     num -= den;
@@ -672,30 +851,12 @@ inline const rational<IntType, CheckingMode>& rational<IntType, CheckingMode>::o
 
 // Comparison operators
 template <typename IntType, rational_checktype CheckingMode>
-bool rational<IntType, CheckingMode>::operator< (const rational<IntType, CheckingMode>& r) const
+bool
+rational<IntType, CheckingMode>::operator<  (const rational<IntType, CheckingMode>& r) const
 {
     // Avoid repeated construction
     int_type const  zero( 0 );
 
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        IntType prod_left_h, prod_left_l, prod_right_h, prod_right_l;
-        detail::mul2int<IntType>(prod_left_h, prod_left_l, num, r.den);
-        detail::mul2int<IntType>(prod_right_h, prod_right_l, r.num, den);
-        if(prod_left_h < prod_right_h)
-            return true;
-        else if(prod_left_h == prod_right_h)
-        {
-            const int num_bits = sizeof(IntType)*CHAR_BIT;
-            const IntType msb_mask = (IntType)(((IntType)(1)) << (num_bits-1));
-            prod_left_l ^= msb_mask; // Convert to signed
-            prod_right_l ^= msb_mask; // Convert to signed
-            return prod_left_l < prod_right_l;
-        }
-        else 
-            return false;
-    }
-    else
     {
         // This should really be a class-wide invariant.  The reason for these
         // checks is that for 2's complement systems, INT_MIN has no corresponding
@@ -707,8 +868,8 @@ bool rational<IntType, CheckingMode>::operator< (const rational<IntType, Checkin
         // Determine relative order by expanding each value to its simple continued
         // fraction representation using the Euclidian GCD algorithm.
         struct { int_type  n, d, q, r; }  ts = { this->num, this->den, this->num /
-         this->den, this->num % this->den }, rs = { r.num, r.den, r.num / r.den,
-         r.num % r.den };
+            this->den, this->num % this->den }, rs = { r.num, r.den, r.num / r.den,
+            r.num % r.den };
         unsigned  reverse = 0u;
 
         // Normalize negative moduli by repeatedly adding the (positive) denominator
@@ -773,44 +934,65 @@ bool rational<IntType, CheckingMode>::operator< (const rational<IntType, Checkin
         }
     }
 }
+template <typename IntType>
+bool rational<IntType, rational_check_for_overflow>::operator< (const rational<IntType, rational_check_for_overflow>& r) const
+{
+    // Avoid repeated construction
+    int_type const  zero( 0 );
+
+    IntType prod_left_h, prod_left_l, prod_right_h, prod_right_l;
+    detail::mul2int<IntType>(prod_left_h, prod_left_l, num, r.den);
+    detail::mul2int<IntType>(prod_right_h, prod_right_l, r.num, den);
+    if(prod_left_h < prod_right_h)
+        return true;
+    else if(prod_left_h == prod_right_h)
+    {
+        const int num_bits = sizeof(IntType)*CHAR_BIT;
+        const IntType msb_mask = (IntType)(((IntType)(1)) << (num_bits-1));
+        prod_left_l ^= msb_mask; // Convert to signed
+        prod_right_l ^= msb_mask; // Convert to signed
+        return prod_left_l < prod_right_l;
+    }
+    else 
+        return false;
+}
 
 template <typename IntType, rational_checktype CheckingMode>
-bool rational<IntType, CheckingMode>::operator< (param_type i) const
+bool rational<IntType, CheckingMode>::operator<  (param_type i) const
 {
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        IntType prod_left_h, prod_left_l, prod_right_h, prod_right_l;
-        detail::mul2int<IntType>(prod_left_h, prod_left_l, num, IntType(1));
-        detail::mul2int<IntType>(prod_right_h, prod_right_l, i, den);
-        if(prod_left_h < prod_right_h)
-            return true;
-        else if(prod_left_h == prod_right_h)
-        {
-            const int num_bits = sizeof(IntType)*CHAR_BIT;
-            const IntType msb_mask = (IntType)(((IntType)(1)) << (num_bits-1));
-            prod_left_l ^= msb_mask; // Convert to signed
-            prod_right_l ^= msb_mask; // Convert to signed
-            return prod_left_l < prod_right_l;
-        }
-        else 
-            return false;
-    }
-    else
-    {
-        // Avoid repeated construction
-        int_type const  zero( 0 );
+    // Avoid repeated construction
+    int_type const  zero( 0 );
 
-        // Break value into mixed-fraction form, w/ always-nonnegative remainder
-        BOOST_ASSERT( this->den > zero );
-        int_type  q = this->num / this->den, r = this->num % this->den;
-        while ( r < zero )  { r += this->den; --q; }
+    // Break value into mixed-fraction form, w/ always-nonnegative remainder
+    BOOST_ASSERT( this->den > zero );
+    int_type  q = this->num / this->den, r = this->num % this->den;
+    while ( r < zero )  { r += this->den; --q; }
 
-        // Compare with just the quotient, since the remainder always bumps the
-        // value up.  [Since q = floor(n/d), and if n/d < i then q < i, if n/d == i
-        // then q == i, if n/d == i + r/d then q == i, and if n/d >= i + 1 then
-        // q >= i + 1 > i; therefore n/d < i iff q < i.]
-        return q < i;
+    // Compare with just the quotient, since the remainder always bumps the
+    // value up.  [Since q = floor(n/d), and if n/d < i then q < i, if n/d == i
+    // then q == i, if n/d == i + r/d then q == i, and if n/d >= i + 1 then
+    // q >= i + 1 > i; therefore n/d < i iff q < i.]
+    return q < i;
+}
+
+template <typename IntType>
+bool rational<IntType, rational_check_for_overflow>::operator< (param_type i) const
+{
+    IntType prod_left_h, prod_left_l, prod_right_h, prod_right_l;
+    detail::mul2int<IntType>(prod_left_h, prod_left_l, num, IntType(1));
+    detail::mul2int<IntType>(prod_right_h, prod_right_l, i, den);
+    if(prod_left_h < prod_right_h)
+        return true;
+    else if(prod_left_h == prod_right_h)
+    {
+        const int num_bits = sizeof(IntType)*CHAR_BIT;
+        const IntType msb_mask = (IntType)(((IntType)(1)) << (num_bits-1));
+        prod_left_l ^= msb_mask; // Convert to signed
+        prod_right_l ^= msb_mask; // Convert to signed
+        return prod_left_l < prod_right_l;
     }
+    else 
+        return false;
 }
 
 template <typename IntType, rational_checktype CheckingMode>
@@ -818,9 +1000,19 @@ bool rational<IntType, CheckingMode>::operator> (param_type i) const
 {
     return operator==(i)? false: !operator<(i);
 }
+template <typename IntType>
+bool rational<IntType, rational_check_for_overflow>::operator> (param_type i) const
+{
+    return rational<IntType, rational_check_for_overflow>::operator==(i)? false: !rational<IntType, rational_check_for_overflow>::operator<(i);
+}
 
 template <typename IntType, rational_checktype CheckingMode>
-inline bool rational<IntType, CheckingMode>::operator== (const rational<IntType, CheckingMode>& r) const
+    bool rational<IntType, CheckingMode>::operator== (const rational<IntType, CheckingMode>& r) const
+{
+    return ((num == r.num) && (den == r.den));
+}
+template <typename IntType>
+bool rational<IntType, rational_check_for_overflow>::operator== (const rational<IntType, rational_check_for_overflow>& r) const
 {
     return ((num == r.num) && (den == r.den));
 }
@@ -830,13 +1022,17 @@ inline bool rational<IntType, CheckingMode>::operator== (param_type i) const
 {
     return ((den == IntType(1)) && (num == i));
 }
+template <typename IntType>
+bool rational<IntType, rational_check_for_overflow>::operator== (param_type i) const
+{
+    return ((num == i) && (den == 1));
+}
 
 // Invariant check
-template <typename IntType, rational_checktype CheckingMode>
-inline bool rational<IntType, CheckingMode>::test_invariant() const
+template <typename IntType>
+inline bool rational<IntType, rational_check_for_overflow>::test_invariant() const
 {
-    return  ( this->den > int_type(0) ) && ( math::gcd(this->num, this->den) ==
-     int_type(1) );
+    return  ( this->den > int_type(0) ) && ( math::gcd(this->num, this->den) == int_type(1) );
 }
 
 // Normalisation
@@ -867,15 +1063,45 @@ void rational<IntType, CheckingMode>::normalize()
     // Ensure that the denominator is positive
     if (den < zero)
     {
-        IntType neg_den = ~den; ++neg_den;
-        IntType neg_num = ~num; ++neg_num;
-        if(CheckingMode==rational_check_for_overflow)
-        {
-            if(den == neg_den)  // den never zero here
-                throw rational_overflow();
-            if(num == neg_num)  // num never zero here
-                throw rational_overflow();
-        }
+        den = -den;
+        num = -num;
+    }
+
+    BOOST_ASSERT( this->test_invariant() );
+}
+template <typename IntType>
+void rational<IntType, rational_check_for_overflow>::normalize()
+{
+    // Avoid repeated construction
+    const IntType zero(0);
+
+    if (den == zero)
+        throw bad_rational();
+
+    // Handle the case of zero separately, to avoid division by zero
+    const IntType one(1);
+    if (num == zero) {
+        den = one;
+        return;
+    }
+
+    IntType g = math::gcd(num, den);
+
+    if(g != one)
+    {
+        num /= g;
+        den /= g;
+    }
+
+    // Ensure that the denominator is positive
+    if (den < zero)
+    {
+        IntType neg_den = -den;
+        IntType neg_num = -num;
+        if(den == neg_den)  // den never zero here
+            throw rational_overflow();
+        if(num == neg_num)  // num never zero here
+            throw rational_overflow();
         den = neg_den;
         num = neg_num;
     }
@@ -923,6 +1149,31 @@ std::istream& operator>> (std::istream& is, rational<IntType, CheckingMode>& r)
     return is;
 }
 
+template <typename IntType>
+std::istream& operator>> (std::istream& is, rational<IntType, rational_check_for_overflow>& r)
+{
+    IntType n = IntType(0), d = IntType(1);
+    char c = 0;
+    detail::resetter sentry(is);
+
+    is >> n;
+    c = is.get();
+
+    if (c != '/')
+        is.clear(std::istream::badbit);  // old GNU c++ lib has no ios_base
+
+#if !defined(__GNUC__) || (defined(__GNUC__) && (__GNUC__ >= 3)) || defined __SGI_STL_PORT
+    is >> std::noskipws;
+#else
+    is.unsetf(ios::skipws); // compiles, but seems to have no effect.
+#endif
+    is >> d;
+
+    if (is)
+        r.assign(n, d);
+
+    return is;
+}
 // Add manipulators for output format?
 template <typename IntType, rational_checktype CheckingMode>
 std::ostream& operator<< (std::ostream& os, const rational<IntType, CheckingMode>& r)
@@ -931,14 +1182,21 @@ std::ostream& operator<< (std::ostream& os, const rational<IntType, CheckingMode
     return os;
 }
 
+template <typename IntType>
+std::ostream& operator<< (std::ostream& os, const rational<IntType, rational_check_for_overflow>& r)
+{
+    os << r.numerator() << '/' << r.denominator();
+    return os;
+}
+
 // Create overloads for signed char, so numbers will get printed, instead of characters.
-std::ostream& operator<< (std::ostream& os, const rational<signed char, rational_check_for_overflow>& r)
+std::ostream& operator<< (std::ostream& os, const rational<signed char, rational_no_checking>& r)
 {
     os << (int)r.numerator() << '/' << (int)r.denominator();
     return os;
 }
 
-std::ostream& operator<< (std::ostream& os, const rational<signed char, rational_no_checking>& r)
+std::ostream& operator<< (std::ostream& os, const rational<signed char, rational_check_for_overflow>& r)
 {
     os << (int)r.numerator() << '/' << (int)r.denominator();
     return os;
@@ -956,26 +1214,26 @@ inline T rational_cast(
 // Do not use any abs() defined on IntType - it isn't worth it, given the
 // difficulties involved (Koenig lookup required, there may not *be* an abs()
 // defined, etc etc).
-template <typename IntType, rational_checktype CheckingMode>
-inline rational<IntType, CheckingMode> abs(const rational<IntType, CheckingMode>& r)
+template <typename IntType>
+inline rational<IntType, rational_no_checking> abs(const rational<IntType, rational_no_checking>& r)
 {
-    if(CheckingMode==rational_check_for_overflow)
-    {
-        const IntType zero(0);
+    return r.numerator() >= IntType(0)? r: -r;
+}
+template <typename IntType>
+inline rational<IntType, rational_check_for_overflow> abs(const rational<IntType, rational_check_for_overflow>& r)
+{
+    const IntType zero(0);
 
-        if (r.numerator() >= zero)
-            return r;
-        else
-        {
-            IntType negnumer = ~r.numerator(); ++negnumer;
-            if(r.numerator() == negnumer) // numer is never zero here
-                throw rational_overflow();
-
-            return -r;
-        }
-    }
+    if (r.numerator() >= zero)
+        return r;
     else
-        return r.numerator() >= IntType(0)? r: -r;
+    {
+        IntType negnumer = -r.numerator();
+        if(r.numerator() == negnumer) // negnumer is never zero here
+            throw rational_overflow();
+
+        return -r;
+    }
 }
 
 typedef rational<signed char,rational_check_for_overflow>  RatSCharwOvCk;
