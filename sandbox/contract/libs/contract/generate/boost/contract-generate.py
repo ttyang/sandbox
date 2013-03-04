@@ -7,6 +7,7 @@
 
 import os
 
+boost_dir = "../../../../boost"
 scripts = [
     ("contract/detail/preprocessor/array", "first_n-generate.py"),
     ("contract/detail/preprocessor/array", "rest_n-generate.py"),
@@ -18,17 +19,22 @@ scripts = [
     ("contract/detail/preprocessor/traits/func", "catches-generate.py"),
     ("contract/detail/preprocessor/traits/func", "postconditions-generate.py"),
     ("contract/detail/preprocessor/tuple", "split-generate.py"),
+    ("contract/detail/preprocessor/keyword", "generate.py"),
 ]
 
-root = os.getcwd()
+this_dir = os.getcwd()
 for s in scripts:
-    dir = s[0]
-    cmd = "python " + s[1]
+    py_dir = s[0]
+    py_name = s[1]
+    header_dir = os.path.join(boost_dir, py_dir)
+    for i in range(0, py_dir.count("/") + 1):
+        header_dir = os.path.join("..", header_dir) 
+    cmd = "python " + py_name + " " + header_dir
     print
-    print dir + "$ " + cmd
-    os.chdir(dir)
+    print "[" + py_dir + "]$ " + cmd
+    os.chdir(py_dir)
     os.system(cmd)
-    os.chdir(root)
+    os.chdir(this_dir)
 
 print
 print "Done. (Add any missing generation Python script to this script.)",

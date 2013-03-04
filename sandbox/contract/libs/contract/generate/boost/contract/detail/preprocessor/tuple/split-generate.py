@@ -6,7 +6,12 @@
 # Home at http://sourceforge.net/projects/contractpp
 
 import sys
+import os
 import shutil
+
+# $ python <NAME>-generate.py [DIR]
+header = sys.argv[0].replace("-generate.py", ".hpp", 1)
+if(len(sys.argv) > 1): header = os.path.join(sys.argv[1], header)
 
 def placeholders(start, stop):
     (s, comma) = ('', '')
@@ -24,26 +29,27 @@ def data(max_size):
     return s
 
 BOOST_PP_LIMIT_TUPLE = raw_input("BOOST_PP_LIMIT_TUPLE" +
-        " from <boost/preprocessor/limit.hpp> [64] = ")
+        " (as in <boost/preprocessor/limit.hpp>) [64] = ")
 if BOOST_PP_LIMIT_TUPLE == "": BOOST_PP_LIMIT_TUPLE = 64
 else: BOOST_PP_LIMIT_TUPLE = int(BOOST_PP_LIMIT_TUPLE)
 
-header = sys.argv[0].replace("-generate.py", ".hpp", 1)
-shutil.copyfile(header, header + ".bak")
+try: shutil.copyfile(header, header + ".bak")
+except: pass
 h = open(header, 'w')
 
 h.write('''
+/*************************************************************/
+/* WARNING:  FILE AUTOMATICALLY GENERATED, DO NOT MODIFY IT! */
+/* Instead modify the generation script "<FILE>-generate.py" */
+/*************************************************************/
+// Used: #define BOOST_PP_LIMIT_TUPLE {0}
+
 #ifndef CONTRACT_DETAIL_PP_TUPLE_SPLIT_HPP_
 #define CONTRACT_DETAIL_PP_TUPLE_SPLIT_HPP_
 
-// WARNING: FILE AUTOMATICALLY GENERATED, DO NOT MODIFY IT!
-// Instead modify the generation script "<FILE>-generate.py" and run
-// `$ python <FILE_NAME>-generate.py > FILE_NAME.hpp`.
-// Used: #define BOOST_PP_LIMIT_TUPLE {0}
-
 #include <boost/preprocessor/limits.hpp>
 #if BOOST_PP_LIMIT_TUPLE != {0}
-#error "Code generation used incorrect BOOST_PP_LIMIT_TUPLE"
+#   error "Code generation used incorrect BOOST_PP_LIMIT_TUPLE"
 #endif
 
 // PRIVATE //
@@ -81,5 +87,5 @@ h.write('''
 '''.format(BOOST_PP_LIMIT_TUPLE, data(BOOST_PP_LIMIT_TUPLE)))
 
 h.close()
-print "Written", header
+print "Generated:", header
 

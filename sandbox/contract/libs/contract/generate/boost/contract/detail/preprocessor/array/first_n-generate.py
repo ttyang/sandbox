@@ -6,7 +6,12 @@
 # Home at http://sourceforge.net/projects/contractpp
 
 import sys
+import os
 import shutil
+
+# $ python <NAME>-generate.py [DIR]
+header = sys.argv[0].replace("-generate.py", ".hpp", 1)
+if(len(sys.argv) > 1): header = os.path.join(sys.argv[1], header)
 
 def placeholders(start, stop):
     (s, comma) = ('', '')
@@ -19,32 +24,33 @@ def data(max_size):
     for size in range(1, max_size + 1):
         for index in range(1, size + 1):
             s = s + '''
-#define CONTRACT_DETAIL_PP_ARRAY_FIRST_N_{0}_{1}({2}) \\
+#define BOOST_CONTRACT_DETAIL_PP_ARRAY_FIRST_N_{0}_{1}({2}) \\
     ({1}, ({3})) \
 '''.format(size, index, placeholders(0, size), placeholders(0, index))
     return s
 
 BOOST_PP_LIMIT_TUPLE = raw_input("BOOST_PP_LIMIT_TUPLE" +
-        " from <boost/preprocessor/limits.hpp> [64] = ")
+        " (as in <boost/preprocessor/limits.hpp>) [64] = ")
 if BOOST_PP_LIMIT_TUPLE == "": BOOST_PP_LIMIT_TUPLE = 64
 else: BOOST_PP_LIMIT_TUPLE = int(BOOST_PP_LIMIT_TUPLE)
 
-header = sys.argv[0].replace("-generate.py", ".hpp", 1)
-shutil.copyfile(header, header + ".bak")
+try: shutil.copyfile(header, header + ".bak")
+except: pass
 h = open(header, 'w')
 
 h.write('''
-#ifndef CONTRACT_DETAIL_PP_ARRAY_FIRST_N_HPP_
-#define CONTRACT_DETAIL_PP_ARRAY_FIRST_N_HPP_
-
-// WARNING: FILE AUTOMATICALLY GENERATED, DO NOT MODIFY IT!
-// Instead modify the generation script "<FILE>-generate.py" and run
-// `$ python <FILE_NAME>-generate.py > FILE_NAME.hpp`.
+/*************************************************************/
+/* WARNING:  FILE AUTOMATICALLY GENERATED, DO NOT MODIFY IT! */
+/* Instead modify the generation script "<FILE>-generate.py" */
+/*************************************************************/
 // Used: #define BOOST_PP_LIMIT_TUPLE {0}
+
+#ifndef BOOST_CONTRACT_DETAIL_PP_ARRAY_FIRST_N_HPP_
+#define BOOST_CONTRACT_DETAIL_PP_ARRAY_FIRST_N_HPP_
 
 #include <boost/preprocessor/limits.hpp>
 #if BOOST_PP_LIMIT_TUPLE != {0}
-#error "Code generation used incorrect BOOST_PP_LIMIT_TUPLE"
+#   error "Code generation used incorrect BOOST_PP_LIMIT_TUPLE"
 #endif
 
 #include <boost/preprocessor/cat.hpp>
@@ -53,8 +59,8 @@ h.write('''
 
 // PUBLIC //
 
-#define CONTRACT_DETAIL_PP_ARRAY_FIRST_N(n, array) \\
-    BOOST_PP_CAT(CONTRACT_DETAIL_PP_ARRAY_FIRST_N_, \\
+#define BOOST_CONTRACT_DETAIL_PP_ARRAY_FIRST_N(n, array) \\
+    BOOST_PP_CAT(BOOST_CONTRACT_DETAIL_PP_ARRAY_FIRST_N_, \\
             BOOST_PP_CAT(BOOST_PP_ARRAY_SIZE(array), BOOST_PP_CAT(_, n))) \\
     BOOST_PP_ARRAY_DATA(array)
 
@@ -66,5 +72,5 @@ h.write('''
 '''.format(BOOST_PP_LIMIT_TUPLE, data(BOOST_PP_LIMIT_TUPLE)))
 
 h.close()
-print "Written", header
+print "Generated:", header
 
