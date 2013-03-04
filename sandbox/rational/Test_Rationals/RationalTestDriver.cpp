@@ -6,7 +6,7 @@
 //#include "boost/test/included/unit_test.hpp"
 
 #include <set>
-#include "../../rational.hpp"   // The new one to test
+#include <boost/rational.hpp>
 
 #define TEST_LL_RATIONAL  1  // Need an 128bit int to test long long rational
 #if TEST_LL_RATIONAL
@@ -26,9 +26,6 @@ typedef boost::rational<int,boost::rational_no_checking>                 RatS32r
 typedef boost::rational<long long,boost::rational_check_for_overflow>    RatSLLwCK;
 typedef boost::rational<long long,boost::rational_no_checking>           RatSLLref;
 
-typedef boost::rational<unsigned int,boost::rational_check_for_overflow> RatU32wCK;
-typedef boost::rational<unsigned int,boost::rational_no_checking>        RatU32ref;
-
 
 // std:: namespace helpers
 #define STD std::
@@ -40,91 +37,114 @@ typedef boost::rational<unsigned int,boost::rational_no_checking>        RatU32r
 //#define COUT cout
 //#define ENDL endl
 
+#define VERIFY_RAT_VAL(var, num, dem) \
+        if ( var.numerator() != (num)  || var.denominator() != (dem)) { \
+            FailCount++; ReportFailure(__FILE__,__LINE__); }
+
+#define SHOULD_OVERFLOW_EXCEPTION(stmt) {\
+        bool exceptioned = false; \
+        try {  stmt; }\
+        catch (boost::rational_overflow Exception) {exceptioned = true;}\
+        if(!exceptioned) {\
+        { FailCount++;\
+          ReportFailure(__FILE__,__LINE__);\
+        } } }
+
+#define SHOULD_ZERO_DIVIDE_EXCEPTION(stmt) {\
+        bool exceptioned = false; \
+        try {  stmt; }\
+        catch (boost::bad_rational Exception) {exceptioned = true;}\
+        if(!exceptioned) {\
+        { FailCount++;\
+          ReportFailure(__FILE__,__LINE__);\
+        } } }
+
+#define SHOULD_NOT_EXCEPTION(stmt) {\
+        bool exceptioned = false; \
+        try {  stmt; }\
+        catch (boost::rational_overflow Exception) {exceptioned = true;}\
+        if(exceptioned) {\
+        { FailCount++;\
+          ReportFailure(__FILE__,__LINE__);\
+        } } }
+
+
 void ReportFailure(char* filename, int lineNumber)
 {
     COUT << ENDL << "Fail reported at " << DEC << lineNumber << " of " << filename << ENDL;
     throw 57;  // Cause any failure to terminate program!!!
+    // Comment out the 'throw' to allow test to run through failures.
 }
 
 
 
 
-void testRationalConstruction(void)
+unsigned long long testRationalConstruction(void)
 {
+    COUT << ENDL << "Starting rational construction tests" << ENDL; 
     unsigned long long FailCount(0);
-    if(1 && (-SCHAR_MAX != SCHAR_MIN)) // Test overflow on construction of max neg denominator
+
+    {  // No parameter constructor
+        RatS8wCK  ratValA;     VERIFY_RAT_VAL(ratValA, 0, 1);
+        RatS8ref  ratValB;  VERIFY_RAT_VAL(ratValB, 0, 1);
+        RatS16wCK ratValC;     VERIFY_RAT_VAL(ratValC, 0, 1);
+        RatRefS16 ratValD;  VERIFY_RAT_VAL(ratValD, 0, 1);
+        RatS32wCK ratValE;     VERIFY_RAT_VAL(ratValE, 0, 1);
+        RatS32ref ratValF;  VERIFY_RAT_VAL(ratValF, 0, 1);
+        RatSLLwCK ratValG;     VERIFY_RAT_VAL(ratValG, 0, 1);
+        RatSLLref ratValH;  VERIFY_RAT_VAL(ratValH, 0, 1);
+    }
+
+    {  // One parameter constructor
+        RatS8wCK  ratValA(57);     VERIFY_RAT_VAL(ratValA, 57, 1);
+        RatS8ref  ratValB(57);  VERIFY_RAT_VAL(ratValB, 57, 1);
+        RatS16wCK ratValC(57);     VERIFY_RAT_VAL(ratValC, 57, 1);
+        RatRefS16 ratValD(57);  VERIFY_RAT_VAL(ratValD, 57, 1);
+        RatS32wCK ratValE(57);     VERIFY_RAT_VAL(ratValE, 57, 1);
+        RatS32ref ratValF(57);  VERIFY_RAT_VAL(ratValF, 57, 1);
+        RatSLLwCK ratValG(57);     VERIFY_RAT_VAL(ratValG, 57, 1);
+        RatSLLref ratValH(57);  VERIFY_RAT_VAL(ratValH, 57, 1);
+    }
+
+    {  // Two parameter constructor
+        RatS8wCK  ratValA(7,99);  VERIFY_RAT_VAL(ratValA, 7, 99);   COUT << ratValA << ENDL;
+        RatS8ref  ratValB(7,99);  VERIFY_RAT_VAL(ratValB, 7, 99);   COUT << ratValB << ENDL;
+        RatS16wCK ratValC(7,99);  VERIFY_RAT_VAL(ratValC, 7, 99);   COUT << ratValC << ENDL;
+        RatRefS16 ratValD(7,99);  VERIFY_RAT_VAL(ratValD, 7, 99);   COUT << ratValD << ENDL;
+        RatS32wCK ratValE(7,99);  VERIFY_RAT_VAL(ratValE, 7, 99);   COUT << ratValE << ENDL;
+        RatS32ref ratValF(7,99);  VERIFY_RAT_VAL(ratValF, 7, 99);   COUT << ratValF << ENDL;
+        RatSLLwCK ratValG(7,99);  VERIFY_RAT_VAL(ratValG, 7, 99);   COUT << ratValG << ENDL;
+        RatSLLref ratValH(7,99);  VERIFY_RAT_VAL(ratValH, 7, 99);   COUT << ratValH << ENDL;
+    }
+
+    // Test overflow on construction of max neg denominator
+    if(1 && (-SCHAR_MAX != SCHAR_MIN)) // Only test if negative, positive numbers not symetric
     {
-        bool failed;
         signed char      denChar  = SCHAR_MIN;
         signed short     denShort = SHRT_MIN;
         signed int       denInt = INT_MIN;
         signed long long denLL = LLONG_MIN;
 
-        // ----------------------------------------------------------
-        try {failed = true; RatS8wCK RA(1, denChar); }
-        catch (boost::rational_overflow Exception) {failed = false;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
-
-        try {failed = false;  RatS8wCK RA(1, denChar+1); }
-        catch (boost::rational_overflow Exception) {failed = true;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
-
-        // ----------------------------------------------------------
-        try {failed = true; RatS16wCK RA(1, denShort); }
-        catch (boost::rational_overflow Exception) {failed = false;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
-
-        try {failed = false;  RatS16wCK RA(1, denShort+1); }
-        catch (boost::rational_overflow Exception) {failed = true;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
-
-
-        // ----------------------------------------------------------
-        try {failed = true; RatS32wCK RA(1, denInt); }
-        catch (boost::rational_overflow Exception) {failed = false;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
-
-        try {failed = false;  RatS32wCK RA(1, denInt+1); }
-        catch (boost::rational_overflow Exception) {failed = true;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
-
-        // ----------------------------------------------------------
-        try {failed = true; RatSLLwCK RA(1, denLL); }
-        catch (boost::rational_overflow Exception) {failed = false;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
-
-        try {failed = false;  RatSLLwCK RA(1, denLL+1); }
-        catch (boost::rational_overflow Exception) {failed = true;}
-        if(failed) {
-            FailCount++;
-            ReportFailure(__FILE__,__LINE__);
-        }
+        SHOULD_OVERFLOW_EXCEPTION( RatS8wCK RA(1, denChar) );
+        SHOULD_NOT_EXCEPTION( RatS8wCK RA(1, denChar+1) );
+        SHOULD_OVERFLOW_EXCEPTION( RatS16wCK RA(1, denShort) );
+        SHOULD_NOT_EXCEPTION( RatS16wCK RA(1, denShort+1) );
+        SHOULD_OVERFLOW_EXCEPTION( RatS32wCK RA(1, denInt) );
+        SHOULD_NOT_EXCEPTION( RatS32wCK RA(1, denInt+1) );
+        SHOULD_OVERFLOW_EXCEPTION( RatSLLwCK RA(1, denLL) );
+        SHOULD_NOT_EXCEPTION( RatSLLwCK RA(1, denLL+1) );
     }
     else
     {
-        COUT << "Test skipped." << ENDL;
+        COUT << "Max negative denominator test skipped, negative and positive numbers are symetric!" << ENDL;
     }
+
+    COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL;
+    COUT << ENDL;
+
+    return FailCount;
 }
 
 template <typename RefT, typename TstT>
@@ -226,9 +246,9 @@ int TestRationalPair( RefT& RefA, RefT& RefB, TstT& TstA, TstT& TstB)
 
 
 template <typename RatT, typename RatRefT>
-long long BinarySetTest(std::set<RatT>& valSet)
+unsigned long long BinarySetTest(std::set<RatT>& valSet)
 {
-    long long FailureCount = 0;
+    unsigned long long FailureCount = 0;
     RatT A,B;
     RatRefT RefA,RefB;
     std::set<RatT>::iterator x;
@@ -261,8 +281,73 @@ long long BinarySetTest(std::set<RatT>& valSet)
 }
 
 
-void testS8rationals()
+
+unsigned long long testS8rationalsQuick()
 {
+    COUT << ENDL << "Starting quick S8 rational tests" << ENDL; 
+    unsigned long long FailCount = 0;
+    typedef RatS8wCK  RatS8true;
+    std::set<RatS8wCK> valSet;
+
+    std::set<signed char> valCompSet;
+    valCompSet.insert(    0 );
+    valCompSet.insert(    1 );
+    valCompSet.insert(    2 );
+    valCompSet.insert(    3 );
+    valCompSet.insert(    4 );
+    valCompSet.insert(    5 );
+    valCompSet.insert(    6 );
+    valCompSet.insert(    7 );
+    valCompSet.insert(    8 );
+    valCompSet.insert(    9 );
+    valCompSet.insert(   -1 );
+    valCompSet.insert(   -2 );
+    valCompSet.insert(   -3 );
+    valCompSet.insert(   -4 );
+    valCompSet.insert(   -5 );
+    valCompSet.insert(   -6 );
+    valCompSet.insert(   -7 );
+    valCompSet.insert(  126 );
+    valCompSet.insert(  127 );
+    valCompSet.insert( -128 );
+    valCompSet.insert( -127 );
+    valCompSet.insert( -126 );
+
+    std::set<signed char>::iterator x;
+    std::set<signed char>::iterator y;
+
+    COUT << DEC << valCompSet.size() << " values in valCompSet set" << ENDL;
+    for (x=valCompSet.begin(); x!=valCompSet.end(); x++)
+    {
+        for (y=valCompSet.begin(); y!=valCompSet.end(); y++)
+        {         
+            if(*y != 0)        
+            {
+                //COUT << DEC << *x << "   " << *y << ENDL;
+                try { valSet.insert( RatS8wCK( *x, *y )); } catch (boost::rational_overflow Exception) { bool ovfl = true; }
+                try { valSet.insert( RatS8wCK(-*x, *y )); } catch (boost::rational_overflow Exception) { bool ovfl = true; }
+            }
+        }
+    }
+
+    // Assure specific values
+    valSet.insert( RatS8wCK((signed char)       0, (signed char)1) );
+
+    FailCount += BinarySetTest<RatS8wCK, RatRefS16>(valSet);
+
+    COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
+}
+
+
+unsigned long long testS8rationals()
+{
+    COUT << ENDL << "Starting S8 rational tests" << ENDL; 
+    long long FailCount = 0;
     typedef RatS8wCK  RatS8true;
     std::set<RatS8true> valSet;
     signed char a,b;
@@ -291,16 +376,21 @@ void testS8rationals()
     COUT << "Number of unique 8bit rationals: " << DEC << Count << ENDL;
     COUT << "Number of unique 8bit rationals: " << DEC << valSet.size() << ENDL;
 
-    BinarySetTest<RatS8true,RatRefS16>(valSet);
+    FailCount += BinarySetTest<RatS8true,RatRefS16>(valSet);
 
     COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
 }   // 19895 for typical signed 8 bit numbers         
 
 
-void testRationalS8IncDec(void)
+unsigned long long testRationalS8IncDec(void)
 {
-    unsigned long long FailCount(0);
     COUT << ENDL << "Starting 8 bit rational increment/decrement tests" << ENDL; 
+    unsigned long long FailCount(0);
     bool ovfl;
     signed char numA,denA,n;
     RatRefS16 RefA;
@@ -413,15 +503,94 @@ void testRationalS8IncDec(void)
         if(++numA == 0)
             break;
     }
-    COUT << "Fail count " << DEC << FailCount << "  ";
+
     COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
+}
+
+unsigned long long testRationalS16Quick()
+{
+    COUT << ENDL << "Starting quick S16 rational tests" << ENDL; 
+    typedef signed short ComponentType;
+    unsigned long long FailCount = 0;
+    std::set<RatS16wCK> valSet;
+
+    std::set<ComponentType> valCompSet;
+    valCompSet.insert(      0 );
+    valCompSet.insert(      1 );
+    valCompSet.insert(      2 );
+    valCompSet.insert(      3 );
+    valCompSet.insert(      4 );
+    valCompSet.insert(      5 );
+    valCompSet.insert(      6 );
+    valCompSet.insert(      7 );
+    valCompSet.insert(      8 );
+    valCompSet.insert(      9 );
+    valCompSet.insert(     -1 );
+    valCompSet.insert(     -2 );
+    valCompSet.insert(     -3 );
+    valCompSet.insert(     -4 );
+    valCompSet.insert(     -5 );
+    valCompSet.insert(     -6 );
+    valCompSet.insert(     -7 );
+    valCompSet.insert(  16383 );
+    valCompSet.insert(  16384 );
+    valCompSet.insert(  16385 );
+    valCompSet.insert( -16383 );
+    valCompSet.insert( -16384 );
+    valCompSet.insert( -16385 );
+    valCompSet.insert(  32766 );
+    valCompSet.insert(  32767 );
+    valCompSet.insert( -32768 );
+    valCompSet.insert( -32767 );
+    valCompSet.insert( -32766 );
+    valCompSet.insert(  2*3*5*7 );
+    valCompSet.insert( -2*3*5*7 );
+    valCompSet.insert(  2*3*5*7*11 );
+    valCompSet.insert( -2*3*5*7*11 );
+    valCompSet.insert(  2*3*5*7*11*13 );
+    valCompSet.insert( -2*3*5*7*11*13 );
+
+    std::set<ComponentType>::iterator x;
+    std::set<ComponentType>::iterator y;
+
+    COUT << DEC << valCompSet.size() << " values in valCompSet set" << ENDL;
+    for (x=valCompSet.begin(); x!=valCompSet.end(); x++)
+    {
+        for (y=valCompSet.begin(); y!=valCompSet.end(); y++)
+        {         
+            if(*y != 0)        
+            {
+                //COUT << DEC << *x << "   " << *y << ENDL;
+                try { valSet.insert( RatS16wCK( *x, *y )); } catch (boost::rational_overflow Exception) { bool ovfl = true; }
+                try { valSet.insert( RatS16wCK(-*x, *y )); } catch (boost::rational_overflow Exception) { bool ovfl = true; }
+            }
+        }
+    }
+
+    // Assure specific values
+    valSet.insert( RatS16wCK((ComponentType)       0, (ComponentType)1) );
+
+    FailCount += BinarySetTest<RatS16wCK, RatS32ref>(valSet);
+
+    COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
 }
 
 
-void testRationalS16selected(void) 
+
+unsigned long long testRationalS16selected(void) 
 {
-    unsigned long long FailCount(0);
     COUT << ENDL << "Starting 16 bit selected values rational operator tests" << ENDL; 
+    unsigned long long FailCount(0);
 
     const short smax = std::numeric_limits<short>::max BOOST_PREVENT_MACRO_SUBSTITUTION ();
     const short smin = std::numeric_limits<short>::min BOOST_PREVENT_MACRO_SUBSTITUTION ();
@@ -444,14 +613,18 @@ void testRationalS16selected(void)
 
     FailCount += BinarySetTest<RatS16wCK,RatS32ref>(valSet);
 
-    COUT << "Fail count " << DEC << FailCount << "  ";
     COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
 }
 
-void testRationalS32selected(void)
+unsigned long long testRationalS32selected(void)
 {
-    unsigned long long FailCount(0);
     COUT << ENDL << "Starting 32 bit selected values rational operator tests" << ENDL; 
+    unsigned long long FailCount(0);
     std::set<RatS32wCK> valSet;
 
     std::set<int> valCompSet;
@@ -548,7 +721,6 @@ void testRationalS32selected(void)
     valCompSet.insert( 2*3*5*7*13*13*17 );
     valCompSet.insert( 2*3*5*7*13*13*17*19 );
 
-
     std::set<int>::iterator x;
     std::set<int>::iterator y;
 
@@ -590,14 +762,18 @@ void testRationalS32selected(void)
 
     FailCount += BinarySetTest<RatS32wCK, RatSLLref>(valSet);
 
-    COUT << "Fail count " << DEC << FailCount << "  ";
     COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
 }
 
-void testRationalS64selected(void)  // Uses 128 bit reference 'int'
+unsigned long long testRationalS64selected(void)  // Uses 128 bit reference 'int'
 {
-    unsigned long long FailCount(0);
     COUT << ENDL << "Starting 64 bit selected values rational operator tests" << ENDL; 
+    unsigned long long FailCount(0);
     typedef boost::rational<Int128,boost::rational_no_checking>    RatInt128;
     std::set<RatSLLwCK> valSet;
 
@@ -673,7 +849,7 @@ void testRationalS64selected(void)  // Uses 128 bit reference 'int'
         }
     }
 
-#if 1
+    // Make sure specific values are in the test set.
     valSet.insert( RatSLLwCK((long long)         0, (long long)1) );
     valSet.insert( RatSLLwCK((long long)         1, (long long)1) );
     valSet.insert( RatSLLwCK((long long)         2, (long long)1) );
@@ -745,7 +921,6 @@ void testRationalS64selected(void)  // Uses 128 bit reference 'int'
     valSet.insert( RatSLLwCK((long long) 0x1ffffffffi64, (long long)LLONG_MAX>>31) );
     valSet.insert( RatSLLwCK((long long) 0x200000000i64, (long long)LLONG_MAX>>31) );
 
-    //==
     valSet.insert( RatSLLwCK((long long) 0x07f0000000010011i64, (long long)1) );
     valSet.insert( RatSLLwCK((long long) 0x07fffffff0010011i64, (long long)1) );
     valSet.insert( RatSLLwCK((long long) 0x0800000000010011i64, (long long)1) );
@@ -795,7 +970,6 @@ void testRationalS64selected(void)  // Uses 128 bit reference 'int'
     valSet.insert( RatSLLwCK((long long) 0x100000001i64, (long long)LLONG_MAX>>31) );
     valSet.insert( RatSLLwCK((long long) 0x1ffffffffi64, (long long)LLONG_MAX>>31) );
     valSet.insert( RatSLLwCK((long long) 0x200000000i64, (long long)LLONG_MAX>>31) );
-#endif
 
     RatSLLwCK ratVal;
     for (int p=0; p<16; p++)
@@ -819,29 +993,259 @@ void testRationalS64selected(void)  // Uses 128 bit reference 'int'
 
     FailCount += BinarySetTest<RatSLLwCK, RatInt128>(valSet);
 
-    COUT << "Fail count " << DEC << FailCount << "  ";
     COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
 }
 
+unsigned long long testSimpleAndQuick(void)
+{
+    unsigned long long FailCount(0);
+    COUT << ENDL << "Starting Quick and Simple tests..." << ENDL;
+
+    {  // Unary +
+        RatS32ref ratVala(11*3,9*3), ratValb;
+        ratValb = +ratVala;   VERIFY_RAT_VAL(ratValb,  11, 9);
+        RatS32wCK ratValA(11*3,9*3), ratValB;
+        ratValB = +ratValA;   VERIFY_RAT_VAL(ratValB,  11, 9);
+    }
+    {  // Integer assignment
+        RatS32ref ratVala(11*3,9*3);
+        ratVala = 19;   VERIFY_RAT_VAL(ratVala,  19, 1);
+        RatS32wCK ratValA(11*3,9*3);
+        ratValA = 19;   VERIFY_RAT_VAL(ratValA,  19, 1);
+    }
+    {  // assign()
+        RatS32ref ratVala(11*3,9*3);
+        ratVala.assign(23,5);   VERIFY_RAT_VAL(ratVala,  23, 5);
+        RatS32wCK ratValA(11*3,9*3);
+        ratValA.assign(23,5);   VERIFY_RAT_VAL(ratValA,  23, 5);
+    }
+    {  // += 
+        RatS32ref ratVala(11*3,9*3), ratValb(7*7,11*7);
+        ratValb += ratVala;   VERIFY_RAT_VAL(ratValb,  184, 99);
+        RatS32wCK ratValA(11*3,9*3), ratValB(7*7,11*7);
+        ratValB += ratValA;   VERIFY_RAT_VAL(ratValB,  184, 99);
+    }
+    {  // -=
+        RatS32ref ratVala(11*3,9*3), ratValb(7*7,11*7);
+        ratValb -= ratVala;   VERIFY_RAT_VAL(ratValb,  -58, 99);
+        RatS32wCK ratValA(11*3,9*3), ratValB(7*7,11*7);
+        ratValB -= ratValA;   VERIFY_RAT_VAL(ratValB,  -58, 99);
+    }
+    {  // *=
+        RatS32ref ratVala(11*3,9*3), ratValb(7*7,11*7);
+        ratValb *= ratVala;   VERIFY_RAT_VAL(ratValb,  7, 9);
+        RatS32wCK ratValA(11*3,9*3), ratValB(7*7,11*7);
+        ratValB *= ratValA;   VERIFY_RAT_VAL(ratValB,  7, 9);
+    }
+    {  // /=
+        RatS32ref ratVala(11*3,9*3), ratValb(7*7,11*7);
+        ratValb /= ratVala;   VERIFY_RAT_VAL(ratValb,  63, 121);
+        RatS32wCK ratValA(11*3,9*3), ratValB(7*7,11*7);
+        ratValB /= ratValA;   VERIFY_RAT_VAL(ratValB,  63, 121);
+    }
+    {  // += (integer)
+        RatS32ref ratVala(11*3,9*3);
+        ratVala += 19;   VERIFY_RAT_VAL(ratVala,  182, 9);
+        RatS32wCK ratValA(11*3,9*3);
+        ratValA += 19;   VERIFY_RAT_VAL(ratValA,  182, 9);
+    }
+    {  // -= (integer)
+        RatS32ref ratVala(11*3,9*3);
+        ratVala -= 19;   VERIFY_RAT_VAL(ratVala,  -160, 9);
+        RatS32wCK ratValA(11*3,9*3);
+        ratValA -= 19;   VERIFY_RAT_VAL(ratValA,  -160, 9);
+    }
+    {  // *= (integer)
+        RatS32ref ratVala(11*3,9*3);
+        ratVala *= 19;   VERIFY_RAT_VAL(ratVala,  209, 9);
+        RatS32wCK ratValA(11*3,9*3);
+        ratValA *= 19;   VERIFY_RAT_VAL(ratValA,  209, 9);
+    }
+    {  // /= (integer)
+        RatS32ref ratVala(11*3,9*3);
+        ratVala /= 19;   VERIFY_RAT_VAL(ratVala,  11, 171);
+        RatS32wCK ratValA(11*3,9*3);
+        ratValA /= 19;   VERIFY_RAT_VAL(ratValA,  11, 171);
+    }
+    { // Unary minus, and abs()
+        RatS32wCK ratValB(11*3,9*3), ratValC;       ratValC = -ratValB;         VERIFY_RAT_VAL(ratValC, -11, 9);
+                                                    ratValC = abs(ratValC);     VERIFY_RAT_VAL(ratValC,  11, 9);
+        RatS32ref ratVal0(5,19);                    ratVal0 = -ratVal0;         VERIFY_RAT_VAL(ratVal0, -5, 19);
+                                                    ratVal0 = abs(ratVal0);     VERIFY_RAT_VAL(ratVal0,  5, 19);
+    }
+    { // Post increment/decrement
+        RatS32wCK ratValA(11*3,9*3);
+        ratValA++;   VERIFY_RAT_VAL(ratValA,  20, 9);
+        ratValA--;   VERIFY_RAT_VAL(ratValA,  11, 9);
+        RatS32ref ratVala(11*3,9*3);
+        ratVala++;   VERIFY_RAT_VAL(ratVala,  20, 9);
+        ratVala--;   VERIFY_RAT_VAL(ratVala,  11, 9);
+    }
+    { // Pre increment/decrement
+        RatS32wCK ratValA(11*3,9*3);
+        ++ratValA;   VERIFY_RAT_VAL(ratValA,  20, 9);
+        --ratValA;   VERIFY_RAT_VAL(ratValA,  11, 9);
+        RatS32ref ratVala(11*3,9*3);
+        ++ratVala;   VERIFY_RAT_VAL(ratVala,  20, 9);
+        --ratVala;   VERIFY_RAT_VAL(ratVala,  11, 9);
+    }
+    { // Conversion to bool
+        RatS32ref ratVala(11*3,9*3), ratValb(0);
+        if(ratVala){ }
+        else { FailCount++; ReportFailure(__FILE__,__LINE__); }
+        if(ratValb) { FailCount++; ReportFailure(__FILE__,__LINE__); }
+        else { }
+
+        RatS32wCK ratValA(11*3,9*3), ratValB(0);
+        if(ratValA){ }
+        else { FailCount++; ReportFailure(__FILE__,__LINE__); }
+        if(ratValB) { FailCount++; ReportFailure(__FILE__,__LINE__); }
+        else { }
+    }
+    { // '!' operator
+        RatS32ref ratVala(11*3,9*3), ratValb(0);
+        if(!ratVala){ FailCount++; ReportFailure(__FILE__,__LINE__); }
+        else { }
+        if(!ratValb) { }
+        else { FailCount++; ReportFailure(__FILE__,__LINE__); }
+
+        RatS32wCK ratValA(11*3,9*3), ratValB(0);
+        if(!ratValA){ FailCount++; ReportFailure(__FILE__,__LINE__); }
+        else { }
+        if(!ratValB) { }
+        else { FailCount++; ReportFailure(__FILE__,__LINE__); }
+    }
+    {  // '!='
+        RatS32ref ratVala(11*3,9*3), ratValb=ratVala;
+        if(ratValb != ratVala)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+
+        RatS32wCK ratValA(11*3,9*3), ratValB=ratValA;
+        if(ratValB != ratValA)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+    }
+    {  // '<'
+        RatS32ref ratVala(11*3,9*3), ratValb(12*3,9*3);
+        if(ratValb < ratVala)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+
+        RatS32wCK ratValA(11*3,9*3), ratValB(12*3,9*3);
+        if(ratValB < ratValA)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+    }
+    { // '<' (integer)
+        RatS32ref ratVala(5,2);
+        if(ratVala < 2)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+
+        RatS32wCK ratValA(5,2);
+        if(ratValA < 2)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+    }
+    {  // '>' (integer)
+        RatS32ref ratVala(5,2);
+        if(ratVala > 3)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+
+        RatS32wCK ratValA(5,2);
+        if(ratValA > 3)
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+    }
+    {  // '==' (integer)
+        RatS32ref ratVala(6,1);
+        if(ratVala == 6)
+        {}
+        else
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+
+        RatS32wCK ratValA(6,1);
+        if(ratValA == 6)
+        {}
+        else
+        {
+            FailCount++; ReportFailure(__FILE__,__LINE__);
+        }
+    }
+
+    // Rely on 32 bit ints:
+    if(((INT_MAX) == 2147483647) && ((INT_MIN) == (-2147483647 - 1)))
+    {
+        RatS32ref ratVal_1(-2147483647 - 1,-1); // Non-overflow checked overflows.
+        
+        SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValD(-2147483647 - 1,-1) );
+        SHOULD_NOT_EXCEPTION( RatS32wCK ratValD(-2147483647 - 1, 1) );
+
+        SHOULD_NOT_EXCEPTION( RatS32wCK ratValE(-2147483647 - 1,1) ); 
+        SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValE(-2147483647 - 1,1); RatS32wCK ratValD = -ratValE );
+        SHOULD_NOT_EXCEPTION( RatS32wCK ratValE(-2147483647 - 1,1); RatS32wCK ratValF = +ratValE );  // Unary '+'
+
+        SHOULD_ZERO_DIVIDE_EXCEPTION(     RatS32wCK ratValA(57,13); RatS32wCK ratValZ(0); RatS32wCK ratValB = ratValA/ratValZ ); // Divide by zero
+
+        SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValA(2147483647,1); ratValA++ );
+        SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValA(-2147483647 - 1,1); ratValA-- );
+        SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValA(-2147483647 - 1,1); abs(ratValA) );
+    }
+
+    COUT << ENDL;
+    if(FailCount) COUT << "Fail count " << DEC << FailCount << "  " << ENDL;
+    else          COUT << "All Passed" << ENDL; 
+    COUT << ENDL;
+
+    return FailCount;
+}
 
 int main(int argc, char* argv[])
 {
+    unsigned long long FailCount(0);
+
+    if(1) FailCount += testRationalConstruction();
+
+    if(1) FailCount += testSimpleAndQuick();
    
-    if(1) testRationalConstruction();
+    if(1) FailCount += testS8rationalsQuick();
 
-    if(0) testS8rationals();
+    if(1) FailCount += testRationalS16Quick();
 
-    if(0) testRationalS8IncDec();
 
-    if(0) testRationalS16selected();
+    if(1) FailCount += testS8rationals();
 
-    if(0) testRationalS32selected();
+    if(1) FailCount += testRationalS8IncDec();
+
+    if(1) FailCount += testRationalS16selected();
+
+    if(1) FailCount += testRationalS32selected();
 
 #if TEST_LL_RATIONAL
-    if(1) testRationalS64selected();
+    if(1) FailCount += testRationalS64selected();
 #endif
 
     COUT << ENDL;
+    COUT << ENDL;
+
+    COUT << "Over ALL Fail count: " << DEC << FailCount << ENDL;
 
     return 0;
 }
