@@ -57,11 +57,26 @@
   {
   public:
     BOOST_STATIC_ASSERT_MSG(   boost::is_signed  <my_exponent_type>::value
-                            && boost::is_integral<my_exponent_type>::value, "The exponent type must be a signed integral type.");
+                            && boost::is_integral<my_exponent_type>::value,
+                            "The exponent type must be a signed integral type.");
 
-    static const boost::uint32_t cpp_bin_float_bits_number = my_digits2;
-    static const boost::uint32_t cpp_bin_float_elem_number =    boost::uint32_t(boost::uint32_t(cpp_bin_float_bits_number * 2U) / std::numeric_limits<short_limb_type>::digits)
-                                                             + (boost::uint32_t(boost::uint32_t(cpp_bin_float_bits_number * 2U) % std::numeric_limits<short_limb_type>::digits) != boost::uint32_t(0U) ? 1U : 0U);
+    BOOST_STATIC_ASSERT_MSG(   (std::numeric_limits<short_limb_type>::is_signed == false)
+                            && (std::numeric_limits< long_limb_type>::is_signed == false),
+                            "The short and long limb types must both be unsigned.");
+
+    BOOST_STATIC_ASSERT_MSG(   (std::numeric_limits<short_limb_type>::digits * 2) == (std::numeric_limits<long_limb_type>::digits),
+                            "The short limb type must be exactly half the width of the long limb type.");
+
+    BOOST_STATIC_ASSERT_MSG(std::numeric_limits<eval_ops_unsigned_type>::digits == (std::numeric_limits<eval_ops_signed_type>::digits + 1),
+                            "The signed and unsigned integer evaluation ops types must have the same width.");
+
+    BOOST_STATIC_ASSERT_MSG(std::numeric_limits<eval_ops_unsigned_type>::digits >= std::numeric_limits<short_limb_type>::digits,
+                            "The evaluation ops types must be at least as wide as the short limb type.");
+
+    // TBD: Number of guard digits, WRT support for std::numeric_limits<T>(max_digits10).
+    static const boost::uint32_t cpp_bin_float_bits_number = boost::uint32_t(my_digits2 + 3);
+    static const boost::uint32_t cpp_bin_float_elem_number =    boost::uint32_t(cpp_bin_float_bits_number / std::numeric_limits<short_limb_type>::digits)
+                                                             + (boost::uint32_t(cpp_bin_float_bits_number % std::numeric_limits<short_limb_type>::digits) != boost::uint32_t(0U) ? 1U : 0U);
 
     typedef mpl::list<eval_ops_signed_type>   signed_types;
     typedef mpl::list<eval_ops_unsigned_type> unsigned_types;
@@ -82,14 +97,10 @@
                                    my_precision_in_bits(cpp_bin_float_bits_number) 
     {
       const bool read_string_is_ok = read_string(s);
+
       static_cast<void>(read_string_is_ok);
 
-      const bool is_neg = my_neg;
-      my_neg = false;
-
       round_and_truncate();
-
-      if(is_neg) { negate(); }
     }
 
     template<class integer_type>
@@ -108,13 +119,11 @@
     cpp_bin_float(integer_type i,
                   typename enable_if<is_signed<integer_type> >::type* = 0) : my_data             (),
                                                                              my_exp              (static_cast<my_exponent_type>(0)),
-                                                                             my_neg              (false),
+                                                                             my_neg              (i < static_cast<integer_type>(0)),
                                                                              my_fpclass          (cpp_bin_float_finite),
                                                                              my_precision_in_bits(cpp_bin_float_bits_number)
     {
-      const bool is_neg = (i < static_cast<integer_type>(0));
-
-      if(is_neg)
+      if(my_neg)
       {
         from_unsigned_type(static_cast<eval_ops_unsigned_type>(-i));
       }
@@ -124,8 +133,6 @@
       }
 
       round_and_truncate();
-
-      if(is_neg) { negate(); }
     }
 
     cpp_bin_float(const cpp_bin_float& other) : data     (other.my_data),
@@ -136,55 +143,91 @@
 
     template<const boost::uint32_t other_digits2,
              class other_et,
-             class other_allocator>
-    cpp_bin_float(const cpp_bin_float<other_digits2, other_et, other_allocator>& smaller_other,
+             class other_allocator,
+             class other_short_limb_type,
+             class other_long_limb_type,
+             class other_eval_ops_signed_type,
+             class other_eval_ops_unsigned_type,
+             class other_eval_ops_float_type>
+    cpp_bin_float(const cpp_bin_float<other_digits2,
+                                      other_et,
+                                      other_allocator,
+                                      other_short_limb_type,
+                                      other_long_limb_type,
+                                      other_eval_ops_signed_type,
+                                      other_eval_ops_unsigned_type,
+                                      other_eval_ops_float_type>& less_eq_other,
                   typename enable_if_c<other_digits2 <= my_digits2>::type* = 0) : my_data             (),
-                                                                                  my_exp              (smaller_other.my_exp),
-                                                                                  my_neg              (smaller_other.my_neg),
-                                                                                  my_fpclass          (smaller_other.my_fpclass),
-                                                                                  my_precision_in_bits(smaller_other.my_precision_in_bits)
+                                                                                  my_exp              (less_eq_other.my_exp),
+                                                                                  my_neg              (less_eq_other.my_neg),
+                                                                                  my_fpclass          (less_eq_other.my_fpclass),
+                                                                                  my_precision_in_bits(less_eq_other.my_precision_in_bits)
     {
-      std::copy(smaller_other.my_data.begin(),
-                smaller_other.my_data.begin() + smaller_other.cpp_bin_float_elem_number,
+      // TBD: Handle limb types larger and smaller the limb type of *this.
+      std::copy(less_eq_other.my_data.begin(),
+                less_eq_other.my_data.begin() + less_eq_other.cpp_bin_float_elem_number,
                 my_data.begin());
     }
 
     template<const boost::uint32_t other_digits2,
              class other_et,
-             class other_allocator>
-    explicit cpp_bin_float(const cpp_bin_float<other_digits2, other_et, other_allocator>& larger_other,
+             class other_allocator,
+             class other_short_limb_type,
+             class other_long_limb_type,
+             class other_eval_ops_signed_type,
+             class other_eval_ops_unsigned_type,
+             class other_eval_ops_float_type>
+    explicit cpp_bin_float(const cpp_bin_float<other_digits2,
+                                               other_et,
+                                               other_allocator,
+                                               other_short_limb_type,
+                                               other_long_limb_type,
+                                               other_eval_ops_signed_type,
+                                               other_eval_ops_unsigned_type,
+                                               other_eval_ops_float_type>& less_eq_other,
                            typename disable_if_c<other_digits2 <= my_digits2>::type* = 0) : my_data             (),
                                                                                             my_exp              (larger_other.my_exp),
                                                                                             my_neg              (larger_other.my_neg),
                                                                                             my_fpclass          (larger_other.my_fpclass),
                                                                                             my_precision_in_bits(cpp_bin_float_bits_number)
     {
-      // TODO: this doesn't round!
+      // TBD: Do a proper rounding here.
+      // TBD: Handle limb types both larger and smaller the limb type of *this.
       std::copy(larger_other.my_data.begin(),
                 larger_other.my_data.begin() + cpp_bin_float_elem_number,
                 my_data.begin());
     }
 
     template<class float_type>
-    cpp_bin_float(float_type val,
+    cpp_bin_float(float_type a,
                   typename enable_if<is_floating_point<float_type> >::type* = 0) : my_data             (),
                                                                                    my_exp              (static_cast<my_exponent_type>(0)),
-                                                                                   my_neg              (false),
+                                                                                   my_neg              (a < static_cast<eval_ops_float_type>(0)),
                                                                                    my_fpclass          (cpp_bin_float_finite),
-                                                                                   my_precision_in_bits(cpp_bin_float_bits_number) 
+                                                                                   my_precision_in_bits(cpp_bin_float_bits_number)
     {
-      const bool is_neg = (val < float_type(0));
-
-      from_float_type(static_cast<eval_ops_float_type>((!is_neg) ? val : -val));
+      if(my_neg)
+      {
+        from_float_type(static_cast<eval_ops_float_type>(-a));
+      }
+      else
+      {
+        from_float_type(static_cast<eval_ops_float_type>(a));
+      }
 
       round_and_truncate();
-
-      if(is_neg) { negate(); }
     }
 
-    void negate() { if(!iszero()) { my_neg = !my_neg; } }
+    void negate()
+    {
+      if(!iszero()) { my_neg = !my_neg; }
+    }
 
-    bool iszero() const { return ((my_fpclass == cpp_bin_float_finite) && (my_data[0U] == static_cast<short_limb_type>(0U))); }
+    bool iszero() const
+    {
+      return (   (my_fpclass == cpp_bin_float_finite)
+              && (my_data[0U] == static_cast<short_limb_type>(0U)));
+    }
 
   private:
     typedef enum enum_fpclass_type
@@ -218,7 +261,7 @@
                                            my_exp              (static_cast<my_exponent_type>(0)),
                                            my_neg              (false),
                                            my_fpclass          (fp_class),
-                                           my_precision_in_bits(cpp_bin_float_elem_number) { }
+                                           my_precision_in_bits(cpp_bin_float_bits_number) { }
 
     void from_unsigned_type(eval_ops_unsigned_type u)
     {
@@ -283,6 +326,7 @@
                      eval_ops_unsigned_type,
                      eval_ops_float_type>::read_string(const char* s)
   {
+    // TBD: Read the input string (and include exception support).
     static_cast<void>(s);
     return false;
   }
@@ -304,6 +348,7 @@
                      eval_ops_unsigned_type,
                      eval_ops_float_type>::round_and_truncate()
   {
+    // TBD: Round and truncate the data.
   }
 
   } // namespace backends
