@@ -3,7 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
-// Home at http://www.boost.org/doc/libs/release/libs/contract/doc/html/index.html
+// http://www.boost.org/doc/libs/release/libs/contract/doc/html/index.html
 
 #if !BOOST_PP_IS_ITERATING
 #   ifndef BOOST_CONTRACT_AUX_SUBBOOST_CONTRACT_CLASS_INVARIANT_HPP_
