@@ -32,6 +32,7 @@ int main()
   Playlists content1   = content_1(4, " pls_1 ");
   NodeList  children1  = children_0(5, 6, "children_1", content1);
 
+/*
   Playlists content2   = content_2(9, " pls_2 ");
   NodeList  children2  = children_0(10, 6, "children_2", content1);
 
@@ -57,7 +58,7 @@ int main()
   std::cout << "\n<<merge ========================================\n";
   std::cout << "merged ========================================\n";
   draw(merged, std::cout, 0);
-
+*/
   return 0;
 }
 

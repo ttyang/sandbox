@@ -5,72 +5,68 @@
 
 
 template<class Type, class UuidT = int, class TimeT = int>
-class Vector
+class Vector : private std::vector<Type>
 {
 public:
-  typedef UuidT                                Uuid;
-  typedef TimeT                                Time;
-  typedef std::vector<Type>                    tVector;
+  typedef UuidT                              Uuid;
+  typedef TimeT                              Time;
+  typedef std::vector<Type>                  BaseT;
 
-  typedef typename tVector::size_type          size_type;
-  typedef typename tVector::value_type         value_type;
-  typedef typename tVector::const_reference    const_reference;
+  typedef typename BaseT::size_type          size_type;
+  typedef typename BaseT::value_type         value_type;
+  typedef typename BaseT::const_reference    const_reference;
 
-  typedef typename tVector::iterator           iterator;
-  typedef typename tVector::const_iterator     const_iterator;
+  typedef typename BaseT::iterator           iterator;
+  typedef typename BaseT::const_iterator     const_iterator;
 
-  Vector(): m_uuid(), m_time(), m_name("empty"), m_vector() {}
+  Vector(): BaseT(), m_uuid(), m_time(), m_name("empty"){}
 
   Vector(Uuid const& uuid, Time const& time, std::string const& name)
-    : m_uuid(uuid), m_time(time), m_name(name), m_vector() 
+    : BaseT(), m_uuid(uuid), m_time(time), m_name(name)
   {
   }
 
-  Vector(Vector const& val) : m_vector(val.m_vector)
+  Vector(Vector const& val) : BaseT(val)
     , m_uuid(val.m_uuid)
     , m_time(val.m_time)
     , m_name(val.m_name)
   {
-    std::cout << "c(" << m_vector.size() << ") ";
+    std::cout << "c(" << BaseT::size() << ") ";
   }
 
-  Vector(Vector&& val): m_vector(std::move(val.m_vector))
+  Vector(Vector&& val): BaseT(std::move(val))
     , m_uuid(std::move(val.m_uuid))
     , m_time(std::move(val.m_time))
     , m_name(std::move(val.m_name))
   {
-    std::cout << "m(" << m_vector.size() << ") ";
+    std::cout << "m(" << BaseT::size() << ") ";
   };
 
   Vector& operator = (Vector val)
   { 
+    BaseT::operator = (std::move(val));
     m_uuid   = std::move(val.m_uuid);
     m_time   = std::move(val.m_time);
     m_name   = std::move(val.m_name);
-    m_vector = std::move(val.m_vector); 
-    std::cout << "m=" << m_vector.size() << " ";
+    std::cout << "m=" << BaseT::size() << " ";
     return *this; 
   }
-  
-  const_iterator begin()const { return m_vector.begin(); }
-  const_iterator end()const   { return m_vector.end(); }
 
-  iterator begin() { return m_vector.begin(); }
-  iterator end()   { return m_vector.end(); }
-
-  void reserve(size_type size){ m_vector.reserve(size); }
-  size_type size()const { return m_vector.size(); }
+  using BaseT::begin;
+  using BaseT::end;
+  using BaseT::reserve;
+  using BaseT::size;
 
   void emplace_back(Type val)
   {
     m_time = std::move(std::max(m_time, val.time()));
-    m_vector.emplace_back(val); 
+    BaseT::emplace_back(std::move(val)); 
   }
 
   void push_back(const Type& val)
   {
     m_time = std::max(m_time, val.time());
-    m_vector.push_back(val); 
+    BaseT::push_back(val); 
   }
 
   Uuid uuid()const { return m_uuid; }
@@ -86,7 +82,6 @@ private:
   Uuid m_uuid;
   Time m_time;
   std::string m_name;
-  tVector m_vector;  
 };
 
 

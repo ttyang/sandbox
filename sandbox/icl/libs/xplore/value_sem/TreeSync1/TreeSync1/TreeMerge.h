@@ -4,7 +4,8 @@
 #include <iterator>
 #include "std_algorithm.h"
 
-#include "Syncable/Syncable_Concept.h"
+//JODO #include "Syncable/Syncable_Concept.h"
+#include "Syncable/Syncable_Light.h"
 #include "Syncable/Vector.h"
 #include "Syncable/Node.h"
 #include "Playable.h"
