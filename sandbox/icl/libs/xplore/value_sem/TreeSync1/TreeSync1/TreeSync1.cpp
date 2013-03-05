@@ -24,7 +24,6 @@ void draw(const Vector<Type>& obj, std::ostream& out, size_t pos)
 
 
 
-//CL int _tmain(int argc, _TCHAR* argv[])
 int main()
 {
   std::cout << "Hello concept\n";
