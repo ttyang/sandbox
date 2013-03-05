@@ -22,9 +22,10 @@ public:
   typedef typename NodeVec::iterator       node_iterator;
 
   Node( Uuid const& uuid = 0, std::string const& name = std::string()
-      , const ContentVec& content = ContentVec(), const NodeVec& children = NodeVec())
+      , ContentVec content = ContentVec(), NodeVec children = NodeVec())
     : m_uuid(uuid), m_name(name)
-    , m_content(content), m_children(children)
+    , m_content(std::move(content))
+    , m_children(std::move(children))
   {
     m_time = std::max(m_content.time(), m_children.time());
   }
