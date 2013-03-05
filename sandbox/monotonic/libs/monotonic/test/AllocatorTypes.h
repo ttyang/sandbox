@@ -29,9 +29,7 @@ struct Type
         FastPool = 2,
         Pool = 4,
         Monotonic = 8,
-#ifdef BOOST_MONOTONIC_TBB
         Tbb = 16,
-#endif
         Google = 32,
         All = 0xffffffff,
     };

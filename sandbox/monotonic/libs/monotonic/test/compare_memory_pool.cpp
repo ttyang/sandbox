@@ -148,27 +148,6 @@ std::pair<int, int> random_pair()
     return make_pair(rand(), rand());
 }
 
-#ifdef BOOST_MONOTONIC_TBB
-template <class Fun>
-PoolResults run_tests(size_t count, size_t max_length, size_t num_iterations, const char *title, Fun fun, Type types = Type::Tbb | Type::Standard | Type::Pool | Type::FastPool | Type::Monotonic)
-{
-    cout << title << ": reps=" << count << ", len=" << max_length << ", steps=" << num_iterations << endl;
-    PoolResults results;
-    srand(42);
-    boost::timer timer;
-    for (size_t length = 10; length < max_length; length += max_length/num_iterations)
-    {
-        size_t required = length + length*length;
-        if (random_numbers.size() < required)
-            generate_n(back_inserter(random_numbers), required - random_numbers.size(), rand);
-        if (random_pairs.size() < required)
-            generate_n(back_inserter(random_pairs), required - random_pairs.size(), random_pair);
-        results[length] = run_test(count, length, fun, types);
-    }
-    cout << endl << "took " << timer.elapsed() << "s" << endl;
-    return results;
-}
-#else
 template <class Fun>
 PoolResults run_tests(size_t count, size_t max_length, size_t num_iterations, const char *title, Fun fun, Type types = Type::Standard | Type::Pool | Type::FastPool | Type::Monotonic)
 {
@@ -188,8 +167,6 @@ PoolResults run_tests(size_t count, size_t max_length, size_t num_iterations, co
     cout << endl << "took " << timer.elapsed() << "s" << endl;
     return results;
 }
-
-#endif
 
 std::vector<PoolResult> cumulative;
 PoolResult result_min, result_max;
@@ -452,15 +429,15 @@ int main()
     try
     {
         cout << "results of running test at:" << endl;
-        cout << "https://svn.boost.org/svn/boost/sandbox/monotonic/libs/monotonic/test/compare_memory_pool.cpp" << endl << endl;
+        cout << "https://svn.boost.org/svn/boost/sandbox/monotonic/libs/monotonic/test/Tests.h" << endl << endl;
 
         boost::timer timer;
         Type test_map_vector_types;
         Type test_dupe_list_types;
 
-        bool run_small = 0;//true;
-        bool run_medium = 0;//true;
-        bool run_large = 1;//true;
+        bool run_small = 1;
+        bool run_medium = 1;
+        bool run_large = 1;
 
         // small-size (~100 elements) containers
         if (run_small)
@@ -503,15 +480,15 @@ int main()
         if (run_large)
         {
             heading("LARGE");
-            print(run_tests(2, 25000, 10, "list_create<int>", test_list_create<int>()));
-            print(run_tests(2, 100000, 10, "list_sort<int>", test_list_sort<int>()));
+            print(run_tests(5, 25000, 10, "list_create<int>", test_list_create<int>()));
+            print(run_tests(5, 100000, 10, "list_sort<int>", test_list_sort<int>()));
             print(run_tests(1000, 100000, 10, "vector_create<int>", test_vector_create()));
             print(run_tests(300, 50000, 10, "vector_sort<int>", test_vector_sort<int>()));
             print(run_tests(200, 1000000, 10, "vector_dupe", test_vector_dupe()));
-            print(run_tests(5, 10000, 10, "list_dupe", test_list_dupe(), test_dupe_list_types));
+            print(run_tests(10, 10000, 10, "list_dupe", test_list_dupe(), test_dupe_list_types));
             print(run_tests(500, 100000, 10, "vector_accumulate", test_vector_accumulate()));
             //print(run_tests(5, 500, 5, "set_vector", test_set_vector()));
-            print(run_tests(10, 2000, 10, "map_vector<int>", test_map_vector<int>()));
+            print(run_tests(10, 20000, 10, "map_vector<int>", test_map_vector<int>()));
         }
 
         heading("FINAL SUMMARY", '*');
