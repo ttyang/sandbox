@@ -354,4 +354,3 @@ namespace boost
 #endif // BOOST_MONOTONIC_STACK_HPP
 
 //EOF
-

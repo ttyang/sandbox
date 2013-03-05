@@ -7,11 +7,12 @@
 #define BOOST_MONOTONIC_FIXED_STORAGE_HPP
 
 #include <boost/monotonic/detail/prefix.hpp>
+#include <boost/assert.hpp>
 #include <boost/array.hpp>
-#include <boost/aligned_storage.hpp>
 #include <boost/monotonic/forward_declarations.hpp>
 #include <boost/monotonic/exceptions.hpp>
 #include <boost/monotonic/storage_base.hpp>
+#include <boost/type_traits/is_unsigned.hpp>
 
 //#define BOOST_MONOTONIC_STORAGE_EARLY_OUT
 
@@ -89,7 +90,6 @@ namespace boost
             // testing performance against a fixed-size alignment
             BOOST_STATIC_CONSTANT(size_t, alignment = 64);
 
-        //protected:
             struct AllocationAttempt
             {
                 bool able;

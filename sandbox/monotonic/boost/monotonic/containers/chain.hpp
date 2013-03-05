@@ -270,7 +270,8 @@ namespace boost
         template <class Ty,size_t N,class R,class Acc,class Ty2,size_t N2,class R2,class Acc2>
         bool operator==(chain<Ty,N,R,Acc> const &A, chain<Ty2,N2,R2,Acc2> const &B)
         {
-            return A.size() == B.size() && std::equal(A.begin(), A.end(), B.begin());
+			throw; // CJS 2013
+            //return A.size() == B.size() && std::equal(A.begin(), A.end(), B.begin());
         }
 #ifdef WIN32
 #    pragma warning(pop)

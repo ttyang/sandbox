@@ -10,14 +10,11 @@
 #include <boost/cloneable/abstract_allocator.hpp>
 #endif
 
-#include <boost/assert.hpp>
 #include <boost/monotonic/detail/prefix.hpp>
-#include <boost/type_traits/has_trivial_constructor.hpp>
-#include <boost/type_traits/has_trivial_destructor.hpp>
-
 #include <boost/monotonic/static_storage.hpp>
 #include <boost/monotonic/detail/container.hpp>
 #include <boost/monotonic/detail/construct.hpp>
+#include <boost/type_traits/has_trivial_destructor.hpp>
 
 namespace boost
 {
@@ -39,12 +36,8 @@ namespace boost
             typedef T value_type;
             typedef detail::Construct<detail::is_monotonic<T>::value> Construct;
 
-//            typedef mpl::integral_c<unsigned, 2> version;
-            //typedef boost::interprocess::version_type<allocator_base, 2>   version;
-
             BOOST_STATIC_CONSTANT(size_t, alignment = boost::aligned_storage<sizeof(T)>::alignment);
 
-        //private:
             storage_base *storage;
 
 #ifdef BOOST_HETEROGENOUS
@@ -91,7 +84,7 @@ namespace boost
 
             void deallocate(pointer ptr, size_type num)
             {
-                storage->deallocate(ptr);//, num);
+                storage->deallocate(ptr);
             }
 
             size_type max_size() const throw()

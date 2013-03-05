@@ -16,7 +16,9 @@
 #include <boost/monotonic/allocator.hpp>
 #include <boost/monotonic/local.hpp>
 
+#ifdef BOOST_MONOTONIC_TBB
 #include <tbb/tbb_allocator.h>
+#endif
 
 struct Type
 {
@@ -27,7 +29,9 @@ struct Type
         FastPool = 2,
         Pool = 4,
         Monotonic = 8,
-        TBB = 16,
+#ifdef BOOST_MONOTONIC_TBB
+        Tbb = 16,
+#endif
         Google = 32,
         All = 0xffffffff,
     };
@@ -63,8 +67,10 @@ struct Allocator<Type::Pool, Ty> : boost::pool_allocator<Ty
 template <class Ty>
 struct Allocator<Type::Monotonic, Ty> : boost::monotonic::allocator<Ty> { };
 
+#ifdef BOOST_MONOTONIC_TBB
 template <class Ty>
-struct Allocator<Type::TBB, Ty> : tbb::tbb_allocator<Ty> { };
+struct Allocator<Type::Tbb, Ty> : tbb::tbb_allocator<Ty> { };
+#endif
 
 template <class Alloc, class T>
 struct Rebind

@@ -6,6 +6,7 @@
 #ifndef BOOST_MONOTONIC_STORAGE_HPP
 #define BOOST_MONOTONIC_STORAGE_HPP
 
+#include <boost/foreach.hpp>
 #include <algorithm>
 #include <boost/monotonic/detail/prefix.hpp>
 #include <boost/monotonic/fixed_storage.hpp>
@@ -92,62 +93,6 @@ namespace boost
                 }
                 chain.clear();
             }
-
-/*
-            struct Allocation
-            {
-                size_t cursor;
-                Pool *pool;
-                Link *link;
-                void *ptr;
-                fixed_storage_type *fixed;
-                
-
-                Allocation() 
-                    : cursor(0), pool(0), link(0), ptr(0), fixed(0) { }
-                Allocation(Pool *p, void *result) 
-                    : cursor(0), pool(p), link(0), ptr(result), fixed(0) { }
-                Allocation(fixed_storage_type *p, size_t cursor, void *result) 
-                    : cursor(cursor), pool(p), link(0), ptr(result), fixed(p) { }
-
-                void undo()
-                {
-                    if (pool)
-                    {
-                        pool->pop();
-                        return;
-                    }
-                    if (link)
-                    {
-                        link->set_cursor(cursor);
-                        return;
-                    }
-                    if (fixed)
-                    {
-                        fixed->set_cursor(cursor);
-                    }
-                    BOOST_ASSERT(0);
-                }
-            };
-            Allocation MakeAllocation(size_t num_bytes, size_t alignment = 4)
-            {
-                size_t bucket = (ChunkSize + num_bytes) >> ChunkShift;
-                if (bucket < NumPools)
-                {
-                    if (void *ptr = from_pool(bucket, num_bytes, alignment))
-                        return Allocation(&pools[bucket], ptr);
-                }
-                FixedStorage::AllocationAttempt attempt = fixed.TryAllocation(num_bytes, alignment);
-                if (attempt.able)
-                {
-                    size_t restore_point = fixed.get_cursor();
-                    return Allocation(&fixed, restore_point, fixed.MakeAllocation(attempt));
-                }
-                throw;
-                //void *ptr = from_heap(num_bytes, alignment);
-                //return Allocation(&chain.front(), restore_point, ptr);
-            }
-*/
         public:
             void *allocate(size_t num_bytes, size_t alignment = 1)
             {
@@ -163,7 +108,7 @@ namespace boost
             }
 
         private:
-            friend class detail::Pool;
+            friend struct detail::Pool;
 
             void *from_pool(size_t bucket, size_t num_bytes, size_t alignment)
             {

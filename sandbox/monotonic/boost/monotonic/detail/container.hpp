@@ -7,6 +7,8 @@
 #define BOOST_MONOTONIC_CONTAINER_HPP
 
 #include <boost/monotonic/detail/prefix.hpp>
+#include <boost/type_traits/is_convertible.hpp>
+
 //#include <boost/monotonic/allocator.hpp>
 
 namespace boost
@@ -41,7 +43,6 @@ namespace boost
                     return *store;
                 }
             };
-
         }
     }
 }

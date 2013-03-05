@@ -14,7 +14,7 @@ namespace boost
 {
     namespace monotonic
     {
-        /// a request was made for a reference to storage that does not exist
+        // a request was made for a reference to storage that does not exist
         struct no_storage : std::exception
         {
             no_storage() { }

@@ -14,13 +14,13 @@ namespace boost
 {
     namespace monotonic
     {
-        /// RIIA for storage
+        // RIIA for storage
         template <class Region, class Access>
         struct local
         {
             typedef local<Region, Access> This;
 
-            /// the storage to use 
+            // the storage to use 
             typedef static_storage<
                 Region
                 , Access
@@ -28,7 +28,7 @@ namespace boost
                 , DefaultSizes::MinHeapIncrement
                 , default_allocator > StaticStorage;
 
-            /// create a rebounded allocator type
+            // create a rebounded allocator type
             template <class T>
             struct allocator
             {
@@ -67,11 +67,13 @@ namespace boost
             {
                 return get_storage().create<Ty>();
             }
+
             template <class Ty>
             Ty &create(Ty const &X)
             {
                 return get_storage().create<Ty>(X);
             }
+
             template <class Ty>
             void destroy(Ty &X)
             {
@@ -82,10 +84,12 @@ namespace boost
             {
                 return get_storage().fixed_used();
             }
+
             static size_t heap_used() 
             {
                 return get_storage().heap_used();
             }
+
             static size_t used()
             {
                 return get_storage().used();

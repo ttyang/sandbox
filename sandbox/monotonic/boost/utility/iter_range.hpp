@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <boost/iterator/iterator_traits.hpp>
+
 namespace boost
 {
     namespace iter_range_detail
