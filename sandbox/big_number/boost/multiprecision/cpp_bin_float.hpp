@@ -25,6 +25,7 @@
            class eval_ops_unsigned_type = unsigned long long,
            class eval_ops_float_type    = long double>
   class cpp_bin_float;
+  }
 
   template<const boost::uint32_t my_digits2,
            class my_exponent_type,
@@ -45,6 +46,8 @@
   {
   };
 
+  namespace backends
+  {
   template<const boost::uint32_t my_digits2,
            class my_exponent_type,
            class my_allocator,
@@ -91,7 +94,7 @@
                       my_precision_in_bits(cpp_bin_float_bits_number) { }
 
     cpp_bin_float(const char* s) : my_data             (),
-                                   my_exp              (static_cast<ExponentType>(0)),
+                                   my_exp              (static_cast<my_exponent_type>(0)),
                                    my_neg              (false),
                                    my_fpclass          (cpp_bin_float_finite),
                                    my_precision_in_bits(cpp_bin_float_bits_number) 
@@ -135,11 +138,11 @@
       round_and_truncate();
     }
 
-    cpp_bin_float(const cpp_bin_float& other) : data     (other.my_data),
-                                                exp      (other.my_exp),
-                                                neg      (other.my_neg),
-                                                fpclass  (other.my_fpclass),
-                                                prec_elem(other.my_precision_in_bits) { }
+    cpp_bin_float(const cpp_bin_float& other) : my_data             (other.my_data),
+                                                my_exp              (other.my_exp),
+                                                my_neg              (other.my_neg),
+                                                my_fpclass          (other.my_fpclass),
+                                                my_precision_in_bits(other.my_precision_in_bits) { }
 
     template<const boost::uint32_t other_digits2,
              class other_et,
@@ -184,7 +187,7 @@
                                                other_long_limb_type,
                                                other_eval_ops_signed_type,
                                                other_eval_ops_unsigned_type,
-                                               other_eval_ops_float_type>& less_eq_other,
+                                               other_eval_ops_float_type>& larger_other,
                            typename disable_if_c<other_digits2 <= my_digits2>::type* = 0) : my_data             (),
                                                                                             my_exp              (larger_other.my_exp),
                                                                                             my_neg              (larger_other.my_neg),
@@ -267,7 +270,7 @@
     {
       boost::uint_least8_t i = boost::uint_least8_t(0U);
 
-      while(u != unsigned_type(0U))
+      while(u != eval_ops_unsigned_type(0U))
       {
         my_data[i] = short_limb_type(u);
         ++i;
