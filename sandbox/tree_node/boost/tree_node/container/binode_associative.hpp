@@ -788,7 +788,9 @@ namespace boost { namespace tree_node {
           , Balancer
         >::pair_associative_transform_function::operator()(node const& n) const
     {
-        return ::std::pair<T1 const&,T2 const&>(get(n, data_key()));
+        ::std::pair<T1,T2> const& p = get(n, data_key());
+        ::std::pair<T1 const&,T2 const&> result(p.first, p.second);
+        return result;
     }
 
     template <
@@ -816,7 +818,9 @@ namespace boost { namespace tree_node {
           , Balancer
         >::pair_associative_transform_function::operator()(node& n) const
     {
-        return ::std::pair<T1 const&,T2&>(get(n, data_key()));
+        ::std::pair<T1,T2>& p = get(n, data_key());
+        ::std::pair<T1 const&,T2&> result(p.first, p.second);
+        return result;
     }
 
     template <

@@ -437,7 +437,7 @@
         typedef typename Base::key_type key_type;                            \
         typedef typename Base::value_type value_type;                        \
         typedef typename Base::key_compare key_compare;                      \
-        typedef typename Base::value_compare value_compare                   \
+        typedef typename Base::value_compare value_compare;                  \
         BOOST_TREE_NODE_CONTAINER_DERIVED_BODY(Derived, Base)                \
 //]
 
