@@ -10,8 +10,8 @@
 
 [heading From 0.5 to 0.6]
 
-  * Added __push_range_function_gen__ and __insert_range_function_gen__
-    type-generating metafunctions.
+  * Added __push_range_function_gen__, __insert_range_function_gen__, and
+    __insert_range_function_gen__ type-generating metafunctions.
 
 [heading From 0.4 to 0.5]
 

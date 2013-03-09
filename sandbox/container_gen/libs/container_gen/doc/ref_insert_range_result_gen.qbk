@@ -1,0 +1,32 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:insert_range_result_gen `insert_range_result_gen`]
+
+[section Synopsis]
+[reference__insert_range_result_gen]
+[endsect]
+
+[section Description]
+Determines the result type of the function object type returned by either
+__push_range_function_gen__ or __insert_range_function_gen__, using the return
+type of __container_gen__ as the function object's container argument type.  If
+the container type models the __Sequence__ concept, then the result type will
+be a __Single_Pass_Range__ whose element type is `T`.  If the container type
+models the __Associative_Container__ concept, then the result type will be a
+__Single_Pass_Range__ whose element type is the container's iterator type.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_insert_range_result_gen_hpp__>
+``
+[endsect]
+
+[endsect] [/ insert_range_result_gen]
+

@@ -61,7 +61,8 @@ __range_adaptors_indirect__.
 
 Use the __emplace_function_gen__ metafunction to construct containers using
 individual elements, then use this metafunction to append the elements of
-one container to another in a single step.
+one container to another in a single step.  Use the __insert_range_result_gen__
+metafunction to store the result of the operation.
 
 [test__push_range_function_gen]
 

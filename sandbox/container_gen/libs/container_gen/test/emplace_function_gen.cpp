@@ -14,10 +14,12 @@
 #include <cstring>
 #include <boost/mpl/bool.hpp>
 #include <boost/range/algorithm/equal.hpp>
+#include <boost/utility/get_iterator_second.hpp>
+#include <boost/utility/get_iterator_value_second.hpp>
 #include <boost/container_gen/selectors.hpp>
 #include <boost/container_gen/container_gen.hpp>
-#include <boost/container_gen/emplace_function_gen.hpp>
-#include <boost/container_gen/is_unique_assoc_selector.hpp>
+#include <boost/container_gen/emplace_assoc_function_gen.hpp>
+#include <boost/container_gen/is_multiple_assoc_selector.hpp>
 #include "type_definitions.hpp"
 #include <boost/test/minimal.hpp>
 
@@ -27,17 +29,47 @@ void
         Emplacer const& emplacer
       , C& c
       , bool should_be_successful
-      , char const* value
+      , typename C::key_type const& key
     )
 {
     typename C::size_type old_size = c.size();
-    std::pair<typename C::iterator,bool> p = emplacer(c, value);
+    std::pair<typename C::iterator,bool> p = emplacer(c, key);
 
     BOOST_CHECK(p.second == should_be_successful);
 
     if (p.second)
     {
-        BOOST_CHECK(!strcmp((*p.first).c_str(), value));
+        BOOST_CHECK(p.first->first == key);
+        BOOST_CHECK(!strcmp(boost::get_iterator_second(p.first).c_str(), ""));
+        BOOST_CHECK(c.size() == old_size + 1);
+    }
+    else
+    {
+        BOOST_CHECK(c.size() == old_size);
+    }
+}
+
+template <typename Emplacer, typename C>
+void
+    test_emplacer(
+        Emplacer const& emplacer
+      , C& c
+      , bool should_be_successful
+      , typename C::key_type const& key
+      , char const* value
+    )
+{
+    typename C::size_type old_size = c.size();
+    std::pair<typename C::iterator,bool> p = emplacer(c, key, value);
+
+    BOOST_CHECK(p.second == should_be_successful);
+
+    if (p.second)
+    {
+        BOOST_CHECK(p.first->first == key);
+        BOOST_CHECK(
+            !strcmp(boost::get_iterator_second(p.first).c_str(), value)
+        );
         BOOST_CHECK(c.size() == old_size + 1);
     }
     else
@@ -47,29 +79,29 @@ void
 }
 
 template <typename Selector>
-void test_emplace_function_gen()
+void test_empl_assoc_func_gen()
 {
-    typename boost::container_gen<Selector,test_string>::type
+    typename boost::container_gen<Selector,int,test_string>::type
         test_container_1, test_container_2;
-    typename boost::emplace_function_gen<Selector>::type emplacer;
-    bool is_multi = !boost::is_unique_associative_selector<Selector>::value;
+    typename boost::emplace_associative_function_gen<Selector>::type emplacer;
+    bool is_multi = boost::is_multiple_associative_selector<Selector>::value;
 
-    test_emplacer(emplacer, test_container_1, true, "able");
-    test_emplacer(emplacer, test_container_1, true, "fox");
-    test_emplacer(emplacer, test_container_1, true, "easy");
-    test_emplacer(emplacer, test_container_1, true, "baker");
-    test_emplacer(emplacer, test_container_1, true, "charlie");
-    test_emplacer(emplacer, test_container_1, true, "dog");
-    test_emplacer(emplacer, test_container_1, is_multi, "able");
-    test_emplacer(emplacer, test_container_1, is_multi, "fox");
-    test_emplacer(emplacer, test_container_1, is_multi, "easy");
-    test_emplacer(emplacer, test_container_1, is_multi, "baker");
-    test_emplacer(emplacer, test_container_1, is_multi, "charlie");
-    test_emplacer(emplacer, test_container_1, is_multi, "dog");
+    test_emplacer(emplacer, test_container_1, true, 3, "able");
+    test_emplacer(emplacer, test_container_1, true, -3, "fox");
+    test_emplacer(emplacer, test_container_1, true, 2);
+    test_emplacer(emplacer, test_container_1, true, -2, "baker");
+    test_emplacer(emplacer, test_container_1, true, 1, "charlie");
+    test_emplacer(emplacer, test_container_1, true, -1, "dog");
+    test_emplacer(emplacer, test_container_1, is_multi, -1, "able");
+    test_emplacer(emplacer, test_container_1, is_multi, 1, "fox");
+    test_emplacer(emplacer, test_container_1, is_multi, -2);
+    test_emplacer(emplacer, test_container_1, is_multi, 2, "baker");
+    test_emplacer(emplacer, test_container_1, is_multi, -3, "charlie");
+    test_emplacer(emplacer, test_container_1, is_multi, 3, "dog");
 
     emplacer[test_container_2]
-        ("able")("fox")("easy")("baker")("charlie")("dog")
-        ("able")("fox")("easy")("baker")("charlie")("dog");
+        (3, "able")(-3, "fox")(2)(-2, "baker")(1, "charlie")(-1, "dog")
+        (-1, "able")(1, "fox")(-2)(2, "baker")(-3, "charlie")(3, "dog");
 
     BOOST_CHECK(boost::range::equal(test_container_1, test_container_2));
 }
@@ -79,7 +111,7 @@ void test_recursive_element(T const& t)
 {
     BOOST_CHECK(
         !strcmp(t.word.c_str(), "")
-     || !strcmp(t.word.c_str(), "sol")
+     || !strcmp(t.word.c_str(), "secret")
     );
     BOOST_CHECK((t.number == 0) || (t.number == 42));
     BOOST_CHECK((t.letter == '\0') || (t.letter == 'X'));
@@ -93,43 +125,9 @@ void test_recursive_element(T const& t)
         ++itr
     )
     {
-        BOOST_CHECK((*itr).previous_level == &t);
-        test_recursive_element(*itr);
+        BOOST_CHECK(boost::get_iterator_second(itr).previous_level == &t);
+        test_recursive_element(boost::get_iterator_second(itr));
     }
-}
-
-template <typename Emplacer, typename T>
-void test_emplacer_recursive(Emplacer const& emplacer, T& t)
-{
-    typedef typename T::next_level_t C;
-    typename C::size_type old_size = t.next_level.size();
-    std::pair<typename C::iterator,bool> p = emplacer(t.next_level);
-
-    (*p.first).previous_level = &t;
-    BOOST_CHECK(p.second);
-    test_recursive_element(t);
-    BOOST_CHECK(!strcmp((*p.first).word.c_str(), ""));
-    BOOST_CHECK((*p.first).number == 0);
-    BOOST_CHECK((*p.first).letter == '\0');
-    BOOST_CHECK((*p.first).flag == false);
-    BOOST_CHECK(t.next_level.size() == old_size + 1);
-}
-
-template <typename Emplacer, typename T>
-void test_emplacer_recursive(Emplacer const& emplacer, T& t, char const* word)
-{
-    typedef typename T::next_level_t C;
-    typename C::size_type old_size = t.next_level.size();
-    std::pair<typename C::iterator,bool> p = emplacer(t.next_level, word);
-
-    (*p.first).previous_level = &t;
-    BOOST_CHECK(p.second);
-    test_recursive_element(t);
-    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
-    BOOST_CHECK((*p.first).number == 0);
-    BOOST_CHECK((*p.first).letter == '\0');
-    BOOST_CHECK((*p.first).flag == false);
-    BOOST_CHECK(t.next_level.size() == old_size + 1);
 }
 
 template <typename Emplacer, typename T>
@@ -137,22 +135,104 @@ void
     test_emplacer_recursive(
         Emplacer const& emplacer
       , T& t
+      , bool should_be_successful
+      , typename T::next_level_t::key_type const& key
+    )
+{
+    typedef typename T::next_level_t C;
+    typename C::size_type old_size = t.next_level.size();
+    std::pair<typename C::iterator,bool> p = emplacer(t.next_level, key);
+
+    BOOST_CHECK(p.second == should_be_successful);
+
+    if (p.second)
+    {
+        BOOST_CHECK(p.first->first == key);
+        test_recursive_element(boost::get_iterator_second(p.first));
+        BOOST_CHECK(
+            !strcmp(boost::get_iterator_second(p.first).word.c_str(), "")
+        );
+        BOOST_CHECK(boost::get_iterator_second(p.first).number == 0);
+        BOOST_CHECK(boost::get_iterator_second(p.first).letter == '\0');
+        BOOST_CHECK(boost::get_iterator_second(p.first).flag == false);
+        BOOST_CHECK(t.next_level.size() == old_size + 1);
+    }
+    else
+    {
+        BOOST_CHECK(t.next_level.size() == old_size);
+    }
+}
+
+template <typename Emplacer, typename T>
+void
+    test_emplacer_recursive(
+        Emplacer const& emplacer
+      , T& t
+      , bool should_be_successful
+      , typename T::next_level_t::key_type const& key
+      , char const* word
+    )
+{
+    typedef typename T::next_level_t C;
+    typename C::size_type old_size = t.next_level.size();
+    std::pair<typename C::iterator,bool> p = emplacer(t.next_level, key, word);
+
+    BOOST_CHECK(p.second == should_be_successful);
+
+    if (p.second)
+    {
+        BOOST_CHECK(p.first->first == key);
+        test_recursive_element(boost::get_iterator_second(p.first));
+        BOOST_CHECK(
+            !strcmp(boost::get_iterator_second(p.first).word.c_str(), word)
+        );
+        BOOST_CHECK(boost::get_iterator_second(p.first).number == 0);
+        BOOST_CHECK(boost::get_iterator_second(p.first).letter == '\0');
+        BOOST_CHECK(boost::get_iterator_second(p.first).flag == false);
+        BOOST_CHECK(t.next_level.size() == old_size + 1);
+    }
+    else
+    {
+        BOOST_CHECK(t.next_level.size() == old_size);
+    }
+}
+
+template <typename Emplacer, typename T>
+void
+    test_emplacer_recursive(
+        Emplacer const& emplacer
+      , T& t
+      , bool should_be_successful
+      , typename T::next_level_t::key_type const& key
       , char const* word
       , long n
     )
 {
     typedef typename T::next_level_t C;
     typename C::size_type old_size = t.next_level.size();
-    std::pair<typename C::iterator,bool> p = emplacer(t.next_level, word, n);
+    std::pair<
+        typename C::iterator
+      , bool
+    > p = emplacer(t.next_level, key, word, n);
 
-    (*p.first).previous_level = &t;
-    BOOST_CHECK(p.second);
-    test_recursive_element(t);
-    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
-    BOOST_CHECK((*p.first).number == n);
-    BOOST_CHECK((*p.first).letter == '\0');
-    BOOST_CHECK((*p.first).flag == false);
-    BOOST_CHECK(t.next_level.size() == old_size + 1);
+    BOOST_CHECK(p.second == should_be_successful);
+
+    if (p.second)
+    {
+        BOOST_CHECK(p.first->first == key);
+        test_recursive_element(boost::get_iterator_second(p.first));
+        BOOST_CHECK(
+            !strcmp(boost::get_iterator_second(p.first).word.c_str(), word)
+        );
+        BOOST_CHECK(boost::get_iterator_second(p.first).number == n);
+        BOOST_CHECK(boost::get_iterator_second(p.first).letter == '\0');
+        BOOST_CHECK(boost::get_iterator_second(p.first).flag == false);
+        BOOST_CHECK(t.next_level.size() == old_size + 1);
+    }
+    else
+    {
+        BOOST_CHECK(t.next_level.size() == old_size);
+    }
 }
 
 template <typename Emplacer, typename T>
@@ -160,6 +240,8 @@ void
     test_emplacer_recursive(
         Emplacer const& emplacer
       , T& t
+      , bool should_be_successful
+      , typename T::next_level_t::key_type const& key
       , char const* word
       , long n
       , char letter
@@ -167,21 +249,29 @@ void
 {
     typedef typename T::next_level_t C;
     typename C::size_type old_size = t.next_level.size();
-    std::pair<typename C::iterator,bool> p = emplacer(
-        t.next_level
-      , word
-      , n
-      , letter
-    );
+    std::pair<
+        typename C::iterator
+      , bool
+    > p = emplacer(t.next_level, key, word, n, letter);
 
-    (*p.first).previous_level = &t;
-    BOOST_CHECK(p.second);
-    test_recursive_element(t);
-    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
-    BOOST_CHECK((*p.first).number == n);
-    BOOST_CHECK((*p.first).letter == letter);
-    BOOST_CHECK((*p.first).flag == false);
-    BOOST_CHECK(t.next_level.size() == old_size + 1);
+    BOOST_CHECK(p.second == should_be_successful);
+
+    if (p.second)
+    {
+        BOOST_CHECK(p.first->first == key);
+        test_recursive_element(boost::get_iterator_second(p.first));
+        BOOST_CHECK(
+            !strcmp(boost::get_iterator_second(p.first).word.c_str(), word)
+        );
+        BOOST_CHECK(boost::get_iterator_second(p.first).number == n);
+        BOOST_CHECK(boost::get_iterator_second(p.first).letter == letter);
+        BOOST_CHECK(boost::get_iterator_second(p.first).flag == false);
+        BOOST_CHECK(t.next_level.size() == old_size + 1);
+    }
+    else
+    {
+        BOOST_CHECK(t.next_level.size() == old_size);
+    }
 }
 
 template <typename Emplacer, typename T>
@@ -189,6 +279,8 @@ void
     test_emplacer_recursive(
         Emplacer const& emplacer
       , T& t
+      , bool should_be_successful
+      , typename T::next_level_t::key_type const& key
       , char const* word
       , long n
       , char letter
@@ -197,76 +289,57 @@ void
 {
     typedef typename T::next_level_t C;
     typename C::size_type old_size = t.next_level.size();
-    std::pair<typename C::iterator,bool> p = emplacer(
-        t.next_level
-      , word
-      , n
-      , letter
-      , b
-    );
+    std::pair<
+        typename C::iterator
+      , bool
+    > p = emplacer(t.next_level, key, word, n, letter, b);
 
-    (*p.first).previous_level = &t;
-    BOOST_CHECK(p.second);
-    test_recursive_element(t);
-    BOOST_CHECK(!strcmp((*p.first).word.c_str(), word));
-    BOOST_CHECK((*p.first).number == n);
-    BOOST_CHECK((*p.first).letter == letter);
-    BOOST_CHECK((*p.first).flag == b);
-    BOOST_CHECK(t.next_level.size() == old_size + 1);
+    BOOST_CHECK(p.second == should_be_successful);
+
+    if (p.second)
+    {
+        BOOST_CHECK(p.first->first == key);
+        test_recursive_element(boost::get_iterator_second(p.first));
+        BOOST_CHECK(
+            !strcmp(boost::get_iterator_second(p.first).word.c_str(), word)
+        );
+        BOOST_CHECK(boost::get_iterator_second(p.first).number == n);
+        BOOST_CHECK(boost::get_iterator_second(p.first).letter == letter);
+        BOOST_CHECK(boost::get_iterator_second(p.first).flag == b);
+        BOOST_CHECK(t.next_level.size() == old_size + 1);
+    }
+    else
+    {
+        BOOST_CHECK(t.next_level.size() == old_size);
+    }
 }
 
 template <typename Selector>
-struct test_mri_element
+void test_empl_assoc_func_gen_recursive()
 {
-    template <typename T>
-    T& operator()(T& t)
-    {
-        return t.next_level.back();
-    }
-};
+    test_recursive_data<Selector,int> top;
+    typename boost::emplace_associative_function_gen<Selector>::type emplacer;
 
-#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-template <>
-struct test_mri_element<boost::slistS>
-{
-    template <typename T>
-    T& operator()(T& t)
-    {
-        return t.next_level.front();
-    }
-};
-
-template <>
-struct test_mri_element<boost::stable_vecS>
-{
-    template <typename T>
-    T& operator()(T& t)
-    {
-        return *(t.next_level.begin() + t.next_level.size() - 1);
-    }
-};
-#endif
-
-template <typename Selector>
-void test_emplace_function_gen_recursive()
-{
-    test_recursive_data<Selector> top;
-    typename boost::emplace_function_gen<Selector>::type emplacer;
-
-    test_emplacer_recursive(emplacer, top);
-    test_emplacer_recursive(emplacer, top, "sol");
-
-    {
-        test_recursive_data<Selector>& t = test_mri_element<Selector>()(top);
-        test_emplacer_recursive(emplacer, t, "sol", 42);
-    }
-
-    {
-        test_recursive_data<Selector>& t = test_mri_element<Selector>()(top);
-        test_emplacer_recursive(emplacer, t, "sol", 42, 'X');
-    }
-
-    test_emplacer_recursive(emplacer, top, "sol", 42, 'X', true);
+    test_emplacer_recursive(emplacer, top, true, 0);
+    test_emplacer_recursive(emplacer, top, true, 1, "secret");
+    test_emplacer_recursive(
+        emplacer
+      , boost::get_iterator_second(top.next_level.find(1))
+      , true
+      , 2
+      , "secret"
+      , 42
+    );
+    test_emplacer_recursive(
+        emplacer
+      , boost::get_iterator_second(top.next_level.find(1))
+      , true
+      , 3
+      , "secret"
+      , 42
+      , 'X'
+    );
+    test_emplacer_recursive(emplacer, top, true, 4, "secret", 42, 'X', true);
 }
 
 template <typename Pair1, typename Pair2>
@@ -276,78 +349,92 @@ void test_emplace_results(Pair1 const& p1, Pair2 const& p2)
 
     if (p1.second)
     {
-        BOOST_CHECK(*p1.first == *p2.first);
+        BOOST_CHECK(p1.first->first == p2.first->first);
+        BOOST_CHECK(
+            boost::get_iterator_second(p1.first)
+         == boost::get_iterator_second(p2.first)
+        );
     }
 }
 
-template <typename Selector1, typename Selector2>
-void test_emplace_function_gens()
+struct test_string_comparator
 {
-    typename boost::container_gen<Selector1,test_string>::type container_1;
-    typename boost::container_gen<Selector2,test_string>::type container_2;
-    typename boost::emplace_function_gen<Selector1>::type emplacer_1;
-    typename boost::emplace_function_gen<Selector2>::type emplacer_2;
+    template <typename Pair1, typename Pair2>
+    bool operator()(Pair1 const& p1, Pair2 const& p2) const
+    {
+        return (
+            (p1.first == p2.first)
+         && (
+                boost::get_iterator_value_second(p1)
+             == boost::get_iterator_value_second(p2)
+            )
+        );
+    }
+};
+
+template <typename Selector1, typename Selector2>
+void test_empl_assoc_func_gens()
+{
+    typename boost::container_gen<Selector1,int,test_string>::type container_1;
+    typename boost::container_gen<Selector2,int,test_string>::type container_2;
+    typename boost::emplace_associative_function_gen<Selector1>::type adder_1;
+    typename boost::emplace_associative_function_gen<Selector2>::type adder_2;
+    test_string_comparator comparator;
 
     test_emplace_results(
-        emplacer_1(container_1, "able")
-      , emplacer_2(container_2, "able")
+        adder_1(container_1, 3, "able")
+      , adder_2(container_2, 3, "able")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "fox")
-      , emplacer_2(container_2, "fox")
+        adder_1(container_1, -3, "fox")
+      , adder_2(container_2, -3, "fox")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
+    test_emplace_results(adder_1(container_1, 2), adder_2(container_2, 2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "easy")
-      , emplacer_2(container_2, "easy")
+        adder_1(container_1, -2, "baker")
+      , adder_2(container_2, -2, "baker")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "baker")
-      , emplacer_2(container_2, "baker")
+        adder_1(container_1, 1, "charlie")
+      , adder_2(container_2, 1, "charlie")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "charlie")
-      , emplacer_2(container_2, "charlie")
+        adder_1(container_1, -1, "dog")
+      , adder_2(container_2, -1, "dog")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "dog")
-      , emplacer_2(container_2, "dog")
+        adder_1(container_1, -1, "able")
+      , adder_2(container_2, -1, "able")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "able")
-      , emplacer_2(container_2, "able")
+        adder_1(container_1, 1, "fox")
+      , adder_2(container_2, 1, "fox")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
+    test_emplace_results(adder_1(container_1, -2), adder_2(container_2, -2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "fox")
-      , emplacer_2(container_2, "fox")
+        adder_1(container_1, 2, "baker")
+      , adder_2(container_2, 2, "baker")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "easy")
-      , emplacer_2(container_2, "easy")
+        adder_1(container_1, -3, "charlie")
+      , adder_2(container_2, -3, "charlie")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
     test_emplace_results(
-        emplacer_1(container_1, "baker")
-      , emplacer_2(container_2, "baker")
+        adder_1(container_1, 3, "dog")
+      , adder_2(container_2, 3, "dog")
     );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
-    test_emplace_results(
-        emplacer_1(container_1, "charlie")
-      , emplacer_2(container_2, "charlie")
-    );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
-    test_emplace_results(
-        emplacer_1(container_1, "dog")
-      , emplacer_2(container_2, "dog")
-    );
-    BOOST_CHECK(boost::range::equal(container_1, container_2));
+    BOOST_CHECK(boost::range::equal(container_1, container_2, comparator));
 }
 
 #if defined BOOST_MSVC
@@ -356,199 +443,107 @@ void test_emplace_function_gens()
 
 int test_main(int argc, char** argv)
 {
-    test_emplace_function_gen<boost::vecS>();
-    test_emplace_function_gen<boost::dequeS>();
-    test_emplace_function_gen<boost::listS>();
-#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION \
- || !defined BOOST_NO_SLIST
-    test_emplace_function_gen<boost::slistS>();
-#endif
-    test_emplace_function_gen<boost::setS>();
-    test_emplace_function_gen<boost::mapS>();
-    test_emplace_function_gen<boost::multisetS>();
-    test_emplace_function_gen<boost::multimapS>();
+    test_empl_assoc_func_gen<boost::setS>();
+    test_empl_assoc_func_gen<boost::mapS>();
+    test_empl_assoc_func_gen<boost::multisetS>();
+    test_empl_assoc_func_gen<boost::multimapS>();
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION || defined BOOST_HAS_HASH
-    test_emplace_function_gen<boost::hash_setS>();
-    test_emplace_function_gen<boost::hash_mapS>();
-    test_emplace_function_gen<boost::hash_multisetS>();
-    test_emplace_function_gen<boost::hash_multimapS>();
+    test_empl_assoc_func_gen<boost::hash_setS>();
+    test_empl_assoc_func_gen<boost::hash_mapS>();
+    test_empl_assoc_func_gen<boost::hash_multisetS>();
+    test_empl_assoc_func_gen<boost::hash_multimapS>();
 #endif
-    test_emplace_function_gen<boost::ptr_vecS>();
-    test_emplace_function_gen<boost::ptr_dequeS>();
-    test_emplace_function_gen<boost::ptr_listS>();
-    test_emplace_function_gen<boost::ptr_setS>();
-    test_emplace_function_gen<boost::ptr_mapS>();
-    test_emplace_function_gen<boost::ptr_multisetS>();
-    test_emplace_function_gen<boost::ptr_multimapS>();
+    test_empl_assoc_func_gen<boost::ptr_setS>();
+    test_empl_assoc_func_gen<boost::ptr_mapS>();
+    test_empl_assoc_func_gen<boost::ptr_multisetS>();
+    test_empl_assoc_func_gen<boost::ptr_multimapS>();
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    test_emplace_function_gen<boost::ptr_hash_setS>();
-    test_emplace_function_gen<boost::ptr_hash_mapS>();
-    test_emplace_function_gen<boost::ptr_hash_multisetS>();
-    test_emplace_function_gen<boost::ptr_hash_multimapS>();
-    test_emplace_function_gen<boost::vector_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::stable_vecS>();
-    test_emplace_function_gen<boost::deque_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::list_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::set_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::map_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::multiset_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::multimap_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::hash_set_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<boost::hash_map_selector<boost::mpl::true_> >();
-    test_emplace_function_gen<
+    test_empl_assoc_func_gen<boost::ptr_hash_setS>();
+    test_empl_assoc_func_gen<boost::ptr_hash_mapS>();
+    test_empl_assoc_func_gen<boost::ptr_hash_multisetS>();
+    test_empl_assoc_func_gen<boost::ptr_hash_multimapS>();
+    test_empl_assoc_func_gen<boost::set_selector<boost::mpl::true_> >();
+    test_empl_assoc_func_gen<boost::map_selector<boost::mpl::true_> >();
+    test_empl_assoc_func_gen<boost::multiset_selector<boost::mpl::true_> >();
+    test_empl_assoc_func_gen<boost::multimap_selector<boost::mpl::true_> >();
+    test_empl_assoc_func_gen<boost::hash_set_selector<boost::mpl::true_> >();
+    test_empl_assoc_func_gen<boost::hash_map_selector<boost::mpl::true_> >();
+    test_empl_assoc_func_gen<
         boost::hash_multiset_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gen<
+    test_empl_assoc_func_gen<
         boost::hash_multimap_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gen<boost::flat_setS>();
-    test_emplace_function_gen<boost::flat_mapS>();
-    test_emplace_function_gen<boost::flat_multisetS>();
-    test_emplace_function_gen<boost::flat_multimapS>();
+    test_empl_assoc_func_gen<boost::flat_setS>();
+    test_empl_assoc_func_gen<boost::flat_mapS>();
+    test_empl_assoc_func_gen<boost::flat_multisetS>();
+    test_empl_assoc_func_gen<boost::flat_multimapS>();
 #endif  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-    test_emplace_function_gen_recursive<boost::ptr_vecS>();
-    test_emplace_function_gen_recursive<boost::ptr_dequeS>();
-    test_emplace_function_gen_recursive<boost::ptr_listS>();
+    test_empl_assoc_func_gen_recursive<boost::ptr_setS>();
+    test_empl_assoc_func_gen_recursive<boost::ptr_mapS>();
+    test_empl_assoc_func_gen_recursive<boost::ptr_multisetS>();
+    test_empl_assoc_func_gen_recursive<boost::ptr_multimapS>();
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    test_emplace_function_gen_recursive<boost::stable_vecS>();
-    test_emplace_function_gen_recursive<
-        boost::vector_selector<boost::mpl::true_>
+    test_empl_assoc_func_gen_recursive<boost::ptr_hash_setS>();
+    test_empl_assoc_func_gen_recursive<boost::ptr_hash_mapS>();
+    test_empl_assoc_func_gen_recursive<boost::ptr_hash_multisetS>();
+    test_empl_assoc_func_gen_recursive<boost::ptr_hash_multimapS>();
+    test_empl_assoc_func_gen_recursive<
+        boost::set_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gen_recursive<
-        boost::deque_selector<boost::mpl::true_>
+    test_empl_assoc_func_gen_recursive<
+        boost::map_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gen_recursive<
-        boost::list_selector<boost::mpl::true_>
+    test_empl_assoc_func_gen_recursive<
+        boost::multiset_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gen_recursive<boost::slistS>();
+    test_empl_assoc_func_gen_recursive<
+        boost::multimap_selector<boost::mpl::true_>
+    >();
+    test_empl_assoc_func_gen_recursive<
+        boost::hash_set_selector<boost::mpl::true_>
+    >();
+    test_empl_assoc_func_gen_recursive<
+        boost::hash_map_selector<boost::mpl::true_>
+    >();
+    test_empl_assoc_func_gen_recursive<
+        boost::hash_multiset_selector<boost::mpl::true_>
+    >();
+    test_empl_assoc_func_gen_recursive<
+        boost::hash_multimap_selector<boost::mpl::true_>
+    >();
+    test_empl_assoc_func_gen_recursive<boost::flat_setS>();
+    test_empl_assoc_func_gen_recursive<boost::flat_mapS>();
+    test_empl_assoc_func_gen_recursive<boost::flat_multisetS>();
+    test_empl_assoc_func_gen_recursive<boost::flat_multimapS>();
 #endif  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-    test_emplace_function_gens<boost::vecS,boost::dequeS>();
-    test_emplace_function_gens<boost::vecS,boost::listS>();
-    test_emplace_function_gens<boost::vecS,boost::ptr_vecS>();
-    test_emplace_function_gens<boost::vecS,boost::ptr_dequeS>();
-    test_emplace_function_gens<boost::vecS,boost::ptr_listS>();
-    test_emplace_function_gens<boost::dequeS,boost::listS>();
-    test_emplace_function_gens<boost::dequeS,boost::ptr_vecS>();
-    test_emplace_function_gens<boost::dequeS,boost::ptr_dequeS>();
-    test_emplace_function_gens<boost::dequeS,boost::ptr_listS>();
-    test_emplace_function_gens<boost::listS,boost::ptr_vecS>();
-    test_emplace_function_gens<boost::listS,boost::ptr_dequeS>();
-    test_emplace_function_gens<boost::listS,boost::ptr_listS>();
-    test_emplace_function_gens<boost::ptr_vecS,boost::ptr_dequeS>();
-    test_emplace_function_gens<boost::ptr_vecS,boost::ptr_listS>();
-    test_emplace_function_gens<boost::ptr_dequeS,boost::ptr_listS>();
+    test_empl_assoc_func_gens<boost::setS,boost::ptr_setS>();
+    test_empl_assoc_func_gens<boost::mapS,boost::ptr_mapS>();
+    test_empl_assoc_func_gens<boost::multisetS,boost::ptr_multisetS>();
+    test_empl_assoc_func_gens<boost::multimapS,boost::ptr_multimapS>();
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    test_emplace_function_gens<boost::vecS,boost::stable_vecS>();
-    test_emplace_function_gens<boost::dequeS,boost::stable_vecS>();
-    test_emplace_function_gens<boost::listS,boost::stable_vecS>();
-    test_emplace_function_gens<boost::ptr_vecS,boost::stable_vecS>();
-    test_emplace_function_gens<boost::ptr_dequeS,boost::stable_vecS>();
-    test_emplace_function_gens<
-        boost::vecS
-      , boost::vector_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::vecS
-      , boost::deque_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::vecS
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::dequeS
-      , boost::vector_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::dequeS
-      , boost::deque_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::dequeS
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::listS
-      , boost::vector_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::listS
-      , boost::deque_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::listS
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::ptr_vecS
-      , boost::vector_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::ptr_vecS
-      , boost::deque_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::ptr_vecS
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::ptr_dequeS
-      , boost::vector_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::ptr_dequeS
-      , boost::deque_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::ptr_dequeS
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::stable_vecS
-      , boost::vector_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::stable_vecS
-      , boost::deque_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::stable_vecS
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::vector_selector<boost::mpl::true_>
-      , boost::deque_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::vector_selector<boost::mpl::true_>
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<
-        boost::deque_selector<boost::mpl::true_>
-      , boost::list_selector<boost::mpl::true_>
-    >();
-    test_emplace_function_gens<boost::setS,boost::flat_setS>();
-    test_emplace_function_gens<boost::mapS,boost::flat_mapS>();
-    test_emplace_function_gens<boost::multisetS,boost::flat_multisetS>();
-    test_emplace_function_gens<boost::multimapS,boost::flat_multimapS>();
-    test_emplace_function_gens<
+    test_empl_assoc_func_gens<
         boost::setS
       , boost::set_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gens<
+    test_empl_assoc_func_gens<
         boost::mapS
       , boost::map_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gens<
+    test_empl_assoc_func_gens<
         boost::multisetS
       , boost::multiset_selector<boost::mpl::true_>
     >();
-    test_emplace_function_gens<
+    test_empl_assoc_func_gens<
         boost::multimapS
       , boost::multimap_selector<boost::mpl::true_>
     >();
+    test_empl_assoc_func_gens<boost::setS,boost::flat_setS>();
+    test_empl_assoc_func_gens<boost::mapS,boost::flat_mapS>();
+    test_empl_assoc_func_gens<boost::multisetS,boost::flat_multisetS>();
+    test_empl_assoc_func_gens<boost::multimapS,boost::flat_multimapS>();
 #endif  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
     return 0;

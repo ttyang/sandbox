@@ -7,13 +7,13 @@
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.6">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="push_range_function_gen.html" title="push_range_function_gen">
-<link rel="next" href="is_reversible_selector.html" title="is_reversible_selector">
+<link rel="next" href="insert_range_result_gen.html" title="insert_range_result_gen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="push_range_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="is_reversible_selector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="push_range_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="insert_range_result_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -120,7 +120,9 @@
 <p>
           Use the <a class="link" href="emplace_function_gen.html" title="emplace_function_gen"><code class="computeroutput"><span class="identifier">emplace_function_gen</span></code></a> metafunction
           to construct containers using individual elements, then use this metafunction
-          to append the elements of one container to another in a single step.
+          to append the elements of one container to another in a single step. Use
+          the <a class="link" href="insert_range_result_gen.html" title="insert_range_result_gen"><code class="computeroutput"><span class="identifier">insert_range_result_gen</span></code></a> metafunction
+          to store the result of the operation.
         </p>
 <p>
 </p>
@@ -141,13 +143,16 @@
     <span class="identifier">emplacer</span><span class="special">[</span><span class="identifier">input_container</span><span class="special">]</span>
         <span class="special">(</span><span class="string">"able"</span><span class="special">)(</span><span class="string">"fox"</span><span class="special">)(</span><span class="string">"iota"</span><span class="special">)(</span><span class="string">"hotel"</span><span class="special">)(</span><span class="string">"jupiter"</span><span class="special">)(</span><span class="string">"dog"</span><span class="special">);</span>
 
+    <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">insert_range_result_gen</span><span class="special">&lt;</span><span class="identifier">Selector</span><span class="special">,</span><span class="identifier">test_string</span><span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="identifier">insert_range_result</span> <span class="special">=</span> <span class="identifier">range_inserter</span><span class="special">(</span>
+            <span class="identifier">test_container</span>
+          <span class="special">,</span> <span class="special">++++++</span><span class="identifier">test_container</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()</span>
+          <span class="special">,</span> <span class="identifier">input_container</span>
+        <span class="special">);</span>
+
     <span class="identifier">BOOST_CHECK</span><span class="special">(</span>
         <span class="identifier">test_result_range</span><span class="special">(</span>
-            <span class="identifier">range_inserter</span><span class="special">(</span>
-                <span class="identifier">test_container</span>
-              <span class="special">,</span> <span class="special">++++++</span><span class="identifier">test_container</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()</span>
-              <span class="special">,</span> <span class="identifier">input_container</span>
-            <span class="special">)</span>
+            <span class="identifier">insert_range_result</span>
           <span class="special">,</span> <span class="identifier">added_container</span>
           <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_associative_selector</span><span class="special">&lt;</span><span class="identifier">Selector</span><span class="special">&gt;()</span>
         <span class="special">)</span>
@@ -198,7 +203,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="push_range_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="is_reversible_selector.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+<a accesskey="p" href="push_range_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="insert_range_result_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

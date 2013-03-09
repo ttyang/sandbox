@@ -14,6 +14,7 @@
 [include ref_emplace_assoc_func_gen.qbk]
 [include ref_push_range_function_gen.qbk]
 [include ref_ins_range_function_gen.qbk]
+[include ref_insert_range_result_gen.qbk]
 [include ref_is_reversible_selector.qbk]
 [include ref_is_rand_access_selector.qbk]
 [include ref_is_associative_selector.qbk]
@@ -36,6 +37,7 @@
   * __emplace_associative_function_gen__
   * __push_range_function_gen__
   * __insert_range_function_gen__
+  * __insert_range_result_gen__
 
 [heading Selector Introspection Metafunctions]
 
