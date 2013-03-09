@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011-2012 Cromwell D. Enage
+    Copyright (C) 2011-2013 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -7,6 +7,11 @@
 =============================================================================/]
 
 [section Changelog]
+
+[heading From 0.5 to 0.6]
+
+  * Added __push_range_function_gen__ and __insert_range_function_gen__
+    type-generating metafunctions.
 
 [heading From 0.4 to 0.5]
 

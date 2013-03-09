@@ -1,0 +1,80 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:push_range_function_gen `push_range_function_gen`]
+
+[section Synopsis]
+[reference__push_range_function_gen]
+[endsect]
+
+[section Description]
+Returns a __Default_Constructible__ function object type whose call operator
+will take in a reference to a container and either two __Input_Iterator__
+arguments or a __Single_Pass_Range__ argument.  In practice, the type of the
+container must be produced by __container_gen__ when given the same selector
+template argument.
+
+If the container type models the __Random_Access_Container__ concept, then the
+function object will append the range specified by the other argument(s) to the
+back of the container.  The call operator's return value will be a
+__Single_Pass_Range__ over the elements inserted in the container.
+
+If the container type models the __Sequence__ concept, then the function object
+will forward the other argument(s) to the container's range insertion method;
+furthermore, if the container type models the __Front_Insertion_Sequence__
+concept, then the point of insertion will be before the beginning; otherwise,
+if the container type models the __Back_Insertion_Sequence__ concept, then the
+point of insertion will be the container's past-the-end iterator.  The call
+operator's return value will be a __Single_Pass_Range__ over the elements
+inserted in the container.
+
+If the container type models the __Associative_Container__ concept, then the
+function object will forward each element in the specified range to the
+container's insertion method.  If __has_stable_iterators_selector__ evaluates
+to __mpl_true__ for the specified selector, then the call operator's return
+value will be a __Single_Pass_Range__ of iterators pointing to each of the
+elements that were successfully inserted in the container.
+
+The return type of this metafunction also defines an indexing operator that
+accepts a reference to a container and returns a proxy object that allows range
+insertion function calls to be chained together, much like __Boost_Assign__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_push_range_function_gen_hpp__>
+``
+[endsect]
+
+[section Example]
+Use the __range_equal__ algorithm to test two ranges for equality.  To handle
+the case where the range returned from a call to the `push_range_function_gen`
+return function type is a __Single_Pass_Range__ of iterators, use
+__range_adaptors_indirect__.
+
+[test__result_range]
+
+Use the __emplace_function_gen__ metafunction to construct containers using
+individual elements, then use this metafunction to append the elements of
+one container to another in a single step.
+
+[test__push_range_function_gen]
+
+Test this metafunction across a wide variety of selector types.
+
+[test__push_range_function_gen__main]
+
+The complete test program spans the following source files:
+
+  * __libs_container_gen_test_result_range_hpp__
+  * __libs_container_gen_test_push_range_function_gen_cpp__
+
+[endsect]
+
+[endsect] [/ push_range_function_gen]
+

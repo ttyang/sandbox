@@ -1,5 +1,5 @@
 //=======================================================================
-// Copyright (C) 2012 Cromwell D. Enage
+// Copyright (C) 2012-2013 Cromwell D. Enage
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
@@ -12,10 +12,6 @@
 #include <utility>
 #include <boost/config.hpp>
 #include <boost/tr1/type_traits.hpp>
-#include <boost/mpl/identity.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/eval_if.hpp>
-#include <boost/mpl/aux_/lambda_support.hpp>
 #include <boost/container/detail/workaround.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -753,6 +749,7 @@ namespace boost { namespace detail {
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/eval_if.hpp>
+#include <boost/mpl/aux_/lambda_support.hpp>
 #include <boost/container_gen/has_emplace_mfunc_selector.hpp>
 #include <boost/container_gen/is_associative_selector.hpp>
 #include <boost/container_gen/is_unique_assoc_selector.hpp>

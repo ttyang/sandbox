@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011-2012 Cromwell D. Enage
+    Copyright (C) 2011-2013 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -12,6 +12,8 @@
 [include ref_container_gen.qbk]
 [include ref_emplace_function_gen.qbk]
 [include ref_emplace_assoc_func_gen.qbk]
+[include ref_push_range_function_gen.qbk]
+[include ref_ins_range_function_gen.qbk]
 [include ref_is_reversible_selector.qbk]
 [include ref_is_rand_access_selector.qbk]
 [include ref_is_associative_selector.qbk]
@@ -32,6 +34,8 @@
   * __container_gen__
   * __emplace_function_gen__
   * __emplace_associative_function_gen__
+  * __push_range_function_gen__
+  * __insert_range_function_gen__
 
 [heading Selector Introspection Metafunctions]
 
