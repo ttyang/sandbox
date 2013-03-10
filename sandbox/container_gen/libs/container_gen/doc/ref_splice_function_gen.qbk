@@ -1,0 +1,75 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:splice_function_gen `splice_function_gen`]
+
+[section Synopsis]
+[reference__splice_function_gen]
+[endsect]
+
+[section Description]
+Returns a __Default_Constructible__ function object type whose call operator
+will take in a reference to the destination container, a valid iterator
+representing the point of insertion, a reference to the source container, and
+one of the following:
+
+  * A valid iterator representing the point of erasure from the source
+    container.
+  * Two __Input_Iterator__ arguments representing the source container or a
+    subrange.
+
+The container type must model the __Sequence__ concept.  In practice, the
+container type must be produced by __container_gen__ when given the same
+selector template argument.
+
+The function call operator that takes in a single iterator to the source
+container will transfer that element to the destination container at the
+specified point of insertion.  The return value will be an iterator pointing
+to the inserted element.
+
+The function call operators that take in a subrange of the source container
+will transfer the elements in the subrange to the destination container at the
+specified point of insertion.  The return value will be a __Single_Pass_Range__
+over the elements inserted in the container.
+
+The return type of this metafunction also defines an indexing operator that
+accepts a reference to a container and returns a proxy object that allows
+splice function calls to be chained together, much like __Boost_Assign__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_splice_function_gen_hpp__>
+``
+[endsect]
+
+[section Example]
+Use the __range_equal__ algorithm to test two ranges for equality.
+
+[test__result_range]
+
+Use the __emplace_function_gen__ metafunction to construct containers using
+individual elements, then use this metafunction to append the elements of
+one container to another in a single step.  Use the __insert_range_result_gen__
+metafunction to store the result of the operation.
+
+[test__splice_function_gen]
+
+Test this metafunction across a wide variety of selector types.
+
+[test__splice_function_gen__main]
+
+The complete test program spans the following source files:
+
+  * __libs_container_gen_test_result_range_hpp__
+  * __libs_container_gen_test_splice_function_gen_cpp__
+
+[endsect]
+
+[endsect] [/ splice_function_gen]
+

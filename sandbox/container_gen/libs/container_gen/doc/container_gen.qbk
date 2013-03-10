@@ -91,6 +91,7 @@
 [def __boost_container_gen_emplace_assoc_function_gen_hpp__ [@../../../../boost/container_gen/emplace_assoc_function_gen.hpp boost/container_gen/emplace_assoc_function_gen.hpp]]
 [def __boost_container_gen_push_range_function_gen_hpp__ [@../../../../boost/container_gen/push_range_function_gen.hpp boost/container_gen/push_range_function_gen.hpp]]
 [def __boost_container_gen_insert_range_function_gen_hpp__ [@../../../../boost/container_gen/insert_range_function_gen.hpp boost/container_gen/insert_range_function_gen.hpp]]
+[def __boost_container_gen_splice_function_gen_hpp__ [@../../../../boost/container_gen/splice_function_gen.hpp boost/container_gen/splice_function_gen.hpp]]
 [def __boost_container_gen_insert_range_result_gen_hpp__ [@../../../../boost/container_gen/insert_range_result_gen.hpp boost/container_gen/insert_range_result_gen.hpp]]
 [def __boost_container_gen_is_reversible_selector_hpp__ [@../../../../boost/container_gen/is_reversible_selector.hpp boost/container_gen/is_reversible_selector.hpp]]
 [def __boost_container_gen_is_random_access_selector_hpp__ [@../../../../boost/container_gen/is_random_access_selector.hpp boost/container_gen/is_random_access_selector.hpp]]
@@ -107,6 +108,7 @@
 [def __libs_container_gen_test_result_range_hpp__ [@../../../../libs/container_gen/test/result_range.hpp `<test/result_range.hpp>`]]
 [def __libs_container_gen_test_push_range_function_gen_cpp__ [@../../../../libs/container_gen/test/push_range_function_gen.cpp `<test/push_range_function_gen.cpp>`]]
 [def __libs_container_gen_test_insert_range_function_gen_cpp__ [@../../../../libs/container_gen/test/insert_range_function_gen.cpp `<test/insert_range_function_gen.cpp>`]]
+[def __libs_container_gen_test_splice_function_gen_cpp__ [@../../../../libs/container_gen/test/splice_function_gen.cpp `<test/splice_function_gen.cpp>`]]
 
 [/ Boost.ContainerGen reference links.]
 [def __Selectors__ [link container_gen.reference.selectors *Selectors*]]
@@ -124,6 +126,8 @@
 [def _push_range_function_gen_ [link container_gen.reference.push_range_function_gen push_range_function_gen]]
 [def __insert_range_function_gen__ [link container_gen.reference.insert_range_function_gen `insert_range_function_gen`]]
 [def _insert_range_function_gen_ [link container_gen.reference.insert_range_function_gen insert_range_function_gen]]
+[def __splice_function_gen__ [link container_gen.reference.splice_function_gen `splice_function_gen`]]
+[def _splice_function_gen_ [link container_gen.reference.splice_function_gen splice_function_gen]]
 [def __insert_range_result_gen__ [link container_gen.reference.insert_range_result_gen `insert_range_result_gen`]]
 [def _insert_range_result_gen_ [link container_gen.reference.insert_range_result_gen insert_range_result_gen]]
 [def __is_reversible_selector__ [link container_gen.reference.is_reversible_selector `is_reversible_selector`]]
@@ -160,6 +164,7 @@
 [import ../../../boost/container_gen/emplace_assoc_function_gen.hpp]
 [import ../../../boost/container_gen/push_range_function_gen.hpp]
 [import ../../../boost/container_gen/insert_range_function_gen.hpp]
+[import ../../../boost/container_gen/splice_function_gen.hpp]
 [import ../../../boost/container_gen/insert_range_result_gen.hpp]
 [import ../../../boost/container_gen/is_reversible_selector.hpp]
 [import ../../../boost/container_gen/is_random_access_selector.hpp]
@@ -179,6 +184,7 @@
 [import ../../../libs/container_gen/test/result_range.hpp]
 [import ../../../libs/container_gen/test/push_range_function_gen.cpp]
 [import ../../../libs/container_gen/test/insert_range_function_gen.cpp]
+[import ../../../libs/container_gen/test/splice_function_gen.cpp]
 
 [/ index.html Start]
 

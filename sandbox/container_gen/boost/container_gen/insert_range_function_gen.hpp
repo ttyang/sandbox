@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <boost/mpl/bool.hpp>
 #include <boost/range.hpp>
+#include <boost/assert.hpp>
 
 namespace boost { namespace detail {
 
@@ -211,7 +212,7 @@ namespace boost { namespace detail {
     }
 
     template <typename C, typename Itr>
-    ::std::pair<typename C::iterator,typename C::iterator>
+    inline ::std::pair<typename C::iterator,typename C::iterator>
         ras_insert_range_function::operator()(
             C& _container
           , typename C::iterator pos
@@ -300,7 +301,7 @@ namespace boost { namespace detail {
     }
 
     template <typename C, typename Itr>
-    ::std::pair<typename C::iterator,typename C::iterator>
+    inline ::std::pair<typename C::iterator,typename C::iterator>
         bdq_insert_range_function::operator()(
             C& _container
           , typename C::iterator pos
@@ -392,7 +393,7 @@ namespace boost { namespace detail {
     }
 
     template <typename C, typename Itr>
-    ::std::pair<typename C::iterator,typename C::iterator>
+    inline ::std::pair<typename C::iterator,typename C::iterator>
         bis_insert_range_function::operator()(
             C& _container
           , typename C::iterator pos
@@ -402,6 +403,7 @@ namespace boost { namespace detail {
     {
         if (_container.empty())
         {
+            BOOST_ASSERT(pos == _container.end());
             bis_insert_range_function::evaluate(_container, pos, itr, itr_end);
             return ::std::pair<typename C::iterator,typename C::iterator>(
                 _container.begin()

@@ -160,7 +160,7 @@ namespace boost { namespace detail {
     }
 
     template <typename C, typename Itr>
-    ::std::pair<typename C::iterator,typename C::iterator>
+    inline ::std::pair<typename C::iterator,typename C::iterator>
         ras_push_range_function::operator()(
             C& _container
           , Itr itr
@@ -235,7 +235,7 @@ namespace boost { namespace detail {
     }
 
     template <typename C, typename Itr>
-    ::std::pair<typename C::iterator,typename C::iterator>
+    inline ::std::pair<typename C::iterator,typename C::iterator>
         bis_push_range_function::operator()(
             C& _container
           , Itr itr

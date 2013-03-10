@@ -54,6 +54,7 @@ void test_insert_range_function_gen(AddedContainer const& added_container)
           , boost::is_associative_selector<Selector>()
         )
     );
+    BOOST_CHECK(6 == input_container.size());
     BOOST_CHECK(boost::range::equal(test_container, example_container));
 }
 //]
