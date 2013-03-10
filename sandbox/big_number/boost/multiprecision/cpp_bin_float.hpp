@@ -83,6 +83,8 @@
     static const boost::uint32_t cpp_bin_float_elem_number =    boost::uint32_t(cpp_bin_float_bits_number / std::numeric_limits<short_limb_type>::digits)
                                                              + (boost::uint32_t(cpp_bin_float_bits_number % std::numeric_limits<short_limb_type>::digits) != boost::uint32_t(0U) ? 1U : 0U);
 
+    // TBD: Right-justify the data in the data array (seems to be standard established by GMP, etc.).
+
     typedef mpl::list<eval_ops_signed_type>   signed_types;
     typedef mpl::list<eval_ops_unsigned_type> unsigned_types;
     typedef mpl::list<eval_ops_float_type>    float_types;
@@ -116,7 +118,7 @@
                                                                                         my_fpclass          (cpp_bin_float_finite),
                                                                                         my_precision_in_bits(cpp_bin_float_bits_number)
     {
-      from_unsigned_integer_type(ui);
+      from_unsigned_integer_type<unsigned_integer_type>(ui);
       round_and_truncate();
     }
 
@@ -170,7 +172,7 @@
                                                                                   my_fpclass          (less_eq_other.my_fpclass),
                                                                                   my_precision_in_bits(less_eq_other.my_precision_in_bits)
     {
-      // TBD: Handle limb types larger and smaller the limb type of *this.
+      // TBD: Handle other limb types both larger and smaller than the limb type of *this.
       std::copy(less_eq_other.my_data.begin(),
                 less_eq_other.my_data.begin() + less_eq_other.cpp_bin_float_elem_number,
                 my_data.begin());
@@ -199,7 +201,7 @@
                                                                                             my_precision_in_bits(cpp_bin_float_bits_number)
     {
       // TBD: Do a proper rounding here.
-      // TBD: Handle limb types both larger and smaller the limb type of *this.
+      // TBD: Handle other limb types both larger and smaller than the limb type of *this.
       std::copy(larger_other.my_data.begin(),
                 larger_other.my_data.begin() + cpp_bin_float_elem_number,
                 my_data.begin());
@@ -219,7 +221,7 @@
       }
       else
       {
-        from_float_type(static_cast<float_type>(a));
+        from_float_type(a);
       }
 
       round_and_truncate();
@@ -281,15 +283,36 @@
       {
         boost::uint_least8_t i = boost::uint_least8_t(0U);
 
-        while(u != unsigned_integer_type(0U))
+        for(;;)
         {
           my_data[i] = short_limb_type(u);
+
           ++i;
+
           u >>= std::numeric_limits<short_limb_type>::digits;
-          my_exp += std::numeric_limits<short_limb_type>::digits;
+
+          if(u != unsigned_integer_type(0U))
+          {
+            my_exp += std::numeric_limits<short_limb_type>::digits;
+          }
+          else
+          {
+            break;
+          }
         }
 
         std::reverse(my_data.begin(), my_data.begin() + i);
+      }
+
+      const int priority_bit = boost::multiprecision::detail::utype_prior(my_data[0U]);
+
+      if(priority_bit < (std::numeric_limits<short_limb_type>::digits - 1))
+      {
+        const int shift = std::numeric_limits<short_limb_type>::digits - (1 + priority_bit);
+
+        shift_data_to_the_left(shift);
+
+        my_exp -= shift;
       }
     }
 
@@ -303,37 +326,11 @@
 
       my_exp = static_cast<my_exponent_type>(e2);
 
-      int delta_exp = int(my_exp % std::numeric_limits<short_limb_type>::digits);
-
       int number_of_digits;
 
-      unsigned i = 0U;
+      typename array_type::size_type i(0U);
 
-      if(delta_exp != 0)
-      {
-        if(delta_exp > 0)
-        {
-          y *= (short_limb_type(1U) << delta_exp);
-          number_of_digits = delta_exp;
-          my_exp -= delta_exp;
-        }
-        else
-        {
-          y *= (short_limb_type(1U) << (std::numeric_limits<short_limb_type>::digits + delta_exp));
-          number_of_digits = std::numeric_limits<short_limb_type>::digits + delta_exp;
-          my_exp -= (std::numeric_limits<short_limb_type>::digits + delta_exp);
-        }
-
-        my_data[i] = static_cast<short_limb_type>(y);
-        y -= my_data[i];
-        ++i;
-      }
-      else
-      {
-        number_of_digits = 0U;
-      }
-
-      while(number_of_digits < boost::uint_least16_t(std::numeric_limits<float_type>::digits))
+      while(number_of_digits < std::numeric_limits<float_type>::digits)
       {
         if((std::numeric_limits<float_type>::digits - number_of_digits) >= std::numeric_limits<short_limb_type>::digits)
         {
@@ -399,6 +396,15 @@
     // TBD: Round and truncate the data.
   }
 
+  void shift_data_to_the_left(const int shift)
+  {
+    // TBD: Shift data to the left.
+  }
+
+  void shift_data_to_the_right(const int shift)
+  {
+    // TBD: Shift data to the right.
+  }
   } // namespace backends
 
   using boost::multiprecision::backends::cpp_bin_float;
