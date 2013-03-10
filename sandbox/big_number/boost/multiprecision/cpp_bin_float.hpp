@@ -13,6 +13,7 @@
   #include <boost/multiprecision/number.hpp>
   #include <boost/math/policies/policy.hpp>
   #include <boost/multiprecision/detail/dynamic_array.hpp>
+  #include <boost/multiprecision/detail/utype_helper.hpp>
 
   namespace boost { namespace multiprecision {
   namespace backends
@@ -107,33 +108,35 @@
       round_and_truncate();
     }
 
-    template<class integer_type>
-    cpp_bin_float(integer_type i,
-                  typename enable_if<is_unsigned<integer_type> >::type* = 0) : my_data             (),
-                                                                               my_exp              (static_cast<my_exponent_type>(0)),
-                                                                               my_neg              (false),
-                                                                               my_fpclass          (cpp_bin_float_finite),
-                                                                               my_precision_in_bits(cpp_bin_float_bits_number)
+    template<class unsigned_integer_type>
+    cpp_bin_float(unsigned_integer_type ui,
+                  typename enable_if<is_unsigned<unsigned_integer_type> >::type* = 0) : my_data             (),
+                                                                                        my_exp              (static_cast<my_exponent_type>(0)),
+                                                                                        my_neg              (false),
+                                                                                        my_fpclass          (cpp_bin_float_finite),
+                                                                                        my_precision_in_bits(cpp_bin_float_bits_number)
     {
-      from_unsigned_type(i);
+      from_unsigned_integer_type(ui);
       round_and_truncate();
     }
 
-    template<class integer_type>
-    cpp_bin_float(integer_type i,
-                  typename enable_if<is_signed<integer_type> >::type* = 0) : my_data             (),
-                                                                             my_exp              (static_cast<my_exponent_type>(0)),
-                                                                             my_neg              (i < static_cast<integer_type>(0)),
-                                                                             my_fpclass          (cpp_bin_float_finite),
-                                                                             my_precision_in_bits(cpp_bin_float_bits_number)
+    template<class signed_integer_type>
+    cpp_bin_float(signed_integer_type si,
+                  typename enable_if<is_signed<signed_integer_type> >::type* = 0) : my_data             (),
+                                                                                    my_exp              (static_cast<my_exponent_type>(0)),
+                                                                                    my_neg              (si < static_cast<signed_integer_type>(0)),
+                                                                                    my_fpclass          (cpp_bin_float_finite),
+                                                                                    my_precision_in_bits(cpp_bin_float_bits_number)
     {
+      typedef typename boost::multiprecision::detail::utype_helper<std::numeric_limits<signed_integer_type>::digits>::exact unsigned_integer_type;
+
       if(my_neg)
       {
-        from_unsigned_type(static_cast<eval_ops_unsigned_type>(-i));
+        from_unsigned_integer_type<unsigned_integer_type>(-si);
       }
       else
       {
-        from_unsigned_type(static_cast<eval_ops_unsigned_type>(i));
+        from_unsigned_integer_type<unsigned_integer_type>(si);
       }
 
       round_and_truncate();
@@ -212,11 +215,11 @@
     {
       if(my_neg)
       {
-        from_float_type(static_cast<eval_ops_float_type>(-a));
+        from_float_type(static_cast<float_type>(-a));
       }
       else
       {
-        from_float_type(static_cast<eval_ops_float_type>(a));
+        from_float_type(static_cast<float_type>(a));
       }
 
       round_and_truncate();
@@ -267,44 +270,85 @@
                                            my_fpclass          (fp_class),
                                            my_precision_in_bits(cpp_bin_float_bits_number) { }
 
-    void from_unsigned_type(eval_ops_unsigned_type u)
+    template<class unsigned_integer_type>
+    void from_unsigned_integer_type(unsigned_integer_type u)
     {
-      boost::uint_least8_t i = boost::uint_least8_t(0U);
-
-      while(u != eval_ops_unsigned_type(0U))
+      if(u <= (std::numeric_limits<short_limb_type>::max)())
       {
-        my_data[i] = short_limb_type(u);
-        ++i;
-        u >>= std::numeric_limits<short_limb_type>::digits;
-        my_exp += std::numeric_limits<short_limb_type>::digits;
+        my_data[0U] = short_limb_type(u);
       }
+      else
+      {
+        boost::uint_least8_t i = boost::uint_least8_t(0U);
 
-      std::reverse(my_data.begin(), my_data.begin() + i);
+        while(u != unsigned_integer_type(0U))
+        {
+          my_data[i] = short_limb_type(u);
+          ++i;
+          u >>= std::numeric_limits<short_limb_type>::digits;
+          my_exp += std::numeric_limits<short_limb_type>::digits;
+        }
+
+        std::reverse(my_data.begin(), my_data.begin() + i);
+      }
     }
 
-    void from_float_type(eval_ops_float_type a)
+    template<class float_type>
+    void from_float_type(float_type a)
     {
       BOOST_MATH_STD_USING // ADL of std names, needed for frexp.
 
       int e2;
-      eval_ops_float_type y = frexp(a, &e2);
+      float_type y = frexp(a, &e2);
 
       my_exp = static_cast<my_exponent_type>(e2);
 
-      boost::uint_least8_t i = boost::uint_least8_t(0U);
+      int delta_exp = int(my_exp % std::numeric_limits<short_limb_type>::digits);
 
-      for( ; i < boost::uint_least8_t(std::numeric_limits<eval_ops_float_type>::digits / std::numeric_limits<short_limb_type>::digits); ++i)
+      int number_of_digits;
+
+      unsigned i = 0U;
+
+      if(delta_exp != 0)
       {
-        y *= long_limb_type(long_limb_type(1U) << std::numeric_limits<short_limb_type>::digits);
+        if(delta_exp > 0)
+        {
+          y *= (short_limb_type(1U) << delta_exp);
+          number_of_digits = delta_exp;
+          my_exp -= delta_exp;
+        }
+        else
+        {
+          y *= (short_limb_type(1U) << (std::numeric_limits<short_limb_type>::digits + delta_exp));
+          number_of_digits = std::numeric_limits<short_limb_type>::digits + delta_exp;
+          my_exp -= (std::numeric_limits<short_limb_type>::digits + delta_exp);
+        }
+
         my_data[i] = static_cast<short_limb_type>(y);
         y -= my_data[i];
+        ++i;
+      }
+      else
+      {
+        number_of_digits = 0U;
       }
 
-      if((std::numeric_limits<eval_ops_float_type>::digits % std::numeric_limits<short_limb_type>::digits) != 0)
+      while(number_of_digits < boost::uint_least16_t(std::numeric_limits<float_type>::digits))
       {
-        y *= long_limb_type(long_limb_type(1U) << (std::numeric_limits<eval_ops_float_type>::digits % std::numeric_limits<short_limb_type>::digits));
+        if((std::numeric_limits<float_type>::digits - number_of_digits) >= std::numeric_limits<short_limb_type>::digits)
+        {
+          y *= long_limb_type(long_limb_type(1U) << std::numeric_limits<short_limb_type>::digits);
+          number_of_digits += std::numeric_limits<short_limb_type>::digits;
+        }
+        else if((std::numeric_limits<float_type>::digits - number_of_digits) > 0)
+        {
+          y *= (short_limb_type(1U) << (std::numeric_limits<float_type>::digits - number_of_digits));
+          number_of_digits += (std::numeric_limits<float_type>::digits - number_of_digits);
+        }
+
         my_data[i] = static_cast<short_limb_type>(y);
         y -= my_data[i];
+        ++i;
       }
     }
 
