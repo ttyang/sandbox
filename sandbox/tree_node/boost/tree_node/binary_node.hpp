@@ -2423,7 +2423,7 @@ namespace boost { namespace tree_node {
             data_key const& key
         )
     {
-        this->on_post_modify_value(key);
+        this->on_post_propagate_value(key);
     }
 
 #if defined BOOST_TREE_NODE_CAN_USE_FUSION
@@ -2434,7 +2434,7 @@ namespace boost { namespace tree_node {
             FusionKey const& key
         )
     {
-        this->on_post_modify_value(key);
+        this->on_post_propagate_value(key);
     }
 #endif
 

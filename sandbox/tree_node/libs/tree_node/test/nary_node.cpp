@@ -1667,6 +1667,481 @@ void test()
             (boost::tree_node::post_order_traversal, 5, 6, 47);
 #endif  // BOOST_TREE_NODE_CAN_USE_FUSION
         test_node<a_node_case>(a_root, bf_vals, pre_vals, post_vals, df_vals);
+
+        a_child_itr = (*a_child_itr).begin();
+        std::advance(a_child_itr, 2);
+
+        typename ANode::iterator a_desc_itr = a_child_itr;
+        typename ANode::iterator a_src_itr = (*(++a_desc_itr)).begin();
+        typename ANode::iterator a_end_itr = (*a_desc_itr).end();
+
+        (*a_child_itr).splice(
+            ++(*a_child_itr).begin()
+          , *a_desc_itr
+          , ++a_src_itr
+          , a_end_itr
+        );
+        bf_vals.clear();
+        pre_vals.clear();
+        post_vals.clear();
+        df_vals.clear();
+
+#if defined BOOST_TREE_NODE_CAN_USE_FUSION
+        emplacer[bf_vals]
+            (5, 6, 47, 62, 5, 197, boost::rational<long>(222, 47))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (4, 5, 35, 46, 4, 130, boost::rational<long>(143, 35))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (5, 4, 24, 31, 3, 76, boost::rational<long>(10, 3))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 2, 7, 7, 1, 15, boost::rational<long>(13, 7))
+            (3, 1, 2, 3, 0, 3, boost::rational<long>(3, 2))
+            (4, 3, 12, 15, 2, 32, boost::rational<long>(8, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1));
+        emplacer[pre_vals]
+            (5, 6, 47, 62, 5, 197, boost::rational<long>(222, 47))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (4, 5, 35, 46, 4, 130, boost::rational<long>(143, 35))
+            (5, 4, 24, 31, 3, 76, boost::rational<long>(10, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 2, 7, 7, 1, 15, boost::rational<long>(13, 7))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (3, 1, 2, 3, 0, 3, boost::rational<long>(3, 2))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (4, 3, 12, 15, 2, 32, boost::rational<long>(8, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1));
+        emplacer[post_vals]
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 2, 7, 7, 1, 15, boost::rational<long>(13, 7))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (3, 1, 2, 3, 0, 3, boost::rational<long>(3, 2))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (4, 3, 12, 15, 2, 32, boost::rational<long>(8, 3))
+            (5, 4, 24, 31, 3, 76, boost::rational<long>(10, 3))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (4, 5, 35, 46, 4, 130, boost::rational<long>(143, 35))
+            (5, 6, 47, 62, 5, 197, boost::rational<long>(222, 47));
+        emplacer[df_vals]
+            (boost::tree_node::pre_order_traversal, 5, 6, 47,
+            62, 5, 197, boost::rational<long>(222, 47))
+                (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                0, 0, 1, boost::rational<long>(0, 1))
+                (boost::tree_node::post_order_traversal, 0, 0, 1,
+                0, 0, 1, boost::rational<long>(0, 1))
+                (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                1, 0, 1, boost::rational<long>(1, 1))
+                (boost::tree_node::post_order_traversal, 1, 0, 1,
+                1, 0, 1, boost::rational<long>(1, 1))
+                (boost::tree_node::pre_order_traversal, 2, 1, 3,
+                3, 0, 5, boost::rational<long>(4, 3))
+                    (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                    0, 0, 1, boost::rational<long>(0, 1))
+                    (boost::tree_node::post_order_traversal, 0, 0, 1,
+                    0, 0, 1, boost::rational<long>(0, 1))
+                    (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                    1, 0, 1, boost::rational<long>(1, 1))
+                    (boost::tree_node::post_order_traversal, 1, 0, 1,
+                    1, 0, 1, boost::rational<long>(1, 1))
+                (boost::tree_node::post_order_traversal, 2, 1, 3,
+                3, 0, 5, boost::rational<long>(4, 3))
+                (boost::tree_node::pre_order_traversal, 3, 2, 6,
+                7, 1, 13, boost::rational<long>(2, 1))
+                    (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                    0, 0, 1, boost::rational<long>(0, 1))
+                    (boost::tree_node::post_order_traversal, 0, 0, 1,
+                    0, 0, 1, boost::rational<long>(0, 1))
+                    (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                    1, 0, 1, boost::rational<long>(1, 1))
+                    (boost::tree_node::post_order_traversal, 1, 0, 1,
+                    1, 0, 1, boost::rational<long>(1, 1))
+                    (boost::tree_node::pre_order_traversal, 2, 1, 3,
+                    3, 0, 5, boost::rational<long>(4, 3))
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::post_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::post_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                    (boost::tree_node::post_order_traversal, 2, 1, 3,
+                    3, 0, 5, boost::rational<long>(4, 3))
+                (boost::tree_node::post_order_traversal, 3, 2, 6,
+                7, 1, 13, boost::rational<long>(2, 1))
+                (boost::tree_node::pre_order_traversal, 4, 5, 35,
+                46, 4, 130, boost::rational<long>(143, 35))
+                    (boost::tree_node::pre_order_traversal, 5, 4, 24,
+                    31, 3, 76, boost::rational<long>(10, 3))
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::post_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::post_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::pre_order_traversal, 2, 2, 7,
+                        7, 1, 15, boost::rational<long>(13, 7))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::pre_order_traversal, 2, 1, 3,
+                            3, 0, 5, boost::rational<long>(4, 3))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 2, 1, 3,
+                            3, 0, 5, boost::rational<long>(4, 3))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::post_order_traversal, 2, 2, 7,
+                        7, 1, 15, boost::rational<long>(13, 7))
+                        (boost::tree_node::pre_order_traversal, 3, 1, 2,
+                        3, 0, 3, boost::rational<long>(3, 2))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::post_order_traversal, 3, 1, 2,
+                        3, 0, 3, boost::rational<long>(3, 2))
+                        (boost::tree_node::pre_order_traversal, 4, 3, 12,
+                        15, 2, 32, boost::rational<long>(8, 3))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::pre_order_traversal, 2, 1, 3,
+                            3, 0, 5, boost::rational<long>(4, 3))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 2, 1, 3,
+                            3, 0, 5, boost::rational<long>(4, 3))
+                            (boost::tree_node::pre_order_traversal, 3, 2, 6,
+                            7, 1, 13, boost::rational<long>(2, 1))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::pre_order_traversal, 2, 1, 3,
+                            3, 0, 5, boost::rational<long>(4, 3))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 2, 1, 3,
+                            3, 0, 5, boost::rational<long>(4, 3))
+                            (boost::tree_node::post_order_traversal, 3, 2, 6,
+                            7, 1, 13, boost::rational<long>(2, 1))
+                        (boost::tree_node::post_order_traversal, 4, 3, 12,
+                        15, 2, 32, boost::rational<long>(8, 3))
+                    (boost::tree_node::post_order_traversal, 5, 4, 24,
+                    31, 3, 76, boost::rational<long>(10, 3))
+                    (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                    1, 0, 1, boost::rational<long>(1, 1))
+                    (boost::tree_node::post_order_traversal, 1, 0, 1,
+                    1, 0, 1, boost::rational<long>(1, 1))
+                    (boost::tree_node::pre_order_traversal, 2, 1, 3,
+                    3, 0, 5, boost::rational<long>(4, 3))
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::post_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::post_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                    (boost::tree_node::post_order_traversal, 2, 1, 3,
+                    3, 0, 5, boost::rational<long>(4, 3))
+                    (boost::tree_node::pre_order_traversal, 3, 2, 6,
+                    7, 1, 13, boost::rational<long>(2, 1))
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::post_order_traversal, 0, 0, 1,
+                        0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::post_order_traversal, 1, 0, 1,
+                        1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::pre_order_traversal, 2, 1, 3,
+                        3, 0, 5, boost::rational<long>(4, 3))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::post_order_traversal, 2, 1, 3,
+                        3, 0, 5, boost::rational<long>(4, 3))
+                    (boost::tree_node::post_order_traversal, 3, 2, 6,
+                    7, 1, 13, boost::rational<long>(2, 1))
+                (boost::tree_node::post_order_traversal, 4, 5, 35,
+                46, 4, 130, boost::rational<long>(143, 35))
+            (boost::tree_node::post_order_traversal, 5, 6, 47,
+            62, 5, 197, boost::rational<long>(222, 47));
+#else  // !defined BOOST_TREE_NODE_CAN_USE_FUSION
+        emplacer[bf_vals]
+            (5, 6, 47)(0, 0, 1)(1, 0, 1)(2, 1, 3)(3, 2, 6)(4, 5, 35)(0, 0, 1)
+            (1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(5, 4, 24)(1, 0, 1)(2, 1, 3)
+            (3, 2, 6)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 2, 7)(3, 1, 2)
+            (4, 3, 12)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)
+            (1, 0, 1)(2, 1, 3)(1, 0, 1)(0, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)
+            (3, 2, 6)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)
+            (0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1);
+        emplacer[pre_vals]
+            (5, 6, 47)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(3, 2, 6)
+            (0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(4, 5, 35)(5, 4, 24)
+            (0, 0, 1)(1, 0, 1)(2, 2, 7)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)
+            (1, 0, 1)(1, 0, 1)(3, 1, 2)(0, 0, 1)(4, 3, 12)(0, 0, 1)(1, 0, 1)
+            (2, 1, 3)(0, 0, 1)(1, 0, 1)(3, 2, 6)(0, 0, 1)(1, 0, 1)(2, 1, 3)
+            (0, 0, 1)(1, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(3, 2, 6)
+            (0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1);
+        emplacer[post_vals]
+            (0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)
+            (0, 0, 1)(1, 0, 1)(2, 1, 3)(3, 2, 6)(0, 0, 1)(1, 0, 1)(0, 0, 1)
+            (1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(1, 0, 1)(2, 2, 7)(0, 0, 1)
+            (3, 1, 2)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)
+            (1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(3, 2, 6)(4, 3, 12)(5, 4, 24)
+            (1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(0, 0, 1)
+            (1, 0, 1)(2, 1, 3)(3, 2, 6)(4, 5, 35)(5, 6, 47);
+        emplacer[df_vals]
+            (boost::tree_node::pre_order_traversal, 5, 6, 47)
+                (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                (boost::tree_node::post_order_traversal, 0, 0, 1)
+                (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                (boost::tree_node::post_order_traversal, 1, 0, 1)
+                (boost::tree_node::pre_order_traversal, 2, 1, 3)
+                    (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                    (boost::tree_node::post_order_traversal, 0, 0, 1)
+                    (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                    (boost::tree_node::post_order_traversal, 1, 0, 1)
+                (boost::tree_node::post_order_traversal, 2, 1, 3)
+                (boost::tree_node::pre_order_traversal, 3, 2, 6)
+                    (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                    (boost::tree_node::post_order_traversal, 0, 0, 1)
+                    (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                    (boost::tree_node::post_order_traversal, 1, 0, 1)
+                    (boost::tree_node::pre_order_traversal, 2, 1, 3)
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                        (boost::tree_node::post_order_traversal, 0, 0, 1)
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                        (boost::tree_node::post_order_traversal, 1, 0, 1)
+                    (boost::tree_node::post_order_traversal, 2, 1, 3)
+                (boost::tree_node::post_order_traversal, 3, 2, 6)
+                (boost::tree_node::pre_order_traversal, 4, 5, 35)
+                    (boost::tree_node::pre_order_traversal, 5, 4, 24)
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                        (boost::tree_node::post_order_traversal, 0, 0, 1)
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                        (boost::tree_node::post_order_traversal, 1, 0, 1)
+                        (boost::tree_node::pre_order_traversal, 2, 2, 7)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 2, 1, 3)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 2, 1, 3)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                        (boost::tree_node::post_order_traversal, 2, 2, 7)
+                        (boost::tree_node::pre_order_traversal, 3, 1, 2)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                        (boost::tree_node::post_order_traversal, 3, 1, 2)
+                        (boost::tree_node::pre_order_traversal, 4, 3, 12)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 2, 1, 3)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 2, 1, 3)
+                            (boost::tree_node::pre_order_traversal, 3, 2, 6)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 2, 1, 3)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 2, 1, 3)
+                            (boost::tree_node::post_order_traversal, 3, 2, 6)
+                        (boost::tree_node::post_order_traversal, 4, 3, 12)
+                    (boost::tree_node::post_order_traversal, 5, 4, 24)
+                    (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                    (boost::tree_node::post_order_traversal, 1, 0, 1)
+                    (boost::tree_node::pre_order_traversal, 2, 1, 3)
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                        (boost::tree_node::post_order_traversal, 0, 0, 1)
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                        (boost::tree_node::post_order_traversal, 1, 0, 1)
+                    (boost::tree_node::post_order_traversal, 2, 1, 3)
+                    (boost::tree_node::pre_order_traversal, 3, 2, 6)
+                        (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                        (boost::tree_node::post_order_traversal, 0, 0, 1)
+                        (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                        (boost::tree_node::post_order_traversal, 1, 0, 1)
+                        (boost::tree_node::pre_order_traversal, 2, 1, 3)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                        (boost::tree_node::post_order_traversal, 2, 1, 3)
+                    (boost::tree_node::post_order_traversal, 3, 2, 6)
+                (boost::tree_node::post_order_traversal, 4, 5, 35)
+            (boost::tree_node::post_order_traversal, 5, 6, 47);
+#endif  // BOOST_TREE_NODE_CAN_USE_FUSION
+        test_node<a_node_case>(a_root, bf_vals, pre_vals, post_vals, df_vals);
     }
 
     {
@@ -1695,8 +2170,8 @@ void test()
             (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
-            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
-            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (2, 2, 7, 7, 1, 15, boost::rational<long>(13, 7))
+            (3, 1, 2, 3, 0, 3, boost::rational<long>(3, 2))
             (4, 3, 12, 15, 2, 32, boost::rational<long>(8, 3))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
@@ -1705,9 +2180,9 @@ void test()
             (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
-            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
-            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
             (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
             (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
@@ -1735,15 +2210,15 @@ void test()
             (5, 4, 24, 31, 3, 76, boost::rational<long>(10, 3))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
-            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
-            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
-            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
-            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (2, 2, 7, 7, 1, 15, boost::rational<long>(13, 7))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
             (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (3, 1, 2, 3, 0, 3, boost::rational<long>(3, 2))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (4, 3, 12, 15, 2, 32, boost::rational<long>(8, 3))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
@@ -1777,13 +2252,13 @@ void test()
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
-            (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
-            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
-            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
             (2, 1, 3, 3, 0, 5, boost::rational<long>(4, 3))
-            (3, 2, 6, 7, 1, 13, boost::rational<long>(2, 1))
+            (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
+            (2, 2, 7, 7, 1, 15, boost::rational<long>(13, 7))
+            (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
+            (3, 1, 2, 3, 0, 3, boost::rational<long>(3, 2))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
             (1, 0, 1, 1, 0, 1, boost::rational<long>(1, 1))
             (0, 0, 1, 0, 0, 1, boost::rational<long>(0, 1))
@@ -1848,20 +2323,8 @@ void test()
                         1, 0, 1, boost::rational<long>(1, 1))
                         (boost::tree_node::post_order_traversal, 1, 0, 1,
                         1, 0, 1, boost::rational<long>(1, 1))
-                        (boost::tree_node::pre_order_traversal, 2, 1, 3,
-                        3, 0, 5, boost::rational<long>(4, 3))
-                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
-                            0, 0, 1, boost::rational<long>(0, 1))
-                            (boost::tree_node::post_order_traversal, 0, 0, 1,
-                            0, 0, 1, boost::rational<long>(0, 1))
-                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
-                            1, 0, 1, boost::rational<long>(1, 1))
-                            (boost::tree_node::post_order_traversal, 1, 0, 1,
-                            1, 0, 1, boost::rational<long>(1, 1))
-                        (boost::tree_node::post_order_traversal, 2, 1, 3,
-                        3, 0, 5, boost::rational<long>(4, 3))
-                        (boost::tree_node::pre_order_traversal, 3, 2, 6,
-                        7, 1, 13, boost::rational<long>(2, 1))
+                        (boost::tree_node::pre_order_traversal, 2, 2, 7,
+                        7, 1, 15, boost::rational<long>(13, 7))
                             (boost::tree_node::pre_order_traversal, 0, 0, 1,
                             0, 0, 1, boost::rational<long>(0, 1))
                             (boost::tree_node::post_order_traversal, 0, 0, 1,
@@ -1882,8 +2345,20 @@ void test()
                             1, 0, 1, boost::rational<long>(1, 1))
                             (boost::tree_node::post_order_traversal, 2, 1, 3,
                             3, 0, 5, boost::rational<long>(4, 3))
-                        (boost::tree_node::post_order_traversal, 3, 2, 6,
-                        7, 1, 13, boost::rational<long>(2, 1))
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                            (boost::tree_node::post_order_traversal, 1, 0, 1,
+                            1, 0, 1, boost::rational<long>(1, 1))
+                        (boost::tree_node::post_order_traversal, 2, 2, 7,
+                        7, 1, 15, boost::rational<long>(13, 7))
+                        (boost::tree_node::pre_order_traversal, 3, 1, 2,
+                        3, 0, 3, boost::rational<long>(3, 2))
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                            (boost::tree_node::post_order_traversal, 0, 0, 1,
+                            0, 0, 1, boost::rational<long>(0, 1))
+                        (boost::tree_node::post_order_traversal, 3, 1, 2,
+                        3, 0, 3, boost::rational<long>(3, 2))
                         (boost::tree_node::pre_order_traversal, 4, 3, 12,
                         15, 2, 32, boost::rational<long>(8, 3))
                             (boost::tree_node::pre_order_traversal, 0, 0, 1,
@@ -1982,21 +2457,21 @@ void test()
         emplacer[bf_vals]
             (5, 6, 42)(0, 0, 1)(1, 0, 1)(2, 1, 3)(3, 0, 1)(4, 5, 35)(0, 0, 1)
             (1, 0, 1)(5, 4, 24)(1, 0, 1)(2, 1, 3)(3, 2, 6)(0, 0, 1)(1, 0, 1)
-            (2, 1, 3)(3, 2, 6)(4, 3, 12)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)
-            (2, 1, 3)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)
+            (2, 2, 7)(3, 1, 2)(4, 3, 12)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)
+            (2, 1, 3)(0, 0, 1)(1, 0, 1)(2, 1, 3)(1, 0, 1)(0, 0, 1)(0, 0, 1)
             (1, 0, 1)(2, 1, 3)(3, 2, 6)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)
             (0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1);
         emplacer[pre_vals]
             (5, 6, 42)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(3, 0, 1)
-            (4, 5, 35)(5, 4, 24)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)
-            (3, 2, 6)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(4, 3, 12)
+            (4, 5, 35)(5, 4, 24)(0, 0, 1)(1, 0, 1)(2, 2, 7)(0, 0, 1)(1, 0, 1)
+            (2, 1, 3)(0, 0, 1)(1, 0, 1)(1, 0, 1)(3, 1, 2)(0, 0, 1)(4, 3, 12)
             (0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(3, 2, 6)(0, 0, 1)
             (1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)
             (1, 0, 1)(3, 2, 6)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1);
         emplacer[post_vals]
             (0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(3, 0, 1)(0, 0, 1)
-            (1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)(1, 0, 1)(0, 0, 1)
-            (1, 0, 1)(2, 1, 3)(3, 2, 6)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)
+            (1, 0, 1)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(1, 0, 1)
+            (2, 2, 7)(0, 0, 1)(3, 1, 2)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)
             (2, 1, 3)(0, 0, 1)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(3, 2, 6)
             (4, 3, 12)(5, 4, 24)(1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(0, 0, 1)
             (1, 0, 1)(0, 0, 1)(1, 0, 1)(2, 1, 3)(3, 2, 6)(4, 5, 35)(5, 6, 42);
@@ -2020,13 +2495,7 @@ void test()
                         (boost::tree_node::post_order_traversal, 0, 0, 1)
                         (boost::tree_node::pre_order_traversal, 1, 0, 1)
                         (boost::tree_node::post_order_traversal, 1, 0, 1)
-                        (boost::tree_node::pre_order_traversal, 2, 1, 3)
-                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
-                            (boost::tree_node::post_order_traversal, 0, 0, 1)
-                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
-                            (boost::tree_node::post_order_traversal, 1, 0, 1)
-                        (boost::tree_node::post_order_traversal, 2, 1, 3)
-                        (boost::tree_node::pre_order_traversal, 3, 2, 6)
+                        (boost::tree_node::pre_order_traversal, 2, 2, 7)
                             (boost::tree_node::pre_order_traversal, 0, 0, 1)
                             (boost::tree_node::post_order_traversal, 0, 0, 1)
                             (boost::tree_node::pre_order_traversal, 1, 0, 1)
@@ -2037,7 +2506,13 @@ void test()
                             (boost::tree_node::pre_order_traversal, 1, 0, 1)
                             (boost::tree_node::post_order_traversal, 1, 0, 1)
                             (boost::tree_node::post_order_traversal, 2, 1, 3)
-                        (boost::tree_node::post_order_traversal, 3, 2, 6)
+                            (boost::tree_node::pre_order_traversal, 1, 0, 1)
+                            (boost::tree_node::post_order_traversal, 1, 0, 1)
+                        (boost::tree_node::post_order_traversal, 2, 2, 7)
+                        (boost::tree_node::pre_order_traversal, 3, 1, 2)
+                            (boost::tree_node::pre_order_traversal, 0, 0, 1)
+                            (boost::tree_node::post_order_traversal, 0, 0, 1)
+                        (boost::tree_node::post_order_traversal, 3, 1, 2)
                         (boost::tree_node::pre_order_traversal, 4, 3, 12)
                             (boost::tree_node::pre_order_traversal, 0, 0, 1)
                             (boost::tree_node::post_order_traversal, 0, 0, 1)
@@ -2361,8 +2836,8 @@ int test_main(int argc, char** argv)
     test<boost::ptr_listS>();
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     test<boost::vector_selector<boost::mpl::true_> >();
-    test<boost::stable_vecS>();
-    test<boost::deque_selector<boost::mpl::true_> >();
+//    test<boost::stable_vecS>();
+//    test<boost::deque_selector<boost::mpl::true_> >();
     test<boost::list_selector<boost::mpl::true_> >();
     test<boost::slistS>();
 #endif

@@ -172,6 +172,20 @@ namespace boost { namespace tree_node {
 
         void on_post_inserted_impl(iterator position, ::boost::mpl::false_);
 
+        void
+            on_post_insert_impl(
+                iterator itr
+              , iterator itr_end
+              , ::boost::mpl::true_
+            );
+
+        void
+            on_post_insert_impl(
+                iterator itr
+              , iterator itr_end
+              , ::boost::mpl::false_
+            );
+
      public:
         //[reference__with_position_base__key_value_operator__const
         const_iterator operator[](position_key const&) const;
@@ -332,7 +346,7 @@ namespace boost { namespace tree_node {
       , typename T1
       , typename T2
     >
-    inline void
+    void
         with_position_base<Derived,BaseGenerator,T1,T2>::on_post_inserted_impl(
             iterator position
           , ::boost::mpl::false_ f
@@ -349,6 +363,53 @@ namespace boost { namespace tree_node {
             ++itr
         )
         {
+            dereference_iterator(itr).on_post_modify_value(position_key());
+        }
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    void
+        with_position_base<Derived,BaseGenerator,T1,T2>::on_post_insert_impl(
+            iterator itr
+          , iterator itr_end
+          , ::boost::mpl::true_ t
+        )
+    {
+        for (
+            super_t::on_post_insert_impl(itr, itr_end, t);
+            itr != itr_end;
+            ++itr
+        )
+        {
+            dereference_iterator(itr)._position = itr;
+            dereference_iterator(itr).on_post_modify_value(position_key());
+        }
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    void
+        with_position_base<Derived,BaseGenerator,T1,T2>::on_post_insert_impl(
+            iterator itr
+          , iterator itr_end
+          , ::boost::mpl::false_ f
+        )
+    {
+        super_t::on_post_insert_impl(itr, itr_end, f);
+        itr_end = this->end();
+
+        for (itr = this->begin(); itr != itr_end; ++itr)
+        {
+            dereference_iterator(itr)._position = itr;
             dereference_iterator(itr).on_post_modify_value(position_key());
         }
     }

@@ -10,8 +10,10 @@
 #include <boost/mpl/assert.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/iterator/transform_iterator.hpp>
+#include <boost/range.hpp>
 #include <boost/container_gen/container_gen.hpp>
 #include <boost/container_gen/emplace_function_gen.hpp>
+#include <boost/container_gen/insert_range_result_gen.hpp>
 #include <boost/container_gen/is_recursive_selector.hpp>
 #include <boost/container_gen/has_stable_iters_selector.hpp>
 #include <boost/tree_node/preprocessor.hpp>
@@ -22,8 +24,11 @@
 #include <boost/detail/metafunction/container_reverse_iterator.hpp>
 #include <boost/assert.hpp>
 
-#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#include <boost/container_gen/insert_range_function_gen.hpp>
+#else
 #include <boost/move/move.hpp>
+#include <boost/container_gen/splice_function_gen.hpp>
 #endif
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -341,6 +346,21 @@ namespace boost { namespace tree_node {
 #undef BOOST_TREE_NODE_NARY_NODE_MACRO
 #endif  // BOOST_CONTAINER_PERFECT_FORWARDING
 
+        //[reference__nary_node_base__splice
+        typename ::boost::insert_range_result_gen<Selector,Derived>::type
+            splice(iterator pos, Derived& node);
+
+        iterator splice(iterator pos, Derived& node, iterator itr);
+
+        typename ::boost::insert_range_result_gen<Selector,Derived>::type
+            splice(
+                iterator pos
+              , Derived& node
+              , iterator itr
+              , iterator itr_end
+            );
+        //]
+
         //[reference__nary_node_base__cbegin
         const_iterator cbegin() const;
         const_iterator begin() const;
@@ -390,6 +410,13 @@ namespace boost { namespace tree_node {
         //]
 
      private:
+        static void
+            _link_children_to_parent(
+                pointer const& p
+              , iterator itr
+              , iterator itr_end
+            );
+
 #if defined BOOST_CONTAINER_PERFECT_FORWARDING
         template <typename ...Args>
         iterator _add_child(Args&& ...args);
@@ -416,8 +443,6 @@ namespace boost { namespace tree_node {
 #endif  // BOOST_CONTAINER_PERFECT_FORWARDING
 
         void _initialize(iterator& to_child);
-
-        void _link_children_to_parent();
 
         void _on_post_modify_value(data_key const& key);
 
@@ -589,7 +614,11 @@ namespace boost { namespace tree_node {
     template <typename Derived, typename T, typename Selector>
     inline void nary_node_base<Derived,T,Selector>::on_post_copy_or_move()
     {
-        this->_link_children_to_parent();
+        nary_node_base<Derived,T,Selector>::_link_children_to_parent(
+            this->get_derived()
+          , this->_children.begin()
+          , this->_children.end()
+        );
         this->on_post_propagate_value(data_key());
     }
 
@@ -761,6 +790,130 @@ namespace boost { namespace tree_node {
     )
 #undef BOOST_TREE_NODE_NARY_NODE_MACRO
 #endif  // BOOST_CONTAINER_PERFECT_FORWARDING
+
+    template <typename Derived, typename T, typename Selector>
+    typename ::boost::insert_range_result_gen<Selector,Derived>::type
+        nary_node_base<Derived,T,Selector>::splice(iterator pos, Derived& node)
+    {
+#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        typename ::boost::insert_range_function_gen<Selector>::type
+            range_pusher;
+        typename ::boost::insert_range_result_gen<Selector,Derived>::type
+            result = range_pusher(
+                this->_children
+              , pos
+              , node.begin()
+              , node.end()
+            );
+
+        node.clear();
+#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        typename ::boost::splice_function_gen<Selector>::type
+            splicer;
+        typename ::boost::insert_range_result_gen<Selector,Derived>::type
+            result = splicer(
+                this->_children
+              , pos
+              , node._children
+              , node.begin()
+              , node.end()
+            );
+
+        node.on_post_clear();
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+        nary_node_base<Derived,T,Selector>::_link_children_to_parent(
+            this->get_derived()
+          , ::boost::begin(result)
+          , ::boost::end(result)
+        );
+        this->on_post_insert(
+            ::boost::begin(result)
+          , ::boost::end(result)
+          , ::boost::has_stable_iterators_selector<Selector>()
+        );
+        return result;
+    }
+
+    template <typename Derived, typename T, typename Selector>
+    typename nary_node_base<Derived,T,Selector>::iterator
+        nary_node_base<Derived,T,Selector>::splice(
+            iterator pos
+          , Derived& node
+          , iterator itr
+        )
+    {
+#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        iterator result = node._children.insert(pos, *itr);
+
+        node._children.erase(itr);
+#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        typename ::boost::splice_function_gen<Selector>::type
+            splicer;
+        iterator result = splicer(
+            this->_children
+          , pos
+          , node._children
+          , itr
+        );
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+        node.on_post_erase();
+        (*result)._parent = this->get_derived();
+        (*result).on_post_inserted(
+            result
+          , ::boost::has_stable_iterators_selector<Selector>()
+        );
+        return result;
+    }
+
+    template <typename Derived, typename T, typename Selector>
+    typename ::boost::insert_range_result_gen<Selector,Derived>::type
+        nary_node_base<Derived,T,Selector>::splice(
+            iterator pos
+          , Derived& node
+          , iterator itr
+          , iterator itr_end
+        )
+    {
+#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        typename ::boost::insert_range_function_gen<Selector>::type
+            range_pusher;
+        typename ::boost::insert_range_result_gen<Selector,Derived>::type
+            result = range_pusher(
+                this->_children
+              , pos
+              , itr
+              , itr_end
+            );
+
+        node._children.erase(itr, itr_end);
+#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        typename ::boost::splice_function_gen<Selector>::type
+            splicer;
+        typename ::boost::insert_range_result_gen<Selector,Derived>::type
+            result = splicer(
+                this->_children
+              , pos
+              , node._children
+              , itr
+              , itr_end
+            );
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+        node.on_post_erase();
+        nary_node_base<Derived,T,Selector>::_link_children_to_parent(
+            this->get_derived()
+          , ::boost::begin(result)
+          , ::boost::end(result)
+        );
+        this->on_post_insert(
+            ::boost::begin(result)
+          , ::boost::end(result)
+          , ::boost::has_stable_iterators_selector<Selector>()
+        );
+        return result;
+    }
 
     template <typename Derived, typename T, typename Selector>
     inline typename nary_node_base<Derived,T,Selector>::const_iterator
@@ -936,13 +1089,16 @@ namespace boost { namespace tree_node {
     }
 
     template <typename Derived, typename T, typename Selector>
-    void nary_node_base<Derived,T,Selector>::_link_children_to_parent()
+    void
+        nary_node_base<Derived,T,Selector>::_link_children_to_parent(
+            pointer const& p
+          , iterator itr
+          , iterator itr_end
+        )
     {
-        iterator itr_end = this->end();
-
-        for (iterator itr = this->begin(); itr != itr_end; ++itr)
+        for (; itr != itr_end; ++itr)
         {
-            (*itr)._parent = this->get_derived();
+            (*itr)._parent = p;
         }
     }
 
@@ -952,7 +1108,7 @@ namespace boost { namespace tree_node {
             data_key const& key
         )
     {
-        this->on_post_modify_value(key);
+        this->on_post_propagate_value(key);
     }
 
 #if defined BOOST_TREE_NODE_CAN_USE_FUSION
@@ -963,7 +1119,7 @@ namespace boost { namespace tree_node {
             FusionKey const& key
         )
     {
-        this->on_post_modify_value(key);
+        this->on_post_propagate_value(key);
     }
 #endif
 }}  // namespace boost::tree_node

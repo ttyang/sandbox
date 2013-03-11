@@ -271,6 +271,14 @@ namespace boost { namespace tree_node {
               , BooleanIntegralConstant invalidates_sibling_positions
             );
 
+        template <typename BooleanIntegralConstant>
+        void
+            on_post_insert_impl(
+                iterator itr
+              , iterator itr_end
+              , BooleanIntegralConstant invalidates_children_positions
+            );
+
         void on_post_erase_impl();
 
         void on_post_clear_impl();
@@ -806,11 +814,45 @@ namespace boost { namespace tree_node {
 
         if (IncludesRoot::value)
         {
-            this->_update();
+            this->_set_accumulation(
+                accumulation_key<
+                    Key
+                  , Tag
+                  , IncludesAllDescendants
+                  , IncludesRoot
+                  , Value
+                >()
+            );
+            this->on_post_modify_value(
+                accumulation_key<
+                    Key
+                  , Tag
+                  , IncludesAllDescendants
+                  , IncludesRoot
+                  , Value
+                >()
+            );
         }
         else if (pointer p = this->get_parent_ptr())
         {
-            static_cast<self*>(p)->_update();
+            static_cast<self*>(p)->_set_accumulation(
+                accumulation_key<
+                    Key
+                  , Tag
+                  , IncludesAllDescendants
+                  , IncludesRoot
+                  , Value
+                >()
+            );
+            p->on_post_modify_value(
+                accumulation_key<
+                    Key
+                  , Tag
+                  , IncludesAllDescendants
+                  , IncludesRoot
+                  , Value
+                >()
+            );
         }
     }
 
@@ -1008,6 +1050,43 @@ namespace boost { namespace tree_node {
           , invalidates_sibling_positions
         );
         static_cast<self*>(this->get_parent_ptr())->_update();
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Key
+      , typename Tag
+      , typename IncludesAllDescendants
+      , typename IncludesRoot
+      , typename Value
+    >
+    template <typename BooleanIntegralConstant>
+    inline void
+        with_accumulation_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Key
+          , Tag
+          , IncludesAllDescendants
+          , IncludesRoot
+          , Value
+        >::on_post_insert_impl(
+            iterator itr
+          , iterator itr_end
+          , BooleanIntegralConstant invalidates_children_positions
+        )
+    {
+        super_t::on_post_insert_impl(
+            itr
+          , itr_end
+          , invalidates_children_positions
+        );
+        this->_update();
     }
 
     template <

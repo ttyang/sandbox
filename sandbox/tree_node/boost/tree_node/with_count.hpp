@@ -200,6 +200,14 @@ namespace boost { namespace tree_node {
               , BooleanIntegralConstant invalidates_sibling_positions
             );
 
+        template <typename BooleanIntegralConstant>
+        void
+            on_post_insert_impl(
+                iterator itr
+              , iterator itr_end
+              , BooleanIntegralConstant invalidates_children_positions
+            );
+
         void on_post_erase_impl();
 
         void on_post_clear_impl();
@@ -447,6 +455,47 @@ namespace boost { namespace tree_node {
           , invalidates_sibling_positions
         );
         self::_update_greater_count(this->get_derived(), this->_count);
+        this->on_post_propagate_value(count_key());
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    template <typename BooleanIntegralConstant>
+    void
+        with_count_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Count
+        >::on_post_insert_impl(
+            iterator itr
+          , iterator itr_end
+          , BooleanIntegralConstant invalidates_children_positions
+        )
+    {
+        super_t::on_post_insert_impl(
+            itr
+          , itr_end
+          , invalidates_children_positions
+        );
+        typename traits::count new_count = self::_get_count(itr, itr_end);
+        this->_count += new_count;
+
+        for (
+            self::_update_greater_count(this->get_derived(), new_count);
+            itr != itr_end;
+            ++itr
+        )
+        {
+            dereference_iterator(itr).on_post_modify_value(count_key());
+        }
+
         this->on_post_propagate_value(count_key());
     }
 

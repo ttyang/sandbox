@@ -78,6 +78,36 @@ namespace boost { namespace tree_node {
             );
         //]
 
+        //[reference__tree_node_base__on_post_insert_impl__true
+        template <typename Iterator>
+        void
+            on_post_insert_impl(
+                Iterator itr
+              , Iterator itr_end
+              , ::boost::mpl::true_
+            );
+        //]
+
+        //[reference__tree_node_base__on_post_insert_impl__false
+        template <typename Iterator>
+        void
+            on_post_insert_impl(
+                Iterator itr
+              , Iterator itr_end
+              , ::boost::mpl::false_
+            );
+        //]
+
+        //[reference__tree_node_base__on_post_insert
+        template <typename Iterator, typename BooleanIntegralConstant>
+        void
+            on_post_insert(
+                Iterator itr
+              , Iterator itr_end
+              , BooleanIntegralConstant invalidates_children_positions
+            );
+        //]
+
         //[reference__tree_node_base__on_post_erase_impl
         void on_post_erase_impl();
         //]
@@ -195,6 +225,44 @@ namespace boost { namespace tree_node {
         this->get_derived()->on_post_inserted_impl(
             position
           , invalidates_sibling_positions
+        );
+    }
+
+    template <typename Derived>
+    template <typename Iterator>
+    inline void
+        tree_node_base<Derived>::on_post_insert_impl(
+            Iterator itr
+          , Iterator itr_end
+          , ::boost::mpl::true_
+        )
+    {
+    }
+
+    template <typename Derived>
+    template <typename Iterator>
+    inline void
+        tree_node_base<Derived>::on_post_insert_impl(
+            Iterator itr
+          , Iterator itr_end
+          , ::boost::mpl::false_
+        )
+    {
+    }
+
+    template <typename Derived>
+    template <typename Iterator, typename BooleanIntegralConstant>
+    inline void
+        tree_node_base<Derived>::on_post_insert(
+            Iterator itr
+          , Iterator itr_end
+          , BooleanIntegralConstant invalidates_children_positions
+        )
+    {
+        this->get_derived()->on_post_insert_impl(
+            itr
+          , itr_end
+          , invalidates_children_positions
         );
     }
 

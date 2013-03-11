@@ -208,6 +208,14 @@ namespace boost { namespace tree_node {
               , BooleanIntegralConstant invalidates_sibling_positions
             );
 
+        template <typename BooleanIntegralConstant>
+        void
+            on_post_insert_impl(
+                iterator itr
+              , iterator itr_end
+              , BooleanIntegralConstant invalidates_children_positions
+            );
+
         void on_post_erase_impl();
 
         void on_post_clear_impl();
@@ -445,6 +453,45 @@ namespace boost { namespace tree_node {
           , invalidates_sibling_positions
         );
         this->get_parent_ptr()->_shallow_update();
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Height
+    >
+    template <typename BooleanIntegralConstant>
+    inline void
+        with_height_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Height
+        >::on_post_insert_impl(
+            iterator itr
+          , iterator itr_end
+          , BooleanIntegralConstant invalidates_children_positions
+        )
+    {
+        super_t::on_post_insert_impl(
+            itr
+          , itr_end
+          , invalidates_children_positions
+        );
+        typename traits::height new_height = self::_get_max_height(
+            itr
+          , itr_end
+        );
+
+        if (this->_height < new_height)
+        {
+            this->_height = new_height;
+            self::_update_greater_height(this->get_derived());
+            this->on_post_propagate_value(height_key());
+        }
     }
 
     template <
