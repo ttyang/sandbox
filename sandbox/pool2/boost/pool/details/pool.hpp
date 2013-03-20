@@ -113,58 +113,5 @@ class list_t
 };
 
 /* -------------------------------------------------------------------------- */
-/* -- boost::pool::chunk_t                                                 -- */
-/* -------------------------------------------------------------------------- */
-
-template<typename T>
-class chunk_t
-{
-	public :
-		chunk_t() {}
-		chunk_t(char *pointer, size_t size, size_t count) : _pointer(pointer), _size(size), _count(count) {}
-
-		inline char *pointer() const
-			{ return _pointer; }
-		inline size_t size() const
-			{ return _size; }
-		inline size_t count() const
-			{ return _count; }
-
-		inline bool operator<(const chunk_t& chunk) const
-			{ return _pointer < chunk._pointer; }
-
-	public :
-		inline T *first() const
-			{ return reinterpret_cast<T *>(_pointer); }			
-		inline T *last() const
-			{ return reinterpret_cast<T *>(_pointer + _size * _count); }
-		inline T *next(T *buffer) const
-			{ return reinterpret_cast<T *>(reinterpret_cast<char *>(buffer) + _size); }
-
-	public :
-		bool contains(const T *buffer) const
-		{
-			const char *pointer = reinterpret_cast<const char *>(buffer);
-
-			if (pointer < _pointer)
-				return false;
-
-			size_t index = (pointer - _pointer) / _size;
-			if (index >= _count)
-				return false;
-
-			if (_pointer + _size * index != pointer)
-				return false;
-
-			return true;
-		}
-
-	private :
-		char *_pointer;    // Memory chunk pointer.
-		size_t _size;      // Size of a buffer, in bytes.
-		size_t _count;     // Number of buffers in chunk.
-};
-
-/* -------------------------------------------------------------------------- */
 
 #endif

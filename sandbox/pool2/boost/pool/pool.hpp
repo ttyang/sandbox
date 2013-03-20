@@ -3,15 +3,17 @@
 
 #include <boost/config.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/bind.hpp>
+#include <boost/iterator/iterator_facade.hpp>
 
-#include <algorithm>  // std::sort, std::find_if
+#ifdef BOOST_MSVC
+	#pragma warning(disable: 4996)  // Function call with parameters that may be unsafe
+#endif
+
+#include <algorithm>  // std::copy, std::sort
 #include <cassert>    // assert
 #include <cstddef>    // size_t
-#include <functional> // std::mem_fun
 #include <limits>     // std:numeric_limits
 #include <memory>     // std::allocator
-#include <vector>     // std::vector
 
 #include <boost/tr1/type_traits.hpp>
 
@@ -104,6 +106,7 @@ class pool
 {
 	private :
 		#include "details/pool.hpp"
+		#include "details/chunks.hpp"
 
 	public :
 		/** ------------------------------------------------------------------------
@@ -251,7 +254,9 @@ class pool
 		Allocator _allocator;        // Custom allocator. Set by the constructor.
 		pools::policy _policy;       // Pool growth policy. Set by the constructor.
 
-		typedef std::vector<chunk_t<T>> chunks_t;
+		typedef _chunks_t<T> chunks_t;
+		typedef _chunk_t<T> chunk_t;
+
 		chunks_t _chunks;            // Allocated memory chunks.
 		list_t<T> _list;             // List of free pool buffers.
 
@@ -280,7 +285,7 @@ pool<T, ThreadSafe, Allocator>::~pool()
 
 	/* -- Release all pool memory -- */
 
-	for (chunks_t::iterator chunk = _chunks.begin(); chunk != _chunks.end(); chunk++)
+	for (chunks_t::const_iterator chunk = _chunks.cbegin(); chunk != _chunks.cend(); chunk++)
 		_allocator.deallocate(chunk->pointer(), chunk->size());
 }
 
@@ -301,14 +306,14 @@ void pool<T, ThreadSafe, Allocator>::purge()
 
 	/* -- Sort allocated chunks and list of free buffers -- */
 
-	std::sort(_chunks.begin(), _chunks.end());
+	_chunks.sort();
 	_list.sort();
 
 	/* -- Release missing elements -- */
 
 	list_t<T> list = _list;
 
-	for (chunks_t::iterator chunk = _chunks.begin(); chunk != _chunks.end(); chunk++)
+	for (chunks_t::const_iterator chunk = _chunks.cbegin(); chunk != _chunks.cend(); chunk++)
 		for (T *buffer = chunk->first(); buffer != chunk->last(); buffer = chunk->next(buffer))
 			if (list.front() != buffer)
 				release(buffer);
@@ -343,13 +348,13 @@ bool pool<T, ThreadSafe, Allocator>::grow(size_t count)
 
 	/* -- Perform allocation -- */
 
-	chunk_t<T> chunk(_allocator.allocate(size * count), size, count);
+	chunk_t chunk(_allocator.allocate(size * count), size, count);
 	if (!chunk.pointer())
 		return false;
 
 	/* -- Keep allocated pointer for purge function -- */
 
-	_chunks.push_back(chunk);
+	_chunks.push(chunk);
 	_allocated += count;
 
 	/* -- Push newly allocated buffers in list of free buffers -- */
@@ -467,7 +472,7 @@ void pool<T, ThreadSafe, Allocator>::release(T *buffer)
 
 	assert(_requested > 0);
 	assert(!_list.contains(buffer));
-	assert(std::find_if(_chunks.begin(), _chunks.end(), boost::bind(&chunk_t<T>::contains, _1, buffer)) != _chunks.end());  // TODO : Remove boost::bind
+	assert(_chunks.contains(buffer));
 
 	/* -- Destroy buffer content -- */
 
