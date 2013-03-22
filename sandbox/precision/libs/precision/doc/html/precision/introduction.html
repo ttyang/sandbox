@@ -4,8 +4,8 @@
 <title>Introduction</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
-<link rel="up" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
 <link rel="prev" href="background.html" title="Background">
 <link rel="next" href="suffixes.html" title="How to specify extended precision constants - Q?">
 </head>
@@ -29,13 +29,21 @@
 <p>
       These developments have also revealed a need for more standard ways to specify
       precision, especially for extended precision, and to improve portability and
-      give more confidence that the actual precision can be predicted. For example,
-      support has been expressed on the <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost
-      list discussion of precise floating-point types</a>
+      give more confidence that the actual precision can be exactly predicted. For
+      example, support has been expressed on the <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost
+      list discussion of precise floating-point types</a>.
     </p>
 <p>
       The reasons for this need are analogous to those that led to the introduction
-      of fixed integer size like <code class="computeroutput"><span class="identifier">int64_t</span></code>.
+      of specific integer size like <code class="computeroutput"><span class="identifier">int64_t</span></code>.
+    </p>
+<p>
+      (Although Section 22.3 in the book "The C++ Standard Library Extensions",
+      P. Becker, Addison Wesley 2007, ISBN 0-321-41299-0, the section is called "Fixed-Size
+      Integer Types", used of the descriptor <span class="emphasis"><em>fixed</em></span> has
+      lead to some confusion. So the descriptor <span class="emphasis"><em>specific</em></span> is
+      here used to match the wording of C99 in the section on <code class="computeroutput"><span class="identifier">int_64_t</span>
+      <span class="special">...</span></code> in <code class="computeroutput"><span class="identifier">stdint</span><span class="special">.</span><span class="identifier">h</span></code>.)
     </p>
 <p>
       Recent specification of fixed-size integer types in C99, C11 and C++11 and
@@ -46,10 +54,12 @@
 <p>
       Similar specification of fixed-size floating-point types could potentially
       improve the C++ language significantly, especially in the scientific and engineering
-      communities.
+      communities where other languages have found benefit from types that conform
+      exactly to the <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a>.
     </p>
 <p>
-      One example of how fixed-size integer types have proved invaluable is described
+      One example of how specific-size integer types have proved invaluable is described
       by Robert Ramey <a href="http://lists.boost.org/Archives/boost/2002/11/40432.php" target="_top">Usefulness
       of fixed integer sizes in portability (for Boost serialization library).</a>
     </p>
@@ -75,7 +85,7 @@ Fundamental types in C++ are <code class="computeroutput"><span class="keyword">
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

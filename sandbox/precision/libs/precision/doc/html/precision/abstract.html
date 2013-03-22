@@ -4,9 +4,9 @@
 <title>Abstract</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
-<link rel="up" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
-<link rel="prev" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
+<link rel="prev" href="../index.html" title="Specific-Width Floating-Point Types">
 <link rel="next" href="background.html" title="Background">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -27,11 +27,9 @@
 <a name="precision.abstract"></a><a class="link" href="abstract.html" title="Abstract">Abstract</a>
 </h2></div></div></div>
 <p>
-      It is proposed to add several optional typedefs with fixed precisions for floating-point
-      types including <code class="computeroutput"><span class="identifier">float32_t</span><span class="special">,</span>
-      <span class="identifier">float64_t</span> <span class="identifier">_float128_t</span></code>
-      (similar to <code class="computeroutput"><span class="identifier">int64_t</span></code> for integer
-      types).
+      It is proposed to add several optional typedefs with specific precisions for
+      floating-point types including <code class="computeroutput"><span class="identifier">float32_t</span><span class="special">,</span> <span class="identifier">float64_t</span> <span class="identifier">_float128_t</span></code> (similar to <code class="computeroutput"><span class="identifier">int64_t</span></code>
+      for integer types).
     </p>
 <p>
       These will be defined in the global and <code class="computeroutput"><span class="identifier">std</span></code>
@@ -43,13 +41,23 @@
       <span class="keyword">double</span></code>.
     </p>
 <p>
-      The objectives are to makes it easier to use higher-precision, to reduce errors
-      in precision, and to improve portability.
+      The objectives are to:
     </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Make it easier to use higher-precision.
+        </li>
+<li class="listitem">
+          Reduce errors in precision.
+        </li>
+<li class="listitem">
+          Improve portability.
+        </li>
+</ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

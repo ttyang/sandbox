@@ -1,17 +1,17 @@
-[article Specification of Precision of Floating-point and Integer Types
+[article Specific-Width Floating-Point Types
     [quickbook 1.5]
     [id precision]
-    [copyright 2013 Paul A. Bristow,  Christopher Kormanyos]
+    [copyright 2013 Paul A. Bristow,  Christopher Kormanyos, John Maddock]
     [license
         Distributed under the Boost Software License, Version 1.0.
         (See accompanying file LICENSE_1_0.txt or copy at
         [@http://www.boost.org/LICENSE_1_0.txt])
     ]
-    [authors [Bristow, Paul A.], [Kormanyos, Christopher]]
+    [authors [Bristow, Paul A.], [Kormanyos, Christopher], [Maddock, John]]
     [source-mode c++]
 ]
 
-[/purpose paper for C++ ISO standards group WG21.]
+[/purpose paper for C++ ISO standards group WG21/SG6 numerics.]
 
 [def __Boost [@http://www.boost.org/ Boost]]
 [def __Boost_Math [@http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html Boost.Math]]
@@ -24,7 +24,7 @@
 [def __NTL_quad_float [@http://shoup.net/ntl/doc/quad_float.txt NTL::quad_float]]
 [def __MPFR [@http://www.mpfr.org/ GNU MPFR library]]
 [def __GMP [@http://gmplib.org/ GNU Multiple Precision Arithmetic Library]]
-[def __Boost_multiprecision [@http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html Boost.Multiprecision]]
+[def __Boost_Multiprecision [@http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html Boost.Multiprecision]]
 [def __cpp_dec_float [@http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/boost_multiprecision/tut/floats/cpp_dec_float.html cpp_dec_float]]
 [def __R [@http://www.r-project.org/ The R Project for Statistical Computing]]
 [def __e_float [@http://calgo.acm.org/910.zip e_float (TOMS Algorithm 910)]]
@@ -34,10 +34,23 @@
 [def __WolframAlpha [@http://www.wolframalpha.com/ Wolfram Alpha]]
 [def __Matlab [@http://www.mathworks.co.uk/products/matlab/ MATLAB]]
 [def __libquadmath [@http://gcc.gnu.org/onlinedocs/libquadmath/ GCC libquadmath]]
+[def __Quad [@http://software.intel.com/en-us/forums/topic/358472 Extended or Quad IEEE FP formats]]
+[def __IEEE754 [@http://dx.doi.org/10.1109/IEEESTD.2008.4610935 IEEE Standard for Floating-point Arithmetic, IEEE Std 754-2008]]
+
+[def __IEEE_Half [@http://en.wikipedia.org/wiki/Half_precision_floating-point_format IEEE half-precision floating-point format]]
+[def __IEEE_Single [@http://en.wikipedia.org/wiki/Single_precision_floating-point_format IEEE single-precision floating-point format]]
+[def __IEEE_Double [@http://en.wikipedia.org/wiki/Double_precision_floating-point_format IEEE double-precision floating-point format]]
+[def __IEEE_Quad [@http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format  Quadruple-precision floating-point format]]
+[def __IEEE_Extended [@http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats IEEE 754 extended precision formats and x86 80-bit Extended Precision Format]]
+[def __IEEE_floating_point [@http://en.wikipedia.org/wiki/IEEE_floating_point IEEE_ floating-point format]]
+
+[def __IBM_hexadecimal [@http://en.wikipedia.org/wiki/Extended_precision#IBM_extended_precision_formats IBM extended precision formats]]
+
+[def __C_IEEE_2008 [@http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1582.pdf C support for IEEE754:2008 N1582]]
 
 [include html4_symbols.qbk]
 
-ISO/IEC JTC1 SC22 WG21 N???  - 2013-4-??
+ISO/IEC JTC1 SC22 WG21/SG6 Numerics N???  - 2013-4-??
 
 [important This is NOT an official Boost library.]
 
@@ -45,14 +58,18 @@ ISO/IEC JTC1 SC22 WG21 N???  - 2013-4-??
 
 [section:abstract  Abstract]
 
-It is proposed to add several optional typedefs with fixed precisions
+It is proposed to add several optional typedefs with specific precisions
 for floating-point types including `float32_t, float64_t _float128_t` (similar to `int64_t` for integer types).
 
 These will be defined in the global and `std` namespaces.
 
 And also to provide additional suffix(es) to specify extended precision constants to suit precisions higher than `long double`.
 
-The objectives are to makes it easier to use higher-precision, to reduce errors in precision, and to improve portability.
+The objectives are to:
+
+* Make it easier to use higher-precision.
+* Reduce errors in precision.
+* Improve portability.
 
 [endsect] [/section:abstract  Abstract]
 
@@ -70,13 +87,13 @@ Document number: N3494 Version: 1.0 Date: 2012-12-19]
 
 The __Boost_Math library was accepted into __Boost several years ago.  It implements many of the functions in both documents mentioned above and has become quite widely used.
 
-With the acceptance and release of __Boost_multiprecision
+With the acceptance and release of __Boost_Multiprecision
 that provides much higher precision than built-in `long double` with
 __cpp_dec_float employing a variety of backends including the well-established __GMP and __MPFR libraries
 as well as a full open-license backend developed
 from the __e_float library by Christopher Kormanyos and John Maddock.
 
-Since __Boost_multiprecision and __Boost_Math work seamlessly, allowing a `float_type typedef` to be switched from a built-in type to hundreds of decimal digits; then all the special functions and distributions can be used at any chosen precision.
+Since __Boost_Multiprecision and __Boost_Math work seamlessly, allowing a `float_type typedef` to be switched from a built-in type to hundreds of decimal digits; then all the special functions and distributions can be used at any chosen precision.
 
 Other users and domains are finding the need and utility of
 [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3407.html decimal] and
@@ -92,18 +109,20 @@ previously the domain covered by __Mathematica, __Matlab and others where the pr
 
 [section:introduction Introduction]
 
-These developments have also revealed a need for more standard ways to specify precision, especially for extended precision, and to improve portability and give more confidence that the actual precision can be predicted. For example, support has been expressed on the [@http://lists.boost.org/Archives/boost/2013/03/201786.php Boost list discussion of precise floating-point types]
+These developments have also revealed a need for more standard ways to specify precision, especially for extended precision, and to improve portability and give more confidence that the actual precision can be exactly predicted. For example, support has been expressed on the [@http://lists.boost.org/Archives/boost/2013/03/201786.php Boost list discussion of precise floating-point types].
 
-The reasons for this need are analogous to those that led to the introduction of fixed integer size like `int64_t`.
+The reasons for this need are analogous to those that led to the introduction of specific integer size like `int64_t`.
+
+(Although Section 22.3 in the book "The C++ Standard Library Extensions", P. Becker, Addison Wesley 2007, ISBN 0-321-41299-0, the section is called "Fixed-Size Integer Types", used of the descriptor ['fixed] has lead to some confusion. So the descriptor ['specific] is here used to match the wording of C99 in the section on `int_64_t ...` in `stdint.h`.)
 
 Recent specification of fixed-size integer types
 in C99, C11 and C++11 and [@http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf C++ draft specification]
 has drastically improved integer algorithm portability and range.
 
 Similar specification of fixed-size floating-point types could potentially improve the C++ language
-significantly, especially in the scientific and engineering communities.
+significantly, especially in the scientific and engineering communities where other languages have found benefit from types that conform exactly to the __IEEE_floating_point.
 
-One example of how fixed-size integer types have proved invaluable is described by Robert Ramey
+One example of how specific-size integer types have proved invaluable is described by Robert Ramey
 [@http://lists.boost.org/Archives/boost/2002/11/40432.php
 Usefulness of fixed integer sizes in portability (for Boost serialization library).]
 
@@ -137,7 +156,7 @@ There may also be a need for 256-bit (about 80 decimal digits) precision, and pe
 
 At present, the only way to provide constant values is to use a string to extended-precision type conversion.
 
-This `from_string` method is used for __Boost_Math, __Boost_multiprecision and __libquadmath, for example.
+This `from_string` method is used for __Boost_Math, __Boost_Multiprecision and __libquadmath, for example.
 
 It would also be useful to have a method of interrogating the size of types, similar to that provided by
 [@http://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html GCC 3.7.2 Common Predefined Macros], for example,
@@ -148,6 +167,10 @@ We refer to floating-point types with fixed
 precision such as 24, 54, 113 or more binary significand digits,
 (and possibly even extending beyond these to potential multiprecision types).
 
+These are defined in __IEEE754.
+
+There are detailed descriptions at __IEEE_floating_point, with more detailed descrptions of each type at __IEEE_Half, __IEEE_Single, __IEEE_Double, __IEEE_Quad, and __IEEE_Extended and these correspond to the proposed types below `float16_t` ....
+
 [endsect] [/section:suffixes  How to specify extended precision constants - Q?]
 
 [section:precision Specifying Precision]
@@ -157,13 +180,13 @@ One could envision two ways to name the fixed-precision types:
 * `float24_t, float53_t, float113_t, ...`
 * `float32_t, float64_t, float128_t, ...`
 
-The first set above is intuitively coined from IEE754:2008.
+The first set above is intuitively coined from [@http://dx.doi.org/10.1109/IEEESTD.2008.4610935 IEE754:2008].
 It is also consistent with the gist of `std::uint32_t`, et al
 in so far as the number of binary digits of ['significand] precision
 is contained within the name of the data type.
 
-On the other hand, the second set using the size of the ['whole type] may seem more intuitive to users.
-The exact layout and number of significand and exponent bits can be confirmed by checking
+On the other hand, the second set using the size of the ['whole type] may probably seem more intuitive to users.
+The exact layout and number of significand and exponent bits can be confirmed as IEEE754 by checking
 `std::numeric_limits<type>::is_iec559 == true`.
 
 With the availability of Boost.Multprecision, C++ programmers can now easily switch to using floating-point types that give far more decimal digits of precision (hundreds) than the built-in types `float`, `double` and `long double`.
@@ -175,7 +198,6 @@ The options for [@http://en.wikipedia.org/wiki/Long_double long double] are many
 At least one popular compiler treats `long double` exactly as `double` (as permitted by the C++ Standard which does not prescribe the precision for any floating-point (or integer) types, leaving them to be implementation-defined).
 
 However the [@http://gcc.gnu.org/wiki/x87note Intel X8087 chipset] does do calculations using internal 80-bit registers, increasing the significand from 53 to 63 bits, and gaining about 3 decimal digits precision from 18 and 21.
-
 
 Some hardware, for example [@http://en.wikipedia.org/wiki/SPARC Sparc], provides a 128-bit quadruple precision floating-point chip.
 
@@ -192,19 +214,25 @@ Clang uses a similar technique
 as described in
 [@http://stackoverflow.com/questions/13525774/clang-and-float128-bug-error Clang float128].
 
-If we wish to ensure that we use all 80 bits to calculate
+If we wish to ensure that we use all 80 bits available from Intel 8087 chips to calculate
 [@http://en.wikipedia.org/wiki/Extended_precision Extended precision]
 we would use a `typedef float80_t`.
 
 If the compiler could not generate code this type directly, then it would substitute software emulation, perhaps using a Boost.Multiprecision type `cpp_dec_float_21`.
 
-Similarly if a quadrupole precision of 16-byte 128-bit
-[@http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format format] is desired,
-the specification of `float128_t` will either direct the compiler to generate code using the hardware, or it will do this using software emulation. This might be generated by the compiler for GCC or delegated to a `cpp_bin_float_128` type (under development for __Boost_multiprecision).
+Similarly if a quadrupole precision of 16-byte 128-bit __IEEE_Quad is desired,
+the specification of `float128_t` will either direct the compiler to generate code using the hardware, or it will do this using software emulation. This might be generated by the compiler for GCC or delegated to a `cpp_bin_float_128` type (under development for __Boost_Multiprecision).
 
-[@http://gcc.gnu.org/onlinedocs/gcc/Floating-Types.html   GNU C supports additional floating types, `__float80` and `__float128` to support 80-bit (XFmode) and 128-bit (TFmode) floating types.]
+[h4 Existing extended precision types]
 
-[section:integerfixedtypes Existing Fixed precision integer types]
+# [@http://gcc.gnu.org/onlinedocs/gcc/Floating-Types.html   GNU C supports additional floating types, `__float80` and `__float128` to support 80-bit (XFmode) and 128-bit (TFmode) floating types.]
+
+# __Quad by Intel Intel64 mode on Linux (V12.1) provides 128 bit `long double` in C, however it appears that it only provides computation at 80-bit format giving 64-bit significand precision, and other bits are just padding.
+# [@http://software.intel.com/en-us/forums/topic/358476 Intel FORTRAN REAL*16] is an actual 128-bit IEEE quad, emulated in software. But "I don't know of any plan to implement full C support for 128-bit IEEE format, although evidently ifort has support libraries."  This is equivalent to the proposed float128_t type.
+
+# The 360/85 and follow-on System/370 added support for a 128-bit "extended" __IBM_hexadecimal. These formats are still supported in the current design, where they are now called the "hexadecimal floating point" (HFP) formats.
+
+[section:integerfixedtypes Existing Specific precision integer types]
 18.4 Integer types [cstdint]
 
 18.4.1 Header <cstdint> synopsis [cstdint.syn]
@@ -223,26 +251,43 @@ the specification of `float128_t` will either direct the compiler to generate co
 
 Add the following text to <cstdint>
 
-[note It is not obvious where these typedef should reside. The obvious place is `<cstdint>` but `int` implies integer types. (or <cstdfloat>?)
+[note It is not obvious where these `typedef`s should reside. The obvious place is `<cstdint>` but `int` implies integer types. (or a new <cstdfloat>?)
 ]
 
 18.4? Arithmetic types [cstdfloat]  (or cstdarith]
 18.4.2? Header <cstdfloat> synopsis [cstdfloat.syn]
 
   namespace std {
-    typedef signed integer type float_32_t; // optional
-    typedef signed integer type float_64_t; // optional
-    typedef signed integer type float_80_t; // optional
-    typedef signed integer type float_128_t; // optional
-    typedef signed integer type float_256_t; // optional
-  } // namespace std
+    typedef signed floating-point type float_16_t;  // optional.
+    typedef signed floating-point type float_32_t;  // optional.
+    typedef signed floating-point type float_64_t;  // optional.
+    typedef signed floating-point type float_80_t;  // optional.
+    typedef signed floating-point type float_128_t; // optional.
+    typedef signed floating-point type float_256_t; // optional.
+    typedef signed floating-point type floatmax_t;  // optional.
 
-[note Others might also be defined here?]
+    typedef signed floating-point type float_least16_t;  // optional.
+    typedef signed floating-point type float_least32_t;  // optional.
+    typedef signed floating-point type float_least64_t;  // optional.
+    typedef signed floating-point type float_least80_t;  // optional.
+    typedef signed floating-point type float_least128_t; // optional.
+    typedef signed floating-point type float_least256_t; // optional.
+
+    typedef signed floating-point type float_fast16_t;  // optional.
+    typedef signed floating-point type float_fast32_t;  // optional.
+    typedef signed floating-point type float_fast64_t;  // optional.
+    typedef signed floating-point type float_fast80_t;  // optional.
+    typedef signed floating-point type float_fast128_t; // optional.
+    typedef signed floating-point type float_fast256_t; // optional.
+  } // namespace std
 
 It is not proposed to make any change to `std::numeric_limits`.
 
-It is obviously highly desirable that `std::numeric_limits` is specialized for all floating or fixed-point types.
-And experience with __Boost_Math and __Boost_multiprecision is that the normal set of trig and others useful functions is also essential to make the type useful in real-life.
+It is obviously highly desirable that `std::numeric_limits` is specialized for all floating-point types.
+And experience with __Boost_Math and __Boost_Multiprecision is that the normal set of trig and others useful functions is also essential to make the type useful in real-life.
+
+
+
 
 Programs can then use this to determine if a floating-point type is IEEE 754 using `std::numeric_limits<>::is_iec559`.
 
@@ -268,7 +313,6 @@ The decimal support in C uses built-in types _Decimal32, _Decimal64, and _Decima
 [@http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=4610933  IEEE Std 754-2008]
 
 [@http://dx.doi.org/10.1109/IEEESTD.2008.4610935 IEEE Standard for Floating-point Arithmetic, IEEE Std 754-2008]
-
 
 [@http://www.cesura17.net/~will/Professional/Research/Papers/retrospective.pdf
 How to Read Floating Point Numbers Accurately, William D Clinger]
@@ -300,6 +344,7 @@ Last edit to Quickbook file __FILENAME__ was at __TIME__ on __DATE__.
 [/ precision.qbk
   Copyright 2013 Paul A. Bristow
   Copyright 2013 Christopher Kormanyos.
+  Copyright 2013 John Maddock.
   Distributed under the Boost Software License, Version 1.0.
   (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).

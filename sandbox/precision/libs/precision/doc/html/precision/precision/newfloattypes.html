@@ -4,9 +4,9 @@
 <title>Proposed new section</title>
 <link rel="stylesheet" href="../.././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../../index.html" title="Specification of Precision of Floating-point and Integer Types">
+<link rel="home" href="../../index.html" title="Specific-Width Floating-Point Types">
 <link rel="up" href="../precision.html" title="Specifying Precision">
-<link rel="prev" href="integerfixedtypes.html" title="Existing Fixed precision integer types">
+<link rel="prev" href="integerfixedtypes.html" title="Existing Specific precision integer types">
 <link rel="next" href="../references.html" title="References">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -35,9 +35,10 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          It is not obvious where these typedef should reside. The obvious place
-          is <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdint</span><span class="special">&gt;</span></code> but <code class="computeroutput"><span class="keyword">int</span></code>
-          implies integer types. (or &lt;cstdfloat&gt;?)
+          It is not obvious where these <code class="computeroutput"><span class="keyword">typedef</span></code>s
+          should reside. The obvious place is <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdint</span><span class="special">&gt;</span></code>
+          but <code class="computeroutput"><span class="keyword">int</span></code> implies integer types.
+          (or a new &lt;cstdfloat&gt;?)
         </p></td></tr>
 </table></div>
 <p>
@@ -45,29 +46,35 @@
         synopsis [cstdfloat.syn]
       </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_32_t</span><span class="special">;</span> <span class="comment">// optional</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_64_t</span><span class="special">;</span> <span class="comment">// optional</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_80_t</span><span class="special">;</span> <span class="comment">// optional</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_128_t</span><span class="special">;</span> <span class="comment">// optional</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_256_t</span><span class="special">;</span> <span class="comment">// optional</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_16_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_32_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_64_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_80_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_128_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_256_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">floatmax_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least16_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least32_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least64_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least80_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least128_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least256_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast16_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast32_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast64_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast80_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast128_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast256_t</span><span class="special">;</span> <span class="comment">// optional.</span>
 <span class="special">}</span> <span class="comment">// namespace std</span>
 </pre>
-<div class="note"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-          Others might also be defined here?
-        </p></td></tr>
-</table></div>
 <p>
         It is not proposed to make any change to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span></code>.
       </p>
 <p>
         It is obviously highly desirable that <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span></code>
-        is specialized for all floating or fixed-point types. And experience with
-        <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
+        is specialized for all floating-point types. And experience with <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
         and <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
         is that the normal set of trig and others useful functions is also essential
         to make the type useful in real-life.
@@ -79,7 +86,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
