@@ -6,7 +6,7 @@
 //#include "boost/test/included/unit_test.hpp"
 
 #include <set>
-#include <boost/rational.hpp>
+#include <boost/rational.hpp>  // The new version
 
 #define TEST_LL_RATIONAL  1  // Need an 128bit int to test long long rational
 #if TEST_LL_RATIONAL
@@ -85,24 +85,24 @@ unsigned long long testRationalConstruction(void)
     unsigned long long FailCount(0);
 
     {  // No parameter constructor
-        RatS8wCK  ratValA;     VERIFY_RAT_VAL(ratValA, 0, 1);
+        RatS8wCK  ratValA;  VERIFY_RAT_VAL(ratValA, 0, 1);
         RatS8ref  ratValB;  VERIFY_RAT_VAL(ratValB, 0, 1);
-        RatS16wCK ratValC;     VERIFY_RAT_VAL(ratValC, 0, 1);
+        RatS16wCK ratValC;  VERIFY_RAT_VAL(ratValC, 0, 1);
         RatRefS16 ratValD;  VERIFY_RAT_VAL(ratValD, 0, 1);
-        RatS32wCK ratValE;     VERIFY_RAT_VAL(ratValE, 0, 1);
+        RatS32wCK ratValE;  VERIFY_RAT_VAL(ratValE, 0, 1);
         RatS32ref ratValF;  VERIFY_RAT_VAL(ratValF, 0, 1);
-        RatSLLwCK ratValG;     VERIFY_RAT_VAL(ratValG, 0, 1);
+        RatSLLwCK ratValG;  VERIFY_RAT_VAL(ratValG, 0, 1);
         RatSLLref ratValH;  VERIFY_RAT_VAL(ratValH, 0, 1);
     }
 
     {  // One parameter constructor
-        RatS8wCK  ratValA(57);     VERIFY_RAT_VAL(ratValA, 57, 1);
+        RatS8wCK  ratValA(57);  VERIFY_RAT_VAL(ratValA, 57, 1);
         RatS8ref  ratValB(57);  VERIFY_RAT_VAL(ratValB, 57, 1);
-        RatS16wCK ratValC(57);     VERIFY_RAT_VAL(ratValC, 57, 1);
+        RatS16wCK ratValC(57);  VERIFY_RAT_VAL(ratValC, 57, 1);
         RatRefS16 ratValD(57);  VERIFY_RAT_VAL(ratValD, 57, 1);
-        RatS32wCK ratValE(57);     VERIFY_RAT_VAL(ratValE, 57, 1);
+        RatS32wCK ratValE(57);  VERIFY_RAT_VAL(ratValE, 57, 1);
         RatS32ref ratValF(57);  VERIFY_RAT_VAL(ratValF, 57, 1);
-        RatSLLwCK ratValG(57);     VERIFY_RAT_VAL(ratValG, 57, 1);
+        RatSLLwCK ratValG(57);  VERIFY_RAT_VAL(ratValG, 57, 1);
         RatSLLref ratValH(57);  VERIFY_RAT_VAL(ratValH, 57, 1);
     }
 
@@ -770,6 +770,7 @@ unsigned long long testRationalS32selected(void)
     return FailCount;
 }
 
+#if TEST_LL_RATIONAL
 unsigned long long testRationalS64selected(void)  // Uses 128 bit reference 'int'
 {
     COUT << ENDL << "Starting 64 bit selected values rational operator tests" << ENDL; 
@@ -842,7 +843,7 @@ unsigned long long testRationalS64selected(void)  // Uses 128 bit reference 'int
         {         
             if(*y != 0)        
             {
-                COUT << DEC << *x << "   " << *y << ENDL;
+                //COUT << DEC << *x << "   " << *y << ENDL;
                 try { valSet.insert( RatSLLwCK( *x, *y )); } catch (boost::rational_overflow Exception) { bool ovfl = true; }
                 try { valSet.insert( RatSLLwCK(-*x, *y )); } catch (boost::rational_overflow Exception) { bool ovfl = true; }
             }
@@ -1000,6 +1001,7 @@ unsigned long long testRationalS64selected(void)  // Uses 128 bit reference 'int
 
     return FailCount;
 }
+#endif
 
 unsigned long long testSimpleAndQuick(void)
 {
@@ -1011,6 +1013,12 @@ unsigned long long testSimpleAndQuick(void)
         ratValb = +ratVala;   VERIFY_RAT_VAL(ratValb,  11, 9);
         RatS32wCK ratValA(11*3,9*3), ratValB;
         ratValB = +ratValA;   VERIFY_RAT_VAL(ratValB,  11, 9);
+    }
+    {  // Unary -
+        RatS32ref ratVala(11*3,9*3), ratValb;
+        ratValb = -ratVala;   VERIFY_RAT_VAL(ratValb, -11, 9);
+        RatS32wCK ratValA(11*3,9*3), ratValB;
+        ratValB = -ratValA;   VERIFY_RAT_VAL(ratValB, -11, 9);
     }
     {  // Integer assignment
         RatS32ref ratVala(11*3,9*3);
@@ -1207,6 +1215,14 @@ unsigned long long testSimpleAndQuick(void)
         SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValA(2147483647,1); ratValA++ );
         SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValA(-2147483647 - 1,1); ratValA-- );
         SHOULD_OVERFLOW_EXCEPTION( RatS32wCK ratValA(-2147483647 - 1,1); abs(ratValA) );
+    }
+
+    {  // Type conversion template
+        RatS32ref A(19,4);
+        double fA = boost::rational_cast<double>(A);
+        RatS32wCK B(19,4);
+        double fB = boost::rational_cast<double>(B);
+        COUT << fA << "  " << fB << ENDL;
     }
 
     COUT << ENDL;
