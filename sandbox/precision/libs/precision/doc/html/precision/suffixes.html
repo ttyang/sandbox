@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>How to specify extended precision constants - Q?</title>
+<link rel="stylesheet" href=".././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
+<link rel="up" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
+<link rel="prev" href="introduction.html" title="Introduction">
+<link rel="next" href="precision.html" title="Specifying Precision">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src=".././images/boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_suffixes">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="precision.suffixes"></a><a class="link" href="suffixes.html" title="How to specify extended precision constants - Q?">How to specify extended precision constants
+    - Q?</a>
+</h2></div></div></div>
+<p>
+      Recent discussion on extended precision floating-point types in C++ has also
+      raised the issue of how to specify constant values with a precision greater
+      than <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>,
+      now signified by the suffix <code class="computeroutput"><span class="identifier">L</span></code>.
+    </p>
+<p>
+      One obvious way is to add <code class="computeroutput"><span class="identifier">Q</span></code>
+      or <code class="computeroutput"><span class="identifier">q</span></code> suffixes to signify that
+      a constant has at least 128-bits (about 40 decimal digits) of precision.
+    </p>
+<p>
+      There may also be a need for 256-bit (about 80 decimal digits) precision, and
+      perhaps 512-bits (about 155 decimal digits) precision.
+    </p>
+<p>
+      At present, the only way to provide constant values is to use a string to extended-precision
+      type conversion.
+    </p>
+<p>
+      This <code class="computeroutput"><span class="identifier">from_string</span></code> method is
+      used for <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>,
+      <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+      and <a href="http://gcc.gnu.org/onlinedocs/libquadmath/" target="_top">GCC libquadmath</a>,
+      for example.
+    </p>
+<p>
+      It would also be useful to have a method of interrogating the size of types,
+      similar to that provided by <a href="http://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html" target="_top">GCC
+      3.7.2 Common Predefined Macros</a>, for example, <code class="computeroutput"><span class="identifier">__SIZEOF_LONG_DOUBLE__</span></code>
+      (but is not defined for <code class="computeroutput"><span class="identifier">__float128</span></code>
+      nor <code class="computeroutput"><span class="identifier">__float80</span></code>)
+    </p>
+<p>
+      We refer to floating-point types with fixed precision such as 24, 54, 113 or
+      more binary significand digits, (and possibly even extending beyond these to
+      potential multiprecision types).
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

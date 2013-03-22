@@ -1,0 +1,215 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Specifying Precision</title>
+<link rel="stylesheet" href="../.././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Specification of Precision of Floating-point and Integer Types ISO/IEC JTC1 SC22 WG21 N??? - 2013-4-??">
+<link rel="up" href="../introduction.html" title="Introduction">
+<link rel="prev" href="suffixes.html" title="How to specify extended precision constants - Q?">
+<link rel="next" href="references.html" title="References">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src="../.././images/boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="suffixes.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../introduction.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="references.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_introduction_precision">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="precision.introduction.precision"></a><a class="link" href="precision.html" title="Specifying Precision">Specifying Precision</a>
+</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="precision.html#precision.introduction.precision.new">Proposed new
+        section</a></span></dt></dl></div>
+<p>
+        One could envision two ways to go:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+            Types such as float24_t, float53_t, float113_t, ...
+          </li>
+<li class="listitem">
+            Types such as float32_t, float64_t, float128_t, ...
+          </li>
+</ul></div>
+<p>
+        The first set above is intuitively coined from IEE754:2008. It is also consistent
+        with the gist of std::uint32_t, et al in so far as the number of binary digits
+        of precision is contained within the name of the data type.
+      </p>
+<p>
+        Is there any interest in committing to this project? Specification takes
+        a long time and requires a coalition of collaborators. I could potentially
+        contribute to this project as a subordinate author. But I don't feel confident
+        enough to champion such a cause.
+      </p>
+<p>
+        With the availability of Boost.Multprecision, C++ programmers can now easily
+        switch to using floating-point types that give far more decimal digits of
+        precision (hundreds) than the built-in types float, double and long double.
+      </p>
+<p>
+        But this comes at the price of longer compile times, and very much longer
+        compute times. Whereas built-in types usually use the underlying hardware.
+      </p>
+<p>
+        And portability is also reduced. For example, suppose we wish to achieve
+        a precision higher than the most common IEEE 64-bit floating-point type supported
+        by the X86 chipsets normally used for double. http://en.wikipedia.org/wiki/Double_precision
+        providing a precision of between 15 to 17 decimal digits.
+      </p>
+<p>
+        At least one popular compiler treat long double exactly as double (as permitted
+        by the C++ Standard which does not prescribe the precision for any floating-point
+        (or integer) types, leaving them to be implementation-defined).
+      </p>
+<p>
+        However the Intel 8087 chipset does do calculations using internal 80-bit
+        registers, increasing the significand from 53 to 63 bits, and a increase
+        of about 3 decimal digits precision up to between 18 and 21.
+      </p>
+<p>
+        <a href="http://gcc.gnu.org/wiki/x87note" target="_top">X8087 notes</a>
+      </p>
+<p>
+        <a href="http://en.wikipedia.org/wiki/Long_double" target="_top">long double</a>
+      </p>
+<p>
+        Some hardware, for example Sparc, hardware provides a 128-bit quadruple precision
+      </p>
+<p>
+        As of gcc 4.3, a quadruple precision is also supported on x86, but as the
+        nonstandard type __float128 rather than long double.
+      </p>
+<p>
+        If we wish to ensure that we use all 80 bits to calculate <a href="http://en.wikipedia.org/wiki/Extended_precision" target="_top">Extended
+        precision</a>
+      </p>
+<p>
+        we would use a typedef float80_t.
+      </p>
+<p>
+        If the compiler could not generate code this type directly, then it would
+        substitute software emulation, perhaps using a Boost.Multiprecision type
+        cpp_dec_float_21.
+      </p>
+<p>
+        Similarly if a quadrupole precision of 16-byte 128-bit http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format
+        is desired, the specification of float128_t will either direct the compiler
+        to generate code using the hardware, or it will do this using software emulation.
+        This might be generated by the compiler for GCC or delegated to a cpp_bin_float_128
+        type.
+      </p>
+<p>
+        Existing fixed integer types from <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf" target="_top">C++
+        draft specification</a>
+      </p>
+<p>
+        <a href="http://gcc.gnu.org/onlinedocs/gcc/Floating-Types.html" target="_top">GNU C
+        supports additional floating types, __float80 and __float128 to support 80-bit
+        (XFmode) and 128-bit (TFmode) floating types.</a>
+      </p>
+<p>
+        <a href="http://stackoverflow.com/questions/13525774/clang-and-float128-bug-error" target="_top">Clang
+        float128 error</a>
+      </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+            ifdef __clang__ typedef struct { long double x, y; } __float128;
+          </li>
+<li class="listitem">
+            endif
+          </li>
+</ol></div>
+<p>
+        18.4 Integer types [cstdint]
+      </p>
+<p>
+        18.4.1 Header &lt;cstdint&gt; synopsis [cstdint.syn]
+      </p>
+<p>
+        namespace std { typedef signed integer type int8_t; // optional typedef signed
+        integer type int16_t; // optional typedef signed integer type int32_t; //
+        optional typedef signed integer type int64_t; // optional
+      </p>
+<p>
+        It is not proposed to make any change to std::numeric_limits.
+      </p>
+<p>
+        It is obviously highly desirable that numeric_limits is specialized for all
+        floating or fixed-point types.
+      </p>
+<p>
+        Programs can then use this to determine if a floating-point type is IEEE
+        754 using is_iec559.
+      </p>
+<div class="section precision_introduction_precision_new">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="precision.introduction.precision.new"></a><a class="link" href="precision.html#precision.introduction.precision.new" title="Proposed new section">Proposed new
+        section</a>
+</h4></div></div></div>
+<p>
+          Add the following text to &lt;cstdint&gt;
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            It is not obvious where these typedef should reside. The obvious place
+            is <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdint</span><span class="special">&gt;</span></code> but <code class="computeroutput"><span class="keyword">int</span></code>
+            implies integer types. (or &lt;cstdfloat&gt;?)
+          </p></td></tr>
+</table></div>
+<p>
+          18.4 Integer types [cstdint] 18.4.1 Header &lt;cstdint&gt; synopsis [cstdint.syn]
+        </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
+<span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int8_t</span><span class="special">;</span> <span class="comment">// optional</span>
+<span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int16_t</span><span class="special">;</span> <span class="comment">// optional</span>
+<span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int32_t</span><span class="special">;</span> <span class="comment">// optional</span>
+<span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int64_t</span><span class="special">;</span> <span class="comment">// optional</span>
+</pre>
+<p>
+          add
+        </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_32_t</span><span class="special">;</span> <span class="comment">// optional</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_64_t</span><span class="special">;</span> <span class="comment">// optional</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_80_t</span><span class="special">;</span> <span class="comment">// optional</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">float_128_t</span><span class="special">;</span> <span class="comment">// optional</span>
+<span class="special">}</span> <span class="comment">// namespace std</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            Others might also be defined here?
+          </p></td></tr>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="suffixes.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../introduction.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="references.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

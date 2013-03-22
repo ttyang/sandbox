@@ -1,0 +1,91 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>How to specify extended precision constants - Q?</title>
+<link rel="stylesheet" href="../.././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Specification of Precision of Floating-point and Integer Types ISO/IEC JTC1 SC22 WG21 N??? - 2013-4-??">
+<link rel="up" href="../introduction.html" title="Introduction">
+<link rel="prev" href="../introduction.html" title="Introduction">
+<link rel="next" href="precision.html" title="Specifying Precision">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src="../.././images/boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../introduction.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../introduction.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_introduction_suffixes">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="precision.introduction.suffixes"></a><a class="link" href="suffixes.html" title="How to specify extended precision constants - Q?">How to specify extended
+      precision constants - Q?</a>
+</h3></div></div></div>
+<p>
+        Recent discussion on extended precision floating-point types in C++ has also
+        raised the issue of how to specify constant values with a preicison greater
+        than <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>,
+        now signified by the suffix <code class="computeroutput"><span class="identifier">L</span></code>.
+      </p>
+<p>
+        One obvious way is to add Q or q suffixes.
+      </p>
+<p>
+        &gt;&gt;&gt; the environment if it is supported. I wonder if GCC with &gt;&gt;&gt;
+        --enable-libquadmath has a kind of query for this.
+      </p>
+<p>
+        &gt;&gt; I haven't found one - gcc-4.7.2 has all sorts of __SIZEOF_XXX__
+        &gt;&gt; defines for every last type <span class="bold"><strong>except</strong></span>
+        &gt;&gt; __float128 and __float80 :-(
+      </p>
+<p>
+        Is there any definitive interest in adding more precise floating-point types
+        to C++ in the next draft?
+      </p>
+<p>
+        Here, I am talking about floating-point types with fixed precision such as
+        24, 54, 113 or more binary digits, and possibly even extending beyond these
+        to potential multiprecision types.
+      </p>
+<p>
+        See also Boost.Multiprecision.
+      </p>
+<p>
+        Consider the C language in ISO/IEC 9899:2011 (in other words C11). Extended
+        precision is not specified, but there is a remark in Section 6.11.1:
+      </p>
+<p>
+        "Future standardization may include additional floating-point types,
+        including those with greater range, precision, or both than long double."
+      </p>
+<p>
+        Recent specification of fixed-size integer types in C99, C11 and C++11 has
+        drastically improved integer algorithm portability and range.
+      </p>
+<p>
+        Similar specification of fixed-size floating-point types could potentially
+        improve the C++ language significantly, especially in the scientific and
+        engineering communities.
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../introduction.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../introduction.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

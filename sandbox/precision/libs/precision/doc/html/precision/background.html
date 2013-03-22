@@ -1,0 +1,100 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Background</title>
+<link rel="stylesheet" href=".././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
+<link rel="up" href="../index.html" title="Specification of Precision of Floating-point and Integer Types">
+<link rel="prev" href="abstract.html" title="Abstract">
+<link rel="next" href="introduction.html" title="Introduction">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src=".././images/boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="abstract.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="introduction.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_background">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="precision.background"></a><a class="link" href="background.html" title="Background">Background</a>
+</h2></div></div></div>
+<p>
+      Mathematical functions were added to the C++11 libraries via technical report
+      TR1; it is now proposed to fix these into the next C++1Y standard.<a href="#ftn.precision.background.f0" class="footnote"><sup class="footnote"><a name="precision.background.f0"></a>[1]</sup></a>
+    </p>
+<p>
+      Other mathematical special functions are also now proposed, for example, <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2013/n3494.pdf" target="_top">A proposal
+      to add special mathematical functions according to the ISO/IEC 80000-2:2009
+      standard Document number: N3494 Version: 1.0 Date: 2012-12-19</a>
+    </p>
+<p>
+      The <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
+      library was accepted into <a href="http://www.boost.org/" target="_top">Boost</a>
+      several years ago. It implements many of the functions in both documents mentioned
+      above and has become quite widely used.
+    </p>
+<p>
+      With the acceptance and release of <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+      that provides much higher precision than built-in <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code> with <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/boost_multiprecision/tut/floats/cpp_dec_float.html" target="_top">cpp_dec_float</a>
+      employing a variety of backends including the well-established <a href="http://gmplib.org/" target="_top">GNU
+      Multiple Precision Arithmetic Library</a> and <a href="http://www.mpfr.org/" target="_top">GNU
+      MPFR library</a> libraries as well as a full open-license backend developed
+      from the <a href="http://calgo.acm.org/910.zip" target="_top">e_float (TOMS Algorithm
+      910)</a> library by Christopher Kormanyos and John Maddock.
+    </p>
+<p>
+      Since <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+      and <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
+      work seamlessly, allowing a <code class="computeroutput"><span class="identifier">float_type</span>
+      <span class="keyword">typedef</span></code> to be switched from a built-in
+      type to hundreds of decimal digits; then all the special functions and distributions
+      can be used at any chosen precision.
+    </p>
+<p>
+      Other users and domains are finding the need and utility of <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3407.html" target="_top">decimal</a>
+      and <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3352.html" target="_top">binary
+      fixed-point</a>.
+    </p>
+<p>
+      Of coure, moving away from hardware supported types to software using templates
+      carries a small price at compile-time, and a much bigger price at runtime.
+    </p>
+<p>
+      All these development have made C++ much more attractive to the scientific
+      and engeering community, especially those needing higher (or lower) precision
+      for some (if not all) of the calculations, previously the domain covered by
+      <a href="http://www.wolfram.com/products/mathematica/index.html" target="_top">Wolfram
+      Mathematica</a>, <a href="http://www.mathworks.co.uk/products/matlab/" target="_top">MATLAB</a>
+      and others where the precision can be arbitrarily chosen.
+    </p>
+<div class="footnotes">
+<br><hr style="width:100; align:left;">
+<div id="ftn.precision.background.f0" class="footnote"><p><a href="#precision.background.f0" class="para"><sup class="para">[1] </sup></a>
+        <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2013/n3548.pdf" target="_top">Conditionally-supported
+        Special Math Functions for C++14, N3584, Walter E. Brown</a>
+      </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="abstract.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="introduction.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
