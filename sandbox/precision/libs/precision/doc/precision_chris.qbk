@@ -90,7 +90,7 @@ C++11 supports floating-point calculations with its built-in types
 `float`, `double`, and `long double` as well as imlementations of
 numerous elementary and transcendental functions.
 Support for mathematical facilities and specialized number types
-in C++ is rapidly developing.
+in C++ is progressing rapidly.
 
 A variety of higher transcendental functions of pure and applied mathematics
 were added to the C++11 libraries via technical report TR1.
@@ -112,7 +112,7 @@ provides much higher precision than built-in `long double` with
 __cpp_dec_float. __Boost_Multiprecision employs a variety of backends
 to implement multiprecision floating-point types
 including the well-established __GMP and __MPFR libraries
-as well as a full open-license backend originating
+as well as a full open-license backend that originates
 from the __e_float library by Christopher Kormanyos and John Maddock.
 
 Since __Boost_Multiprecision and __Boost_Math work seamlessly, allowing a `float_type typedef` to be switched from a built-in type to hundreds of decimal digits; then all the special functions and distributions can be used at any chosen precision.
@@ -374,7 +374,7 @@ Add the following text to <cstdint>
 
 It is not proposed to make any change to `std::numeric_limits`.
 
-It is mandatorye that `std::numeric_limits` is specialized for all floating-point types.
+It is mandatory that `std::numeric_limits` is specialized for all floating-point types.
 This will ensure that programs can use the established `std::numeric_limits<>::is_iec559`
 to determine if a floating-point type conforms with __IEEE_floating_point.
 
@@ -391,7 +391,7 @@ TBD: Describe interaction with <complex>
 
 [endsect] [/section:complexinteract Interaction with complex]
 
-[section:microfpu Improvemed safety for microcontrollers with an FPU]
+[section:microfpu Improved safety for microcontrollers with an FPU]
 
 TBD by Chris: Describe recent confidential meetings with tier-one silicon suppliers and the relevant problems discussed therein.
 
@@ -400,6 +400,8 @@ TBD: Cite these as personal communications.
 TBD by Chris: Explain how standards adherence and specified widths can help to solve these problems by improving reliability and safety.
 
 TBD ba Chris: Add an example and remarks on functional safety and any relevant citations from to ISO/IEC 26262.
+
+TBD by Chris - add reference to your book!
 
 [endsect] [/section:microfpu Improvemed safety for microcontrollers with an FPU]
 
