@@ -27,9 +27,11 @@
 <a name="precision.abstract"></a><a class="link" href="abstract.html" title="Abstract">Abstract</a>
 </h2></div></div></div>
 <p>
-      It is proposed to add several optional typedefs with specific precisions for
-      floating-point types including <code class="computeroutput"><span class="identifier">float32_t</span><span class="special">,</span> <span class="identifier">float64_t</span> <span class="identifier">_float128_t</span></code> (similar to <code class="computeroutput"><span class="identifier">int64_t</span></code>
-      for integer types).
+      It is proposed to add several optional typedefs with specified widths for floating-point
+      types including <code class="computeroutput"><span class="identifier">float32_t</span><span class="special">,</span>
+      <span class="identifier">float64_t</span> <span class="identifier">_float128_t</span></code>
+      (similar to <code class="computeroutput"><span class="identifier">int64_t</span></code> for integer
+      types).
     </p>
 <p>
       These will be defined in the global and <code class="computeroutput"><span class="identifier">std</span></code>
@@ -37,8 +39,8 @@
     </p>
 <p>
       And also to provide additional suffix(es) to specify extended precision constants
-      to suit precisions higher than <code class="computeroutput"><span class="keyword">long</span>
-      <span class="keyword">double</span></code>.
+      to suit precisions lower than that of <code class="computeroutput"><span class="keyword">float</span></code>
+      higher than that of <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
     </p>
 <p>
       The objectives are to:
@@ -51,7 +53,7 @@
           Reduce errors in precision.
         </li>
 <li class="listitem">
-          Improve portability.
+          Improve portability, reliability and safety.
         </li>
 </ul></div>
 </div>

@@ -58,24 +58,31 @@ ISO/IEC JTC1 SC22 WG21/SG6 Numerics N???  - 2013-4-??
 
 [section:abstract  Abstract]
 
-It is proposed to add several optional typedefs with specific precisions
+It is proposed to add several optional typedefs with specified widths
 for floating-point types including `float32_t, float64_t _float128_t` (similar to `int64_t` for integer types).
 
 These will be defined in the global and `std` namespaces.
 
-And also to provide additional suffix(es) to specify extended precision constants to suit precisions higher than `long double`.
+And also to provide additional suffix(es) to specify extended precision constants to suit precisions
+lower than that of `float` higher than that of `long double`.
 
 The objectives are to:
 
 * Make it easier to use higher-precision.
 * Reduce errors in precision.
-* Improve portability.
+* Improve portability, reliability and safety.
 
 [endsect] [/section:abstract  Abstract]
 
 [section:background Background]
 
-Mathematical functions were added to the C++11 libraries via technical report TR1; it is now proposed to fix these into the next C++1Y standard.[footnote
+C++11 supports floating-point calculations with its built-in types
+`float`, `double`, and `long double` as well as implementations of
+numerous elementary and transcendental functions.
+
+A variety of higher transcendental functions of pure and applied mathematics
+were added to the C++11 libraries via technical report TR1.
+It is now proposed to fix these into the next C++1Y standard.[footnote
 [@http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2013/n3548.pdf Conditionally-supported Special Math Functions for C++14, N3584, Walter E. Brown]
 ]
 
@@ -99,30 +106,49 @@ Other users and domains are finding the need and utility of
 [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3407.html decimal] and
 [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3352.html binary fixed-point].
 
-Of coure, moving away from hardware supported types to software using C++ templates carries a small price at compile-time, and a much bigger price at runtime.
+Of course, moving away from hardware supported types to software using C++ templates carries a small price at compile-time, and a much bigger price at runtime.
 
 All these development have made C++ much more attractive to the scientific and engeering community,
 especially those needing higher (or lower) precision for some (if not all) of the calculations,
-previously the domain covered by __Mathematica, __Matlab and others where the precision can be arbitrarily chosen.
+previously the domain covered by computer algebra systems for which the precision can be arbitrary.
 
 [endsect] [/section:background Background]
 
 [section:introduction Introduction]
 
-These developments have also revealed a need for more standard ways to specify precision, especially for extended precision, and to improve portability and give more confidence that the actual precision can be exactly predicted. For example, support has been expressed on the [@http://lists.boost.org/Archives/boost/2013/03/201786.php Boost list discussion of precise floating-point types].
+Since the inceptions of C and C++, the built-in types `float`, `double`, and `long double` have provided
+a strong basis for floating-point calculations. Optional compiler conformance with __IEEE_floating_point
+has generally led to a relatively reliable and portable environment for floating-point calculations
+in the programming community.
 
-The reasons for this need are analogous to those that led to the introduction of specific integer size like `int64_t`.
+It is, however, emphasized that floating-point adherence
+to __IEEE_floating_point is not mandated by the current C++ language standard.
+Nor does the standard enforce specific widths or precisions of the built-in types
+`float`, `double`, and `long double`. This can lead to portability problems
+and reduce reliability and safety.
 
-(Although Section 22.3 in the book "The C++ Standard Library Extensions", P. Becker, Addison Wesley 2007, ISBN 0-321-41299-0, the section is called "Fixed-Size Integer Types", used of the descriptor ['fixed] has lead to some confusion. So the descriptor ['specific] is here used to match the wording of C99 in the section on `int_64_t ...` in `stdint.h`.)
+This situation reveals a need for more standard ways to specify precision.
+In addition, it is desirable to extend the precision of existing types to
+lower and higher precisions. The extension to lower precision is expected
+to simplify and improve efficiency of floating-point implementations
+on cost-sensitive architectures such as small microcontrollers.
+The extension to higher precision is useful for large-scale high-performance
+numerical calculations and should ease the progression to extended precision
+by providing precision-steps with finer granularity.
 
-Recent specification of fixed-size integer types
-in C99, C11 and C++11 and [@http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf C++ draft specification]
+All of these improvements should improve portability, reliability, and safety
+of floating-point calculations in C++ by ensuring that the actual precision
+of a floating-point type can be exactly determined both at compile-time
+as well as during the run of a calculation.
+Strong interest in floating-point types with specified widths
+has, for example, been expressed on
+the [@http://lists.boost.org/Archives/boost/2013/03/201786.php Boost list discussion of precise floating-point types].
+
+Recent specification of integer types with specified widths
+in C99, C11, C++11, and [@http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf C++ draft specification]
 has drastically improved integer algorithm portability and range.
 
-Similar specification of fixed-size floating-point types could potentially improve the C++ language
-significantly, especially in the scientific and engineering communities where other languages have found benefit from types that conform exactly to the __IEEE_floating_point.
-
-One example of how specific-size integer types have proved invaluable is described by Robert Ramey
+One example of how specific-size integer types have proven to be essential is described by Robert Ramey
 [@http://lists.boost.org/Archives/boost/2002/11/40432.php
 Usefulness of fixed integer sizes in portability (for Boost serialization library).]
 
@@ -142,9 +168,26 @@ it in no way alters the fundamental types that are available on a given
 platform.
 [rdquote]
 
+The motivations to provide floating-point types with specified widths
+are analogous to those that led to the introduction of integers
+with specified widths such as `int8_t`, `int16_t`, `int32_t`, and `int64_t`.
+The specification of floating-point types with specified widths
+and adherence to __IEEE_floating_point can potentially
+improve the C++ language significantly, especially in the
+scientific and engineering communities
+where other languages have found benefit from types that conform
+exactly to the __IEEE_floating_point.
+
+(Notes on jargon: Section 22.3 in the book "The C++ Standard Library Extensions",
+P. Becker, Addison Wesley 2007, ISBN 0-321-41299-0 is called "Fixed-Size Integer Types".
+Use of the descriptor ['fixed] has lead to some confusion.
+So the descriptor ['specific] in conjunction with width is here used to
+match the wording of C99 and C11 in the sections and subsections describing
+`stdint.h`.)
+
 [endsect] [/section:introduction Introduction]
 
-[section:suffixes  How to specify extended precision constants - Q?]
+[section:suffixes  How to specify constants with quad and half precision?]
 
 Recent discussion on extended precision floating-point types in C++ has also
 raised the issue of how to specify constant values with a precision greater than `long double`,
@@ -164,14 +207,16 @@ It would also be useful to have a method of interrogating the size of types, sim
 (but is not defined for `__float128` nor `__float80`)
 
 We refer to floating-point types with fixed
-precision such as 24, 54, 113 or more binary significand digits,
+precision such as 24, 53, 113 or more binary significand digits,
 (and possibly even extending beyond these to potential multiprecision types).
 
 These are defined in __IEEE754.
 
 There are detailed descriptions at __IEEE_floating_point, with more detailed descrptions of each type at __IEEE_Half, __IEEE_Single, __IEEE_Double, __IEEE_Quad, and __IEEE_Extended and these correspond to the proposed types below `float16_t` ....
 
-[endsect] [/section:suffixes  How to specify extended precision constants - Q?]
+TBD by Chris: Suffix for half-precision.
+
+[endsect] [/section:suffixes  How to specify constants with quad and half precision?]
 
 [section:precision Specifying Precision]
 
@@ -220,7 +265,7 @@ we would use a `typedef float80_t`.
 
 If the compiler could not generate code this type directly, then it would substitute software emulation, perhaps using a Boost.Multiprecision type `cpp_dec_float_21`.
 
-Similarly if a quadrupole precision of 16-byte 128-bit __IEEE_Quad is desired,
+Similarly if a quadruple precision of 16-byte 128-bit __IEEE_Quad is desired,
 the specification of `float128_t` will either direct the compiler to generate code using the hardware, or it will do this using software emulation. This might be generated by the compiler for GCC or delegated to a `cpp_bin_float_128` type (under development for __Boost_Multiprecision).
 
 [h4 Existing extended precision types]
@@ -293,6 +338,27 @@ Programs can then use this to determine if a floating-point type is IEEE 754 usi
 
 [endsect] [/section:new Proposed new section]
 [endsect] [/section:precision Specifying Precision]
+
+[section:complexinteract Interaction with complex]
+
+TBD: Describe interaction with <complex>
+
+[endsect] [/section:complexinteract Interaction with complex]
+
+[section:microfpu Improved safety for microcontrollers with an FPU]
+
+TBD by Chris: Describe recent confidential meetings with tier-one silicon suppliers and the relevant problems discussed therein.
+
+TBD: Cite these as personal communications.
+
+TBD by Chris: Explain how standards adherence and specified widths can help to solve these problems by improving reliability and safety.
+
+TBD ba Chris: Add an example and remarks on functional safety and any relevant citations from to ISO/IEC 26262.
+
+TBD by Chris - add reference to your book!
+
+[endsect] [/section:microfpu Improvemed safety for microcontrollers with an FPU]
+
 
 [section:references References]
 

@@ -7,7 +7,7 @@
 <link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
 <link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
 <link rel="prev" href="background.html" title="Background">
-<link rel="next" href="suffixes.html" title="How to specify extended precision constants - Q?">
+<link rel="next" href="suffixes.html" title="How to specify constants with quad and half precision?">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -27,40 +27,48 @@
 <a name="precision.introduction"></a><a class="link" href="introduction.html" title="Introduction">Introduction</a>
 </h2></div></div></div>
 <p>
-      These developments have also revealed a need for more standard ways to specify
-      precision, especially for extended precision, and to improve portability and
-      give more confidence that the actual precision can be exactly predicted. For
-      example, support has been expressed on the <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost
-      list discussion of precise floating-point types</a>.
+      Since the inceptions of C and C++, the built-in types <code class="computeroutput"><span class="keyword">float</span></code>,
+      <code class="computeroutput"><span class="keyword">double</span></code>, and <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code> have provided a strong basis
+      for floating-point calculations. Optional compiler conformance with <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_ floating-point
+      format</a> has generally led to a relatively reliable and portable environment
+      for floating-point calculations in the programming community.
     </p>
 <p>
-      The reasons for this need are analogous to those that led to the introduction
-      of specific integer size like <code class="computeroutput"><span class="identifier">int64_t</span></code>.
+      It is, however, emphasized that floating-point adherence to <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a> is not mandated by the current C++ language standard.
+      Nor does the standard enforce specific widths or precisions of the built-in
+      types <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
+      and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
+      This can lead to portability problems and reduce reliability and safety.
     </p>
 <p>
-      (Although Section 22.3 in the book "The C++ Standard Library Extensions",
-      P. Becker, Addison Wesley 2007, ISBN 0-321-41299-0, the section is called "Fixed-Size
-      Integer Types", used of the descriptor <span class="emphasis"><em>fixed</em></span> has
-      lead to some confusion. So the descriptor <span class="emphasis"><em>specific</em></span> is
-      here used to match the wording of C99 in the section on <code class="computeroutput"><span class="identifier">int_64_t</span>
-      <span class="special">...</span></code> in <code class="computeroutput"><span class="identifier">stdint</span><span class="special">.</span><span class="identifier">h</span></code>.)
+      This situation reveals a need for more standard ways to specify precision.
+      In addition, it is desirable to extend the precision of existing types to lower
+      and higher precisions. The extension to lower precision is expected to simplify
+      and improve efficiency of floating-point implementations on cost-sensitive
+      architectures such as small microcontrollers. The extension to higher precision
+      is useful for large-scale high-performance numerical calculations and should
+      ease the progression to extended precision by providing precision-steps with
+      finer granularity.
     </p>
 <p>
-      Recent specification of fixed-size integer types in C99, C11 and C++11 and
-      <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf" target="_top">C++
+      All of these improvements should improve portability, reliability, and safety
+      of floating-point calculations in C++ by ensuring that the actual precision
+      of a floating-point type can be exactly determined both at compile-time as
+      well as during the run of a calculation. Strong interest in floating-point
+      types with specified widths has, for example, been expressed on the <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost list discussion
+      of precise floating-point types</a>.
+    </p>
+<p>
+      Recent specification of integer types with specified widths in C99, C11, C++11,
+      and <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf" target="_top">C++
       draft specification</a> has drastically improved integer algorithm portability
       and range.
     </p>
 <p>
-      Similar specification of fixed-size floating-point types could potentially
-      improve the C++ language significantly, especially in the scientific and engineering
-      communities where other languages have found benefit from types that conform
-      exactly to the <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
-      floating-point format</a>.
-    </p>
-<p>
-      One example of how specific-size integer types have proved invaluable is described
-      by Robert Ramey <a href="http://lists.boost.org/Archives/boost/2002/11/40432.php" target="_top">Usefulness
+      One example of how specific-size integer types have proven to be essential
+      is described by Robert Ramey <a href="http://lists.boost.org/Archives/boost/2002/11/40432.php" target="_top">Usefulness
       of fixed integer sizes in portability (for Boost serialization library).</a>
     </p>
 <p>
@@ -81,6 +89,25 @@ Fundamental types in C++ are <code class="computeroutput"><span class="keyword">
       to map integers of a specific size between machines. This does no harm and
       can facilitate portability. However it in no way alters the fundamental types
       that are available on a given platform. &#8221;
+    </p>
+<p>
+      The motivations to provide floating-point types with specified widths are analogous
+      to those that led to the introduction of integers with specified widths such
+      as <code class="computeroutput"><span class="identifier">int8_t</span></code>, <code class="computeroutput"><span class="identifier">int16_t</span></code>,
+      <code class="computeroutput"><span class="identifier">int32_t</span></code>, and <code class="computeroutput"><span class="identifier">int64_t</span></code>. The specification of floating-point
+      types with specified widths and adherence to <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a> can potentially improve the C++ language significantly,
+      especially in the scientific and engineering communities where other languages
+      have found benefit from types that conform exactly to the <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a>.
+    </p>
+<p>
+      (Notes on jargon: Section 22.3 in the book "The C++ Standard Library Extensions",
+      P. Becker, Addison Wesley 2007, ISBN 0-321-41299-0 is called "Fixed-Size
+      Integer Types". Use of the descriptor <span class="emphasis"><em>fixed</em></span> has lead
+      to some confusion. So the descriptor <span class="emphasis"><em>specific</em></span> in conjunction
+      with width is here used to match the wording of C99 and C11 in the sections
+      and subsections describing <code class="computeroutput"><span class="identifier">stdint</span><span class="special">.</span><span class="identifier">h</span></code>.)
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

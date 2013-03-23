@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>How to specify extended precision constants - Q?</title>
+<title>How to specify constants with quad and half precision?</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
@@ -24,8 +24,8 @@
 </div>
 <div class="section precision_suffixes">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="precision.suffixes"></a><a class="link" href="suffixes.html" title="How to specify extended precision constants - Q?">How to specify extended precision constants
-    - Q?</a>
+<a name="precision.suffixes"></a><a class="link" href="suffixes.html" title="How to specify constants with quad and half precision?">How to specify constants with quad
+    and half precision?</a>
 </h2></div></div></div>
 <p>
       Recent discussion on extended precision floating-point types in C++ has also
@@ -61,7 +61,7 @@
       nor <code class="computeroutput"><span class="identifier">__float80</span></code>)
     </p>
 <p>
-      We refer to floating-point types with fixed precision such as 24, 54, 113 or
+      We refer to floating-point types with fixed precision such as 24, 53, 113 or
       more binary significand digits, (and possibly even extending beyond these to
       potential multiprecision types).
     </p>
@@ -80,6 +80,9 @@
       754 extended precision formats and x86 80-bit Extended Precision Format</a>
       and these correspond to the proposed types below <code class="computeroutput"><span class="identifier">float16_t</span></code>
       ....
+    </p>
+<p>
+      TBD by Chris: Suffix for half-precision.
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
