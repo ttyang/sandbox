@@ -58,26 +58,33 @@ ISO/IEC JTC1 SC22 WG21/SG6 Numerics N???  - 2013-4-??
 
 [section:abstract  Abstract]
 
-It is proposed to add several optional typedefs for floating-point types
-with specified widths. In particular, there are
+It is proposed to add to the C++ standard several optional
+typedefs for floating-point types with specified widths.
+In particular, the optional types include
 `float16_t`, `float32_t`, `float64_t`, `float128_t`, and their
-corresponding fast and least types. These floating-point types
-must conform with the corresponding types
+corresponding fast and least types. The optional floating-point
+types are to conform with the corresponding types
 `binary16`, `binary32`, `binary64`, and `binary128`
-specified in __IEEE_floating_point.
+described in __IEEE_floating_point.
 
-The new floating-point types with specified widths should improve
-clarity of code and portability of floating-point calculations.
-Analogous improvements for integer calculations were recently
-standardized with integer types having specified width
-such as `int8_t`, `int16_t`, `int32_t`, and `int64_t`.
-
-The proposed new floating-point with specified widths
+The optional floating-point types with specified widths
+are to be contained in a new standard library header `<cstdfloat>`.
+Any of the optional floating-point types with specified widths
+included in the implementation must have full support for the
+functions in `<cmath>` and seamlessly interoperate with
+`<limits>` and `<complex>`.
+The proposed new floating-point types with specified widths
 will be defined in the global and `std` namespaces.
 
 It is also proposed to provide additional suffix(es) to specify
 constants to suit precision lower than that of `float` and
 precision higher than that of `long double`.
+
+Floating-point types with specified widths are expected to significantly
+improve clarity of code and portability of floating-point calculations.
+Analogous improvements for integer calculations were recently achieved
+via standardization of integer types having specified width
+such as `int8_t`, `int16_t`, `int32_t`, and `int64_t`.
 
 The main objectives of this proposal are to:
 
@@ -90,11 +97,10 @@ The main objectives of this proposal are to:
 
 [section:background Background]
 
-C++11 supports floating-point calculations with its built-in types
-`float`, `double`, and `long double` as well as imlementations of
-numerous elementary and transcendental functions.
 Support for mathematical facilities and specialized number types
-in C++ is progressing rapidly.
+in C++ is progressing rapidly. Currently, C++11 supports floating-point
+calculations with its built-in types `float`, `double`, and `long double`
+as well as imlementations of numerous elementary and transcendental functions.
 
 A variety of higher transcendental functions of pure and applied mathematics
 were added to the C++11 libraries via technical report TR1.
@@ -108,54 +114,65 @@ A proposal to add special mathematical functions
 according to the ISO/IEC 80000-2:2009 standard
 Document number: N3494 Version: 1.0 Date: 2012-12-19]
 
-The __Boost_Math library was accepted into __Boost several years ago.  It implements many of the functions in both documents mentioned above and has become quite widely used.
+The __Boost_Math library was accepted into __Boost several years ago.
+It implements many of the functions in both documents mentioned
+above and has become quite widely used.
 
-There is also progress in C++ in the area of multiprecision floating-point.
+There is also progress in C++ in the area of multiprecision,
+including support of multiprecision floating-point numbers.
 In particular, the acceptance and release of __Boost_Multiprecision
 provides much higher precision than built-in `long double` with
-__cpp_dec_float. __Boost_Multiprecision employs a variety of backends
-to implement multiprecision floating-point types
-including the well-established __GMP and __MPFR libraries
+its __cpp_dec_float data type. __Boost_Multiprecision has a flexible
+front-end that employs a variety of backends to implement multiprecision
+floating-point types including the well-established __GMP and __MPFR libraries
 as well as a full open-license backend that originates
 from the __e_float library by Christopher Kormanyos and John Maddock.
 
-Since __Boost_Multiprecision and __Boost_Math work seamlessly, allowing a `float_type typedef` to be switched from a built-in type to hundreds of decimal digits; then all the special functions and distributions can be used at any chosen precision.
+Since __Boost_Multiprecision and __Boost_Math work seamlessly,
+a `float_type typedef` can be used to switch from a built-in type
+to hundreds of decimal digits. This allows all the special functions
+and distributions in __Boost_Math to be used at any chosen precision.
 
 Other users and domains are finding the need and utility of
 [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3407.html decimal] and
 [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3352.html binary fixed-point].
 
-Of course, moving away from hardware supported types to software using C++ templates
-carries a small price at compile-time, and potentially a much bigger price at runtime.
-Nonetheless, the new numerical types have large ranges of application and
-are required in numerous programming domains.
+Of course, moving away from hardware supported types to software using
+C++ templates carries a small price at compile-time, and potentially a
+much bigger price at runtime.
+Nonetheless, the new numerical types have wide ranges of application
+required in numerous programming domains.
 
-All these development have made C++ much more attractive to the scientific and engeering community,
-especially those needing higher (or lower) precision for some (if not all) of the calculations,
-previously the domain covered by computer algebra systems for which the precision can be arbitrary.
+All these development have made C++ much more attractive to the
+scientific and engeering community, especially those needing
+mathematical functions and higher (or lower) precision for some
+of their calculations. Previously these domains were predominantly
+covered by computer algebra systems.
 
 [endsect] [/section:background Background]
 
 [section:introduction Introduction]
 
-Since the inceptions of C and C++, the built-in types `float`, `double`, and `long double` have provided
-a strong basis for floating-point calculations. Optional compiler conformance with __IEEE_floating_point
-has generally led to a relatively reliable and portable environment for floating-point calculations
-in the programming community.
+Since the inceptions of C and C++, the built-in types `float`, `double`, and `long double`
+have provided a strong basis for floating-point calculations.
+Optional compiler conformance with __IEEE_floating_point has generally led
+to a relatively reliable and portable environment for floating-point
+calculations in the programming community.
 
 It is, however, emphasized that floating-point adherence
 to __IEEE_floating_point is not mandated by the current C++ language standard.
-Nor does the standard enforce specific widths or precisions of the built-in types
-`float`, `double`, and `long double`. This can lead to portability problems
+Nor does the standard specify the widths or precisions of its built-in types
+`float`, `double`, and `long double`. This can lead to portability problems,
+introduce poor efficiency on cost-sensitive microcontroller architectures,
 and reduce reliability and safety.
 
-This situation reveals a need for more standard ways to specify precision.
-In addition, it is desirable to extend the precision of existing types to
-lower and higher precisions. The extension to lower precision is expected
+This situation reveals a need for a standard way to specify precision.
+It is also desirable to extend the precision of existing types to
+both lower and higher precisions. The extension to lower precision is expected
 to simplify and improve efficiency of floating-point implementations
 on cost-sensitive architectures such as small microcontrollers.
 The extension to higher precision is useful for large-scale high-performance
-numerical calculations and should ease the progression to multiprecision
+numerical calculations and should ease the transition to multiprecision
 by providing built-in types with progressing precision of finer granularity.
 
 All of these improvements should improve portability, reliability, and safety
@@ -163,14 +180,15 @@ of floating-point calculations in C++ by ensuring that the actual precision
 of a floating-point type can be exactly determined both at compile-time
 as well as during the run of a calculation.
 Strong interest in floating-point types with specified widths
-has, for example, been expressed on
+has, for example, recently been expressed on
 the [@http://lists.boost.org/Archives/boost/2013/03/201786.php Boost list discussion of precise floating-point types].
 
-Recent specification of integer types with specified widths
+Recent specification of integer types having specified widths
 in C99, C11, C++11, and [@http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf C++ draft specification]
 has drastically improved integer algorithm portability and range.
 
-One example of how specific-size integer types have proven to be essential is described by Robert Ramey
+One example of how integer types having specified widths
+have proven to be essential is described by Robert Ramey
 [@http://lists.boost.org/Archives/boost/2002/11/40432.php
 Usefulness of fixed integer sizes in portability (for Boost serialization library).]
 
@@ -212,11 +230,11 @@ match the wording of C99 and C11 in the sections and subsections describing
 [section:thetypes  The proposed types and potential extensions]
 
 The core of this proposal is based on the types `float16_t`, `float32_t`,
-`float64_t`, and `float128_t`. These are floating-point types with
-specified widths. These floating-point types are to conform with the
-corresponding types `binary16`, `binary32`, `binary64`, and `binary128`
+`float64_t`, `float128_t`, and their corresponding least and fast types.
+These floating-point types have specified widths and they are
+to conform with the corresponding types
+`binary16`, `binary32`, `binary64`, and `binary128`
 specified in __IEEE_floating_point.
-
 In particular, `float16_t`, `float32_t`, `float64_t`, and `float128_t`
 correspond to floating-point types with 11, 24, 53, and 113 binary significand digits,
 respectively. These are defined in __IEEE_floating_point, and there are more detailed descrptions
@@ -231,7 +249,8 @@ potential extension to multiprecision types in the future.
 The popular [@http://gcc.gnu.org/wiki/x87note Intel X8087 chipset]
 architecture supports a 10-byte floating-point format.
 So it may be useful to provide optional support for `float80_t`.
-There is no analogous type in __IEEE_floating_point.
+There is no analogous type for `float80_t` in __IEEE_floating_point,
+but the implementation already exists in practice.
 
 At present, the only way to provide a literal constant value with precision exceeding
 the precision of `long double` is to use a string in association with
@@ -241,8 +260,8 @@ __Boost_Math, __Boost_Multiprecision and __libquadmath.
 
 Along these lines, the herein proposed floating-point types with specified widths
 should be copy assignable and copy constructable from string literal constants.
-This may require slight changes to the core language such as inclusion
-of new suffixes, as described below.
+This requires changes to the core language including the addition
+of new literal constant suffixes, as described below.
 
 It would also be useful to have a method of querying the size of types,
 similar to that provided by
@@ -254,23 +273,55 @@ But similar macros are not defined for `__float128` nor for `__float80`.
 
 [section:suffixes  How to specify constants with quad and half precision?]
 
-The standard specifies that the type of a floating literal is double unless
+The standard specifies that the type of a floating-point literal is double unless
 explicitly specified by a suffix. The standard continues by specifying that
-the suffixes `f` and `F` specify `float`, the suffixes `l` and `L` specify `long double`.
+the suffixes `f` and `F` specify `float`,
+and the suffixes `l` and `L` specify `long double`.
 
 Recent discussion on extended precision floating-point types in C++ has also
-raised the issue of how to specify constant values with a precision greater than `long double`,
-now signified by the suffix `L` or `l`.
+raised the issue of how to specify constant values with a precision greater
+than `long double`, now signified by the suffix `L` or `l`.
+One possible way is to add `Q` or `q` suffixes to signify that
+floating-point literal has quadruple precision.
 
-One possible way is to add `Q` or `q` suffixes to signify that a constant
-This specifies quadruple precision.
+Code using the `Q` suffix scheme is shown in the sample below.
 
-The half-precision suffix could be `H` or `h`.
+  #include <cstdfloat>
 
-The octuple-precision suffix could be `O` or `o`.
+  constexpr std::float128_t pi = 3.1415926535897932384626433832795028841972Q;
 
-Higher precisions may require construction from string literals, as the list of
-available suffixes dwindles and the myriad of suffixes may become confusing.
+For half-precision floating-point literals, the suffix `H` or `h` could be used.
+One potential suffix for octuple-precision floating-point literals is `O` or `o`.
+
+For example,
+
+  #include <cstdfloat>
+
+  constexpr std::float16_t euler_gamma = 0.577216H;
+
+
+Higher precisions also require construction from floating-point literals.
+As the list of available suffixes dwindles, however, available suffixes might run out
+and the myriad of suffixes may become confusing. Floating-point literals
+for precisions higher than quadruple precision, then, might be better
+served with construction from string literals.
+
+An alternative suffix scheme could use hybrid suffixes composed of, say,
+the letter `F` or `f` which stands for floating-point, to which the specified width
+of the type is appended, for example `F16`, `F32`, `F64`, `F128`, etc.
+Code using the `F128` suffix scheme is shown in the sample below.
+
+  #include <cstdfloat>
+
+  constexpr std::float128_t pi = 3.1415926535897932384626433832795028841972F128;
+
+  constexpr std::float16_t euler_gamma = 0.577216F16;
+
+This suffix scheme is unequivocal and it can be easily extended to
+unlimited precision. On the other hand, it may be difficult for programmers
+to separate the character part of the suffix from its numerical part when
+analyzing source code. For example, it is particularly difficult to resolve
+the suffix in `euler_gamma` above, since the `16F16` obscures the `F`.
 
 [endsect] [/section:suffixes  How to specify constants with quad and half precision?]
 
@@ -278,12 +329,12 @@ available suffixes dwindles and the myriad of suffixes may become confusing.
 
 One could envision two ways to name the fixed-precision types:
 
-* `float24_t, float53_t, float113_t, ...`
-* `float32_t, float64_t, float128_t, ...`
+* `float11_t, float24_t, float53_t, float113_t, ...`
+* `float16_t, float32_t, float64_t, float128_t, ...`
 
 The first set above is intuitively coined from [@http://dx.doi.org/10.1109/IEEESTD.2008.4610935 IEE754:2008].
-It is also consistent with the gist of integer types with specified precision
-such as `uint32_t`, in so far as the number of binary digits of ['significand] precision
+It is also consistent with the gist of integer types with specified width
+such as `int64_t`, in so far as the number of binary digits of ['significand] precision
 is contained within the name of the data type.
 
 On the other hand, the second set with the size of the ['whole type] contained within
@@ -351,12 +402,14 @@ the specification of `float128_t` will either direct the compiler to generate co
 
 [section:newfloattypes Proposed new section]
 
+Add a new header `<cstdfloat>` to the standard library.
 Add the following text to <cstdint>
 
-[note It is not obvious where these `typedef`s should reside. The obvious place is `<cstdint>` but `int` implies integer types. (or a new <cstdfloat>?)
+[note It is not obvious where these `typedef`s should reside. The obvious place is `<cstdint>` but `int`
+implies integer types. Here, we prefer the new header `<cstdfloat>`.
 ]
 
-18.4? Arithmetic types [cstdfloat]  (or cstdarith]
+18.4? Floating-Point Types Having Specified Width
 18.4.2? Header <cstdfloat> synopsis [cstdfloat.syn]
 
   namespace std {
@@ -410,7 +463,10 @@ TBD: Describe interaction with <complex>
 
 [endsect] [/section:complexinteract Interaction with complex]
 
-[section:microfpu Improved safety for microcontrollers with an FPU]
+[section:microfpu Improved efficiency and robustness for microcontrollers]
+
+TBD by Chris: Describe cost-sensitive floating-point regime.
+TBD by Chris - add reference to your book!
 
 TBD by Chris: Describe recent confidential meetings with tier-one silicon suppliers and the relevant problems discussed therein.
 
@@ -420,9 +476,7 @@ TBD by Chris: Explain how standards adherence and specified widths can help to s
 
 TBD ba Chris: Add an example and remarks on functional safety and any relevant citations from to ISO/IEC 26262.
 
-TBD by Chris - add reference to your book!
-
-[endsect] [/section:microfpu Improvemed safety for microcontrollers with an FPU]
+[endsect] [/section:microfpu Improved efficiency and robustness for microcontrollers]
 
 
 [section:references References]
