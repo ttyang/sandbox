@@ -7,7 +7,7 @@
 <link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
 <link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
 <link rel="prev" href="background.html" title="Background">
-<link rel="next" href="suffixes.html" title="How to specify constants with quad and half precision?">
+<link rel="next" href="thetypes.html" title="The proposed types and potential extensions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="suffixes.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thetypes.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section precision_introduction">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -37,38 +37,40 @@
 <p>
       It is, however, emphasized that floating-point adherence to <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
       floating-point format</a> is not mandated by the current C++ language standard.
-      Nor does the standard enforce specific widths or precisions of the built-in
-      types <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
+      Nor does the standard specify the widths or precisions of its built-in types
+      <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
       and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
-      This can lead to portability problems and reduce reliability and safety.
+      This can lead to portability problems, introduce poor efficiency on cost-sensitive
+      microcontroller architectures, and reduce reliability and safety.
     </p>
 <p>
-      This situation reveals a need for more standard ways to specify precision.
-      In addition, it is desirable to extend the precision of existing types to lower
-      and higher precisions. The extension to lower precision is expected to simplify
+      This situation reveals a need for a standard way to specify precision. It is
+      also desirable to extend the precision of existing types to both lower and
+      higher precisions. The extension to lower precision is expected to simplify
       and improve efficiency of floating-point implementations on cost-sensitive
       architectures such as small microcontrollers. The extension to higher precision
       is useful for large-scale high-performance numerical calculations and should
-      ease the progression to extended precision by providing precision-steps with
-      finer granularity.
+      ease the transition to multiprecision by providing built-in types with progressing
+      precision of finer granularity.
     </p>
 <p>
       All of these improvements should improve portability, reliability, and safety
       of floating-point calculations in C++ by ensuring that the actual precision
       of a floating-point type can be exactly determined both at compile-time as
       well as during the run of a calculation. Strong interest in floating-point
-      types with specified widths has, for example, been expressed on the <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost list discussion
-      of precise floating-point types</a>.
+      types with specified widths has, for example, recently been expressed on the
+      <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost
+      list discussion of precise floating-point types</a>.
     </p>
 <p>
-      Recent specification of integer types with specified widths in C99, C11, C++11,
-      and <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf" target="_top">C++
+      Recent specification of integer types having specified widths in C99, C11,
+      C++11, and <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf" target="_top">C++
       draft specification</a> has drastically improved integer algorithm portability
       and range.
     </p>
 <p>
-      One example of how specific-size integer types have proven to be essential
-      is described by Robert Ramey <a href="http://lists.boost.org/Archives/boost/2002/11/40432.php" target="_top">Usefulness
+      One example of how integer types having specified widths have proven to be
+      essential is described by Robert Ramey <a href="http://lists.boost.org/Archives/boost/2002/11/40432.php" target="_top">Usefulness
       of fixed integer sizes in portability (for Boost serialization library).</a>
     </p>
 <p>
@@ -120,7 +122,7 @@ Fundamental types in C++ are <code class="computeroutput"><span class="keyword">
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="suffixes.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thetypes.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

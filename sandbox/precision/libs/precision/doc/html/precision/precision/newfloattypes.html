@@ -27,7 +27,8 @@
 <a name="precision.precision.newfloattypes"></a><a class="link" href="newfloattypes.html" title="Proposed new section">Proposed new section</a>
 </h3></div></div></div>
 <p>
-        Add the following text to &lt;cstdint&gt;
+        Add a new header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code> to the standard library. Add the following
+        text to &lt;cstdint&gt;
       </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -38,20 +39,20 @@
           It is not obvious where these <code class="computeroutput"><span class="keyword">typedef</span></code>s
           should reside. The obvious place is <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdint</span><span class="special">&gt;</span></code>
           but <code class="computeroutput"><span class="keyword">int</span></code> implies integer types.
-          (or a new &lt;cstdfloat&gt;?)
+          Here, we prefer the new header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>.
         </p></td></tr>
 </table></div>
 <p>
-        18.4? Arithmetic types [cstdfloat] (or cstdarith] 18.4.2? Header &lt;cstdfloat&gt;
+        18.4? Floating-Point Types Having Specified Width 18.4.2? Header &lt;cstdfloat&gt;
         synopsis [cstdfloat.syn]
       </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span> <span class="special">{</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_16_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_32_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_64_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_80_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_128_t</span><span class="special">;</span> <span class="comment">// optional.</span>
-  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_256_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float16_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float32_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float64_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float80_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float128_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float256_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
   <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">floatmax_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
 
   <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least16_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
@@ -73,15 +74,24 @@
         It is not proposed to make any change to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span></code>.
       </p>
 <p>
-        It is obviously highly desirable that <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span></code>
-        is specialized for all floating-point types. And experience with <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
-        and <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
-        is that the normal set of trig and others useful functions is also essential
-        to make the type useful in real-life.
+        It is, nonethelsee, mandatory that <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span></code>
+        is specialized for all floating-point types. Thus their must be explicit
+        template specializations for all of the optional floating-point types with
+        specified precision that are included in the implementation. This will ensure
+        that programs can use the established <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;&gt;::</span><span class="identifier">is_iec559</span></code>
+        member to determine if a floating-point type conforms with <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+        floating-point format</a>.
       </p>
 <p>
-        Programs can then use this to determine if a floating-point type is IEEE
-        754 using <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;&gt;::</span><span class="identifier">is_iec559</span></code>.
+        Experience with <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
+        and <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+        has shown that the normal set of elementary and transcendental functions
+        (and possibly additional higher transcendental functions) is also essential
+        to make the type useful in real-life computational regimes. Therefore, the
+        implementation must provide support for the mathematical functions in the
+        <code class="computeroutput"><span class="identifier">std</span></code> namespace (TBD: Chris
+        list functions) for each of the floating-point types with specified precision
+        included in the implementation.
       </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

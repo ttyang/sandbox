@@ -36,13 +36,15 @@
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-          <code class="computeroutput"><span class="identifier">float24_t</span><span class="special">,</span>
+          <code class="computeroutput"><span class="identifier">float11_t</span><span class="special">,</span>
+          <span class="identifier">float24_t</span><span class="special">,</span>
           <span class="identifier">float53_t</span><span class="special">,</span>
           <span class="identifier">float113_t</span><span class="special">,</span>
           <span class="special">...</span></code>
         </li>
 <li class="listitem">
-          <code class="computeroutput"><span class="identifier">float32_t</span><span class="special">,</span>
+          <code class="computeroutput"><span class="identifier">float16_t</span><span class="special">,</span>
+          <span class="identifier">float32_t</span><span class="special">,</span>
           <span class="identifier">float64_t</span><span class="special">,</span>
           <span class="identifier">float128_t</span><span class="special">,</span>
           <span class="special">...</span></code>
@@ -50,15 +52,16 @@
 </ul></div>
 <p>
       The first set above is intuitively coined from <a href="http://dx.doi.org/10.1109/IEEESTD.2008.4610935" target="_top">IEE754:2008</a>.
-      It is also consistent with the gist of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">uint32_t</span></code>,
-      et al in so far as the number of binary digits of <span class="emphasis"><em>significand</em></span>
-      precision is contained within the name of the data type.
+      It is also consistent with the gist of integer types with specified width such
+      as <code class="computeroutput"><span class="identifier">int64_t</span></code>, in so far as the
+      number of binary digits of <span class="emphasis"><em>significand</em></span> precision is contained
+      within the name of the data type.
     </p>
 <p>
-      On the other hand, the second set using the size of the <span class="emphasis"><em>whole type</em></span>
-      may probably seem more intuitive to users. The exact layout and number of significand
-      and exponent bits can be confirmed as IEEE754 by checking <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">is_iec559</span>
-      <span class="special">==</span> <span class="keyword">true</span></code>.
+      On the other hand, the second set with the size of the <span class="emphasis"><em>whole type</em></span>
+      contained within the name may be more intuitive to users. The exact layout
+      and number of significand and exponent bits can be confirmed as IEEE754 by
+      checking <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">is_iec559</span> <span class="special">==</span> <span class="keyword">true</span></code>.
     </p>
 <p>
       With the availability of Boost.Multprecision, C++ programmers can now easily

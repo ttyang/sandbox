@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
 <link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
-<link rel="prev" href="introduction.html" title="Introduction">
+<link rel="prev" href="thetypes.html" title="The proposed types and potential extensions">
 <link rel="next" href="precision.html" title="Specifying Precision">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="thetypes.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section precision_suffixes">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -28,61 +28,71 @@
     and half precision?</a>
 </h2></div></div></div>
 <p>
+      The standard specifies that the type of a floating-point literal is double
+      unless explicitly specified by a suffix. The standard continues by specifying
+      that the suffixes <code class="computeroutput"><span class="identifier">f</span></code> and <code class="computeroutput"><span class="identifier">F</span></code> specify <code class="computeroutput"><span class="keyword">float</span></code>,
+      and the suffixes <code class="computeroutput"><span class="identifier">l</span></code> and <code class="computeroutput"><span class="identifier">L</span></code> specify <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code>.
+    </p>
+<p>
       Recent discussion on extended precision floating-point types in C++ has also
       raised the issue of how to specify constant values with a precision greater
       than <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>,
-      now signified by the suffix <code class="computeroutput"><span class="identifier">L</span></code>.
+      now signified by the suffix <code class="computeroutput"><span class="identifier">L</span></code>
+      or <code class="computeroutput"><span class="identifier">l</span></code>. One possible way is to
+      add <code class="computeroutput"><span class="identifier">Q</span></code> or <code class="computeroutput"><span class="identifier">q</span></code>
+      suffixes to signify that floating-point literal has quadruple precision.
     </p>
 <p>
-      One obvious way is to add <code class="computeroutput"><span class="identifier">Q</span></code>
-      or <code class="computeroutput"><span class="identifier">q</span></code> suffixes to signify that
-      a constant has at least 128-bits (about 40 decimal digits) of precision.
+      Code using the <code class="computeroutput"><span class="identifier">Q</span></code> suffix scheme
+      is shown in the sample below.
+    </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span>
+
+<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float128_t</span> <span class="identifier">pi</span> <span class="special">=</span> <span class="number">3.1415926535897932384626433832795028841972</span><span class="identifier">Q</span><span class="special">;</span>
+</pre>
+<p>
+      For half-precision floating-point literals, the suffix <code class="computeroutput"><span class="identifier">H</span></code>
+      or <code class="computeroutput"><span class="identifier">h</span></code> could be used. One potential
+      suffix for octuple-precision floating-point literals is <code class="computeroutput"><span class="identifier">O</span></code>
+      or <code class="computeroutput"><span class="identifier">o</span></code>.
     </p>
 <p>
-      There may also be a need for 256-bit (about 80 decimal digits) precision, and
-      perhaps 512-bits (about 155 decimal digits) precision.
+      For example,
+    </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span>
+
+<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float16_t</span> <span class="identifier">euler_gamma</span> <span class="special">=</span> <span class="number">0.577216</span><span class="identifier">H</span><span class="special">;</span>
+</pre>
+<p>
+      Higher precisions also require construction from floating-point literals. As
+      the list of available suffixes dwindles, however, available suffixes might
+      run out and the myriad of suffixes may become confusing. Floating-point literals
+      for precisions higher than quadruple precision, then, might be better served
+      with construction from string literals.
     </p>
 <p>
-      At present, the only way to provide constant values is to use a string to extended-precision
-      type conversion.
+      An alternative suffix scheme could use hybrid suffixes composed of, say, the
+      letter <code class="computeroutput"><span class="identifier">F</span></code> or <code class="computeroutput"><span class="identifier">f</span></code>
+      which stands for floating-point, to which the specified width of the type is
+      appended, for example <code class="computeroutput"><span class="identifier">F16</span></code>,
+      <code class="computeroutput"><span class="identifier">F32</span></code>, <code class="computeroutput"><span class="identifier">F64</span></code>,
+      <code class="computeroutput"><span class="identifier">F128</span></code>, etc. Code using the
+      <code class="computeroutput"><span class="identifier">F128</span></code> suffix scheme is shown
+      in the sample below.
     </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span>
+
+<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float128_t</span> <span class="identifier">pi</span> <span class="special">=</span> <span class="number">3.1415926535897932384626433832795028841972F</span><span class="number">128</span><span class="special">;</span>
+
+<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float16_t</span> <span class="identifier">euler_gamma</span> <span class="special">=</span> <span class="number">0.577216F</span><span class="number">16</span><span class="special">;</span>
+</pre>
 <p>
-      This <code class="computeroutput"><span class="identifier">from_string</span></code> method is
-      used for <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>,
-      <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
-      and <a href="http://gcc.gnu.org/onlinedocs/libquadmath/" target="_top">GCC libquadmath</a>,
-      for example.
-    </p>
-<p>
-      It would also be useful to have a method of interrogating the size of types,
-      similar to that provided by <a href="http://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html" target="_top">GCC
-      3.7.2 Common Predefined Macros</a>, for example, <code class="computeroutput"><span class="identifier">__SIZEOF_LONG_DOUBLE__</span></code>
-      (but is not defined for <code class="computeroutput"><span class="identifier">__float128</span></code>
-      nor <code class="computeroutput"><span class="identifier">__float80</span></code>)
-    </p>
-<p>
-      We refer to floating-point types with fixed precision such as 24, 53, 113 or
-      more binary significand digits, (and possibly even extending beyond these to
-      potential multiprecision types).
-    </p>
-<p>
-      These are defined in <a href="http://dx.doi.org/10.1109/IEEESTD.2008.4610935" target="_top">IEEE
-      Standard for Floating-point Arithmetic, IEEE Std 754-2008</a>.
-    </p>
-<p>
-      There are detailed descriptions at <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
-      floating-point format</a>, with more detailed descrptions of each type
-      at <a href="http://en.wikipedia.org/wiki/Half_precision_floating-point_format" target="_top">IEEE
-      half-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Single_precision_floating-point_format" target="_top">IEEE
-      single-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Double_precision_floating-point_format" target="_top">IEEE
-      double-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format" target="_top">Quadruple-precision
-      floating-point format</a>, and <a href="http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats" target="_top">IEEE
-      754 extended precision formats and x86 80-bit Extended Precision Format</a>
-      and these correspond to the proposed types below <code class="computeroutput"><span class="identifier">float16_t</span></code>
-      ....
-    </p>
-<p>
-      TBD by Chris: Suffix for half-precision.
+      This suffix scheme is unequivocal and it can be easily extended to unlimited
+      precision. On the other hand, it may be difficult for programmers to separate
+      the character part of the suffix from its numerical part when analyzing source
+      code. For example, it is particularly difficult to resolve the suffix in <code class="computeroutput"><span class="identifier">euler_gamma</span></code> above, since the <code class="computeroutput"><span class="number">16F</span><span class="number">16</span></code> obscures
+      the <code class="computeroutput"><span class="identifier">F</span></code>.
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -95,7 +105,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="thetypes.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

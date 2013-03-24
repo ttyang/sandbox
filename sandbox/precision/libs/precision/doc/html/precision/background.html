@@ -27,9 +27,12 @@
 <a name="precision.background"></a><a class="link" href="background.html" title="Background">Background</a>
 </h2></div></div></div>
 <p>
-      C++11 supports floating-point calculations with its built-in types <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
-      and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
-      as well as imlementations of numerous elementary and transcendental functions.
+      Support for mathematical facilities and specialized number types in C++ is
+      progressing rapidly. Currently, C++11 supports floating-point calculations
+      with its built-in types <code class="computeroutput"><span class="keyword">float</span></code>,
+      <code class="computeroutput"><span class="keyword">double</span></code>, and <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code> as well as imlementations of
+      numerous elementary and transcendental functions.
     </p>
 <p>
       A variety of higher transcendental functions of pure and applied mathematics
@@ -48,22 +51,26 @@
       above and has become quite widely used.
     </p>
 <p>
-      With the acceptance and release of <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
-      that provides much higher precision than built-in <code class="computeroutput"><span class="keyword">long</span>
-      <span class="keyword">double</span></code> with <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/boost_multiprecision/tut/floats/cpp_dec_float.html" target="_top">cpp_dec_float</a>
-      employing a variety of backends including the well-established <a href="http://gmplib.org/" target="_top">GNU
+      There is also progress in C++ in the area of multiprecision, including support
+      of multiprecision floating-point numbers. In particular, the acceptance and
+      release of <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+      provides much higher precision than built-in <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code> with its <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/boost_multiprecision/tut/floats/cpp_dec_float.html" target="_top">cpp_dec_float</a>
+      data type. <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+      has a flexible front-end that employs a variety of backends to implement multiprecision
+      floating-point types including the well-established <a href="http://gmplib.org/" target="_top">GNU
       Multiple Precision Arithmetic Library</a> and <a href="http://www.mpfr.org/" target="_top">GNU
-      MPFR library</a> libraries as well as a full open-license backend developed
-      from the <a href="http://calgo.acm.org/910.zip" target="_top">e_float (TOMS Algorithm
-      910)</a> library by Christopher Kormanyos and John Maddock.
+      MPFR library</a> libraries as well as a full open-license backend that
+      originates from the <a href="http://calgo.acm.org/910.zip" target="_top">e_float (TOMS
+      Algorithm 910)</a> library by Christopher Kormanyos and John Maddock.
     </p>
 <p>
       Since <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
       and <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
-      work seamlessly, allowing a <code class="computeroutput"><span class="identifier">float_type</span>
-      <span class="keyword">typedef</span></code> to be switched from a built-in
-      type to hundreds of decimal digits; then all the special functions and distributions
-      can be used at any chosen precision.
+      work seamlessly, a <code class="computeroutput"><span class="identifier">float_type</span> <span class="keyword">typedef</span></code> can be used to switch from a built-in
+      type to hundreds of decimal digits. This allows all the special functions and
+      distributions in <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>
+      to be used at any chosen precision.
     </p>
 <p>
       Other users and domains are finding the need and utility of <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3407.html" target="_top">decimal</a>
@@ -72,14 +79,15 @@
     </p>
 <p>
       Of course, moving away from hardware supported types to software using C++
-      templates carries a small price at compile-time, and a much bigger price at
-      runtime.
+      templates carries a small price at compile-time, and potentially a much bigger
+      price at runtime. Nonetheless, the new numerical types have wide ranges of
+      application required in numerous programming domains.
     </p>
 <p>
       All these development have made C++ much more attractive to the scientific
-      and engeering community, especially those needing higher (or lower) precision
-      for some (if not all) of the calculations, previously the domain covered by
-      computer algebra systems for which the precision can be arbitrary.
+      and engeering community, especially those needing mathematical functions and
+      higher (or lower) precision for some of their calculations. Previously these
+      domains were predominantly covered by computer algebra systems.
     </p>
 <div class="footnotes">
 <br><hr style="width:100; align:left;">
