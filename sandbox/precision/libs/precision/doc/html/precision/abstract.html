@@ -4,9 +4,9 @@
 <title>Abstract</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
-<link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
-<link rel="prev" href="../index.html" title="Specific-Width Floating-Point Types">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="prev" href="../index.html" title="Specific-Width Floating-Point Typedefs">
 <link rel="next" href="background.html" title="Background">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -28,7 +28,7 @@
 </h2></div></div></div>
 <p>
       It is proposed to add to the C++ standard several optional typedefs for floating-point
-      types with specified widths. In particular, the optional types include <code class="computeroutput"><span class="identifier">float16_t</span></code>, <code class="computeroutput"><span class="identifier">float32_t</span></code>,
+      types having specified width. In particular, the optional types include <code class="computeroutput"><span class="identifier">float16_t</span></code>, <code class="computeroutput"><span class="identifier">float32_t</span></code>,
       <code class="computeroutput"><span class="identifier">float64_t</span></code>, <code class="computeroutput"><span class="identifier">float128_t</span></code>,
       and their corresponding fast and least types. The optional floating-point types
       are to conform with the corresponding types <code class="computeroutput"><span class="identifier">binary16</span></code>,
@@ -38,11 +38,13 @@
       format</a>.
     </p>
 <p>
-      The optional floating-point types with specified widths are to be contained
+      The optional floating-point types having specified width are to be contained
       in a new standard library header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>.
-      Any of the optional floating-point types with specified widths included in
-      the implementation must have full support for the functions in <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code> and seamlessly interoperate with <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>.
-      The proposed new floating-point types with specified widths will be defined
+      Any of the optional floating-point types having specified width included in
+      the implementation should have full support for the functions in <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code> and seamlessly interoperate with <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>. Any of the optional floating-point types
+      having specified width included in the implementation must template specializations
+      of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span></code> in <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>.
+      The proposed new floating-point types having specified width will be defined
       in the global and <code class="computeroutput"><span class="identifier">std</span></code> namespaces.
     </p>
 <p>
@@ -52,7 +54,7 @@
       <span class="keyword">double</span></code>.
     </p>
 <p>
-      Floating-point types with specified widths are expected to significantly improve
+      Floating-point types having specified width are expected to significantly improve
       clarity of code and portability of floating-point calculations. Analogous improvements
       for integer calculations were recently achieved via standardization of integer
       types having specified width such as <code class="computeroutput"><span class="identifier">int8_t</span></code>,

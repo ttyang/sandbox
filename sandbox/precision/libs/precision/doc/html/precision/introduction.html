@@ -4,10 +4,10 @@
 <title>Introduction</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
-<link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
 <link rel="prev" href="background.html" title="Background">
-<link rel="next" href="thetypes.html" title="The proposed types and potential extensions">
+<link rel="next" href="thetypedefs.html" title="The proposed typedefs and potential extensions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thetypes.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thetypedefs.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section precision_introduction">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -37,8 +37,8 @@
 <p>
       It is, however, emphasized that floating-point adherence to <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
       floating-point format</a> is not mandated by the current C++ language standard.
-      Nor does the standard specify the widths or precisions of its built-in types
-      <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
+      Nor does the standard specify the widths, precisions or lyaout of its built-in
+      types <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
       and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
       This can lead to portability problems, introduce poor efficiency on cost-sensitive
       microcontroller architectures, and reduce reliability and safety.
@@ -58,46 +58,29 @@
       of floating-point calculations in C++ by ensuring that the actual precision
       of a floating-point type can be exactly determined both at compile-time as
       well as during the run of a calculation. Strong interest in floating-point
-      types with specified widths has, for example, recently been expressed on the
-      <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost
+      <code class="computeroutput"><span class="identifier">typedefs</span></code> having specified width
+      has, for example, recently been expressed on the <a href="http://lists.boost.org/Archives/boost/2013/03/201786.php" target="_top">Boost
       list discussion of precise floating-point types</a>.
     </p>
 <p>
-      Recent specification of integer types having specified widths in C99, C11,
+      Recent specification of integer typedefs having specified width in C99, C11,
       C++11, and <a href="http://open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3376.pdf" target="_top">C++
       draft specification</a> has drastically improved integer algorithm portability
       and range.
     </p>
 <p>
-      One example of how integer types having specified widths have proven to be
+      One example of how integer typedefs having specified width have proven to be
       essential is described by Robert Ramey <a href="http://lists.boost.org/Archives/boost/2002/11/40432.php" target="_top">Usefulness
       of fixed integer sizes in portability (for Boost serialization library).</a>
     </p>
 <p>
-      &#8220;
-Fundamental types in C++ are <code class="computeroutput"><span class="keyword">unsigned</span>
-      <span class="keyword">char</span><span class="special">,</span> <span class="keyword">signed</span> <span class="keyword">char</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">short</span> <span class="keyword">int</span><span class="special">,</span>
-      <span class="keyword">signed</span> <span class="keyword">short</span>
-      <span class="keyword">int</span><span class="special">,</span> <span class="special">...</span> <span class="keyword">unsigned</span> <span class="keyword">long</span><span class="special">,</span> <span class="keyword">signed</span>
-      <span class="keyword">long</span></code>. In addition to the above some
-      compilers define <code class="computeroutput"><span class="identifier">int32_t</span></code>, and
-      other as fundamental types. It is a unfortunate accident of history that the
-      nomenclature is confusing. It is an unfortunate original design choice that
-      this size of int, char etc were not defined as a specific number of bits. However
-      at the time there were in common usage machines with 9, 16, 18, 24, 32, 36
-      and 48 bit words. What else were the authors to do? It is common among programers
-      to define types <code class="computeroutput"><span class="identifier">int16_t</span></code>, ...,
-      etc using the <code class="computeroutput"><span class="keyword">typedef</span></code> facility
-      to map integers of a specific size between machines. This does no harm and
-      can facilitate portability. However it in no way alters the fundamental types
-      that are available on a given platform. &#8221;
-    </p>
-<p>
-      The motivations to provide floating-point types with specified widths are analogous
-      to those that led to the introduction of integers with specified widths such
-      as <code class="computeroutput"><span class="identifier">int8_t</span></code>, <code class="computeroutput"><span class="identifier">int16_t</span></code>,
-      <code class="computeroutput"><span class="identifier">int32_t</span></code>, and <code class="computeroutput"><span class="identifier">int64_t</span></code>. The specification of floating-point
-      types with specified widths and adherence to <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      The motivations to provide floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width are analogous to those that led to the introduction
+      of integers having specified width such as <code class="computeroutput"><span class="identifier">int8_t</span></code>,
+      <code class="computeroutput"><span class="identifier">int16_t</span></code>, <code class="computeroutput"><span class="identifier">int32_t</span></code>,
+      and <code class="computeroutput"><span class="identifier">int64_t</span></code>. The specification
+      of floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having
+      specified width and adherence to <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
       floating-point format</a> can potentially improve the C++ language significantly,
       especially in the scientific and engineering communities where other languages
       have found benefit from types that conform exactly to the <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
@@ -122,7 +105,7 @@ Fundamental types in C++ are <code class="computeroutput"><span class="keyword">
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thetypes.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="background.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thetypedefs.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

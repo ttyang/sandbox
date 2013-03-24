@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>How to specify constants with quad and half precision?</title>
+<title>How to define floating-point literal suffixes?</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
-<link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
-<link rel="prev" href="thetypes.html" title="The proposed types and potential extensions">
-<link rel="next" href="precision.html" title="Specifying Precision">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="prev" href="thetypedefs.html" title="The proposed typedefs and potential extensions">
+<link rel="next" href="thestandard.html" title="Place in the standard">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,12 +20,12 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="thetypes.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="thetypedefs.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thestandard.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section precision_suffixes">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="precision.suffixes"></a><a class="link" href="suffixes.html" title="How to specify constants with quad and half precision?">How to specify constants with quad
-    and half precision?</a>
+<a name="precision.suffixes"></a><a class="link" href="suffixes.html" title="How to define floating-point literal suffixes?">How to define floating-point literal
+    suffixes?</a>
 </h2></div></div></div>
 <p>
       The standard specifies that the type of a floating-point literal is double
@@ -62,7 +62,7 @@
     </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span>
 
-<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float16_t</span> <span class="identifier">euler_gamma</span> <span class="special">=</span> <span class="number">0.577216</span><span class="identifier">H</span><span class="special">;</span>
+<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float16_t</span> <span class="identifier">euler</span> <span class="special">=</span> <span class="number">0.577216</span><span class="identifier">H</span><span class="special">;</span>
 </pre>
 <p>
       Higher precisions also require construction from floating-point literals. As
@@ -85,14 +85,13 @@
 
 <span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float128_t</span> <span class="identifier">pi</span> <span class="special">=</span> <span class="number">3.1415926535897932384626433832795028841972F</span><span class="number">128</span><span class="special">;</span>
 
-<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float16_t</span> <span class="identifier">euler_gamma</span> <span class="special">=</span> <span class="number">0.577216F</span><span class="number">16</span><span class="special">;</span>
+<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float16_t</span> <span class="identifier">euler</span> <span class="special">=</span> <span class="number">0.577216F</span><span class="number">16</span><span class="special">;</span>
 </pre>
 <p>
       This suffix scheme is unequivocal and it can be easily extended to unlimited
       precision. On the other hand, it may be difficult for programmers to separate
       the character part of the suffix from its numerical part when analyzing source
-      code. For example, it is particularly difficult to resolve the suffix in <code class="computeroutput"><span class="identifier">euler_gamma</span></code> above, since the <code class="computeroutput"><span class="number">16F</span><span class="number">16</span></code> obscures
-      the <code class="computeroutput"><span class="identifier">F</span></code>.
+      code. For example, it is particularly difficult to resolve the <code class="computeroutput"><span class="identifier">F</span></code> suffix in the initialization of <code class="computeroutput"><span class="identifier">euler</span></code> above.
     </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -105,7 +104,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="thetypes.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="precision.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="thetypedefs.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="thestandard.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
