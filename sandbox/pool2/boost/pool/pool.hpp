@@ -15,6 +15,8 @@
 #include <limits>     // std:numeric_limits
 #include <memory>     // std::allocator
 
+#include <boost/array.hpp>   // std::array
+
 #include <boost/tr1/type_traits.hpp>
 
 #ifdef BOOST_POOL_VALGRIND

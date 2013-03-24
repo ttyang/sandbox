@@ -295,15 +295,15 @@ class _chunks_t
 		}
 
 	private :
-		Allocator _allocator;   // Allocator.
+		Allocator _allocator;                 // Allocator.
 
-		chunk_t _achunks[N];    // Chunks, static array.
-		chunk_t *_pchunks;      // Chunks, dynamic array.
+		boost::array<chunk_t, N> _achunks;    // Chunks, static array.
+		chunk_t *_pchunks;                    // Chunks, dynamic array.
 
-		size_t _maxChunks;      // Maximum number of chunks that may be holded.
-		size_t _numChunks;      // Number of chunks holded.
+		size_t _maxChunks;                    // Maximum number of chunks that may be holded.
+		size_t _numChunks;                    // Number of chunks holded.
 
-		mutable bool _sorted;   // True if chunk list is sorted.
+		mutable bool _sorted;                 // True if chunk list is sorted.
 };
  
 /* -------------------------------------------------------------------------- */
