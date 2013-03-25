@@ -44,7 +44,7 @@ ISO/IEC JTC1 SC22 WG21/SG6 Numerics N???  - 2013-4-??
 [def __IEEE_Quad [@http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format  Quadruple-precision floating-point format]]
 [def __IEEE_Extended [@http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats IEEE 754 extended precision formats and x86 80-bit Extended Precision Format]]
 [def __IEEE_floating_point [@http://en.wikipedia.org/wiki/IEEE_floating_point IEEE_ floating-point format]]
-[def __IEEE_80_bit[@ http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats# x86 Extended Precision Format]]
+[def __IEEE_80_bit [@ http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats# x86 Extended Precision Format]]
 [def __IBM_hexadecimal [@http://en.wikipedia.org/wiki/Extended_precision#IBM_extended_precision_formats IBM extended precision formats]]
 
 [def __C_IEEE_2008 [@http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1582.pdf C support for IEEE754:2008 N1582]]
@@ -52,8 +52,6 @@ ISO/IEC JTC1 SC22 WG21/SG6 Numerics N???  - 2013-4-??
 [def __arbitrary_precision [@http://en.wikipedia.org/wiki/Arbitrary_precision arbitrary precision]]
 
 [include html4_symbols.qbk]
-
-[important This is NOT an official Boost library.]
 
 [note Comments and suggestions to Paul.A.Bristow pbristow@hetp.u-net.com.]
 
