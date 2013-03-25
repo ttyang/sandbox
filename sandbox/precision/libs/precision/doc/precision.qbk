@@ -176,6 +176,13 @@ correspond to floating-point types with 11, 24, 53, and 113 binary significand d
 respectively. These are defined in __IEEE_floating_point, and there are more detailed descrptions
 of each type at __IEEE_Half, __IEEE_Single, __IEEE_Double, __IEEE_Quad, and __IEEE_Extended.
 
+Here, we specifically mean equivalence of the following.
+
+  float16_t  == binary16;
+  float32_t  == binary32;
+  float64_t  == binary64;
+  float128_t == binary128;
+
 One could envision two ways to name the proposed
 optional floating-point `typedef`s having specified width:
 
@@ -222,7 +229,7 @@ potential extension to multiprecision types, even __arbitrary_precision, in the 
 Consider an implementation for a supercomputer. This platform might have
 `float`, `double`, and `long double` corresponding to IEEE754
 `binary32`, `binary64`, and `binary128`, respectively. In addition, this
-platform might have a user-defined type with octuple-precision.
+platform might have an implementation-specific type with octuple-precision.
 The implementation for this supercomputer could introduce
 its optional floating-point `typedef`s having specified width
 into the `std` namespace as shown below.
@@ -242,7 +249,8 @@ A cost-sensitive 8-bit microcontroller platform without an FPU
 does not have sufficient resources to support the eight-byte, 64-bit
 `binary64` type in a feasible fashion.
 An implementation for this platform can, however, support
-half-precision `float16_t` and single-precision `float32_t`.
+half-precision `float16_t` using an implementation-specific type
+and single-precision `float32_t`.
 This implementation could introduce
 its optional floating-point `typedef`s having specified width
 into the `std` namespace as shown below.
@@ -426,9 +434,16 @@ be supported by `<limits>`.
 This is considered an implementation detail.
 
 [note Support for `<limits>`, even where optional, can be quite
-useful. This allows programs query the floating-point limits
-and use, among other things, `std::numeric_limits<>::is_iec559`
-to determine if a floating-point type conforms with __IEEE_floating_point.]
+useful. This allows programs to query the floating-point limits
+at compile-time and use, among other things, `std::numeric_limits<>::is_iec559`
+to verify conformance with __IEEE_floating_point.]
+
+[note Each of the optional floating-point `typedef`s having specified width
+can only have `true` for the value of `std::numeric_limits<>::is_iec559`
+if its underlying type (be it `float`, `double`, `long double` or
+an implementation-dependent type) conforms with its corresponding
+cpecification of `binary16`, `binary32`, `binary64`, or `binary128`
+in __IEEE_floating_point.]
 
 [endsect] [/section:limitsinterop Interoperation with <limits>]
 
