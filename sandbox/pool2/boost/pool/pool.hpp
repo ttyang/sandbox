@@ -96,7 +96,7 @@ namespace boost
  * 
  * -------------------------------------------------------------------------- */
 
-	template<typename T, bool ThreadSafe = false, class Allocator = std::allocator<char>, size_t ExpectedGrowthData = 1, class GrowthDataAllocator = std::allocator<char>>
+template<typename T, bool ThreadSafe = false, class Allocator = std::allocator<char>, size_t ExpectedGrowthData = 1, class GrowthDataAllocator = std::allocator<char>>
 class pool;
 
 /* -------------------------------------------------------------------------- */
@@ -104,7 +104,7 @@ class pool;
 /* -------------------------------------------------------------------------- */
 
 template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
-class pool
+class pool : public std::allocator<T>
 {
 	private :
 		#include "details/pool.hpp"
@@ -148,9 +148,35 @@ class pool
 	private :
 		/** ------------------------------------------------------------------------
 		 * Requests a pool buffer, \b without initializing it's content.
-		 * This private function is used by the various flavors of pool::request().
 		 * ----------------------------------------------------------------------- */
 		T *request_core(void);
+
+		/** ------------------------------------------------------------------------
+		 * Releases a pool buffer, \b without destroying it's content.
+		 * ---------------------------------------------------------------------- */
+		void release_core(T *);
+
+	public :
+		/** ------------------------------------------------------------------------
+		 * Requests a pool buffer, \b without initializing it's content.
+		 * This function is required for pool to be an allocator.
+		 * ----------------------------------------------------------------------- */
+		inline T *allocate(std::allocator<T>::size_type count, const void * = NULL)
+			{ assert(count <= _size); return (count <= _size) ? request_core() : NULL; }
+
+		/** ------------------------------------------------------------------------
+		 * Releases a pool buffer, \b without destroying it's content.
+		 * This function is required for pool to ba an allocator.
+		 * ---------------------------------------------------------------------- */
+		inline void deallocate(std::allocator<T>::pointer pointer, std::allocator<T>::size_type count)
+			{ assert(count <= _size); if (count <= _size) release_core(pointer); }
+
+		/** ------------------------------------------------------------------------
+		 * Returns the maximum size that can be allocated in a single call to
+		 * allocate(). This function is required for pool to be an allocator.
+		 * ---------------------------------------------------------------------- */
+		inline std::allocator<T>::size_type max_size() const
+			{ return _size; }
 
 	public :
 		/** ------------------------------------------------------------------------
