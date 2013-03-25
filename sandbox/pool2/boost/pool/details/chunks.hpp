@@ -169,6 +169,11 @@ class _chunks_t
 		typedef _chunk_t<T> chunk_t;
 
 		/** ------------------------------------------------------------------------
+		 * Allocator type.
+		 * ---------------------------------------------------------------------- */
+		typedef Allocator allocator;
+
+		/** ------------------------------------------------------------------------
 		 * Iterator over chunks.
 		 * ---------------------------------------------------------------------- */
 		typedef obvious_iterator<_chunks_t, chunk_t> iterator;
@@ -295,15 +300,15 @@ class _chunks_t
 		}
 
 	private :
-		Allocator _allocator;                 // Allocator.
+		std::allocator<chunk_t> _allocator;    // Allocator.
 
-		boost::array<chunk_t, N> _achunks;    // Chunks, static array.
-		chunk_t *_pchunks;                    // Chunks, dynamic array.
+		boost::array<chunk_t, N> _achunks;     // Chunks, static array.
+		chunk_t *_pchunks;                     // Chunks, dynamic array.
 
-		size_t _maxChunks;                    // Maximum number of chunks that may be holded.
-		size_t _numChunks;                    // Number of chunks holded.
+		size_t _maxChunks;                     // Maximum number of chunks that may be holded.
+		size_t _numChunks;                     // Number of chunks holded.
 
-		mutable bool _sorted;                 // True if chunk list is sorted.
+		mutable bool _sorted;                  // True if chunk list is sorted.
 };
  
 /* -------------------------------------------------------------------------- */

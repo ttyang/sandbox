@@ -96,14 +96,14 @@ namespace boost
  * 
  * -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe = false, class Allocator = std::allocator<char>>
+	template<typename T, bool ThreadSafe = false, class Allocator = std::allocator<char>, size_t ExpectedGrowthData = 1, class GrowthDataAllocator = std::allocator<char>>
 class pool;
 
 /* -------------------------------------------------------------------------- */
 /* -- class boost::pool                                                    -- */
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
 class pool
 {
 	private :
@@ -129,7 +129,7 @@ class pool
 		 * \param allocator
 		 *        Custom allocator instance.
 		 * ---------------------------------------------------------------------- */
-		pool(const pools::policy& policy, size_t bufferSize = 1, const Allocator& allocator = Allocator());
+		pool(const pools::policy& policy, size_t bufferSize = 1, const Allocator& allocator = Allocator(), const GrowthDataAllocator& gallocator = GrowthDataAllocator());
 
 		/** ------------------------------------------------------------------------
 		 * Destroys a pool.
@@ -256,7 +256,7 @@ class pool
 		Allocator _allocator;        // Custom allocator. Set by the constructor.
 		pools::policy _policy;       // Pool growth policy. Set by the constructor.
 
-		typedef _chunks_t<T> chunks_t;
+		typedef _chunks_t<T, ExpectedGrowthData, GrowthDataAllocator> chunks_t;
 		typedef _chunk_t<T> chunk_t;
 
 		chunks_t _chunks;            // Allocated memory chunks.
@@ -269,17 +269,17 @@ class pool
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
-pool<T, ThreadSafe, Allocator>::pool(const pools::policy& policy, size_t bufferSize, const Allocator& allocator)
-	: _allocator(allocator), _policy(policy), _allocated(0), _requested(0), _size(bufferSize)
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::pool(const pools::policy& policy, size_t bufferSize, const Allocator& allocator, const GrowthDataAllocator& gallocator)
+: _allocator(allocator), _policy(policy), _chunks(chunks_t::allocator(gallocator)), _allocated(0), _requested(0), _size(bufferSize)
 {
 	grow(_policy.growth(0));
 }
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
-pool<T, ThreadSafe, Allocator>::~pool()
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::~pool()
 {
 	/* -- Purge pool to destroy any outstanding objects -- */
 
@@ -293,8 +293,8 @@ pool<T, ThreadSafe, Allocator>::~pool()
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
-void pool<T, ThreadSafe, Allocator>::purge()
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+void pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::purge()
 {
 	/* -- Do not bother in case of POD buffers -- */
 
@@ -329,8 +329,8 @@ void pool<T, ThreadSafe, Allocator>::purge()
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
-bool pool<T, ThreadSafe, Allocator>::grow(size_t count)
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+bool pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::grow(size_t count)
 {
 	/* -- Early exit if no growth is asked for -- */
 
@@ -371,8 +371,8 @@ bool pool<T, ThreadSafe, Allocator>::grow(size_t count)
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
-T *pool<T, ThreadSafe, Allocator>::request_core()
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+T *pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::request_core()
 {
 	/* -- Try growing the pool if there is no free buffer availables -- */
 
@@ -399,8 +399,8 @@ T *pool<T, ThreadSafe, Allocator>::request_core()
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
-T *pool<T, ThreadSafe, Allocator>::request()
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+T *pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::request()
 {
 	/* -- Request buffer -- */
 
@@ -420,8 +420,8 @@ T *pool<T, ThreadSafe, Allocator>::request()
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator> template<typename T1>
-T *pool<T, ThreadSafe, Allocator>::request(const T1& t1)
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator> template<typename T1>
+T *pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::request(const T1& t1)
 {
 	/* -- Request buffer -- */
 
@@ -441,8 +441,8 @@ T *pool<T, ThreadSafe, Allocator>::request(const T1& t1)
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator> template<typename T1, typename T2>
-T *pool<T, ThreadSafe, Allocator>::request(const T1& t1, const T2& t2)
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator> template<typename T1, typename T2>
+T *pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::request(const T1& t1, const T2& t2)
 {
 	/* -- Request buffer -- */
 
@@ -462,8 +462,8 @@ T *pool<T, ThreadSafe, Allocator>::request(const T1& t1, const T2& t2)
 
 /* -------------------------------------------------------------------------- */
 
-template<typename T, bool ThreadSafe, class Allocator>
-void pool<T, ThreadSafe, Allocator>::release(T *buffer)
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+void pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::release(T *buffer)
 {
 	/* -- Early exit if given pointer is null -- */
 
