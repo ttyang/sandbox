@@ -558,6 +558,8 @@ Walter E.Brown, Opaque Typedefs]
 
 # [@ http://gcc.gnu.org/wiki/x87note X8087 notes]
 
+# [@http://software.intel.com/en-us/forums/topic/304052 Intel __Quad compiler '-Qoption,cpp,--extended_float_type']
+
 [endsect] [/section:references References]
 
 [section:version_id Version Info]

@@ -7,7 +7,7 @@
 <link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
 <link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
 <link rel="prev" href="../index.html" title="Specific-Width Floating-Point Typedefs">
-<link rel="next" href="background.html" title="Background">
+<link rel="next" href="introduction.html" title="Introduction">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -20,62 +20,59 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="background.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="introduction.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section precision_abstract">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="precision.abstract"></a><a class="link" href="abstract.html" title="Abstract">Abstract</a>
 </h2></div></div></div>
 <p>
-      It is proposed to add to the C++ standard several optional typedefs for floating-point
-      types having specified width. In particular, the optional types include <code class="computeroutput"><span class="identifier">float16_t</span></code>, <code class="computeroutput"><span class="identifier">float32_t</span></code>,
+      It is proposed to add to the C++ standard optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width. The optional
+      <code class="computeroutput"><span class="keyword">typedef</span></code>s include <code class="computeroutput"><span class="identifier">float16_t</span></code>, <code class="computeroutput"><span class="identifier">float32_t</span></code>,
       <code class="computeroutput"><span class="identifier">float64_t</span></code>, <code class="computeroutput"><span class="identifier">float128_t</span></code>,
-      and their corresponding fast and least types. The optional floating-point types
-      are to conform with the corresponding types <code class="computeroutput"><span class="identifier">binary16</span></code>,
-      <code class="computeroutput"><span class="identifier">binary32</span></code>, <code class="computeroutput"><span class="identifier">binary64</span></code>,
-      and <code class="computeroutput"><span class="identifier">binary128</span></code> described in
-      <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_ floating-point
-      format</a>.
+      their corresponding fast and least types, and the corresponding maximum-width
+      type. These are to conform with the corresponding specifications of <code class="computeroutput"><span class="identifier">binary16</span></code>, <code class="computeroutput"><span class="identifier">binary32</span></code>,
+      <code class="computeroutput"><span class="identifier">binary64</span></code>, and <code class="computeroutput"><span class="identifier">binary128</span></code> in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a>.
     </p>
 <p>
-      The optional floating-point types having specified width are to be contained
-      in a new standard library header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>.
-      Any of the optional floating-point types having specified width included in
-      the implementation should have full support for the functions in <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code> and seamlessly interoperate with <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>. Any of the optional floating-point types
-      having specified width included in the implementation must template specializations
-      of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span></code> in <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>.
-      The proposed new floating-point types having specified width will be defined
-      in the global and <code class="computeroutput"><span class="identifier">std</span></code> namespaces.
+      The optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width are to be contained in a new standard library header
+      <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>. They will be defined in the <code class="computeroutput"><span class="identifier">std</span></code> namespace.
     </p>
 <p>
-      It is also proposed to provide additional suffix(es) to specify constants to
-      suit precision lower than that of <code class="computeroutput"><span class="keyword">float</span></code>
-      and precision higher than that of <code class="computeroutput"><span class="keyword">long</span>
-      <span class="keyword">double</span></code>.
+      It is not proposed to make any changes to <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code>,
+      special functions, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>, or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>.
+      Any of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width that are <code class="computeroutput"><span class="keyword">typedef</span></code>ed
+      from the built-in types <code class="computeroutput"><span class="keyword">float</span></code>,
+      <code class="computeroutput"><span class="keyword">double</span></code>, and <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code> should automatically be supported
+      by the implementation's existing <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code>,
+      special functions, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>, and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>.
+      Support for other <code class="computeroutput"><span class="keyword">typedef</span></code>s is
+      implementation-defined.
     </p>
 <p>
-      Floating-point types having specified width are expected to significantly improve
-      clarity of code and portability of floating-point calculations. Analogous improvements
-      for integer calculations were recently achieved via standardization of integer
-      types having specified width such as <code class="computeroutput"><span class="identifier">int8_t</span></code>,
-      <code class="computeroutput"><span class="identifier">int16_t</span></code>, <code class="computeroutput"><span class="identifier">int32_t</span></code>,
-      and <code class="computeroutput"><span class="identifier">int64_t</span></code>.
+      New C-style macros are proposed to facilitate initialization of the optional
+      floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having
+      specified width from a floating-point literal constant.
     </p>
 <p>
       The main objectives of this proposal are to:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
-          Extend the range of floating-point precision.
+          Improve portability, reliability and safety.
         </li>
 <li class="listitem">
-          Reduce errors in precision.
+          Reduce the risk of error in precision.
         </li>
 <li class="listitem">
           Improve clarity of coding.
         </li>
 <li class="listitem">
-          Improve portability, reliability and safety.
+          Optionally extend the range of floating-point precision.
         </li>
 </ul></div>
 </div>
@@ -89,7 +86,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="background.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="introduction.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
