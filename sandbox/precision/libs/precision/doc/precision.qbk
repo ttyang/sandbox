@@ -181,6 +181,16 @@ Here, we specifically mean equivalence of the following.
   float64_t  == binary64;
   float128_t == binary128;
 
+This equivalence results in far-reaching benefits.
+
+It means that floating-point software written with
+`float16_t`, `float32_t`, `float64_t`, and `float128_t`
+should behave identically when used on any platform
+with any implementation that correctly supports the `typedef`s.
+
+It also creates the opportunity to implement quadruple-precision (__IEEE_Quad)
+in a specified, and therefore portable, fashion.
+
 One could envision two ways to name the proposed
 optional floating-point `typedef`s having specified width:
 
