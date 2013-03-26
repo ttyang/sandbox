@@ -86,10 +86,10 @@ from a floating-point literal constant.
 
 The main objectives of this proposal are to:
 
-* Improve portability, reliability and safety.
-* Reduce the risk of error in precision.
-* Improve clarity of coding.
-* Optionally extend the range of floating-point precision.
+* Extend the benefits of specified-width typedefs for integer types to floating-point types.
+* Improve floating-point safety and reliability by providing a standardized typedefs that behave identically on all platforms.
+* Optionally extend the range of floating-point to lower and higher precision.
+* Provide a Standard way of specifying 128-bit precision.
 
 [endsect] [/section:abstract  Abstract]
 
@@ -137,11 +137,9 @@ that are not derived from `float`, `double`, and `long double`.
 Providing optional floating-point `typedef`s having specified width
 is expected to significantly improve portability, reliability, and safety
 of floating-point calculations in C++.
-[footnote
-[Analogous improvements for integer calculations were recently achieved
+Analogous improvements for integer calculations were recently achieved
 via standardization of integer types having specified width
-such as `int8_t`, `int16_t`, `int32_t`, and `int64_t`.]
-]
+such as `int8_t`, `int16_t`, `int32_t`, and `int64_t`.
 
 [endsect] [/section:introduction Introduction]
 
@@ -340,7 +338,7 @@ The proper place for defining the optional
 floating-point `typedef`s having specified width
 should be oriented along the lines of the current standard.
 Consider the existing specification of integer `typedef`s having
-specified precision in C++11. A partial synopsis is shown below.
+specified width in C++11. A partial synopsis is shown below.
 
 18.4 Integer types [cstdint]
 18.4.1 Header <cstdint> synopsis [cstdint.syn]
@@ -463,32 +461,13 @@ This is considered an implementation detail.
 
 [endsect] [/section:complexinterop Interoperation with <complex>]
 
-[section:context The context among existing implementations]
+[section:quadprecision Specifying 128-bit precision]
 
-Many existing implementations already support `float`, `double`, and `long double`.
-In addition, some of these either are or strive to be compliant with __IEEE_floating_point.
-In these cases, it will be straightforward to support (at least) a subset
-of the proposed optional floating-point `typedef`s having specified width
-by adding any desired optional type definitions and the corresponding
-macro definitions.
+The proposed `typedef` `float128_t` provides a standardized way
+to specify quadruple-precision (__IEEE_Quad) in C++.
 
-Some implementations for cost-sensitive microcontroller platforms support
-`float`, `double`, and `long double`, and some of these are compliant with __IEEE_floating_point.
-Some of these implementations treat `double` exactly as `float`,
-and even treat `long double` exactly as `double`.
-This is permitted by the standard which does not prescribe the precision
-for any floating-point (or integer) types, leaving them to be implementation-defined.
-On these platforms, the existing floating-point types could optionally
-be type-defined to `float32_t`.
-Optional support for an extension to `float16_t` could provide a very useful
-and efficient floating-point type with half-precision, but reduced range.
-
-Some implementations for cost-sensitive microcontroller platforms
-also support a 24-bit floating-point type. Here, an extension
-of the optional floating-point `typedef`s with specified width
-could include `float24_t`. This would be equivalent to
-three-quarter precision floating-point, which is not
-specified in __IEEE_floating_point.
+On powerful PCs and workstations, `long double` has been treated
+in a variety of ways, and this has given rise to numerous portability problems.
 
 The [@http://gcc.gnu.org/wiki/x87note Intel X8087 chipset] is capable of performing
 calculations with internal 80-bit registers. This increases the width of the
@@ -516,18 +495,12 @@ in addition to any other optional `typedef`s.
 This gives about 106-bits of precision (about 33 decimal digits) but has rather odd behavior
 at the extremes making implementation of `std::numeric_limits<>::epsilon()` problematic.
 
-[note On powerful PCs and workstations, `long double` has been treated
-in a variety of ways, and this has given rise to numerous portability problems.
 It may be useful if future implementations for powerful PCs and workstations
 strive to make `long double` equivalent to quadruple-precision (__IEEE_Quad)
 and to `typedef` this to `float128_t`. Some architectures have hardware support
-for this. Those lacking direct hardware support can use software emulation.]
+for this. Those lacking direct hardware support can use software emulation.
 
-TBD by Chris: Question: Table of recommended precisions and float layouts?
-
-TBD by Chris: Clearly state that only 16, 32, 64, 128 are portable, as only these are IEEE754.
-
-[h4 Survey of existing extended precision types]
+[h4 Survey of existing 128-bit types]
 
 # [@http://gcc.gnu.org/onlinedocs/gcc/Floating-Types.html   GNU C supports additional floating types, `__float80` and `__float128` to support 80-bit (XFmode) and 128-bit (TFmode) floating types.]
 
@@ -536,7 +509,42 @@ TBD by Chris: Clearly state that only 16, 32, 64, 128 are portable, as only thes
 
 # The 360/85 and follow-on System/370 added support for a 128-bit "extended" __IBM_hexadecimal. These formats are still supported in the current design, where they are now called the "hexadecimal floating point" (HFP) formats.
 
-# With the availability of Boost.Multprecision, C++ programmers can now easily switch to using floating-point types that give far more decimal digits of precision (hundreds) than the built-in types `float`, `double` and `long double`.
+[endsect] [/section:quadprecision Specifying 128-bit precision]
+
+[section:lowerprecision Extending to lower precision]
+
+Some implementations for cost-sensitive microcontroller platforms support
+`float`, `double`, and `long double`, and some of these are compliant with __IEEE_floating_point.
+Some of these implementations treat `double` exactly as `float`,
+and even treat `long double` exactly as `double`.
+This is permitted by the standard which does not prescribe the precision
+for any floating-point (or integer) types, leaving them to be implementation-defined.
+On these platforms, the existing floating-point types could optionally
+be type-defined to `float32_t`.
+Optional support for an extension to `float16_t` could provide a very useful
+and efficient floating-point type with half-precision, but reduced range.
+
+Some implementations for cost-sensitive microcontroller platforms
+also support a 24-bit floating-point type. Here, an extension
+of the optional floating-point `typedef`s with specified width
+could include `float24_t`. This would be equivalent to
+three-quarter precision floating-point, which is not
+specified in __IEEE_floating_point.
+
+[endsect] [/section:lowerprecision Extending to lower precision]
+
+[section:context The context among existing implementations]
+
+Many existing implementations already support `float`, `double`, and `long double`.
+In addition, some of these either are or strive to be compliant with __IEEE_floating_point.
+In these cases, it will be straightforward to support (at least) a subset
+of the proposed optional floating-point `typedef`s having specified width
+by adding any desired optional type definitions and the corresponding
+macro definitions.
+
+TBD by Chris: Clearly state that only 16, 32, 64, 128 are portable, as only these are IEEE754.
+
+TBD by Chris: Question: Table of recommended precisions and float layouts?
 
 [endsect] [/section:context The context among existing implementations]
 
