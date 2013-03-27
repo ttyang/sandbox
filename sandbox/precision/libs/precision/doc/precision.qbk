@@ -71,18 +71,12 @@ The optional floating-point `typedef`s having specified width
 are to be contained in a new standard library header `<cstdfloat>`.
 They will be defined in the `std` namespace.
 
-It is not proposed to make any changes to `<cmath>`, special functions,
-`<limits>`, or `<complex>`.
-Any of the optional floating-point `typedef`s having specified width
-that are `typedef`ed from the built-in types `float`, `double`, and `long double`
-should automatically be supported by
-the implementation's existing `<cmath>`, special functions,
-`<limits>`, and `<complex>`.
-Support for other `typedef`s is implementation-defined.
-
 New C-style macros are proposed to facilitate initialization
 of the optional floating-point `typedef`s having specified width
 from a floating-point literal constant.
+
+It is not proposed to make any mandatory changes to `<cmath>`,
+special functions, `<limits>`, or `<complex>`.
 
 The main objectives of this proposal are to:
 
@@ -131,7 +125,7 @@ floating-point precision in C++.
 
 It may also be desirable to extend floating-point precision to
 both lower and higher precisions. This can be done by including
-implementation-specific optional floating-point `typedef`s having specified width
+implementation-specific `typedef`s having specified width
 that are not derived from `float`, `double`, and `long double`.
 
 Providing optional floating-point `typedef`s having specified width
@@ -237,7 +231,7 @@ potential extension to multiprecision types, even __arbitrary_precision, in the 
 Consider an implementation for a supercomputer. This platform might have
 `float`, `double`, and `long double` corresponding to IEEE754
 `binary32`, `binary64`, and `binary128`, respectively. In addition, this
-platform might have an implementation-specific type with octuple-precision.
+platform might have a floating-point type with octuple-precision.
 The implementation for this supercomputer could introduce
 its optional floating-point `typedef`s having specified width
 into the `std` namespace as shown below.
@@ -246,19 +240,18 @@ into the `std` namespace as shown below.
 
   namespace std
   {
-    typedef float                     float32_t;
-    typedef double                    float64_t;
-    typedef long double               float128_t;
-    typedef my_octuple_precision_type float256_t;
-    typedef float256_t                floatmax_t;
+    typedef float                float32_t;
+    typedef double               float64_t;
+    typedef long double          float128_t;
+    typedef floating-point type  float256_t;
+    typedef float256_t           floatmax_t;
   }
 
 A cost-sensitive 8-bit microcontroller platform without an FPU
 does not have sufficient resources to support the eight-byte, 64-bit
 `binary64` type in a feasible fashion.
 An implementation for this platform can, however, support
-half-precision `float16_t` using an implementation-specific type
-and single-precision `float32_t`.
+half-precision `float16_t` and single-precision `float32_t`.
 This implementation could introduce
 its optional floating-point `typedef`s having specified width
 into the `std` namespace as shown below.
@@ -267,9 +260,9 @@ into the `std` namespace as shown below.
 
   namespace std
   {
-    typedef my_half_precision_type float16_t;
-    typedef float                  float32_t;
-    typedef float32_t              floatmax_t;
+    typedef floating-point type  float16_t;
+    typedef float                float32_t;
+    typedef float32_t            floatmax_t;
   }
 
 The popular [@http://gcc.gnu.org/wiki/x87note Intel X8087 chipset]
@@ -351,6 +344,7 @@ Consider the existing specification of integer `typedef`s having
 specified width in C++11. A partial synopsis is shown below.
 
 18.4 Integer types [cstdint]
+
 18.4.1 Header <cstdint> synopsis [cstdint.syn]
 
   namespace std
@@ -378,7 +372,9 @@ macros shown above.
 Section 18.4 could be extended as shown below.
 
 18.4? Integer and Floating-Point Types Having Specified Width
+
 18.4.1 Header <cstdint> synopsis [cstdint.syn]
+
 18.4.2? Header <cstdfloat> synopsis [cstdfloat.syn]
 
   namespace std
@@ -410,7 +406,7 @@ Section 18.4 could be extended as shown below.
 
 [section:cmathinterop Interoperation with <cmath> and special functions]
 
-It is not proposed to make any changes to `<cmath>` or special functions.
+It is not proposed to make any mandatory changes to `<cmath>` or special functions.
 
 Any of the optional floating-point `typedef`s having specified width
 that are `typedef`ed from the built-in types `float`, `double`, and `long double`
@@ -429,7 +425,7 @@ even where only optional, can be quite useful for real-life computational regime
 
 [section:limitsinterop Interoperation with <limits>]
 
-It is not proposed to make any changes to `<limits>`.
+It is not proposed to make any mandatory changes to `<limits>`.
 
 Any of the optional floating-point `typedef`s having specified width
 that are `typedef`ed from the built-in types `float`, `double`, and `long double`
@@ -449,15 +445,15 @@ to verify conformance with __IEEE_floating_point.]
 [note Each of the optional floating-point `typedef`s having specified width
 can only have `true` for the value of `std::numeric_limits<>::is_iec559`
 if its underlying type (be it `float`, `double`, `long double` or
-an implementation-dependent type) conforms with its corresponding
-cpecification of `binary16`, `binary32`, `binary64`, or `binary128`
+an implementation-dependent type) conforms with one of
+`binary16`, `binary32`, `binary64`, or `binary128`
 in __IEEE_floating_point.]
 
 [endsect] [/section:limitsinterop Interoperation with <limits>]
 
 [section:complexinterop Interoperation with <complex>]
 
-It is not proposed to make any changes to `<complex>`.
+It is not proposed to make any mandatory changes to `<complex>`.
 
 Any of the optional floating-point `typedef`s having specified width
 that are `typedef`ed from the built-in types `float`, `double`, and `long double`
@@ -476,8 +472,10 @@ This is considered an implementation detail.
 The proposed `typedef` `float128_t` provides a standardized way
 to specify quadruple-precision (__IEEE_Quad) in C++.
 
-On powerful PCs and workstations, `long double` has been treated
-in a variety of ways, and this has given rise to numerous portability problems.
+On powerful PCs and workstations, implementation-specific versions
+of `long double` as well as various floating-point extensions to 128-bit
+have been treated in a variety of ways.
+This has resulted in numerous portability problems.
 
 The [@http://gcc.gnu.org/wiki/x87note Intel X8087 chipset] is capable of performing
 calculations with internal 80-bit registers. This increases the width of the
@@ -506,11 +504,14 @@ This gives about 106-bits of precision (about 33 decimal digits) but has rather 
 at the extremes making implementation of `std::numeric_limits<>::epsilon()` problematic.
 
 It may be useful if future implementations for powerful PCs and workstations
-strive to make `long double` equivalent to quadruple-precision (__IEEE_Quad)
-and to `typedef` this to `float128_t`. Some architectures have hardware support
-for this. Those lacking direct hardware support can use software emulation.
+strive to make implementation-specific extensions to 128-bit floating-point
+or the built-in type `long double` equivalent to `binary128`,
+and to include the corresponding `typedef` to `float128_t`.
 
-[h4 Survey of existing 128-bit types]
+Some architectures have hardware support for this.
+Those lacking direct hardware support can use software emulation.
+
+[h4 Survey of extended-precision types]
 
 # [@http://gcc.gnu.org/onlinedocs/gcc/Floating-Types.html   GNU C supports additional floating types, `__float80` and `__float128` to support 80-bit (XFmode) and 128-bit (TFmode) floating types.]
 
@@ -557,7 +558,6 @@ TBD by Chris: Clearly state that only 16, 32, 64, 128 are portable, as only thes
 TBD by Chris: Question: Table of recommended precisions and float layouts?
 
 [endsect] [/section:context The context among existing implementations]
-
 
 [section:references References]
 
