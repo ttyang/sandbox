@@ -553,10 +553,6 @@ of the proposed optional floating-point `typedef`s having specified width
 by adding any desired optional type definitions and the corresponding
 macro definitions.
 
-TBD by Chris: Clearly state that only 16, 32, 64, 128 are portable, as only these are IEEE754.
-
-TBD by Chris: Question: Table of recommended precisions and float layouts?
-
 [endsect] [/section:context The context among existing implementations]
 
 [section:references References]
