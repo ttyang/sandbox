@@ -87,7 +87,7 @@ from a floating-point literal constant.
 The main objectives of this proposal are to:
 
 * Extend the benefits of specified-width typedefs for integer types to floating-point types.
-* Improve floating-point safety and reliability by providing a standardized typedefs that behave identically on all platforms.
+* Improve floating-point safety and reliability by providing standardized `typedef`s that behave identically on all platforms.
 * Optionally extend the range of floating-point to lower and higher precision.
 * Provide a Standard way of specifying 128-bit precision.
 
@@ -105,7 +105,7 @@ calculations in the programming community.
 Support for mathematical facilities and specialized number types
 in C++ is progressing rapidly. Currently, C++11 supports floating-point
 calculations with its built-in types `float`, `double`, and `long double`
-as well as imlementations of numerous elementary and transcendental functions.
+as well as implementations of numerous elementary and transcendental functions.
 
 A variety of higher transcendental functions of pure and applied mathematics
 were added to the C++11 libraries via technical report TR1.
