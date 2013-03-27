@@ -171,7 +171,7 @@ the corresponding specifications of
 in __IEEE_floating_point.
 In particular, `float16_t`, `float32_t`, `float64_t`, and `float128_t`
 correspond to floating-point types with 11, 24, 53, and 113 binary significand digits,
-respectively. These are defined in __IEEE_floating_point, and there are more detailed descrptions
+respectively. These are defined in __IEEE_floating_point, and there are more detailed descriptions
 of each type at __IEEE_Half, __IEEE_Single, __IEEE_Double, __IEEE_Quad, and __IEEE_Extended.
 
 Here, we specifically mean equivalence of the following.
