@@ -1,0 +1,235 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>The proposed typedefs and potential extensions</title>
+<link rel="stylesheet" href=".././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="prev" href="introduction.html" title="Introduction">
+<link rel="next" href="literals.html" title="Handling floating-point literals">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src=".././images/boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="literals.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_thetypedefs">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="precision.thetypedefs"></a><a class="link" href="thetypedefs.html" title="The proposed typedefs and potential extensions">The proposed typedefs and potential
+    extensions</a>
+</h2></div></div></div>
+<p>
+      The core of this proposal is based on the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s <code class="computeroutput"><span class="identifier">float16_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float32_t</span></code>, <code class="computeroutput"><span class="identifier">float64_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float128_t</span></code>, their corresponding
+      least and fast types, and the corresponding maximum-width type.
+    </p>
+<p>
+      For example,
+    </p>
+<pre class="programlisting"><span class="comment">// Sample partial synopsis of &lt;cstdfloat&gt;</span>
+
+<span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>       <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">double</span>      <span class="identifier">float64_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">float128_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">float128_t</span>  <span class="identifier">floatmax_t</span><span class="special">;</span>
+
+  <span class="comment">// ... and the corresponding least and fast types.</span>
+<span class="special">}</span>
+</pre>
+<p>
+      These proposed optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      are to conform with the corresponding specifications of <code class="computeroutput"><span class="identifier">binary16</span></code>,
+      <code class="computeroutput"><span class="identifier">binary32</span></code>, <code class="computeroutput"><span class="identifier">binary64</span></code>,
+      and <code class="computeroutput"><span class="identifier">binary128</span></code> in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a>. In particular, <code class="computeroutput"><span class="identifier">float16_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float32_t</span></code>, <code class="computeroutput"><span class="identifier">float64_t</span></code>,
+      and <code class="computeroutput"><span class="identifier">float128_t</span></code> correspond to
+      floating-point types with 11, 24, 53, and 113 binary significand digits, respectively.
+      These are defined in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a>, and there are more detailed descriptions of
+      each type at <a href="http://en.wikipedia.org/wiki/Half_precision_floating-point_format" target="_top">IEEE
+      half-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Single_precision_floating-point_format" target="_top">IEEE
+      single-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Double_precision_floating-point_format" target="_top">IEEE
+      double-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format" target="_top">Quadruple-precision
+      floating-point format</a>, and <a href="http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats" target="_top">IEEE
+      754 extended precision formats and x86 80-bit Extended Precision Format</a>.
+    </p>
+<p>
+      Here, we specifically mean equivalence of the following.
+    </p>
+<pre class="programlisting"><span class="identifier">float16_t</span>  <span class="special">==</span> <span class="identifier">binary16</span><span class="special">;</span>
+<span class="identifier">float32_t</span>  <span class="special">==</span> <span class="identifier">binary32</span><span class="special">;</span>
+<span class="identifier">float64_t</span>  <span class="special">==</span> <span class="identifier">binary64</span><span class="special">;</span>
+<span class="identifier">float128_t</span> <span class="special">==</span> <span class="identifier">binary128</span><span class="special">;</span>
+</pre>
+<p>
+      This equivalence results in far-reaching benefits.
+    </p>
+<p>
+      It means that floating-point software written with <code class="computeroutput"><span class="identifier">float16_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float32_t</span></code>, <code class="computeroutput"><span class="identifier">float64_t</span></code>,
+      and <code class="computeroutput"><span class="identifier">float128_t</span></code> should behave
+      identically when used on any platform with any implementation that correctly
+      supports the <code class="computeroutput"><span class="keyword">typedef</span></code>s.
+    </p>
+<p>
+      It also creates the opportunity to implement quadruple-precision (<a href="http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format" target="_top">Quadruple-precision
+      floating-point format</a>) in a specified, and therefore portable, fashion.
+    </p>
+<p>
+      One could envision two ways to name the proposed optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <code class="computeroutput"><span class="identifier">float11_t</span><span class="special">,</span>
+          <span class="identifier">float24_t</span><span class="special">,</span>
+          <span class="identifier">float53_t</span><span class="special">,</span>
+          <span class="identifier">float113_t</span><span class="special">,</span>
+          <span class="special">...</span></code>
+        </li>
+<li class="listitem">
+          <code class="computeroutput"><span class="identifier">float16_t</span><span class="special">,</span>
+          <span class="identifier">float32_t</span><span class="special">,</span>
+          <span class="identifier">float64_t</span><span class="special">,</span>
+          <span class="identifier">float128_t</span><span class="special">,</span>
+          <span class="special">...</span></code>
+        </li>
+</ul></div>
+<p>
+      The first set above is intuitively coined from <a href="http://dx.doi.org/10.1109/IEEESTD.2008.4610935" target="_top">IEE754:2008</a>.
+      It is also consistent with the gist of integer types having specified width
+      such as <code class="computeroutput"><span class="identifier">int64_t</span></code>, in so far
+      as the number of binary digits of <span class="emphasis"><em>significand</em></span> precision
+      is contained within the name of the data type.
+    </p>
+<p>
+      On the other hand, the second set with the size of the <span class="emphasis"><em>whole type</em></span>
+      contained within the name may be more intuitive to users. Here, we prefer the
+      latter naming scheme.
+    </p>
+<p>
+      No matter what naming scheme is used, the exact layout and number of significand
+      and exponent bits can be confirmed as IEEE754 by checking <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">is_iec559</span>
+      <span class="special">==</span> <span class="keyword">true</span></code>,
+      and the byte-order.
+    </p>
+<p>
+      We will now consider several examples showing how various implementations might
+      introduce some of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width into the <code class="computeroutput"><span class="identifier">std</span></code>
+      namespace.
+    </p>
+<p>
+      An implementation has <code class="computeroutput"><span class="keyword">float</span></code> and
+      <code class="computeroutput"><span class="keyword">double</span></code> corresponding to IEEE754
+      <code class="computeroutput"><span class="identifier">binary32</span></code>, <code class="computeroutput"><span class="identifier">binary64</span></code>,
+      respectively. This implementation could introduce <code class="computeroutput"><span class="identifier">float32_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float64_t</span></code>, and <code class="computeroutput"><span class="identifier">floatmax_t</span></code> into the <code class="computeroutput"><span class="identifier">std</span></code>
+      namespace as shown below.
+    </p>
+<pre class="programlisting"><span class="comment">// In &lt;cstdfloat&gt;</span>
+
+<span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>     <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">double</span>    <span class="identifier">float64_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">float64_t</span> <span class="identifier">floatmax_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      There may be a need for octuple-precision float, in other words an extension
+      to <code class="computeroutput"><span class="identifier">float256_t</span></code> with about 240
+      binary significand digits of precision. In addition, a <code class="computeroutput"><span class="identifier">float512_t</span></code>
+      type with even more precision may be considered as a option. Beyond these,
+      there may be potential extension to multiprecision types, even <a href="http://en.wikipedia.org/wiki/Arbitrary_precision" target="_top">arbitrary
+      precision</a>, in the future.
+    </p>
+<p>
+      Consider an implementation for a supercomputer. This platform might have <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
+      and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      corresponding to IEEE754 <code class="computeroutput"><span class="identifier">binary32</span></code>,
+      <code class="computeroutput"><span class="identifier">binary64</span></code>, and <code class="computeroutput"><span class="identifier">binary128</span></code>, respectively. In addition, this
+      platform might have a floating-point type with octuple-precision. The implementation
+      for this supercomputer could introduce its optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown below.
+    </p>
+<pre class="programlisting"><span class="comment">// In &lt;cstdfloat&gt;</span>
+
+<span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>                <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">double</span>               <span class="identifier">float64_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span>          <span class="identifier">float128_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span>  <span class="identifier">float256_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">float256_t</span>           <span class="identifier">floatmax_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      A cost-sensitive 8-bit microcontroller platform without an FPU does not have
+      sufficient resources to support the eight-byte, 64-bit <code class="computeroutput"><span class="identifier">binary64</span></code>
+      type in a feasible fashion. An implementation for this platform can, however,
+      support half-precision <code class="computeroutput"><span class="identifier">float16_t</span></code>
+      and single-precision <code class="computeroutput"><span class="identifier">float32_t</span></code>.
+      This implementation could introduce its optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown below.
+    </p>
+<pre class="programlisting"><span class="comment">// In &lt;cstdfloat&gt;</span>
+
+<span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span>  <span class="identifier">float16_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>                <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">float32_t</span>            <span class="identifier">floatmax_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      The popular <a href="http://gcc.gnu.org/wiki/x87note" target="_top">Intel X8087 chipset</a>
+      architecture supports a 10-byte floating-point format. It may be useful to
+      extend the optional support to <code class="computeroutput"><span class="identifier">float80_t</span></code>.
+      Several implementations using <a href="http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats#" target="_top">x86
+      Extended Precision Format</a> already exist in practice.
+    </p>
+<p>
+      Consider an implementation that supports single-precision <code class="computeroutput"><span class="keyword">float</span></code>,
+      double-precision <code class="computeroutput"><span class="keyword">double</span></code>, and 10-byte
+      <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
+      This implementation could introduce its optional <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      <code class="computeroutput"><span class="identifier">float32_t</span></code>, <code class="computeroutput"><span class="identifier">float64_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float80_t</span></code>, and <code class="computeroutput"><span class="identifier">floatmax_t</span></code> into the <code class="computeroutput"><span class="identifier">std</span></code>
+      namespace as shown below.
+    </p>
+<pre class="programlisting"><span class="comment">// In &lt;cstdfloat&gt;</span>
+
+<span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>       <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">double</span>      <span class="identifier">float64_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">float80_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">float80_t</span>   <span class="identifier">floatmax_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="literals.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

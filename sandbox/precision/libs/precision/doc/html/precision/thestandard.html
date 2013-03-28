@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Place in the standard</title>
+<link rel="stylesheet" href=".././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="prev" href="literals.html" title="Handling floating-point literals">
+<link rel="next" href="cmathinterop.html" title="Interoperation with &lt;cmath&gt; and special functions">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src=".././images/boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="literals.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="cmathinterop.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_thestandard">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="precision.thestandard"></a><a class="link" href="thestandard.html" title="Place in the standard">Place in the standard</a>
+</h2></div></div></div>
+<p>
+      The proper place for defining the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width should be oriented along the lines of the current standard.
+      Consider the existing specification of integer <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width in C++11. A partial synopsis is shown below.
+    </p>
+<p>
+      18.4 Integer types [cstdint]
+    </p>
+<p>
+      18.4.1 Header &lt;cstdint&gt; synopsis [cstdint.syn]
+    </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int8_t</span><span class="special">;</span>  <span class="comment">// optional</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int16_t</span><span class="special">;</span> <span class="comment">// optional</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int32_t</span><span class="special">;</span> <span class="comment">// optional</span>
+  <span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">int64_t</span><span class="special">;</span> <span class="comment">// optional</span>
+<span class="special">}</span>
+
+<span class="comment">// ... and the corresponding least and fast types.</span>
+</pre>
+<p>
+      It is not immediately obvious where the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width should reside.
+      One potential place is <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdint</span><span class="special">&gt;</span></code>. The <code class="computeroutput"><span class="keyword">int</span></code>,
+      however, implies integer types. Here, we prefer the proposed new header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>.
+    </p>
+<p>
+      We propose to add a new header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>
+      to the standard library. The header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>
+      should contain all optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width included in the implementation and the corresponding
+      C-style macros shown above.
+    </p>
+<p>
+      Section 18.4 could be extended as shown below.
+    </p>
+<p>
+      18.4? Integer and Floating-Point Types Having Specified Width
+    </p>
+<p>
+      18.4.1 Header &lt;cstdint&gt; synopsis [cstdint.syn]
+    </p>
+<p>
+      18.4.2? Header &lt;cstdfloat&gt; synopsis [cstdfloat.syn]
+    </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float16_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float32_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float64_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float80_t</span><span class="special">;</span>   <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float128_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float256_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">floatmax_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least16_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least32_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least64_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least80_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least128_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_least256_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast16_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast32_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast64_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast80_t</span><span class="special">;</span>  <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast128_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span> <span class="identifier">float_fast256_t</span><span class="special">;</span> <span class="comment">// optional.</span>
+<span class="special">}</span>
+</pre>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="literals.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="cmathinterop.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

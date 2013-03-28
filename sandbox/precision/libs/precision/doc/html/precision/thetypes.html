@@ -1,0 +1,229 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>The proposed types and potential extensions</title>
+<link rel="stylesheet" href=".././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Types">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Types">
+<link rel="prev" href="introduction.html" title="Introduction">
+<link rel="next" href="suffixes.html" title="How to define floating-point literal suffixes?">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src=".././images/boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="suffixes.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_thetypes">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="precision.thetypes"></a><a class="link" href="thetypes.html" title="The proposed types and potential extensions">The proposed types and potential extensions</a>
+</h2></div></div></div>
+<p>
+      The core of this proposal is based on the types <code class="computeroutput"><span class="identifier">float16_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float32_t</span></code>, <code class="computeroutput"><span class="identifier">float64_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float128_t</span></code>, and their corresponding
+      least and fast types. These floating-point types have specified widths and
+      they are to conform with the corresponding types <code class="computeroutput"><span class="identifier">binary16</span></code>,
+      <code class="computeroutput"><span class="identifier">binary32</span></code>, <code class="computeroutput"><span class="identifier">binary64</span></code>,
+      and <code class="computeroutput"><span class="identifier">binary128</span></code> specified in
+      <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_ floating-point
+      format</a>. In particular, <code class="computeroutput"><span class="identifier">float16_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float32_t</span></code>, <code class="computeroutput"><span class="identifier">float64_t</span></code>,
+      and <code class="computeroutput"><span class="identifier">float128_t</span></code> correspond to
+      floating-point types with 11, 24, 53, and 113 binary significand digits, respectively.
+      These are defined in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+      floating-point format</a>, and there are more detailed descrptions of each
+      type at <a href="http://en.wikipedia.org/wiki/Half_precision_floating-point_format" target="_top">IEEE
+      half-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Single_precision_floating-point_format" target="_top">IEEE
+      single-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Double_precision_floating-point_format" target="_top">IEEE
+      double-precision floating-point format</a>, <a href="http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format" target="_top">Quadruple-precision
+      floating-point format</a>, and <a href="http://en.wikipedia.org/wiki/Extended_precision#IEEE_754_extended_precision_formats" target="_top">IEEE
+      754 extended precision formats and x86 80-bit Extended Precision Format</a>.
+    </p>
+<p>
+      One could envision two ways to name the proposed floating-point types having
+      specified width:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          <code class="computeroutput"><span class="identifier">float11_t</span><span class="special">,</span>
+          <span class="identifier">float24_t</span><span class="special">,</span>
+          <span class="identifier">float53_t</span><span class="special">,</span>
+          <span class="identifier">float113_t</span><span class="special">,</span>
+          <span class="special">...</span></code>
+        </li>
+<li class="listitem">
+          <code class="computeroutput"><span class="identifier">float16_t</span><span class="special">,</span>
+          <span class="identifier">float32_t</span><span class="special">,</span>
+          <span class="identifier">float64_t</span><span class="special">,</span>
+          <span class="identifier">float128_t</span><span class="special">,</span>
+          <span class="special">...</span></code>
+        </li>
+</ul></div>
+<p>
+      The first set above is intuitively coined from <a href="http://dx.doi.org/10.1109/IEEESTD.2008.4610935" target="_top">IEE754:2008</a>.
+      It is also consistent with the gist of integer types having specified width
+      such as <code class="computeroutput"><span class="identifier">int64_t</span></code>, in so far
+      as the number of binary digits of <span class="emphasis"><em>significand</em></span> precision
+      is contained within the name of the data type.
+    </p>
+<p>
+      On the other hand, the second set with the size of the <span class="emphasis"><em>whole type</em></span>
+      contained within the name may be more intuitive to users. Here, we prefer this
+      naming scheme.
+    </p>
+<p>
+      No matter what naming scheme is used, the exact layout and number of significand
+      and exponent bits can be confirmed as IEEE754 by checking <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">is_iec559</span>
+      <span class="special">==</span> <span class="keyword">true</span></code>.
+    </p>
+<p>
+      We will now consider several examples showing how various implementations might
+      include floating-point types having specified width.
+    </p>
+<p>
+      An implementation that has <code class="computeroutput"><span class="keyword">float</span></code>
+      and <code class="computeroutput"><span class="keyword">double</span></code> corresponding to IEEE
+      754 <code class="computeroutput"><span class="identifier">binary32</span></code>, <code class="computeroutput"><span class="identifier">binary64</span></code>, respectively, could introduce
+      <code class="computeroutput"><span class="identifier">float32_t</span></code> and <code class="computeroutput"><span class="identifier">float64_t</span></code> into the <code class="computeroutput"><span class="identifier">std</span></code>
+      namespace as shown below.
+    </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>  <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">double</span> <span class="identifier">float64_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      There may be a need for octuple-precision float, in other words <code class="computeroutput"><span class="identifier">float256_t</span></code> with about 240 binary significand
+      digits of precision. In addition, a <code class="computeroutput"><span class="identifier">float512_t</span></code>
+      type with even more precision may be considered as a option. Beyond these,
+      there may be potential extension to multiprecision types in the future.
+    </p>
+<p>
+      Consider an implementation for a supercomputer. This platform might have <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
+      and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      corresponding to IEEE 754 <code class="computeroutput"><span class="identifier">binary32</span></code>,
+      <code class="computeroutput"><span class="identifier">binary64</span></code>, and <code class="computeroutput"><span class="identifier">binary128</span></code>, respectively. In addition, this
+      platform might have a user-defined type with octuple-precision. The implementation
+      for this supercomputer could introduce floating-point types having specified
+      width into the <code class="computeroutput"><span class="identifier">std</span></code> namespace
+      as shown below.
+    </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>                     <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">double</span>                    <span class="identifier">float64_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span>               <span class="identifier">float128_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">my_octuple_precision_type</span> <span class="identifier">float256_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      A cost-sensitive 8-bit microcontroller platform without an FPU does not have
+      sufficient resources to support eight-byte <code class="computeroutput"><span class="identifier">binary64</span></code>
+      in a feasible fashion. An implementation on this platform can, however, support
+      half-precision <code class="computeroutput"><span class="identifier">float16_t</span></code> and
+      single-precision <code class="computeroutput"><span class="identifier">float32_t</span></code>.
+      The implementation for this 8-bit microcontroller could introduce floating-point
+      types having specified width into the <code class="computeroutput"><span class="identifier">std</span></code>
+      namespace as shown below.
+    </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">my_half_precision_type</span> <span class="identifier">float16_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>                  <span class="identifier">float32_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      The popular <a href="http://gcc.gnu.org/wiki/x87note" target="_top">Intel X8087 chipset</a>
+      architecture supports a 10-byte floating-point format. So it may be useful
+      to provide optional support for <code class="computeroutput"><span class="identifier">float80_t</span></code>.
+      In our opinion, there is no type that is analogous to <code class="computeroutput"><span class="identifier">float80_t</span></code>
+      in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_ floating-point
+      format</a>, but several implementations already exist in practice.
+    </p>
+<p>
+      An implementation that supports single-precision <code class="computeroutput"><span class="keyword">float</span></code>,
+      double-precision <code class="computeroutput"><span class="keyword">double</span></code>, and 10-byte
+      <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      could introduce <code class="computeroutput"><span class="identifier">float32_t</span></code>,
+      <code class="computeroutput"><span class="identifier">float64_t</span></code>, and <code class="computeroutput"><span class="identifier">float80_t</span></code> into the <code class="computeroutput"><span class="identifier">std</span></code>
+      namespace as shown below.
+    </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">std</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="keyword">float</span>       <span class="identifier">float32_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">double</span>      <span class="identifier">float64_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">float80_t</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      We will now examine how to use floating-point literal constants in combination
+      with floating-point types having specified width.
+    </p>
+<p>
+      At present, the only way to provide a floating-point literal constant value
+      with precision exceeding the precision of <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code> is to use a character string
+      in association with type conversion for a user-defined extended-precision type.
+      For example, construction from a string as well as the <code class="computeroutput"><span class="identifier">from_string</span></code>
+      method are used for this purpose in <a href="http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html" target="_top">Boost.Math</a>,
+      <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+      and <a href="http://gcc.gnu.org/onlinedocs/libquadmath/" target="_top">GCC libquadmath</a>.
+    </p>
+<p>
+      The sample below, for instance, uses the <code class="computeroutput"><span class="identifier">cpp_dec_float_50</span></code>
+      type from <a href="http://www.boost.org/doc/libs/1_53_0/libs/multiprecision/doc/html/index.html" target="_top">Boost.Multiprecision</a>
+      to initialize the Euler-gamma constant with 50 decimal digits of precision.
+    </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">multiprecision</span><span class="special">/</span><span class="identifier">cpp_dec_float</span><span class="special">&gt;</span>
+
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">multiprecision</span><span class="special">::</span><span class="identifier">cpp_dec_float_50</span> <span class="identifier">mp_type</span><span class="special">;</span>
+
+<span class="keyword">const</span> <span class="identifier">mp_type</span> <span class="identifier">euler</span><span class="special">(</span><span class="string">"0.577215664901532860606512090082402431042159335939924"</span><span class="special">);</span>
+</pre>
+<p>
+      Construction from string is inappropriate for the proposed floating-point types
+      having specified width. These should be copy assignable and copy constructable
+      from floating-point literal constants. This requires slight changes to the
+      core language including the addition of new floating-point literal constant
+      suffixes. For instance, the sample below uses a potential <code class="computeroutput"><span class="identifier">Q</span></code>
+      suffix is used to initialize the Euler-gamma constant stored in a <code class="computeroutput"><span class="identifier">float128_t</span></code>.
+    </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span>
+
+<span class="identifier">constexpr</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">float128_t</span> <span class="identifier">euler</span> <span class="special">=</span> <span class="number">0.57721566490153286060651209008240243104216</span><span class="identifier">Q</span><span class="special">;</span>
+</pre>
+<p>
+      Suffixes will be described in greater detail below.
+    </p>
+<p>
+      It would also be useful to have a method of querying the size of types, similar
+      to that provided by <a href="http://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html" target="_top">GCC
+      3.7.2 Common Predefined Macros</a>, for example, <code class="computeroutput"><span class="identifier">__SIZEOF_LONG_DOUBLE__</span></code>.
+      But similar macros are not defined for <code class="computeroutput"><span class="identifier">__float128</span></code>
+      nor for <code class="computeroutput"><span class="identifier">__float80</span></code>.
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="introduction.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="suffixes.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

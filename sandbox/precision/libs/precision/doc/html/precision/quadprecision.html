@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Specifying 128-bit precision</title>
+<link rel="stylesheet" href=".././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="prev" href="complexinterop.html" title="Interoperation with &lt;complex&gt;">
+<link rel="next" href="lowerprecision.html" title="Extending to lower precision">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="" width="180" height="90" src=".././images/boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="complexinterop.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="lowerprecision.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section precision_quadprecision">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="precision.quadprecision"></a><a class="link" href="quadprecision.html" title="Specifying 128-bit precision">Specifying 128-bit precision</a>
+</h2></div></div></div>
+<p>
+      The proposed <code class="computeroutput"><span class="keyword">typedef</span></code> <code class="computeroutput"><span class="identifier">float128_t</span></code> provides a standardized way to
+      specify quadruple-precision (<a href="http://en.wikipedia.org/wiki/Quadruple-precision_floating-point_format" target="_top">Quadruple-precision
+      floating-point format</a>) in C++.
+    </p>
+<p>
+      On powerful PCs and workstations, implementation-specific versions of <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      as well as various floating-point extensions to 128-bit have been treated in
+      a variety of ways. This has resulted in numerous portability problems.
+    </p>
+<p>
+      The <a href="http://gcc.gnu.org/wiki/x87note" target="_top">Intel X8087 chipset</a>
+      is capable of performing calculations with internal 80-bit registers. This
+      increases the width of the significand from 53 to 63 bits, thereby gaining
+      about 3 decimal digits precision and extending it from 18 and 21. If an implementation
+      has a type that uses all 80 bits from this chipset to calculate <a href="http://en.wikipedia.org/wiki/Extended_precision" target="_top">Extended
+      precision</a>, it could could use an optional <code class="computeroutput"><span class="keyword">typedef</span></code>
+      of this type to <code class="computeroutput"><span class="identifier">float80_t</span></code>.
+    </p>
+<p>
+      Some hardware, for example <a href="http://en.wikipedia.org/wiki/SPARC" target="_top">Sparc</a>,
+      provides a full 128-bit quadruple-precision floating-point chip. An implementation
+      for this kind of architecture might already have a built-in type corresponding
+      to <code class="computeroutput"><span class="identifier">binary128</span></code>, and this type
+      could be optionally <code class="computeroutput"><span class="keyword">typedef</span></code>ed
+      to <code class="computeroutput"><span class="identifier">float128_t</span></code>.
+    </p>
+<p>
+      GCC has recently developed quadruple-precision support on a variety of platforms
+      using <a href="http://gcc.gnu.org/onlinedocs/libquadmath/" target="_top">GCC libquadmath</a>.
+      However, the implementation-specific type <code class="computeroutput"><span class="identifier">__float128</span></code>
+      is used rather than <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
+      These implementations could optionally <code class="computeroutput"><span class="keyword">typedef</span></code>
+      <code class="computeroutput"><span class="identifier">__float128</span></code> to <code class="computeroutput"><span class="identifier">float128_t</span></code> in addition to any other optional
+      <code class="computeroutput"><span class="keyword">typedef</span></code>s.
+    </p>
+<p>
+      <a href="http://www.opensource.apple.com/source/gcc/gcc-5646/gcc/config/rs6000/darwin-ldouble.c" target="_top">Darwin</a>
+      <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      uses a double-double format developed first by <a href="http://keithbriggs.info/doubledouble.html" target="_top">Keith
+      Briggs</a>. This gives about 106-bits of precision (about 33 decimal digits)
+      but has rather odd behavior at the extremes making implementation of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;&gt;::</span><span class="identifier">epsilon</span><span class="special">()</span></code> problematic.
+    </p>
+<p>
+      It may be useful if future implementations for powerful PCs and workstations
+      strive to make implementation-specific extensions to 128-bit floating-point
+      or the built-in type <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      equivalent to <code class="computeroutput"><span class="identifier">binary128</span></code>, and
+      to include the corresponding <code class="computeroutput"><span class="keyword">typedef</span></code>
+      to <code class="computeroutput"><span class="identifier">float128_t</span></code>.
+    </p>
+<p>
+      Some architectures have hardware support for this. Those lacking direct hardware
+      support can use software emulation.
+    </p>
+<h5>
+<a name="precision.quadprecision.h0"></a>
+      <span class="phrase"><a name="precision.quadprecision.survey_of_extended_precision_types"></a></span><a class="link" href="quadprecision.html#precision.quadprecision.survey_of_extended_precision_types">Survey
+      of extended-precision types</a>
+    </h5>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+          <a href="http://gcc.gnu.org/onlinedocs/gcc/Floating-Types.html" target="_top">GNU
+          C supports additional floating types, <code class="computeroutput"><span class="identifier">__float80</span></code>
+          and <code class="computeroutput"><span class="identifier">__float128</span></code> to support
+          80-bit (XFmode) and 128-bit (TFmode) floating types.</a>
+        </li>
+<li class="listitem">
+          <a href="http://software.intel.com/en-us/forums/topic/358472" target="_top">Extended
+          or Quad IEEE FP formats</a> by Intel Intel64 mode on Linux (V12.1)
+          provides 128 bit <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+          in C, however it appears that it only provides computation at 80-bit format
+          giving 64-bit significand precision, and other bits are just padding.
+        </li>
+<li class="listitem">
+          <a href="http://software.intel.com/en-us/forums/topic/358476" target="_top">Intel
+          FORTRAN REAL*16</a> is an actual 128-bit IEEE quad, emulated in software.
+          But "I don't know of any plan to implement full C support for 128-bit
+          IEEE format, although evidently ifort has support libraries." This
+          is equivalent to the proposed float128_t type.
+        </li>
+<li class="listitem">
+          The 360/85 and follow-on System/370 added support for a 128-bit "extended"
+          <a href="http://en.wikipedia.org/wiki/Extended_precision#IBM_extended_precision_formats" target="_top">IBM
+          extended precision formats</a>. These formats are still supported in
+          the current design, where they are now called the "hexadecimal floating
+          point" (HFP) formats.
+        </li>
+</ol></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Paul A. Bristow, Christopher Kormanyos, John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="complexinterop.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="lowerprecision.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
