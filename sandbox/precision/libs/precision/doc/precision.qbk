@@ -15,6 +15,8 @@
 
 ISO/IEC JTC1 SC22 WG21/SG6 Numerics N???  - 2013-4-??
 
+Comments and suggestions to Paul.A.Bristow pbristow@hetp.u-net.com.
+
 [def __Boost [@http://www.boost.org/ Boost]]
 [def __Boost_Math [@http://www.boost.org/doc/libs/1_53_0/libs/math/doc/html/index.html Boost.Math]]
 [def __gsl [@http://www.gnu.org/software/gsl/ GSL-1.9]]
@@ -53,12 +55,12 @@ ISO/IEC JTC1 SC22 WG21/SG6 Numerics N???  - 2013-4-??
 
 [include html4_symbols.qbk]
 
-[note Comments and suggestions to Paul.A.Bristow pbristow@hetp.u-net.com.]
+[/note Comments and suggestions to Paul.A.Bristow pbristow@hetp.u-net.com.]
 
 [section:abstract Abstract]
 
 It is proposed to add to the C++ standard
-optional floating-point `typedef`s having specified width.
+[*optional floating-point `typedef`s having specified width].
 The optional `typedef`s include
 `float16_t`, `float32_t`, `float64_t`, `float128_t`,
 their corresponding fast and least types,
@@ -71,9 +73,9 @@ The optional floating-point `typedef`s having specified width
 are to be contained in a new standard library header `<cstdfloat>`.
 They will be defined in the `std` namespace.
 
-New C-style macros are proposed to facilitate initialization
+[*New C-style macros to facilitate initialization]
 of the optional floating-point `typedef`s having specified width
-from a floating-point literal constant.
+from a floating-point literal constant are proposed.
 
 It is not proposed to make any mandatory changes to `<cmath>`,
 special functions, `<limits>`, or `<complex>`.
@@ -82,7 +84,7 @@ The main objectives of this proposal are to:
 
 * Extend the benefits of specified-width typedefs for integer types to floating-point types.
 * Improve floating-point safety and reliability by providing standardized `typedef`s that behave identically on all platforms.
-* Optionally extend the range of floating-point to lower and higher precision.
+* Optionally extend the range of floating-point to lower and to higher precision.
 * Provide a Standard way of specifying 128-bit precision.
 
 [endsect] [/section:abstract  Abstract]
@@ -120,8 +122,8 @@ Nor does the standard specify the width, precision or lyaout of its built-in typ
 introduce poor efficiency on cost-sensitive microcontroller architectures,
 and reduce reliability and safety.
 
-This situation reveals a need for a standard way to specify
-floating-point precision in C++.
+[*This situation reveals a need for a standard way to specify
+floating-point precision in C++.]
 
 It may also be desirable to extend floating-point precision to
 both lower and higher precisions. This can be done by including
@@ -331,7 +333,7 @@ at compile-time. For example,
   #include <cstdfloat>
 
   static_assert(FLOATMAX_MAX > (std::numeric_limits<float>::max)(),
-                "The floating-point range is too small");
+                "The floating-point range is too small.");
 
 [endsect] [/section:literals Handling floating-point literals]
 
@@ -418,8 +420,8 @@ that are not derived from `float`, `double`, and `long double` can optionally
 be supported by `<cmath>` and special functions.
 This is considered an implementation detail.
 
-[note Support of elementary functions and possibly some special functions,
-even where only optional, can be quite useful for real-life computational regimes.]
+[note Support of elementary functions (and possibly some special functions,
+even where only optional) can be very useful for real-life computational regimes.]
 
 [endsect] [/section:cmathinterop Interoperation with <cmath> and special functions]
 
@@ -437,8 +439,8 @@ that are not derived from `float`, `double`, and `long double` can optionally
 be supported by `<limits>`.
 This is considered an implementation detail.
 
-[note Support for `<limits>`, even where optional, can be quite
-useful. This allows programs to query the floating-point limits
+[note Support for `<limits>`, even where optional, can be very
+useful, especially for portability. This allows programs to query the floating-point limits
 at compile-time and use, among other things, `std::numeric_limits<>::is_iec559`
 to verify conformance with __IEEE_floating_point.]
 
@@ -461,7 +463,7 @@ should automatically be supported by
 the implementation's existing `<complex>`.
 
 Implementation-specific optional floating-point `typedef`s having specified width
-that are not derived from `float`, `double`, and `long double` can optionally
+that are ['not derived from `float`, `double`, and `long double`] can optionally
 be supported by `<complex>`.
 This is considered an implementation detail.
 

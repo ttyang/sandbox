@@ -27,8 +27,10 @@
 <a name="precision.abstract"></a><a class="link" href="abstract.html" title="Abstract">Abstract</a>
 </h2></div></div></div>
 <p>
-      It is proposed to add to the C++ standard optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width. The optional
-      <code class="computeroutput"><span class="keyword">typedef</span></code>s include <code class="computeroutput"><span class="identifier">float16_t</span></code>, <code class="computeroutput"><span class="identifier">float32_t</span></code>,
+      It is proposed to add to the C++ standard <span class="bold"><strong>optional floating-point
+      <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width</strong></span>.
+      The optional <code class="computeroutput"><span class="keyword">typedef</span></code>s include
+      <code class="computeroutput"><span class="identifier">float16_t</span></code>, <code class="computeroutput"><span class="identifier">float32_t</span></code>,
       <code class="computeroutput"><span class="identifier">float64_t</span></code>, <code class="computeroutput"><span class="identifier">float128_t</span></code>,
       their corresponding fast and least types, and the corresponding maximum-width
       type. These are to conform with the corresponding specifications of <code class="computeroutput"><span class="identifier">binary16</span></code>, <code class="computeroutput"><span class="identifier">binary32</span></code>,
@@ -41,22 +43,13 @@
       <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>. They will be defined in the <code class="computeroutput"><span class="identifier">std</span></code> namespace.
     </p>
 <p>
-      It is not proposed to make any changes to <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code>,
-      special functions, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>, or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>.
-      Any of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width that are <code class="computeroutput"><span class="keyword">typedef</span></code>ed
-      from the built-in types <code class="computeroutput"><span class="keyword">float</span></code>,
-      <code class="computeroutput"><span class="keyword">double</span></code>, and <code class="computeroutput"><span class="keyword">long</span>
-      <span class="keyword">double</span></code> should automatically be supported
-      by the implementation's existing <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code>,
-      special functions, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>, and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>.
-      Support for other <code class="computeroutput"><span class="keyword">typedef</span></code>s is
-      implementation-defined.
+      <span class="bold"><strong>New C-style macros to facilitate initialization</strong></span>
+      of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      having specified width from a floating-point literal constant are proposed.
     </p>
 <p>
-      New C-style macros are proposed to facilitate initialization of the optional
-      floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having
-      specified width from a floating-point literal constant.
+      It is not proposed to make any mandatory changes to <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code>,
+      special functions, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>, or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">complex</span><span class="special">&gt;</span></code>.
     </p>
 <p>
       The main objectives of this proposal are to:
@@ -72,7 +65,7 @@
           on all platforms.
         </li>
 <li class="listitem">
-          Optionally extend the range of floating-point to lower and higher precision.
+          Optionally extend the range of floating-point to lower and to higher precision.
         </li>
 <li class="listitem">
           Provide a Standard way of specifying 128-bit precision.
