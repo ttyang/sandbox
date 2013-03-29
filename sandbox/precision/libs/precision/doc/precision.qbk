@@ -1,4 +1,4 @@
-[article Floating-Point Typedefs Having Specified Width
+[article Floating-Point Typedefs Having Specified Widths
     [quickbook 1.5]
     [id precision]
     [copyright 2013 Paul A. Bristow,  Christopher Kormanyos, John Maddock]
@@ -60,7 +60,7 @@ Comments and suggestions to Paul.A.Bristow pbristow@hetp.u-net.com.
 [section:abstract Abstract]
 
 It is proposed to add to the C++ standard
-[*optional floating-point `typedef`s having specified width].
+[*optional floating-point `typedef`s having specified widths].
 The optional `typedef`s include
 `float16_t`, `float32_t`, `float64_t`, `float128_t`,
 their corresponding least and fast types,
@@ -69,12 +69,12 @@ These are to conform with the corresponding specifications of
 `binary16`, `binary32`, `binary64`, and `binary128`
 in __IEEE_floating_point.
 
-The optional floating-point `typedef`s having specified width
+The optional floating-point `typedef`s having specified widths
 are to be contained in a new standard library header `<cstdfloat>`.
 They will be defined in the `std` namespace.
 
 [*New C-style macros to facilitate initialization]
-of the optional floating-point `typedef`s having specified width
+of the optional floating-point `typedef`s having specified widths
 from a floating-point literal constant are proposed.
 
 It is not proposed to make any mandatory changes to `<cmath>`,
@@ -127,14 +127,14 @@ floating-point precision in C++.]
 
 It may also be desirable to extend floating-point precision to
 both lower and higher precisions. This can be done by including
-implementation-specific `typedef`s having specified width
+implementation-specific `typedef`s having specified widths
 that are not derived from `float`, `double`, and `long double`.
 
-Providing optional floating-point `typedef`s having specified width
+Providing optional floating-point `typedef`s having specified widths
 is expected to significantly improve portability, reliability, and safety
 of floating-point calculations in C++.
 Analogous improvements for integer calculations were recently achieved
-via standardization of integer types having specified width
+via standardization of integer types having specified widths
 such as `int8_t`, `int16_t`, `int32_t`, and `int64_t`.
 
 [endsect] [/section:introduction Introduction]
@@ -188,13 +188,13 @@ It also creates the opportunity to implement quadruple-precision (__IEEE_Quad)
 in a specified, and therefore portable, fashion.
 
 One could envision two ways to name the proposed
-optional floating-point `typedef`s having specified width:
+optional floating-point `typedef`s having specified widths:
 
 * `float11_t, float24_t, float53_t, float113_t, ...`
 * `float16_t, float32_t, float64_t, float128_t, ...`
 
 The first set above is intuitively coined from [@http://dx.doi.org/10.1109/IEEESTD.2008.4610935 IEE754:2008].
-It is also consistent with the gist of integer types having specified width
+It is also consistent with the gist of integer types having specified widths
 such as `int64_t`, in so far as the number of binary digits of ['significand] precision
 is contained within the name of the data type.
 
@@ -207,7 +207,7 @@ and exponent bits can be confirmed as IEEE754 by checking
 
 We will now consider several examples showing how
 various implementations might introduce some of the
-optional floating-point `typedef`s having specified width
+optional floating-point `typedef`s having specified widths
 into the `std` namespace.
 
 An implementation has `float` and `double` corresponding to
@@ -235,7 +235,7 @@ Consider an implementation for a supercomputer. This platform might have
 `binary32`, `binary64`, and `binary128`, respectively. In addition, this
 platform might have a floating-point type with octuple-precision.
 The implementation for this supercomputer could introduce
-its optional floating-point `typedef`s having specified width
+its optional floating-point `typedef`s having specified widths
 into the `std` namespace as shown below.
 
   // In <cstdfloat>
@@ -255,7 +255,7 @@ does not have sufficient resources to support the eight-byte, 64-bit
 An implementation for this platform can, however, support
 half-precision `float16_t` and single-precision `float32_t`.
 This implementation could introduce
-its optional floating-point `typedef`s having specified width
+its optional floating-point `typedef`s having specified widths
 into the `std` namespace as shown below.
 
   // In <cstdfloat>
@@ -293,9 +293,9 @@ into the `std` namespace as shown below.
 [section:literals Handling floating-point literals]
 
 We will now examine how to use floating-point literal constants in combination
-with the optional floating-point `typedef`s having specified width.
+with the optional floating-point `typedef`s having specified widths.
 This will be done in a manner analagous to the mechanism
-specified for integer types having specified width,
+specified for integer types having specified widths,
 in other words using C-style macros.
 
 The header `<cstdfloat>` should contain all necessary
@@ -326,7 +326,7 @@ necessary macros of the form:
   FLOATMAX_MAX
 
 These macros can be used to query the ranges of
-the optional floating-point `typedef`s having specified width
+the optional floating-point `typedef`s having specified widths
 at compile-time. For example,
 
   #include <limits>
@@ -340,10 +340,10 @@ at compile-time. For example,
 [section:thestandard Place in the standard]
 
 The proper place for defining the optional
-floating-point `typedef`s having specified width
+floating-point `typedef`s having specified widths
 should be oriented along the lines of the current standard.
 Consider the existing specification of integer `typedef`s having
-specified width in C++11. A partial synopsis is shown below.
+specified widths in C++11. A partial synopsis is shown below.
 
 18.4 Integer types [cstdint]
 
@@ -360,20 +360,20 @@ specified width in C++11. A partial synopsis is shown below.
   // ... and the corresponding least and fast types.
 
 It is not immediately obvious where the
-optional floating-point `typedef`s having specified width
+optional floating-point `typedef`s having specified widths
 should reside. One potential place is `<cstdint>`.
 The `int`, however, implies integer types. Here, we prefer the
 proposed new header `<cstdfloat>`.
 
 We propose to add a new header `<cstdfloat>` to the standard library.
 The header `<cstdfloat>` should contain all
-optional floating-point `typedef`s having specified width
+optional floating-point `typedef`s having specified widths
 included in the implementation and the corresponding C-style
 macros shown above.
 
 Section 18.4 could be extended as shown below.
 
-18.4? Integer and Floating-Point Types Having Specified Width
+18.4? Integer and Floating-Point Types Having Specified Widths
 
 18.4.1 Header <cstdint> synopsis [cstdint.syn]
 
@@ -410,12 +410,12 @@ Section 18.4 could be extended as shown below.
 
 It is not proposed to make any mandatory changes to `<cmath>` or special functions.
 
-Any of the optional floating-point `typedef`s having specified width
+Any of the optional floating-point `typedef`s having specified widths
 that are `typedef`ed from the built-in types `float`, `double`, and `long double`
 should automatically be supported by
 the implementation's existing `<cmath>` and special functions.
 
-Implementation-specific optional floating-point `typedef`s having specified width
+Implementation-specific optional floating-point `typedef`s having specified widths
 that are not derived from `float`, `double`, and `long double` can optionally
 be supported by `<cmath>` and special functions.
 This is considered an implementation detail.
@@ -429,12 +429,12 @@ even where only optional) can be very useful for real-life computational regimes
 
 It is not proposed to make any mandatory changes to `<limits>`.
 
-Any of the optional floating-point `typedef`s having specified width
+Any of the optional floating-point `typedef`s having specified widths
 that are `typedef`ed from the built-in types `float`, `double`, and `long double`
 should automatically be supported by
 the implementation's existing `<limits>`.
 
-Implementation-specific optional floating-point `typedef`s having specified width
+Implementation-specific optional floating-point `typedef`s having specified widths
 that are not derived from `float`, `double`, and `long double` can optionally
 be supported by `<limits>`.
 This is considered an implementation detail.
@@ -444,7 +444,7 @@ useful, especially for portability. This allows programs to query the floating-p
 at compile-time and use, among other things, `std::numeric_limits<>::is_iec559`
 to verify conformance with __IEEE_floating_point.]
 
-[note Each of the optional floating-point `typedef`s having specified width
+[note Each of the optional floating-point `typedef`s having specified widths
 can only have `true` for the value of `std::numeric_limits<>::is_iec559`
 if its underlying type (be it `float`, `double`, `long double` or
 an implementation-dependent type) conforms with one of
@@ -457,12 +457,12 @@ in __IEEE_floating_point.]
 
 It is not proposed to make any mandatory changes to `<complex>`.
 
-Any of the optional floating-point `typedef`s having specified width
+Any of the optional floating-point `typedef`s having specified widths
 that are `typedef`ed from the built-in types `float`, `double`, and `long double`
 should automatically be supported by
 the implementation's existing `<complex>`.
 
-Implementation-specific optional floating-point `typedef`s having specified width
+Implementation-specific optional floating-point `typedef`s having specified widths
 that are ['not derived from `float`, `double`, and `long double`] can optionally
 be supported by `<complex>`.
 This is considered an implementation detail.
@@ -539,7 +539,7 @@ and efficient floating-point type with half-precision, but reduced range.
 
 Some implementations for cost-sensitive microcontroller platforms
 also support a 24-bit floating-point type. Here, an extension
-of the optional floating-point `typedef`s with specified width
+of the optional floating-point `typedef`s with specified widths
 could include `float24_t`. This would be equivalent to
 three-quarter precision floating-point, which is not
 specified in __IEEE_floating_point.
@@ -551,7 +551,7 @@ specified in __IEEE_floating_point.
 Many existing implementations already support `float`, `double`, and `long double`.
 In addition, some of these either are or strive to be compliant with __IEEE_floating_point.
 In these cases, it will be straightforward to support (at least) a subset
-of the proposed optional floating-point `typedef`s having specified width
+of the proposed optional floating-point `typedef`s having specified widths
 by adding any desired optional type definitions and the corresponding
 macro definitions.
 
