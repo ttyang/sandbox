@@ -4,8 +4,8 @@
 <title>Interoperation with &lt;limits&gt;</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
-<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="home" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
+<link rel="up" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
 <link rel="prev" href="cmathinterop.html" title="Interoperation with &lt;cmath&gt; and special functions">
 <link rel="next" href="complexinterop.html" title="Interoperation with &lt;complex&gt;">
 </head>
@@ -31,7 +31,7 @@
     </p>
 <p>
       Any of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width that are <code class="computeroutput"><span class="keyword">typedef</span></code>ed
+      having specified widths that are <code class="computeroutput"><span class="keyword">typedef</span></code>ed
       from the built-in types <code class="computeroutput"><span class="keyword">float</span></code>,
       <code class="computeroutput"><span class="keyword">double</span></code>, and <code class="computeroutput"><span class="keyword">long</span>
       <span class="keyword">double</span></code> should automatically be supported
@@ -39,7 +39,7 @@
     </p>
 <p>
       Implementation-specific optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width that are not derived from <code class="computeroutput"><span class="keyword">float</span></code>,
+      having specified widths that are not derived from <code class="computeroutput"><span class="keyword">float</span></code>,
       <code class="computeroutput"><span class="keyword">double</span></code>, and <code class="computeroutput"><span class="keyword">long</span>
       <span class="keyword">double</span></code> can optionally be supported by
       <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">limits</span><span class="special">&gt;</span></code>. This is considered an implementation detail.
@@ -64,7 +64,7 @@
 </tr>
 <tr><td align="left" valign="top"><p>
         Each of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-        having specified width can only have <code class="computeroutput"><span class="keyword">true</span></code>
+        having specified widths can only have <code class="computeroutput"><span class="keyword">true</span></code>
         for the value of <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;&gt;::</span><span class="identifier">is_iec559</span></code> if its underlying type (be it
         <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
         <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>

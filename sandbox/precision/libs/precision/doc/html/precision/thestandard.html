@@ -4,8 +4,8 @@
 <title>Place in the standard</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
-<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="home" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
+<link rel="up" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
 <link rel="prev" href="literals.html" title="Handling floating-point literals">
 <link rel="next" href="cmathinterop.html" title="Interoperation with &lt;cmath&gt; and special functions">
 </head>
@@ -28,9 +28,9 @@
 </h2></div></div></div>
 <p>
       The proper place for defining the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width should be oriented along the lines of the current standard.
+      having specified widths should be oriented along the lines of the current standard.
       Consider the existing specification of integer <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width in C++11. A partial synopsis is shown below.
+      having specified widths in C++11. A partial synopsis is shown below.
     </p>
 <p>
       18.4 Integer types [cstdint]
@@ -49,7 +49,7 @@
 <span class="comment">// ... and the corresponding least and fast types.</span>
 </pre>
 <p>
-      It is not immediately obvious where the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width should reside.
+      It is not immediately obvious where the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths should reside.
       One potential place is <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdint</span><span class="special">&gt;</span></code>. The <code class="computeroutput"><span class="keyword">int</span></code>,
       however, implies integer types. Here, we prefer the proposed new header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>.
     </p>
@@ -57,14 +57,14 @@
       We propose to add a new header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>
       to the standard library. The header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>
       should contain all optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width included in the implementation and the corresponding
+      having specified widths included in the implementation and the corresponding
       C-style macros shown above.
     </p>
 <p>
       Section 18.4 could be extended as shown below.
     </p>
 <p>
-      18.4? Integer and Floating-Point Types Having Specified Width
+      18.4? Integer and Floating-Point Types Having Specified Widths
     </p>
 <p>
       18.4.1 Header &lt;cstdint&gt; synopsis [cstdint.syn]

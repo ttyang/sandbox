@@ -4,9 +4,9 @@
 <title>Abstract</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
-<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
-<link rel="prev" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="home" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
+<link rel="up" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
+<link rel="prev" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
 <link rel="next" href="introduction.html" title="Introduction">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -28,24 +28,24 @@
 </h2></div></div></div>
 <p>
       It is proposed to add to the C++ standard <span class="bold"><strong>optional floating-point
-      <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width</strong></span>.
+      <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths</strong></span>.
       The optional <code class="computeroutput"><span class="keyword">typedef</span></code>s include
       <code class="computeroutput"><span class="identifier">float16_t</span></code>, <code class="computeroutput"><span class="identifier">float32_t</span></code>,
       <code class="computeroutput"><span class="identifier">float64_t</span></code>, <code class="computeroutput"><span class="identifier">float128_t</span></code>,
-      their corresponding fast and least types, and the corresponding maximum-width
+      their corresponding least and fast types, and the corresponding maximum-width
       type. These are to conform with the corresponding specifications of <code class="computeroutput"><span class="identifier">binary16</span></code>, <code class="computeroutput"><span class="identifier">binary32</span></code>,
       <code class="computeroutput"><span class="identifier">binary64</span></code>, and <code class="computeroutput"><span class="identifier">binary128</span></code> in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
       floating-point format</a>.
     </p>
 <p>
       The optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width are to be contained in a new standard library header
+      having specified widths are to be contained in a new standard library header
       <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code>. They will be defined in the <code class="computeroutput"><span class="identifier">std</span></code> namespace.
     </p>
 <p>
       <span class="bold"><strong>New C-style macros to facilitate initialization</strong></span>
       of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width from a floating-point literal constant are proposed.
+      having specified widths from a floating-point literal constant are proposed.
     </p>
 <p>
       It is not proposed to make any mandatory changes to <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span></code>,

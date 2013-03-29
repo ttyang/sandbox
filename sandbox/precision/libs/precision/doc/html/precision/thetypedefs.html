@@ -4,8 +4,8 @@
 <title>The proposed typedefs and potential extensions</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Specific-Width Floating-Point Typedefs">
-<link rel="up" href="../index.html" title="Specific-Width Floating-Point Typedefs">
+<link rel="home" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
+<link rel="up" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
 <link rel="prev" href="introduction.html" title="Introduction">
 <link rel="next" href="literals.html" title="Handling floating-point literals">
 </head>
@@ -89,7 +89,7 @@
       floating-point format</a>) in a specified, and therefore portable, fashion.
     </p>
 <p>
-      One could envision two ways to name the proposed optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width:
+      One could envision two ways to name the proposed optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem">
@@ -109,7 +109,7 @@
 </ul></div>
 <p>
       The first set above is intuitively coined from <a href="http://dx.doi.org/10.1109/IEEESTD.2008.4610935" target="_top">IEE754:2008</a>.
-      It is also consistent with the gist of integer types having specified width
+      It is also consistent with the gist of integer types having specified widths
       such as <code class="computeroutput"><span class="identifier">int64_t</span></code>, in so far
       as the number of binary digits of <span class="emphasis"><em>significand</em></span> precision
       is contained within the name of the data type.
@@ -128,7 +128,7 @@
 <p>
       We will now consider several examples showing how various implementations might
       introduce some of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
-      having specified width into the <code class="computeroutput"><span class="identifier">std</span></code>
+      having specified widths into the <code class="computeroutput"><span class="identifier">std</span></code>
       namespace.
     </p>
 <p>
@@ -162,7 +162,7 @@
       corresponding to IEEE754 <code class="computeroutput"><span class="identifier">binary32</span></code>,
       <code class="computeroutput"><span class="identifier">binary64</span></code>, and <code class="computeroutput"><span class="identifier">binary128</span></code>, respectively. In addition, this
       platform might have a floating-point type with octuple-precision. The implementation
-      for this supercomputer could introduce its optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown below.
+      for this supercomputer could introduce its optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown below.
     </p>
 <pre class="programlisting"><span class="comment">// In &lt;cstdfloat&gt;</span>
 
@@ -181,7 +181,7 @@
       type in a feasible fashion. An implementation for this platform can, however,
       support half-precision <code class="computeroutput"><span class="identifier">float16_t</span></code>
       and single-precision <code class="computeroutput"><span class="identifier">float32_t</span></code>.
-      This implementation could introduce its optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified width into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown below.
+      This implementation could introduce its optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown below.
     </p>
 <pre class="programlisting"><span class="comment">// In &lt;cstdfloat&gt;</span>
 
