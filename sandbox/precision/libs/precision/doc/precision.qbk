@@ -1,4 +1,4 @@
-[article Specific-Width Floating-Point Typedefs
+[article Floating-Point Typedefs Having Specified Width
     [quickbook 1.5]
     [id precision]
     [copyright 2013 Paul A. Bristow,  Christopher Kormanyos, John Maddock]
@@ -63,7 +63,7 @@ It is proposed to add to the C++ standard
 [*optional floating-point `typedef`s having specified width].
 The optional `typedef`s include
 `float16_t`, `float32_t`, `float64_t`, `float128_t`,
-their corresponding fast and least types,
+their corresponding least and fast types,
 and the corresponding maximum-width type.
 These are to conform with the corresponding specifications of
 `binary16`, `binary32`, `binary64`, and `binary128`
