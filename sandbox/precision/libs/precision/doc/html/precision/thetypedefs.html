@@ -170,17 +170,20 @@
       There may be a need for octuple-precision float, in other words an extension
       to <code class="computeroutput"><span class="identifier">float256_t</span></code> with about 240
       binary significand digits of precision. In addition, a <code class="computeroutput"><span class="identifier">float512_t</span></code>
-      type with even more precision may be considered as a option. Beyond these,
-      there may be potential extension to multiprecision types, even <a href="http://en.wikipedia.org/wiki/Arbitrary_precision" target="_top">arbitrary
+      type with even more precision may be considered as an option. Beyond these,
+      there may be potential extension to multiprecision types, or even <a href="http://en.wikipedia.org/wiki/Arbitrary_precision" target="_top">arbitrary
       precision</a>, in the future.
     </p>
 <p>
-      Consider an implementation for a supercomputer. This platform might have <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
+      Consider an implementation for a supercomputer. This platform has <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>,
       and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
       corresponding to IEEE754 <code class="computeroutput"><span class="identifier">binary32</span></code>,
       <code class="computeroutput"><span class="identifier">binary64</span></code>, and <code class="computeroutput"><span class="identifier">binary128</span></code>, respectively. In addition, this
-      platform might have a floating-point type with octuple-precision. The implementation
-      for this supercomputer could introduce its optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown below.
+      platform has floating-point types with octuple-precision and hextuple-precision.
+      The implementation for this supercomputer could introduce its optional floating-point
+      <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths
+      into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown
+      below.
     </p>
 <pre class="programlisting"><span class="comment">// In &lt;cstdfloat&gt;</span>
 
@@ -190,7 +193,8 @@
   <span class="keyword">typedef</span> <span class="keyword">double</span>               <span class="identifier">float64_t</span><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">double</span>          <span class="identifier">float128_t</span><span class="special">;</span>
   <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span>  <span class="identifier">float256_t</span><span class="special">;</span>
-  <span class="keyword">typedef</span> <span class="identifier">float256_t</span>           <span class="identifier">floatmax_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating</span><span class="special">-</span><span class="identifier">point</span> <span class="identifier">type</span>  <span class="identifier">float512_t</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">float512_t</span>           <span class="identifier">floatmax_t</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
 <p>

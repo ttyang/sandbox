@@ -37,7 +37,7 @@
       The header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code> should contain all necessary C-style function
       macros in the form shown below.
     </p>
-<pre class="programlisting"><span class="identifier">FLOAT</span><span class="special">{</span><span class="number">16</span> <span class="number">32</span> <span class="number">64</span> <span class="number">128</span> <span class="number">256</span> <span class="identifier">MAX</span><span class="special">}</span><span class="identifier">_C</span>
+<pre class="programlisting"><span class="identifier">FLOAT</span><span class="special">{</span><span class="number">16</span> <span class="number">32</span> <span class="number">64</span> <span class="number">80</span> <span class="number">128</span> <span class="number">256</span> <span class="number">512</span> <span class="identifier">MAX</span><span class="special">}</span><span class="identifier">_C</span>
 </pre>
 <p>
       The code below, for example, initializes a constant <code class="computeroutput"><span class="identifier">float128_t</span></code>
@@ -59,8 +59,8 @@
       In addition, the header <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">cstdfloat</span><span class="special">&gt;</span></code> should contain all necessary macros of
       the form:
     </p>
-<pre class="programlisting"><span class="identifier">FLOAT_</span><span class="special">[</span><span class="identifier">FAST</span> <span class="identifier">LEAST</span><span class="special">]{</span><span class="number">16</span> <span class="number">32</span> <span class="number">64</span> <span class="number">128</span> <span class="number">256</span><span class="special">}</span><span class="identifier">_MIN</span>
-<span class="identifier">FLOAT_</span><span class="special">[</span><span class="identifier">FAST</span> <span class="identifier">LEAST</span><span class="special">]{</span><span class="number">16</span> <span class="number">32</span> <span class="number">64</span> <span class="number">128</span> <span class="number">256</span><span class="special">}</span><span class="identifier">_MAX</span>
+<pre class="programlisting"><span class="identifier">FLOAT_</span><span class="special">[</span><span class="identifier">FAST</span> <span class="identifier">LEAST</span><span class="special">]{</span><span class="number">16</span> <span class="number">32</span> <span class="number">64</span> <span class="number">80</span> <span class="number">128</span> <span class="number">256</span> <span class="number">512</span><span class="special">}</span><span class="identifier">_MIN</span>
+<span class="identifier">FLOAT_</span><span class="special">[</span><span class="identifier">FAST</span> <span class="identifier">LEAST</span><span class="special">]{</span><span class="number">16</span> <span class="number">32</span> <span class="number">64</span> <span class="number">80</span> <span class="number">128</span> <span class="number">256</span> <span class="number">512</span><span class="special">}</span><span class="identifier">_MAX</span>
 <span class="identifier">FLOATMAX_MIN</span>
 <span class="identifier">FLOATMAX_MAX</span>
 </pre>
