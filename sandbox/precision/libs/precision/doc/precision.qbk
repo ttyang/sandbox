@@ -13,7 +13,7 @@
 
 [/purpose paper for C++ ISO standards group WG21/SG6 numerics.]
 
-ISO/IEC JTC1 SC22 WG21/SG6 Numerics D3627  - 2013-4-??
+ISO/IEC JTC1 SC22 WG21/SG6 Numerics D3627  - 2013-04-05
 
 Comments and suggestions to Paul.A.Bristow pbristow@hetp.u-net.com.
 
@@ -117,7 +117,7 @@ Document number: N3494 Version: 1.0 Date: 2012-12-19]
 
 It is, however, emphasized that floating-point adherence
 to __IEEE_floating_point is not mandated by the current C++ language standard.
-Nor does the standard specify the width, precision or layout of its built-in types
+Nor does the standard specify the widths, precisions and layouts of its built-in types
 `float`, `double`, and `long double`. This can lead to portability problems,
 introduce poor efficiency on cost-sensitive microcontroller architectures,
 and reduce reliability and safety.
@@ -234,13 +234,14 @@ into the `std` namespace as shown below.
 There may be a need for octuple-precision float, in other words
 an extension to `float256_t` with about 240 binary significand digits of precision.
 In addition, a `float512_t` type with even more precision
-may be considered as a option. Beyond these, there may be
-potential extension to multiprecision types, even __arbitrary_precision, in the future.
+may be considered as an option. Beyond these, there may be
+potential extension to multiprecision types,
+or even __arbitrary_precision, in the future.
 
-Consider an implementation for a supercomputer. This platform might have
+Consider an implementation for a supercomputer. This platform has
 `float`, `double`, and `long double` corresponding to IEEE754
 `binary32`, `binary64`, and `binary128`, respectively. In addition, this
-platform might have a floating-point type with octuple-precision.
+platform has floating-point types with octuple-precision and hextuple-precision.
 The implementation for this supercomputer could introduce
 its optional floating-point `typedef`s having specified widths
 into the `std` namespace as shown below.
@@ -253,7 +254,8 @@ into the `std` namespace as shown below.
     typedef double               float64_t;
     typedef long double          float128_t;
     typedef floating-point type  float256_t;
-    typedef float256_t           floatmax_t;
+    typedef floating-point type  float512_t;
+    typedef float512_t           floatmax_t;
   }
 
 A cost-sensitive 8-bit microcontroller platform without an FPU
@@ -308,7 +310,7 @@ in other words using C-style macros.
 The header `<cstdfloat>` should contain all necessary
 C-style function macros in the form shown below.
 
-  FLOAT{16 32 64 128 256 MAX}_C
+  FLOAT{16 32 64 80 128 256 512 MAX}_C
 
 The code below, for example, initializes a constant `float128_t`
 value using one of these macros.
@@ -327,8 +329,8 @@ value using another one of these macros.
 In addition, the header `<cstdfloat>` should contain all
 necessary macros of the form:
 
-  FLOAT_[FAST LEAST]{16 32 64 128 256}_MIN
-  FLOAT_[FAST LEAST]{16 32 64 128 256}_MAX
+  FLOAT_[FAST LEAST]{16 32 64 80 128 256 512}_MIN
+  FLOAT_[FAST LEAST]{16 32 64 80 128 256 512}_MAX
   FLOATMAX_MIN
   FLOATMAX_MAX
 
@@ -394,6 +396,7 @@ Section 18.4 could be extended as shown below.
     typedef floating-point type float80_t;   // optional.
     typedef floating-point type float128_t;  // optional.
     typedef floating-point type float256_t;  // optional.
+    typedef floating-point type float512_t;  // optional.
     typedef floating-point type floatmax_t;  // optional.
 
     typedef floating-point type float_least16_t;  // optional.
@@ -402,6 +405,7 @@ Section 18.4 could be extended as shown below.
     typedef floating-point type float_least80_t;  // optional.
     typedef floating-point type float_least128_t; // optional.
     typedef floating-point type float_least256_t; // optional.
+    typedef floating-point type float_least512_t; // optional.
 
     typedef floating-point type float_fast16_t;  // optional.
     typedef floating-point type float_fast32_t;  // optional.
@@ -409,6 +413,7 @@ Section 18.4 could be extended as shown below.
     typedef floating-point type float_fast80_t;  // optional.
     typedef floating-point type float_fast128_t; // optional.
     typedef floating-point type float_fast256_t; // optional.
+    typedef floating-point type float_fast512_t; // optional.
   }
 
 [endsect] [/section:thestandard Place in the standard]
