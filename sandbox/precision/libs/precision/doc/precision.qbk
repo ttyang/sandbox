@@ -117,7 +117,7 @@ Document number: N3494 Version: 1.0 Date: 2012-12-19]
 
 It is, however, emphasized that floating-point adherence
 to __IEEE_floating_point is not mandated by the current C++ language standard.
-Nor does the standard specify the width, precision or lyaout of its built-in types
+Nor does the standard specify the width, precision or layout of its built-in types
 `float`, `double`, and `long double`. This can lead to portability problems,
 introduce poor efficiency on cost-sensitive microcontroller architectures,
 and reduce reliability and safety.

@@ -125,6 +125,24 @@
       <span class="special">==</span> <span class="keyword">true</span></code>,
       and the byte-order.
     </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_ floating-point
+        format</a> prescribes a method of precision extension, that allows for
+        conforming types other than <code class="computeroutput"><span class="identifier">binary16</span></code>,
+        <code class="computeroutput"><span class="identifier">binary32</span></code>, <code class="computeroutput"><span class="identifier">binary64</span></code>,
+        and <code class="computeroutput"><span class="identifier">binary128</span></code>. Furthermore,
+        paragraph 3.7 in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+        floating-point format</a> states: <span class="bold"><strong>Language standards
+        should define mechanisms supporting extendable precision for each supported
+        radix</strong></span>. This proposal embodies a potential way for C++ to adhere
+        to this requirement.
+      </p></td></tr>
+</table></div>
 <p>
       We will now consider several examples showing how various implementations might
       introduce some of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
