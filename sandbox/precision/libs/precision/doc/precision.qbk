@@ -70,7 +70,7 @@ These are to conform with the corresponding specifications of
 in __IEEE_floating_point.
 
 The optional floating-point `typedef`s having specified widths
-are to be contained in a new standard library header `<cstdfloat>`.
+are to be contained in a [*new standard library header `<cstdfloat>`].
 They will be defined in the `std` namespace.
 
 [*New C-style macros to facilitate initialization]
@@ -204,6 +204,13 @@ the name may be more intuitive to users. Here, we prefer the latter naming schem
 No matter what naming scheme is used, the exact layout and number of significand
 and exponent bits can be confirmed as IEEE754 by checking
 `std::numeric_limits<type>::is_iec559 == true`, and the byte-order.
+
+[note __IEEE_floating_point prescribes a method of precision extension,
+that allows for conforming types other than `binary16`, `binary32`, `binary64`, and `binary128`.
+Furthermore, paragraph 3.7 in __IEEE_floating_point states:
+[*Language standards should define mechanisms supporting extendable precision
+for each supported radix]. This proposal embodies a potential way for
+C++ to adhere to this requirement.]
 
 We will now consider several examples showing how
 various implementations might introduce some of the
@@ -448,7 +455,8 @@ to verify conformance with __IEEE_floating_point.]
 can only have `true` for the value of `std::numeric_limits<>::is_iec559`
 if its underlying type (be it `float`, `double`, `long double` or
 an implementation-dependent type) conforms with one of
-`binary16`, `binary32`, `binary64`, or `binary128`
+`binary16`, `binary32`, `binary64`, or `binary128`,
+or the prescribed method of precision extension
 in __IEEE_floating_point.]
 
 [endsect] [/section:limitsinterop Interoperation with <limits>]
@@ -541,8 +549,8 @@ Some implementations for cost-sensitive microcontroller platforms
 also support a 24-bit floating-point type. Here, an extension
 of the optional floating-point `typedef`s with specified widths
 could include `float24_t`. This would be equivalent to
-three-quarter precision floating-point, which is not
-specified in __IEEE_floating_point.
+three-quarter precision floating-point, the layout of which should
+adhere to the method of precision extension specified in __IEEE_floating_point.
 
 [endsect] [/section:lowerprecision Extending to lower precision]
 
