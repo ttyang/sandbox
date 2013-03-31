@@ -125,11 +125,6 @@ and reduce reliability and safety.
 [*This situation reveals a need for a standard way to specify
 floating-point precision in C++.]
 
-It may also be desirable to extend floating-point precision to
-both lower and higher precisions. This can be done by including
-implementation-specific `typedef`s having specified widths
-that are not derived from `float`, `double`, and `long double`.
-
 Providing optional floating-point `typedef`s having specified widths
 is expected to significantly improve portability, reliability, and safety
 of floating-point calculations in C++.
@@ -141,13 +136,12 @@ such as `int8_t`, `int16_t`, `int32_t`, and `int64_t`.
 
 [section:thetypedefs  The proposed typedefs and potential extensions]
 
-The core of this proposal is based on the
-optional floating-point `typedef`s `float16_t`, `float32_t`,
-`float64_t`, `float128_t`,
+The core of this proposal is based on the optional floating-point
+`typedef`s `float16_t`, `float32_t`, `float64_t`, `float128_t`,
 their corresponding least and fast types,
 and the corresponding maximum-width type.
 
-For example,
+In particular,
 
   // Sample partial synopsis of <cstdfloat>
 
@@ -203,18 +197,25 @@ the name may be more intuitive to users. Here, we prefer the latter naming schem
 
 No matter what naming scheme is used, the exact layout and number of significand
 and exponent bits can be confirmed as IEEE754 by checking
-`std::numeric_limits<type>::is_iec559 == true`, and the byte-order.
+`std::numeric_limits<type>::is_iec559 == true`, and the byte order.
 
 [note __IEEE_floating_point prescribes a method of precision extension,
 that allows for conforming types other than `binary16`, `binary32`, `binary64`, and `binary128`.
-Furthermore, paragraph 3.7 in __IEEE_floating_point states:
+This makes it possible to extend floating-point precision to both lower and higher precisions
+in a standardized way using implementation-specific `typedef`s
+that are not derived from `float`, `double`, and `long double`.]
+
+[note Paragraph 3.7 in __IEEE_floating_point states:
 [*Language standards should define mechanisms supporting extendable precision
 for each supported radix]. This proposal embodies a potential way for
 C++ to adhere to this requirement.]
 
-We will now consider several examples showing how
-various implementations might introduce some of the
-optional floating-point `typedef`s having specified widths
+[note __IEEE_floating_point does not specify the byte order for floating-point
+storage (the so-called endianness). This is the same situation that prevails for
+integer storage in C++.]
+
+We will now consider various examples that show how implementations might introduce
+some of the optional floating-point `typedef`s having specified widths
 into the `std` namespace.
 
 An implementation has `float` and `double` corresponding to
@@ -241,7 +242,7 @@ or even __arbitrary_precision, in the future.
 Consider an implementation for a supercomputer. This platform has
 `float`, `double`, and `long double` corresponding to IEEE754
 `binary32`, `binary64`, and `binary128`, respectively. In addition, this
-platform has floating-point types with octuple-precision and hextuple-precision.
+implementation has floating-point types with octuple-precision and hextuple-precision.
 The implementation for this supercomputer could introduce
 its optional floating-point `typedef`s having specified widths
 into the `std` namespace as shown below.
@@ -342,7 +343,7 @@ at compile-time. For example,
   #include <cstdfloat>
 
   static_assert(FLOATMAX_MAX > (std::numeric_limits<float>::max)(),
-                "The floating-point range is too small.");
+                "The iec559 floating-point range is too small.");
 
 [endsect] [/section:literals Handling floating-point literals]
 
