@@ -34,7 +34,7 @@
       least and fast types, and the corresponding maximum-width type.
     </p>
 <p>
-      For example,
+      In particular,
     </p>
 <pre class="programlisting"><span class="comment">// Sample partial synopsis of &lt;cstdfloat&gt;</span>
 
@@ -123,7 +123,7 @@
       No matter what naming scheme is used, the exact layout and number of significand
       and exponent bits can be confirmed as IEEE754 by checking <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">is_iec559</span>
       <span class="special">==</span> <span class="keyword">true</span></code>,
-      and the byte-order.
+      and the byte order. Little-endian IEEE754 architectures now predominate.
     </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -135,17 +135,42 @@
         format</a> prescribes a method of precision extension, that allows for
         conforming types other than <code class="computeroutput"><span class="identifier">binary16</span></code>,
         <code class="computeroutput"><span class="identifier">binary32</span></code>, <code class="computeroutput"><span class="identifier">binary64</span></code>,
-        and <code class="computeroutput"><span class="identifier">binary128</span></code>. Furthermore,
-        paragraph 3.7 in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
+        and <code class="computeroutput"><span class="identifier">binary128</span></code>. This makes
+        it possible to extend floating-point precision to both lower and higher precisions
+        in a standardized way using implementation-specific <code class="computeroutput"><span class="keyword">typedef</span></code>s
+        that are not derived from <code class="computeroutput"><span class="keyword">float</span></code>,
+        <code class="computeroutput"><span class="keyword">double</span></code>, and <code class="computeroutput"><span class="keyword">long</span>
+        <span class="keyword">double</span></code>.
+      </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Paragraph 3.7 in <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_
         floating-point format</a> states: <span class="bold"><strong>Language standards
         should define mechanisms supporting extendable precision for each supported
         radix</strong></span>. This proposal embodies a potential way for C++ to adhere
         to this requirement.
       </p></td></tr>
 </table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <a href="http://en.wikipedia.org/wiki/IEEE_floating_point" target="_top">IEEE_ floating-point
+        format</a> does not specify the byte order for floating-point storage
+        (the so-called <a href="http://en.wikipedia.org/wiki/Endianness#Floating-point_and_endianness" target="_top">endianness</a>).
+        This is the same situation that prevails for integer storage in C++.
+      </p></td></tr>
+</table></div>
 <p>
-      We will now consider several examples showing how various implementations might
-      introduce some of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
+      We will now consider various examples that show how implementations might introduce
+      some of the optional floating-point <code class="computeroutput"><span class="keyword">typedef</span></code>s
       having specified widths into the <code class="computeroutput"><span class="identifier">std</span></code>
       namespace.
     </p>
@@ -179,7 +204,7 @@
       and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
       corresponding to IEEE754 <code class="computeroutput"><span class="identifier">binary32</span></code>,
       <code class="computeroutput"><span class="identifier">binary64</span></code>, and <code class="computeroutput"><span class="identifier">binary128</span></code>, respectively. In addition, this
-      platform has floating-point types with octuple-precision and hextuple-precision.
+      implementation has floating-point types with octuple-precision and hextuple-precision.
       The implementation for this supercomputer could introduce its optional floating-point
       <code class="computeroutput"><span class="keyword">typedef</span></code>s having specified widths
       into the <code class="computeroutput"><span class="identifier">std</span></code> namespace as shown

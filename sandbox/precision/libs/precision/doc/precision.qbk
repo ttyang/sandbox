@@ -198,6 +198,7 @@ the name may be more intuitive to users. Here, we prefer the latter naming schem
 No matter what naming scheme is used, the exact layout and number of significand
 and exponent bits can be confirmed as IEEE754 by checking
 `std::numeric_limits<type>::is_iec559 == true`, and the byte order.
+Little-endian IEEE754 architectures now predominate.
 
 [note __IEEE_floating_point prescribes a method of precision extension,
 that allows for conforming types other than `binary16`, `binary32`, `binary64`, and `binary128`.
@@ -211,8 +212,10 @@ for each supported radix]. This proposal embodies a potential way for
 C++ to adhere to this requirement.]
 
 [note __IEEE_floating_point does not specify the byte order for floating-point
-storage (the so-called endianness). This is the same situation that prevails for
-integer storage in C++.]
+storage (the so-called
+[@http://en.wikipedia.org/wiki/Endianness#Floating-point_and_endianness endianness]).
+This is the same situation that prevails for integer storage in C++.
+]
 
 We will now consider various examples that show how implementations might introduce
 some of the optional floating-point `typedef`s having specified widths
