@@ -4,8 +4,8 @@
 <title>Specifying 128-bit precision</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
-<link rel="home" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
-<link rel="up" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - D3627">
+<link rel="home" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - N3627">
+<link rel="up" href="../index.html" title="Floating-Point Typedefs Having Specified Widths - N3627">
 <link rel="prev" href="complexinterop.html" title="Interoperation with &lt;complex&gt;">
 <link rel="next" href="lowerprecision.html" title="Extending to lower precision">
 </head>
@@ -94,11 +94,10 @@
           80-bit (XFmode) and 128-bit (TFmode) floating types.</a>
         </li>
 <li class="listitem">
-          <a href="http://software.intel.com/en-us/forums/topic/358472" target="_top">Extended
-          or Quad IEEE FP formats</a> by Intel Intel64 mode on Linux (V12.1)
-          provides 128 bit <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
-          in C, however it appears that it only provides computation at 80-bit format
-          giving 64-bit significand precision, and other bits are just padding.
+          Intel C++ provides an internal 128-bit floating-point type called <code class="computeroutput"><span class="identifier">_Quad</span></code>. When the <code class="computeroutput"><span class="special">-</span><span class="identifier">Qoption</span><span class="special">,</span><span class="identifier">cpp</span><span class="special">,--</span><span class="identifier">extended_float_type</span></code> command line option
+          is supplied, it supports what appears to be an undocumented data type
+          <code class="computeroutput"><span class="identifier">_Quad</span></code>. This type is equivalent
+          to GCC's <code class="computeroutput"><span class="identifier">__float128</span></code>.
         </li>
 <li class="listitem">
           <a href="http://software.intel.com/en-us/forums/topic/358476" target="_top">Intel
