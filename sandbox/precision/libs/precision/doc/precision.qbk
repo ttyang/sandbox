@@ -534,7 +534,8 @@ Those lacking direct hardware support can use software emulation.
 
 # [@http://gcc.gnu.org/onlinedocs/gcc/Floating-Types.html   GNU C supports additional floating types, `__float80` and `__float128` to support 80-bit (XFmode) and 128-bit (TFmode) floating types.]
 
-# __Quad by Intel Intel64 mode on Linux (V12.1) provides 128 bit `long double` in C, however it appears that it only provides computation at 80-bit format giving 64-bit significand precision, and other bits are just padding.
+# Intel provides an internal 128-bit floating-point type. When the `-Qoption,cpp,--extended_float_type` command line option is supplied, it supports what appears to be an undocumented data type `_Quad`. This type is equivalent to GCC's `__float128`.
+
 # [@http://software.intel.com/en-us/forums/topic/358476 Intel FORTRAN REAL*16] is an actual 128-bit IEEE quad, emulated in software. But "I don't know of any plan to implement full C support for 128-bit IEEE format, although evidently ifort has support libraries."  This is equivalent to the proposed float128_t type.
 
 # The 360/85 and follow-on System/370 added support for a 128-bit "extended" __IBM_hexadecimal. These formats are still supported in the current design, where they are now called the "hexadecimal floating point" (HFP) formats.
