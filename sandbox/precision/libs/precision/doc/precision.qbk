@@ -71,7 +71,8 @@ in __IEEE_floating_point.
 
 The optional floating-point `typedef`s having specified widths
 are to be contained in a [*new standard library header `<cstdfloat>`].
-They will be defined in the `std` namespace.
+
+[*They will be defined] in the `std` namespace.
 
 [*New C-style macros to facilitate initialization]
 of the optional floating-point `typedef`s having specified widths
