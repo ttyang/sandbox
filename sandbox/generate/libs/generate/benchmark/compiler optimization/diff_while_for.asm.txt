@@ -1,0 +1,73 @@
+35c35
+< 	call	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_
+---
+> 	call	_Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_
+95,98c95,98
+< 	.section	.text._Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_,"axG",@progbits,_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_,comdat
+< 	.weak	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_
+< 	.type	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_, @function
+< _Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_:
+---
+> 	.section	.text._Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_,"axG",@progbits,_Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_,comdat
+> 	.weak	_Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_
+> 	.type	_Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_, @function
+> _Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_:
+106,109c106,121
+< 	subq	$32, %rsp
+< 	movq	%rdi, -8(%rbp)
+< 	movq	%rsi, -16(%rbp)
+< 	movsd	%xmm0, -32(%rbp)
+---
+> 	pushq	%rbx
+> 	subq	$72, %rsp
+> 	.cfi_offset 3, -24
+> 	movq	%rdi, -56(%rbp)
+> 	movq	%rsi, -64(%rbp)
+> 	movsd	%xmm0, -80(%rbp)
+> 	movq	-64(%rbp), %rdx
+> 	movq	-56(%rbp), %rax
+> 	movq	%rdx, %rcx
+> 	subq	%rax, %rcx
+> 	movq	%rcx, %rax
+> 	sarq	$3, %rax
+> 	movq	%rax, -32(%rbp)
+> 	movq	-56(%rbp), %rax
+> 	movq	%rax, -24(%rbp)
+> 	movq	$0, -40(%rbp)
+112c124,128
+< 	leaq	-32(%rbp), %rax
+---
+> 	movq	-40(%rbp), %rax
+> 	leaq	0(,%rax,8), %rdx
+> 	movq	-24(%rbp), %rax
+> 	leaq	(%rdx,%rax), %rbx
+> 	leaq	-80(%rbp), %rax
+115,119c131,134
+< 	movsd	%xmm0, -24(%rbp)
+< 	movq	-24(%rbp), %rax
+< 	movq	-8(%rbp), %rdx
+< 	movq	%rax, (%rdx)
+< 	addq	$8, -8(%rbp)
+---
+> 	movsd	%xmm0, -72(%rbp)
+> 	movq	-72(%rbp), %rax
+> 	movq	%rax, (%rbx)
+> 	addq	$1, -40(%rbp)
+121,123c136,138
+< 	movq	-8(%rbp), %rax
+< 	cmpq	-16(%rbp), %rax
+< 	setne	%al
+---
+> 	movq	-40(%rbp), %rax
+> 	cmpq	-32(%rbp), %rax
+> 	setl	%al
+126c141,143
+< 	leave
+---
+> 	addq	$72, %rsp
+> 	popq	%rbx
+> 	popq	%rbp
+131c148
+< 	.size	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_, .-_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_
+---
+> 	.size	_Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_, .-_Z12for_generateIPd21initializer_generatorIdEEvT_S3_T0_

@@ -1,0 +1,68 @@
+	.file	"for_loop.cpp"
+	.text
+	.p2align 4,,15
+	.globl	_Z6test_1PdS_
+	.type	_Z6test_1PdS_, @function
+_Z6test_1PdS_:
+.LFB0:
+	.cfi_startproc
+	cmpq	%rsi, %rdi
+	je	.L1
+	leaq	8(%rdi), %rax
+	movq	%rsi, %rcx
+	movq	%rdi, %rdx
+	salq	$60, %rdx
+	subq	%rax, %rcx
+	shrq	$63, %rdx
+	shrq	$3, %rcx
+	addq	$1, %rcx
+	cmpq	%rcx, %rdx
+	cmova	%rcx, %rdx
+	testq	%rdx, %rdx
+	je	.L7
+	cmpq	%rdx, %rcx
+	movq	$0, (%rdi)
+	je	.L12
+.L3:
+	movq	%rcx, %r10
+	subq	%rdx, %r10
+	movq	%r10, %r8
+	shrq	%r8
+	movq	%r8, %r9
+	addq	%r9, %r9
+	je	.L8
+	xorpd	%xmm0, %xmm0
+	leaq	(%rdi,%rdx,8), %rcx
+	xorl	%edx, %edx
+	.p2align 4,,10
+	.p2align 3
+.L5:
+	addq	$1, %rdx
+	movapd	%xmm0, (%rcx)
+	addq	$16, %rcx
+	cmpq	%r8, %rdx
+	jb	.L5
+	cmpq	%r9, %r10
+	leaq	(%rax,%r9,8), %rax
+	je	.L1
+	.p2align 4,,10
+	.p2align 3
+.L8:
+	movq	$0, (%rax)
+	addq	$8, %rax
+	cmpq	%rax, %rsi
+	jne	.L8
+.L1:
+	rep
+	ret
+.L7:
+	movq	%rdi, %rax
+	jmp	.L3
+.L12:
+	.p2align 4,,8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	_Z6test_1PdS_, .-_Z6test_1PdS_
+	.ident	"GCC: (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3"
+	.section	.note.GNU-stack,"",@progbits

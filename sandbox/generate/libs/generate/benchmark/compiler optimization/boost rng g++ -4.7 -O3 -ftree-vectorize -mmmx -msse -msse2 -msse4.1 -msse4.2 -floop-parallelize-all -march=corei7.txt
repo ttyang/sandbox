@@ -1,0 +1,6 @@
+Method                                     1000000
+while_generate                             2.18102
+for_generate                               2.37991
+for_generate2                               2.1924
+std::generate                              2.18793
+boost::generate                            2.39963

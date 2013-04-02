@@ -1,0 +1,38 @@
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O0 &  1.7263 &  4.7842 &  4.6961 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 & 16.6485 & 72.8571 & 47.6636 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse2 -floop-parallelize-all & 17.4658 & 76.5000 & 45.2663 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse2 -ftree-vectorizer-verbose=5 & 15.8549 & 72.8571 & 47.6636 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 & 17.4658 & 76.5000 & 44.7368 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math & 17.4658 & 74.2718 & 50.4950 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O0 &  1.8833 &  3.7226 &  4.7619 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 & 28.2810 & 75.0000 & 77.2727 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -floop-optimize & 28.2810 & 76.1194 & 78.0612 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse2 -floop-parallelize-all & 28.2810 & 72.1698 & 68.9189 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse2 -ftree-vectorizer-verbose=5 & 28.2810 & 63.2231 & 74.2718 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 & 19.8701 & 72.1698 & 77.6650 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math & 28.0220 & 69.2308 & 77.6650 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -O0 &  2.1810 &  4.6846 &  5.3987 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -O3 & 33.1887 & 91.0714 & 90.0000 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -fast & 34.3820 & 89.4737 & 89.4737 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -fast -msse2 -march=corei7 & 35.5814 & 91.6168 & 99.3506 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -fast -msse2 -march=corei7 -m64 -xS & 35.5814  100.0000 & 92.1687 \\ \hline
+
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O0 &   10.6652 &  10.0642 &   9.8663 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 &   89.0852 &  99.7578 &  89.9322 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse2 -floop-parallelize-all &   89.5208 &  98.3385 &  89.6798 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse2 -ftree-vectorizer-verbose=5 &   89.7646 &  98.8196 &  89.1867 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 &   88.7393 &  97.9232 &  87.5752 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.6 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math &   89.5925 &  98.2459 &  88.9738 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O0 &    9.7291 &   7.6435 &   9.8534 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 &   98.7448 & 100.0000 &  99.6087 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -floop-optimize &   98.5676 &  99.1105 &  97.2964 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse2 -floop-parallelize-all &   99.9936 &  99.1795 &  99.5422 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse2 -ftree-vectorizer-verbose=5 &   98.8508 &  99.6404 &  98.0828 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 &   99.5833 &  98.4343 &  97.6271 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math &   99.1607 &  97.1424 &  95.7637 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} g++ & 4.7 & -O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math & 28.0220 & 69.2308 & 77.6650 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -O0 &    9.4628 &   9.6895 &  11.0057 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -O3 &   97.4842 &  98.3941 &  99.1670 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -fast &   98.3663 &  98.8227 &  98.0367 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -fast -msse2 -march=corei7 &   98.3168 &  98.2613 &  98.5893 \\ \hline
+\rule[-1ex]{0pt}{2.5ex} icpc & 13.0 & -fast -msse2 -march=corei7 -m64 -xS &   98.0091 &  98.6048 &  98.5551 \\ \hline

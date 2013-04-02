@@ -1,0 +1,156 @@
+	.file	"test.cpp"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB992:
+	.cfi_startproc
+	.cfi_personality 0x3,__gxx_personality_v0
+	.cfi_lsda 0x3,.LLSDA992
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$48, %rsp
+	movl	$800, %edi
+.LEHB0:
+	call	_Znam
+	movq	%rax, -8(%rbp)
+	movl	$0, %eax
+	movq	%rax, -16(%rbp)
+	leaq	-16(%rbp), %rdx
+	leaq	-32(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	_ZN21initializer_generatorIdEC1ERKd
+	movq	-8(%rbp), %rax
+	leaq	800(%rax), %rcx
+	movq	-32(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rax, -40(%rbp)
+	movsd	-40(%rbp), %xmm0
+	movq	%rcx, %rsi
+	movq	%rdx, %rdi
+	call	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_
+.LEHE0:
+	movl	$0, %eax
+	jmp	.L5
+.L4:
+	movq	%rax, %rdi
+.LEHB1:
+	call	_Unwind_Resume
+.LEHE1:
+.L5:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE992:
+	.globl	__gxx_personality_v0
+	.section	.gcc_except_table,"a",@progbits
+.LLSDA992:
+	.byte	0xff
+	.byte	0xff
+	.byte	0x1
+	.uleb128 .LLSDACSE992-.LLSDACSB992
+.LLSDACSB992:
+	.uleb128 .LEHB0-.LFB992
+	.uleb128 .LEHE0-.LEHB0
+	.uleb128 .L4-.LFB992
+	.uleb128 0
+	.uleb128 .LEHB1-.LFB992
+	.uleb128 .LEHE1-.LEHB1
+	.uleb128 0
+	.uleb128 0
+.LLSDACSE992:
+	.text
+	.size	main, .-main
+	.section	.text._ZN21initializer_generatorIdEC2ERKd,"axG",@progbits,_ZN21initializer_generatorIdEC5ERKd,comdat
+	.align 2
+	.weak	_ZN21initializer_generatorIdEC2ERKd
+	.type	_ZN21initializer_generatorIdEC2ERKd, @function
+_ZN21initializer_generatorIdEC2ERKd:
+.LFB994:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movq	-16(%rbp), %rax
+	movq	(%rax), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rax, (%rdx)
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE994:
+	.size	_ZN21initializer_generatorIdEC2ERKd, .-_ZN21initializer_generatorIdEC2ERKd
+	.weak	_ZN21initializer_generatorIdEC1ERKd
+	.set	_ZN21initializer_generatorIdEC1ERKd,_ZN21initializer_generatorIdEC2ERKd
+	.section	.text._Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_,"axG",@progbits,_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_,comdat
+	.weak	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_
+	.type	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_, @function
+_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_:
+.LFB996:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$32, %rsp
+	movq	%rdi, -8(%rbp)
+	movq	%rsi, -16(%rbp)
+	movsd	%xmm0, -32(%rbp)
+	jmp	.L8
+.L9:
+	leaq	-32(%rbp), %rax
+	movq	%rax, %rdi
+	call	_ZN21initializer_generatorIdEclEv
+	movsd	%xmm0, -24(%rbp)
+	movq	-24(%rbp), %rax
+	movq	-8(%rbp), %rdx
+	movq	%rax, (%rdx)
+	addq	$8, -8(%rbp)
+.L8:
+	movq	-8(%rbp), %rax
+	cmpq	-16(%rbp), %rax
+	setne	%al
+	testb	%al, %al
+	jne	.L9
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE996:
+	.size	_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_, .-_Z14while_generateIPd21initializer_generatorIdEEvT_S3_T0_
+	.section	.text._ZN21initializer_generatorIdEclEv,"axG",@progbits,_ZN21initializer_generatorIdEclEv,comdat
+	.align 2
+	.weak	_ZN21initializer_generatorIdEclEv
+	.type	_ZN21initializer_generatorIdEclEv, @function
+_ZN21initializer_generatorIdEclEv:
+.LFB997:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movq	%rdi, -8(%rbp)
+	movq	-8(%rbp), %rax
+	movq	(%rax), %rax
+	movq	%rax, -16(%rbp)
+	movsd	-16(%rbp), %xmm0
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE997:
+	.size	_ZN21initializer_generatorIdEclEv, .-_ZN21initializer_generatorIdEclEv
+	.ident	"GCC: (Ubuntu/Linaro 4.7.2-11precise2) 4.7.2"
+	.section	.note.GNU-stack,"",@progbits
