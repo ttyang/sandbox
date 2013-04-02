@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Header &lt;boost/random/mkl/engine.hpp&gt;</title>
+<link rel="stylesheet" href="../../../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="up" href="../../../../headers.html" title="Headers">
+<link rel="prev" href="../../../../boost/random/acml/make_independen_idp6196384.html" title="Function template make_independent_engines_by_leap_frog">
+<link rel="next" href="../../../../boost/random/mkl/engine.html" title="Class template engine">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../../boost/random/acml/make_independen_idp6196384.html"><img src="../../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../../headers.html"><img src="../../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../../boost/random/mkl/engine.html"><img src="../../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.random.mkl.engine_hpp"></a>Header &lt;<a href="../../../../../../../../../boost/random/mkl/engine.hpp" target="_top">boost/random/mkl/engine.hpp</a>&gt;</h3></div></div></div>
+<p>This file contains a random number engine which wraps functions from the Intel MKL library. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">random</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">mkl</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> brng <span class="special">=</span> <span class="identifier">VSL_BRNG_MT19937</span><span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Engine<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../../../../boost/random/mkl/has_block_split.html" title="Struct template has_block_split">has_block_split</a><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Engine<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="../../../../boost/random/mkl/has_leap_frog.html" title="Struct template has_leap_frog">has_leap_frog</a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_MCG31</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/mcg31.html" title="Type definition mcg31"><span class="identifier">mcg31</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_R250</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/r250.html" title="Type definition r250"><span class="identifier">r250</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_MRG32K3A</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/mrg32k3a.html" title="Type definition mrg32k3a"><span class="identifier">mrg32k3a</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_MCG59</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/mcg59.html" title="Type definition mcg59"><span class="identifier">mcg59</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_WH</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/wh.html" title="Type definition wh"><span class="identifier">wh</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_MT19937</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/mt19937.html" title="Type definition mt19937"><span class="identifier">mt19937</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_MT2203</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/mt2203.html" title="Type definition mt2203"><span class="identifier">mt2203</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_SFMT19937</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/sfmt19937.html" title="Type definition sfmt19937"><span class="identifier">sfmt19937</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_SOBOL</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/sobol.html" title="Type definition sobol"><span class="identifier">sobol</span></a><span class="special">;</span>
+      <span class="keyword">typedef</span> <a class="link" href="../../../../boost/random/mkl/engine.html" title="Class template engine">engine</a><span class="special">&lt;</span> <span class="identifier">VSL_BRNG_NIEDERR</span> <span class="special">&gt;</span> <a class="link" href="../../../../boost/random/mkl/niederr.html" title="Type definition niederr"><span class="identifier">niederr</span></a><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Engine<span class="special">,</span> <span class="keyword">typename</span> Iterator<span class="special">&gt;</span> 
+        <span class="keyword">void</span> <a class="link" href="../../../../boost/random/mkl/make_independen_idp6294720.html" title="Function template make_independent_engines_by_block_split"><span class="identifier">make_independent_engines_by_block_split</span></a><span class="special">(</span><span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">,</span> 
+                                                     <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Engine<span class="special">,</span> <span class="keyword">typename</span> Iterator<span class="special">&gt;</span> 
+        <span class="keyword">void</span> <a class="link" href="../../../../boost/random/mkl/make_independen_idp6301488.html" title="Function template make_independent_engines_by_leap_frog"><span class="identifier">make_independent_engines_by_leap_frog</span></a><span class="special">(</span><span class="identifier">Iterator</span><span class="special">,</span> <span class="identifier">Iterator</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../../boost/random/acml/make_independen_idp6196384.html"><img src="../../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../../headers.html"><img src="../../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../../../boost/random/mkl/engine.html"><img src="../../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

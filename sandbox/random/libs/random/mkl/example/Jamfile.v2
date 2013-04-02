@@ -1,0 +1,16 @@
+
+
+lib mkl_intel_ilp64 : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_intel_ilp64.a ;
+lib mkl_sequential : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_sequential.a ;
+lib mkl_core : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_core.a ;
+lib pthread m ;
+
+
+project /boost/random/mkl/test
+	: requirements <include>/opt/intel/mkl/include/ <cxxflags>-std=c++0x <library>mkl_intel_ilp64 <library>mkl_sequential <library>mkl_core <library>pthread <library>m
+	;
+
+
+exe distributions : distributions.cpp ;
+exe independent_engines : independent_engines.cpp ;
+

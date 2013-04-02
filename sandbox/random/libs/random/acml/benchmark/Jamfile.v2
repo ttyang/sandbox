@@ -1,0 +1,16 @@
+
+
+lib mkl_intel_ilp64 : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_intel_ilp64.a ;
+lib mkl_sequential : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_sequential.a ;
+lib mkl_core : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_core.a ;
+lib acml : : <file>/opt/acml5.2.0/gfortran64_int64/lib/libacml.a ;
+lib gfortran rt dl pthread m ;
+
+
+project /boost/random/acml/benchmark
+	: requirements <include>/opt/acml5.2.0/gfortran64_int64/include <include>/opt/intel/mkl/include/ <cxxflags>-std=c++0x <library>mkl_intel_ilp64 <library>mkl_sequential <library>mkl_core <library>pthread <library>acml <library>gfortran <library>rt <library>dl <library>m
+	;
+
+
+exe benchmark : benchmark.cpp ;
+

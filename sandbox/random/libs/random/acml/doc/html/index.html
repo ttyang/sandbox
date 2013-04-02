@@ -1,0 +1,101 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="next" href="boost_mkl_acml/acml.html" title="AMD&#174; ACML Generators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="boost_mkl_acml/acml.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a></div>
+<div class="chapter">
+<div class="titlepage"><div>
+<div><h2 class="title">
+<a name="boost_mkl_acml"></a>Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators</h2></div>
+<div><div class="author"><h3 class="author">
+<span class="firstname">Fabian</span> <span class="surname">B&#246;sch</span>
+</h3></div></div>
+<div><p class="copyright">Copyright &#169; 2013 Fabian B&#246;sch</p></div>
+<div><div class="legalnotice">
+<a name="boost_mkl_acml.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="index.html#boost_mkl_acml.introduction">Introduction</a></span></dt>
+<dt><span class="section"><a href="boost_mkl_acml/acml.html">AMD&#174; ACML Generators</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_mkl_acml/acml.html#amd___acml_and_intel___mkl_random_number_generators.acml.range_function_call">Range
+      Function Call</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/acml/initialization.html">Initialization</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/acml/distributions.html">Distributions</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/acml/timings.html">Timings</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/acml/multiple_generators.html">Multiple
+      Generators</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_mkl_acml/mkl.html">Intel&#174; MKL Generators</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_mkl_acml/mkl.html#amd___acml_and_intel___mkl_random_number_generators.mkl.range_function_call">Range
+      Function Call</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/mkl/initialization.html">Initialization</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/mkl/distributions.html">Distributions</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/mkl/timings.html">Timings</a></span></dt>
+<dt><span class="section"><a href="amd___acml_and_intel___mkl_random_number_generators/mkl/multiple_generators.html">Multiple
+      Generators</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="headers.html">Headers</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="headers.html#header.boost.random.acml.engine_hpp">Header &lt;boost/random/acml/engine.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="header/boost/random/mkl/engine_hpp.html">Header &lt;boost/random/mkl/engine.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="header/boost/random/acml/variate_generator_specialization_hpp.html">Header &lt;boost/random/acml/variate_generator_specialization.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="header/boost/random/mkl/variate_generator_specialization_hpp.html">Header &lt;boost/random/mkl/variate_generator_specialization.hpp&gt;</a></span></dt>
+</dl></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_mkl_acml.introduction"></a><a class="link" href="index.html#boost_mkl_acml.introduction" title="Introduction">Introduction</a>
+</h2></div></div></div>
+<p>
+      This document descibes the AMD&#174; ACML and Intel&#174; MKL random number generators
+      which are thin C++ wrapper classes around the functions the ACML and MKL provide.
+      The wrapper classes meet the requirements the boost <a href="http://www.boost.org/doc/libs/1_53_0/doc/html/boost_random/reference.html#boost_random.reference.concepts.pseudo_random_number_generator" target="_top">pseudo-random
+      number generator concept</a>.
+    </p>
+<p>
+      The generators do not introduce significant overhead and thus the performance
+      is equal to the direct use of the underlying libraries. As both the Intel&#174;
+      MKL and the AMD&#174; ACML are highly optimized and employ vectorization techniques,
+      the generation of random numbers is faster than the facilites Boost or Standard
+      libraries provide (see also <a class="link" href="amd___acml_and_intel___mkl_random_number_generators/mkl/timings.html" title="Timings">this
+      section</a>).
+    </p>
+<p>
+      Boost and Standard random distributions are interoperable with the random number
+      engines described here and can be used in combination with the boost generate
+      algorithm (<a href="../../../../../../generate/libs/generate/doc/html/index.html" target="_top">Boost.Generate</a>).
+    </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: April 02, 2013 at 19:08:51 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="boost_mkl_acml/acml.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a></div>
+</body>
+</html>

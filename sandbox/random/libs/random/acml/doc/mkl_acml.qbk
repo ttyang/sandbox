@@ -1,0 +1,96 @@
+[library AMD® ACML and Intel® MKL Random Number Generators
+  [quickbook 1.5]
+  [authors [Bösch, Fabian]]
+  [copyright 2013 Fabian Bösch]
+  [id boost_mkl_acml]
+  [license
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      [@http://www.boost.org/LICENSE_1_0.txt])
+  ]
+  [purpose Random Number Generators and Random Distributions from Intel MKL and AMD ACML]
+]
+
+[template sup[text]'''<superscript>'''[text]'''</superscript>''']
+
+[template prng[text] [@http://www.boost.org/doc/libs/1_53_0/doc/html/boost_random/reference.html#boost_random.reference.concepts.pseudo_random_number_generator [text]]]
+
+[template acml[text] [link amd___acml_and_intel___mkl_random_number_generators.acml [text]]]
+[template acml_timings[text] [link amd___acml_and_intel___mkl_random_number_generators.acml.timings [text]]]
+[template mkl[text] [link amd___acml_and_intel___mkl_random_number_generators.mkl [text]]]
+[template mkl_timings[text] [link amd___acml_and_intel___mkl_random_number_generators.mkl.timings [text]]]
+[template range_generator[text] [@../../../../generate/doc/html/generate/concepts.html#generate.concepts.range_generator [text]]]
+[template unit_stride_iterator[text] [@../../../../generate/doc/html/generate/concepts.html#generate.concepts.unit_stride_iterator [text]]]
+
+[def __boost_generate [@../../../../generate/doc/html/index.html Boost.Generate]]
+
+
+[def __random_device [classref boost::random::random_device random_device]]
+[def __random_number_generator [classref boost::random::random_number_generator random_number_generator]]
+[def __variate_generator [@http://www.boost.org/doc/libs/1_53_0/doc/html/boost/variate_generator.html variate_generator]]
+
+[def __acml_engine [classref boost::random::acml::engine engine]]
+[def __acml_engine_range_function_call [memberref boost::random::acml::engine::operator() range function call]] 
+[def __acml_engine_is_vectorizable [classref boost::random::acml::engine::is_range_generator]]
+[def __acml_mt19937 [classref boost::random::acml::mt19937]]
+[def __acml_variate_generator [classref boost::random::is_variate_generator_a_acml_range_generator]]
+[def __acml_boost_distributions boost/random/acml/boost/distributions.hpp]
+[def __acml_0x_distributions boost/random/acml/c++11/distributions.hpp]
+[def __acml_tr1_distributions boost/random/acml/tr1/distributions.hpp]
+[def __acml_has_block_split [classref boost::random::acml::has_block_split]]
+[def __acml_has_leap_frog [classref boost::random::acml::has_leap_frog]]
+[def __acml_block_split [funcref boost::random::acml::make_independent_engines_by_block_split]]
+[def __acml_leap_frog [funcref boost::random::acml::make_independent_engines_by_leap_frog]]
+[def __acml_nag [classref boost::random::acml::nag nag]]
+[def __acml_wh [classref boost::random::acml::wh wh]]
+[def __acml_mt19937_ [classref boost::random::acml::mt19937 mt19937]]
+[def __acml_mrg32k3a [classref boost::random::acml::mrg32k3a mrg32k3a]]
+
+[def __mkl_engine [classref boost::random::mkl::engine engine]]
+[def __mkl_engine_range_function_call [memberref boost::random::mkl::engine::operator() range function call]] 
+[def __mkl_engine_is_vectorizable [classref boost::random::mkl::engine::is_range_generator]]
+[def __mkl_mt19937 [classref boost::random::mkl::mt19937]]
+[def __mkl_variate_generator [classref boost::random::is_variate_generator_a_mkl_range_generator]]
+[def __mkl_boost_distributions boost/random/mkl/boost/distributions.hpp]
+[def __mkl_0x_distributions boost/random/mkl/c++11/distributions.hpp]
+[def __mkl_tr1_distributions boost/random/mkl/tr1/distributions.hpp]
+[def __mkl_has_block_split [classref boost::random::mkl::has_block_split]]
+[def __mkl_has_leap_frog [classref boost::random::mkl::has_leap_frog]]
+[def __mkl_block_split [funcref boost::random::mkl::make_independent_engines_by_block_split]]
+[def __mkl_leap_frog [funcref boost::random::mkl::make_independent_engines_by_leap_frog]]
+[def __mkl_mcg31 [classref boost::random::mkl::mcg31 mcg31]]
+[def __mkl_r250 [classref boost::random::mkl::r250 r250]]
+[def __mkl_mrg32k3a [classref boost::random::mkl::mrg32k3a mrg32k3a]]
+[def __mkl_mcg59 [classref boost::random::mkl::mcg59 mcg59]]
+[def __mkl_wh [classref boost::random::mkl::wh wh]]
+[def __mkl_mt19937_ [classref boost::random::mkl::mt19937 mt19937]]
+[def __mkl_mt2203 [classref boost::random::mkl::mt2203 mt2203]]
+[def __mkl_sfmt19937 [classref boost::random::mkl::sfmt19937 sfmt19937]]
+[def __mkl_sobol [classref boost::random::mkl::sobol sobol]]
+[def __mkl_niederr [classref boost::random::mkl::niederr niederr]]
+
+[section Introduction]
+
+This document descibes the AMD® ACML and Intel® MKL random number generators which are thin C++ wrapper classes around the 
+functions the ACML and MKL provide. The wrapper classes meet the 
+requirements the boost [prng pseudo-random number generator concept].
+
+The generators do not introduce significant overhead and thus the performance is equal to the direct use of the underlying libraries.
+As both the Intel® MKL and the AMD® ACML are highly optimized and employ vectorization techniques, the generation of random numbers is faster
+than the facilites Boost or Standard libraries provide (see also [mkl_timings this section]). 
+
+Boost and Standard random distributions are interoperable with the random number engines described here and can be used in combination with the boost generate algorithm (__boost_generate).
+
+[endsect]
+
+[section:acml AMD® ACML Generators]
+[include acml_generators.qbk]
+[endsect]
+
+[section:mkl Intel® MKL Generators]
+[include ../../mkl/doc/mkl_generators.qbk]
+[endsect]
+
+
+[xinclude reference.xml]
+

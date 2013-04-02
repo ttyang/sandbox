@@ -1,0 +1,193 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Distributions</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="Boost.ACML_MKL_generators">
+<link rel="up" href="../../boost_random/mkl.html" title="Intel&#174; MKL Generators">
+<link rel="prev" href="initialization.html" title="Initialization">
+<link rel="next" href="timings.html" title="Timings">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="initialization.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/mkl.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="timings.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_acml_mkl_generators.mkl.distributions"></a><a class="link" href="distributions.html" title="Distributions">Distributions</a>
+</h3></div></div></div>
+<p>
+        The Intel&#174; Math Kernel Library (MKL) also provides functions to generate
+        differently distributed random numbers. These functions are as well highly
+        optimized and usually perform better than Boost or Standard random distributions.
+        The MKL engines presented here are able to make use of these fast functions
+        due to the employment of a <a href="http://www.boost.org/doc/libs/1_53_0/doc/html/boost/variate_generator.html" target="_top">variate_generator</a>.
+      </p>
+<p>
+        The <a href="http://www.boost.org/doc/libs/1_53_0/doc/html/boost/variate_generator.html" target="_top">variate_generator</a>
+        class template was specialized for some distrbibutions from Boost.Random
+        and the Standard's nummerics library, as well as for some distributions in
+        the Standard's TR1 extension. In order to inquire whether the distribution
+        you intend to use is able to profit from ACML enhancements, one can employ
+        the following traits class: <code class="computeroutput"><a class="link" href="../../boost/random/is_variate_gene_idp6568576.html" title="Struct template is_variate_generator_a_mkl_range_generator">boost::random::is_variate_generator_a_mkl_range_generator</a></code>.
+      </p>
+<p>
+        Depending on the library of choice for the distribution classes, one can
+        include the following headers:
+      </p>
+<div class="table">
+<a name="boost_acml_mkl_generators.mkl.distributions.headers_for_variate_generator_specializations"></a><p class="title"><b>Table&#160;5.&#160;Headers for variate_generator specializations</b></p>
+<div class="table-contents"><table class="table" summary="Headers for variate_generator specializations">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Header
+                </p>
+              </th>
+<th>
+                <p>
+                  Purpose
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  boost/random/mkl/boost/distributions.hpp
+                </p>
+              </td>
+<td>
+                <p>
+                  Boost.Random distributions
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  boost/random/mkl/c++11/distributions.hpp
+                </p>
+              </td>
+<td>
+                <p>
+                  Standard.Numerics distributions
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  boost/random/mkl/tr1/distributions.hpp
+                </p>
+              </td>
+<td>
+                <p>
+                  Standard.TR1 distributions
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+        The specialized variate_generators again meet the requirements of a <a href="../../../../../../generate/doc/html/generate/concepts.html#generate.concepts.range_generator" target="_top">Range
+        Generator</a>. The random variates should be generated through a <span class="emphasis"><em>range
+        function call</em></span> in order to profit from the vectorized ACML functions.
+        The following example shall illustrate the usage of the variate generator
+        in combination with the MKL engines.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mkl</span><span class="special">/</span><span class="identifier">engine</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mkl</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">distributions</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">static_assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generate</span><span class="special">/</span><span class="identifier">generate</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">engine_t</span><span class="special">;</span>
+	<span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">uniform_real_distribution</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">distribution_t</span><span class="special">;</span>
+	<span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variate_generator</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&amp;,</span> <span class="identifier">distribution_t</span><span class="special">&gt;</span> <span class="identifier">variate_generator_t</span><span class="special">;</span>
+	<span class="identifier">engine_t</span> <span class="identifier">engine</span><span class="special">;</span>                                                                                                              <span class="comment">// MKL engine</span>
+	<span class="identifier">distribution_t</span> <span class="identifier">distribution</span><span class="special">(</span><span class="number">0</span><span class="special">,</span><span class="number">10</span><span class="special">);</span>                                                                                            <span class="comment">// Boost.Random continuous uniform distribution</span>
+	<span class="identifier">variate_generator_t</span> <span class="identifier">vg</span><span class="special">(</span><span class="identifier">engine</span><span class="special">,</span> <span class="identifier">distribution</span><span class="special">);</span>                                                                                 <span class="comment">// Corresponding variate_generator</span>
+
+	<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">1000</span><span class="special">);</span>
+	
+	<span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">is_variate_generator_a_mkl_range_generator</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&amp;,</span><span class="identifier">distribution_t</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span> <span class="special">));</span>     <span class="comment">// make sure we use a fast version</span>
+	<span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span> <span class="identifier">variate_generator_t</span><span class="special">::</span><span class="identifier">is_range_generator</span><span class="special">::</span><span class="identifier">apply</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;::</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span> <span class="special">));</span>  <span class="comment">// make sure vectorization is possible for this iterator class</span>
+
+	<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">vg</span><span class="special">);</span>                             <span class="comment">// generating random numbers using Boost.Generate</span>
+	<span class="identifier">vg</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>                                              <span class="comment">// directly generate through range function call (insecure if we are not sure whether our iterators are suitable for vectorization)</span>
+	<span class="keyword">for</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">i</span><span class="special">=</span><span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">&lt;</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">size</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="identifier">v</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">distribution</span><span class="special">(</span><span class="identifier">engine</span><span class="special">);</span>  <span class="comment">// caution: this is slow!!!</span>
+
+	<span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../../../../../doc/src/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The MKL random number engines will work used directly with Boost/Standard
+          distributions (without a variate_generator). They will however be usually
+          slower, because no advantage is taken from the vectorized MKL functions.
+        </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Due to a bug in the gcc libstdc++ library which persisted up to version
+          20120906 some of the Standard.Numerics variate_generator specializations
+          are not available for earlier versions of this library.
+        </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The discrete uniform distribution in the MKL library accepts a half open
+          range [a,b) and thus, using a uniform int distribution with a MKL engine
+          (through a variate_generator) with b = std::numeric_limits&lt;int&gt;::max()
+          will not result in vectorized MKL function calls.
+        </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="initialization.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/mkl.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="timings.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

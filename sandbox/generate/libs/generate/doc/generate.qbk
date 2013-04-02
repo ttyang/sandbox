@@ -1,0 +1,904 @@
+[/
+ / generate.qbk
+ / Copyright (c) 2013 Fabian Bösch.
+ / Distributed under the Boost Software License, Version 1.0.
+ / (See accompanying file LICENSE_1_0.txt or copy at
+ / http://www.boost.org/LICENSE_1_0.txt).
+ /]
+
+
+[library Boost.Generate
+    [quickbook 1.5]
+    [authors [Bösch, Fabian]]
+    [copyright 2013 Fabian Bösch]
+    [id generate]
+    [dirname generate]
+    [purpose Generate algorithm with range generation ability.]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+    [source-mode c++]
+]
+
+
+
+[/*************************]
+[section:intro Introduction]
+[/*************************]
+
+
+This library introduces new concepts and extensions to the ['std::generate] algorithm in the C++ Standard Template Library (STL) as there are shortcomings concerning 
+performance in the original design. 
+The following work presents a more flexible algorithm called [*['boost::generate]] which
+requires extension of the current STL concepts. The main goal is to make use of more efficient ways to assign values to a range by retaining the same interface.
+
+[/-------------------------------]
+[section Usage]
+[/-------------------------------]
+
+In contrast to the Standard Generate algorithm the [*['boost::generate]] algorithm allows an extended generator function object. Not only a nullary function call operator must be provided
+but also a [*['range function call operator]] can be exposed by the generator:
+
+	class generator
+	{
+		/*return_type*/ operator()();                                              // required for std::generate
+		template <class Iterator> void operator()(Iterator first, Iterator last);  // alternative member function: range function call operator
+	};
+
+In order to make use of the ['range function call] the traits class [classref boost::is_range_generator] must be specialized. One does not have to specialize the traits class in
+one of the following cases:
+
+* The ['range function call] shall only be employed for iterators which satisfy the [link generate.concepts.unit_stride_iterator Unit stride Iterator concept].
+* The generator class exposes a publicly accessible type named [^is_range_generator] which models a metafunction class working on Iterator types 
+(see also [link generate.rationale.vectorizable_iterators.predefined_metafunction_classes this table] for predefined classes).
+
+The algorithm decides at compile time whether the generator class satisfies the [link generate.concepts.range_generator Range Generator concept] and will either invoke the 
+['range generation function call operator] or it will dispatch to the ['std::generate] function template.
+
+We shall introduce and explain the design and rationale of this library through the following example.
+
+[endsect]
+
+[/-------------------------------]
+[section:random_number_generation Motivating Example: Random Number Generation]
+[/-------------------------------]
+
+Imagine one would like to generate (normally distributed) pseudo random numbers. Let's first have a look at the c++ numerics library.
+[import ../benchmark/mkl/mkl_benchmark.cpp]
+
+[std_normal_generate] 
+
+While this certainly does work, it is not the fastest way of producing normally distributed random samples. Of course there exist a variety of other libraries which can be employed for this purpose.
+The Intel® Math Kernel Library (MKL) provides statistical functions (VSL: Vector Statistical Library) among which there are a number of pseudo random number generators (PRNGs). 
+These PRNGs are highly optimized to generate vectors of random numbers. Let's see how one would use this library.
+
+[plain_mkl_generate]
+
+Mesured on a Intel® Core™ i7-3720QM CPU (2.60GHz) the MKL version uses 8 milliseconds whereas the standard random library uses 51 milliseconds.
+
+However, the interface provided by the Intel® MKL are plain C functions and thus one can not employ standard C++ techniques such as the generate algorithm from the STL. Nevertheless,
+by wrapping the C function in a function object, a standard conforming generator function object can be created.
+
+[mkl_generator1]
+
+Now, with this generator at hand, let's again employ the standard generate algorithm.
+
+[mkl_generator1_generate]
+
+Measured on the same machine, this way of producing random samples takes 193 milliseconds. The slow performance is of course due to the fact, that we did not make use of the inherent vector optimization
+provided by the MKL library. Instead in our generator function object, we compute a single sample every time the generator is called.
+
+This gives raise to the question if the std::generate concept is at all useful for problems of this kind. Put another way, how can the std::generate be extended in order to perform as fast as the
+plain MKL functions do?
+
+Support for vectorized operations can be gained by introducing a [*['range function call]]:
+
+[mkl_generator2] 
+
+With this interface one can make use of the optimized MKL function.
+
+[mkl_generator2_generate]
+
+The time consumed by this generation is again equal to 8 milliseconds.
+
+However, this generator class does not meet the requirements of the standard generate algorithm. In addition, the generator's interface is not general enough. Assuming non-contiguous
+memory for the underlying data structure, vector optimizations may not be possible. The Iterator class must as well provide the difference
+operator. Thus, not every Iterator class can be used with this generator.
+
+Therefore, the [*['boost::generate]] algorithm proposed here must be able to determine at compile time whether a ['range function call] as introduced above is possible. 
+In case the requirements are not met, a [*['dispatch]] to the 
+original serial standard generate algorithm is done. 
+While introducing a new concept for vectorizable iterators ([link generate.concepts.constant_stride_iterator Constant Stride Iterators]) and a novel concept for 
+[link generate.concepts.range_generator Range Generators], the [*['boost::generate]] algorithm retains the same interface as the original generate algorithm but in addition
+provides means for vectorizing.
+
+In our example for the random numbers the generator class can easily be altered to conform the [link generate.concepts.range_generator Range Generator concept]:
+
+[mkl_range_generator]
+
+The only difference to the previous generator is the typedef [^is_range_generator]. Here we have used a predifined convinience class 
+([classref boost::range_generate::unit_stride_range_generator_type_checked [^unit_stride_range_generator_type_checked]]) which makes sure that the range function call will only be
+invoked for iterators which satisfy the Unit Stride Iterator concept and whose value type is [^double]. For all other iterators, the standard generate algorithm (using
+the nullary function call operator) will be employed.
+Then this generator can be used with [*['boost::generate]] (runtime: 8 milliseconds):
+
+[mkl_range_generate]
+
+For a data structures whose iterators do not confine the [link generate.concepts.unit_stride_iterator Unit Stride iterator concept], the original ['std::generate] algorithm
+is invoked internally:
+
+[mkl_range_generate_list]
+
+This time the runtime was measured to be 193 milliseconds, thus as slow as expected from our previous experiment with ['std::generate].
+
+[endsect] [/Random number generation]
+
+
+[/-----------------------------]
+[section Compiler Auto-Vectorization]
+[/-----------------------------]
+
+The [*['std::generate]] algorithm provided by the c++ Standard Template Library (STL \[lib.alg.generate\]) is typically implemented through a ['while]-loop as
+it is not specified how to traverse along the elements in the range specified by the iterators.
+
+	template <class ForwardIterator, class Generator>
+	void generate ( ForwardIterator first, ForwardIterator last, Generator gen )
+	{
+	  while (first != last)  *first++ = gen();
+	}
+
+[/Due to the while loop the compiler has a hard time optimizing this code. Consider an [^Iterator] type which represents a contiguous memory layout like [^int*] or [^std::vector<int>::iterator].
+Here the compiler should be able to optimize by vectorization. Does not work --> why? Reference to timings
+]
+[/One could imagine that the compiler has a hard time optimizing this code. Consider an [^Iterator] type which represents a contiguous memory layout like [^int*] or [^std::vector<int>::iterator].
+Here the compiler should be able to optimize by vectorization. As it turns out the compiler is able to optimize even such a while loop when invoked with full optimization flags to some extent.
+However, it might be favorable to rewrite the loop as a for loop if we use Constant Stride Iterators. Please refer to [link generate.compiler_optimizations this section] for timings.
+/]
+Unfortunately, the while-loop seems to hinder compiler optimization (e.g. auto-vectorization) for [^Iterator] types which represent contiguous memory layouts like [^int*] or [^std::vector<int>::iterator].
+Tests have been carried out in order to measure the difference in performance using different implementations for the standard generate algorithm. See [link generate.compiler_optimizations this section] 
+for the results.
+
+Therefore, [*boost::generate] employs a for-loop when dealing with Unit Stride Iterators instead of dispatching to the std::generate function (cases where ['no] Range Generator is involved).
+
+
+[endsect] [/Compiler Vectorization]
+
+
+[endsect] [/Introduction]
+
+
+
+[/**************************]
+[section:rationale Rationale]
+[/**************************]
+
+
+[/-------------------------]
+[section Goals]
+[/-------------------------]
+ 
+The goals of the improved ['generate] algorithm are
+
+* retain the same interface as the ['std::generate] algorithm
+* provide means for range generation / explicit vectorization 
+* compile-time mechanism for determining whether range generation can be employed
+* experimental: infere from type whether range generation is possible
+
+[/
+* It shall be possible for the generate algorithm to take advantage of vectorizing. 
+This means that if the iterators address a contiguous memory layout (items are aligned with constant stride in memory) an optimized version may be invoked.
+* A particular iterator type is suitable for vectorization if it fulfills the requirements of the [link generate.concepts.constant_stride_iterator Constant Stride Iterator concept].
+* It shall be permitted to the user to provide explicit vectorization. This means that a generator may provide a range generating interface as described in the [link generate.concepts.range_generator Range Generator concept].
+]
+[endsect]
+
+In conclusion, the [*['boost::generate]] algorithm extends the standard algorithm such that highly (vector) optimized generators can be employed without a loss of performance.
+
+
+[/-----------------------------]
+[section Vectorizable iterators]
+[/-----------------------------]
+
+The generate algorithm's generic interface takes two iterators as arguments which define a range where the generator is applied to. These iterators, however, may not be suitable for range generation.
+Consider a generator which internally relies on optimized vector operations. If used with an iterator type whose values are not aligned contiguously in memory and cannot 
+be accessed randomly  (e.g. for a linked list iterator), vectorization is likely to be impossible. 
+Thus, there are memory requirements for an iterator's underlying data structure in order to be to be naturally vectorizable.  
+
+For the purpose of describing iterator classes which are suitable for vectorization, the Random Access Iterator concept is refined for Iterators whose values are organized with a 
+constant stride in memory:
+
+* [link generate.concepts.constant_stride_iterator Constant Stride Iterator concept]
+* [link generate.concepts.unit_stride_iterator Unit Stride Iterator concept]
+
+In order to determine whether a particular iterator class models the Constant Stride Iterator concept a [classref boost::is_constant_stride_iterator traits class] is employed. 
+Currently only pointers and [^std::vector<T>::iterator] types are supported. The user can add other types by direct specialization of the traits class or by using a 
+[macroref BOOST_IS_CONSTANT_STRIDE_ITERATOR convinience macro].
+
+[def __unit_stride_range_generator [classref boost::range_generate::unit_stride_range_generator [^unit_stride_range_generator]]]
+[def __unit_stride_range_generator_type_checked [classref boost::range_generate::unit_stride_range_generator_type_checked [^unit_stride_range_generator_type_checked]]]
+[def __constant_stride_range_generator [classref boost::range_generate::constant_stride_range_generator [^constant_stride_range_generator]]]
+[def __constant_stride_range_generator_type_checked [classref boost::range_generate::constant_stride_range_generator_type_checked [^constant_stride_range_generator_type_checked]]]
+
+Introducung range generation (vectorization) ability for Constant (or Unit) Stride Iterators in your generator class can be easily achieved by using a convinience class: 
+[table Predefined Metafunction Classes
+	[[Class] [Description]]
+	[[__unit_stride_range_generator] [Range genereration for Unit Stride Iterators.]] 
+	[[__unit_stride_range_generator_type_checked] [Range generation for Unit Stride Iterators with specific [^value_type].]]
+	[[__constant_stride_range_generator] [Range generation for Constant Stride Iterators.]]
+	[[__constant_stride_range_generator_type_checked] [Range generation for Constant Stride Iterators with specific [^value_type].]] 
+]
+The purpose of this classes shall be further explained in the next section.
+
+[endsect]
+
+
+[/---------------------------------------------------]
+[section Generator interface, traits class and metafunction classes]
+[/---------------------------------------------------]
+
+As already mentioned in the [link generate.intro.random_number_generation motivating example] a generator which is able to handle assignment of a range at once must propose a different interface
+as required by the C++ standard for the generate algorithm. In particular, a [*['range function call]] is proposed:
+
+	template <class Iterator>
+	void operator()(Iterator first, Iterator last); 
+
+Using this operator, only one function call from the generate algorithm to the generator is necessary. All the computation and iteration is then handled by the generator itself.
+This kind of generation shall be denoted [*['range generation]].
+
+As mentioned in the previous section, ['range generation] might not be applicable to every iterator class. Put another way, as the ['range function call] can not be specialized
+for different types, another mechanism is required to inquire whether range generation is possible. This can be achieved by at traits class which takes a generator class and an iterator type
+as input (see [classref boost::is_range_generator]).
+
+In order to simplify the usage of this library, another optional extension to the 
+generator class's interface is proposed. The generator may expose an associated type called [*[^is_range_generator]]. This type models a [*['metafunction class]] (a class with a publicly-accessible nested 
+metafunction called apply):
+
+	struct is_range_generator
+	{
+		template<typename Iterator> 
+		struct apply;
+	};
+  
+The unary metafunction [^apply]'s result is acessible through the nested typedef [^type]. The result type is required to model an integral constant bool type (e.g. [^boost::mpl::bool_]).
+
+As long as the traits class [classref boost::is_range_generator] is not specialized, this metafunction class determines whether a generator's range function call can be invoked. 
+In particular, if the following expression results to [^true], the range generation ability is assumed:
+
+	YourGenerator::is_range_generator::apply<SomeIteratorClass>::type::value
+
+The requirements described here are summed up in the [link generate.concepts.range_generator Range Generator concept].
+A natural choice for iterators which can be used for vectorizing are [link generate.concepts.constant_stride_iterator Constant Stride Iterators] and 
+[link generate.concepts.unit_stride_iterator Unit Stride Iterators]. Predifined metafunction classes are available for these iterator categories (see previous section).
+
+In conclusion, the [link generate.concepts.range_generator Range Generator concept] enables the user to specify which iterator types are allowed for range generation.
+The [*['boost::generate]] algorithm is able to decide at compile time whether range generation (which can be a more efficient way of generating values in many cases) can be employed, 
+and it can dispatch to the correspondingly appropriate function (see also the next section).
+
+[endsect]
+
+
+[/-------------------------]
+[section Dispatch mechanism]
+[/-------------------------]
+
+As a reminder, consider the interface of the ['std::generate] algorithm. 
+
+	template <class ForwardIterator, class Generator>
+	void generate (ForwardIterator first, ForwardIterator last, Generator gen);
+
+We want to preserve this interface for the ['boost::generate] algorithm. However, internally several checks are carried out to find out 
+whether the generator type ([^Generator]) models a ['Range Generator]
+
+* does the traits class [classref boost::is_range_generator] return true for the [^Generator] and the [^Iterator] types?
+* if it is not specialized:
+	* does the generator expose an associated type [^is_range_generator]?
+	* does the iterator type ([^Iterator]) satisfy the metafunction ([^Generator::is_vectorizable::apply<Iterator>::type::value == true])?
+
+If the above ['Range Generator] test is passed, the algorithm will call the generator's ['range function call] ( [^gen(first,last);] ).
+Otherwise, we employ a further (experimental) check whether the generator class really is not vectorizable (see next section).
+If again it is found that ['range generation] cannot be applied, the standard generate algorithm is invoked ( [^std::generate(first,last,gen);] ).
+However, there is one exception. When, the iterator satisfies the Unit Stride Iterator concept, the std::generate function is not invoked but an own implementation
+thereof is used. The reasons are given in [link generate.compiler_optimizations this section].
+
+
+[endsect]
+
+
+[/---------------------]
+[section Type inference]
+[/---------------------]
+
+This is an experimental feature. If a generator class is found not to satisfy the ['Range Generator concept] because it the [classref boost::is_range_generator traits class] 
+is not specialized and the generator does not expose an associated type [^is_range_generator], the algorithm tries to determine whether this generator still might be suitable for vectorization.
+
+If the generator class declares a ['range function call] and the iterator type models the ['Unit Stride Iterator concept] the ['range function call]
+is invoked nevertheless. 
+
+[caution If a function object declares a member function, the signature of which can be interpreted as range function call operator, a range generation can be invoked unintentionally (e.g. when using 
+[^std::bind] this can become a problem, because a binary function bound as a nullary function object by std::bind still exposes a binary function call operator). ]
+
+In order to suppress this functionality, define the following directive:
+
+	BOOST_GENERATE_NO_EXPERIMENTAL_TYPE_INFERENCE
+
+[endsect]
+
+
+[/---------------------]
+[section Conclusion]
+[/---------------------]
+
+So why the fuzz? Why bothering introducing new concepts and another generate algorithm?
+If we want our generator to work fast, we could have used a generator "as is" without the ['boost::generate] algorithm:
+	
+	generator(first,last);
+
+Although it may not be very nice in terms of standard interfaces, this seems to be simple and efficient as well.
+However, the user is required to know whether the generator is a Range Generator or not and thus, the user always must take care
+which function call operator can be called.
+Depending on the data structure which one intends to fill with generated
+values, a generator may use different methods and therefore, when it comes to generic programming, this approach quickly becomes insufficient
+
+On the other hand, the Boost.Generate library places a powerful though simple tool at disposal. Consider the follwing example from the Boost.Random library where 
+optimized random number generators can be found at [@../../../random/doc/html/boost_random/reference/mkl.html boost/random/mkl]
+and [@../../../random/doc/html/boost_random/reference/acml.html boost/random/acml].
+These wrapper classes for the Intel® Math Kernel Library's and the AMD® Core Math Library's random number engines (see also [link generate.examples.mkl_acml this example]) meet the requirements
+of the Range Generator concept. As it turns out, there are also specializations for the [^boost::variate_generator] class template available for these engines which in turn are also Range Generators. 
+These variate generators 
+can be used with either Boost or Standard random distributions and whenever an appropriate fast implementation can be found in the MKL or ACML, respectively, the optimized method is used instead of the default 
+implementation. 
+Thus we can use
+
+	boost::generate(first,last, boost::variate_generator<special_engine_type, distribution_type>(engine,distribution));
+
+and whenever a variate generator is specialized for a particular engine / distribution pair and the iterator is a Unit Stride Iterator, this will result in a ['range function call] which in turn 
+invokes some vectorized function from the ACML/MKL 
+and thus is much more efficient. For timings see [@../../../random/doc/html/boost_random/reference/mkl.html#boost_random.reference.mkl.timings this link].
+
+[endsect]
+
+[endsect]
+
+
+
+
+
+[section:examples Examples]
+
+
+[section OMP Fibonacci number generator]
+
+In this example open mp parallelization is used to create fibonacci numbers. The generator outlined below works in prallel by
+using an omp pragma for it's for loop. Nevertheless, the generate algorithm can be employed. Note that the generator 
+does only work for Unit Stride iterators with [^value_type] equal to [^unsigned long].
+
+[import ../example/omp fibonacci/omp_fibonacci.cpp]
+
+[parallel_fibonacci]
+
+[endsect]
+
+[section OMP stride initializer]
+
+This example again uses open mp parallelization as well as a Constant Stride Iterator. Note the use of the macro BOOST_IS_CONSTANT_STRIDE_ITERATOR.
+
+[import ../example/omp stride initializer/omp_stride_initializer.cpp]
+
+[initializer]
+
+[endsect]
+
+[/
+[section Vectorization for strides up to 3 using only 64 bit floating point types]
+
+
+[endsect]
+/]
+
+[section:mkl_acml Intel MKL / AMD ACML random numbers and distributions]
+
+As previously mentioned the Boost.Random library provides fast random number generators ([@../../../random/doc/html/boost_random/reference/mkl.html boost/random/mkl] and 
+ [@../../../random/doc/html/boost_random/reference/acml.html boost/random/acml]). This random number generators can be combined with a particular distribution class through the use
+of a variate_generator. The variate_generator class templates are specialized for the optimized MKL and ACML engines and provied the necessary interface to model a Range Generator.
+
+[import ../example/mkl/mkl.cpp]
+
+[mkl]
+
+[import ../example/acml/acml.cpp]
+
+[acml]
+
+[endsect]
+
+
+[endsect]
+
+
+
+
+[section:concepts Concepts]
+
+[section Constant Stride Iterator]
+
+[heading Description]
+
+A Constant Stride Iterator is an iterator whose values are guaranteed to be aligned
+with a constant stride in memory.
+
+[heading Refinement of]
+
+Random Access Iterator.
+
+[heading Notation]
+
+[table
+	[[Expression] [Description]]
+    [[[^X]]     [A type that models the Constant Stride Iterator concept]]
+    [[[^i,j]]   [Objects of type [^X]]]
+	[[[^n]]     [Integer constant: stride between the values the iterator is pointing to.]]
+]
+
+[heading Invariants]
+
+Additional to the invariants defined by Random Access Iterator, the following must hold:
+
+[table
+	[[Name] [Semantics]]
+    [[Constant stride access]     [if [^j == ++X(i)], then [^(&(*j) - &(*i)) == n].]]
+]
+
+[heading Models]
+
+* [^T*] (with stride 1)
+* [^std::vector<T>::iterator] (with stride 1)
+
+[endsect]
+
+
+
+[section Unit Stride Iterator]
+
+[heading Description]
+
+A Unit Stride Iterator is an iterator whose values are guaranteed to be aligned
+contiguously in memory.
+
+[heading Refinement of]
+
+[link generate.concepts.constant_stride_iterator Constant Stride Iterator].
+
+[heading Notation]
+
+[table
+	[[Expression] [Description]]
+    [[[^X]]     [A type that models the Unit Stride Iterator concept]]
+    [[[^i,j]] [Objects of type [^X]]]
+]
+
+[heading Invariants]
+
+Additional to the invariants defined by [link generate.concepts.constant_stride_iterator Constant Stride Iterator], the following must hold:
+
+[table
+	[[Name] [Semantics]]
+    [[Unit stride access]     [if [^j==++X(i)], then [^(&(*j) - &(*i)) == 1]. ]]
+]
+
+[heading Models]
+
+* [^T*]
+* [^std::vector<T>::iterator]
+
+[endsect]
+
+[section Range Generator]
+
+[heading Description]
+
+A Range Generator provides an interface for assigning values to a range.
+
+[heading Associated Types]
+
+[table
+	[[Type] [Description]]
+    [[is_range_generator]     [[*Optional]. Metafunction class.]]
+]
+
+[heading Notation]
+
+[table
+	[[Expression] [Description]]
+    [[[^X]]     [A type that models the Range Generator concept]]
+    [[[^x]] [Object of type [^X]]]
+	[[[^I]] [Forward Iterator type]]
+	[[[^a,b]] [Objects of type [^I]]]
+]
+
+[heading Valid Expressions]
+
+[table
+	[[Name]                  [Expression]                               [Type Requirements]                                         [Return Type]          ]
+	[[Optional metafunction] [[^X::is_range_generator::apply<I>::type]] [-]                                                         [bool constant type (e.g. [^boost::mpl::bool_])] ]
+	[[Range function call]   [[^x(a,b)]]                                [[^boost::is_range_generator<X,I>::type::value] is [^true].] [void]                    ]
+]
+
+
+[heading Expressions Semantics]
+
+[table
+	[[Name]                  [Expression]                               [Preconditions]                                                                                                          [Semantics]                                                   [Postconditions] ]
+	[[Optional metafunction] [[^X::is_range_generator::apply<I>::type]] [-]                                                                                                                      [checks whether the type [^I] is suitable for ['Range Generation]] [-]              ]
+	[[Range function call]   [[^x(a,b)]]                                [[^b-a] must be positive. Including [^a] there must be [^b-a] dereferenceable or past-the-end iterators following [^a].] [generates values of type [^I::value_type] and assigns them to the range [^\[a,b)]]  [-] ]
+]
+
+[endsect]
+
+
+[endsect]
+
+
+
+
+[section Compiler Optimizations]
+
+
+The std::generate algorithm consists of a simple loop in which for each element in a range a generator function object is invoked by it's function call operator.
+The iteration must cover all elements in the range, however, the loop syntax is not specified in the Standard.  
+The hypothesis is that traditionally compilers may be able to auto-vectorize for-loops to a greater extent than while-loops. Although, this issue may be mitigated
+as compilers improve, the performance gain may still be significant in today's compiler generations. 
+
+In order to examine the effect of different implementations on the performance of the standard generate algorithm,
+measurements have been carried out. The test set up consists of simple generator
+function objects, which are outlined in [link generate.compiler_optimizations.generators this section]. 
+The data structure
+chosen is a [^std::vector<T>]. Thus, the iterator types operating on the vector satisfy the
+[link generate.concepts.unit_stride_iterator Unit Stride Iterator concept] and are expected to benefit from compiler auto-vectorization as
+the items are guaranteed to be arranged contiguously in memory.
+
+[note This section is concerned with implementation details of the std::generate algorithm and thus range generation is of no concern here.]
+ 
+
+[import ../benchmark/compiler optimization/benchmark.hpp]
+[import ../benchmark/compiler optimization/main.cpp]
+
+
+[section Generate Loop Syntax]
+
+Three different flavours of the std::generate algorithm (applicable to Unit Stride Iterators exclusively) are examined.
+
+[heading While Generate]
+[while_generate]
+
+[heading For Generate 1]
+[for_generate]
+
+[heading For Generate 2]
+[for_generate2]
+
+Although the algorithms are semantically equal, the translation to machine instructions differs (depending on the compiler and compilation flags thereof).
+
+[endsect]
+
+
+[section Generators]
+
+The following generators were used to test for the validity of the hypothesis stated before. Stateless as well as generators with an internal state were considered, however,
+all generator (except for the boost random number generator) are of simple form.
+
+[heading Initializer]
+This generator simply sets each element to an initial value. 
+[initializer_generator]
+
+[heading Counter]
+This generator enumerates the items. It is therefore required to save the current index in an internal state.
+[counter_generator]
+
+[heading Random Number Generator]
+This is a Mersenne-Twister pseudo-random number generator from Boost.Random (which does rely on internal states as well). 
+
+	boost::mt19937
+
+[heading Adding Generator]
+In this generator, two values are added and assigned to each item. 
+[adder_generator]
+
+[heading Adding by a Functional]
+A semantically equal generator can also be constructed from a [^std::plus<T>] function object.
+
+	std::bind(std::plus<float>(),2.f,6.f)
+
+[heading Incrementing Generator]
+This generator adds a figure to evey item, and therefore it must have an internal state.
+[incrementer_generator] 
+
+[endsect]
+
+[section Timings]
+
+The timings were conducted on a linux (Ubuntu 12.04, 64 bit) machine with Intel® Core™ i7-3720QM CPU (2.60GHz). The tested compilers are GNU g++ version 4.6, GNU g++
+version 4.7 and Intel® icpc version 13.0. Different optimization flags have been set in order to
+assist in auto-vectorization. Each set up was repeated 2000 times. In order to prevent artefacts introduced by paging and cache effects, a number of runs for every method were carried
+out beforehead without measuring the time.
+
+The mean wall-clock time is given
+in the tables below, where it is normalized to the most rapid generate function per tested generator function object. 
+The red shaded cells indicate the quickest method per tested
+compiler set up, whereas the blue shaded cells highlight those test cases which are more than ten percent slower than the fastest generate method per compiler set up. Thus, the red and blue cells
+can be used in order to quickly gain insight in how the methods differ.
+
+
+
+'''
+<table>
+<title>Initializer function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</title>
+<tgroup cols="6" align="left">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="1*"/>
+<colspec colnum="3" colname="col3" colwidth="1*"/>
+<colspec colnum="4" colname="col4" colwidth="1*"/>
+<colspec colnum="5" colname="col5" colwidth="1*"/>
+<colspec colnum="6" colname="col6" colwidth="1*"/>
+<thead>
+<row><entry>Compiler</entry> <entry>Version</entry> <entry>Optimization Flags</entry>                                                               <entry>While Generate</entry> <entry>For Generate 1</entry> <entry>For Generate 2</entry></row>
+</thead>
+<tbody>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O0                                                                                                                           </entry> <entry> 15.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 14.9  </entry> <entry> 15.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3                                                                                                                           </entry> <entry> 98.0  </entry> <entry> 98.9  </entry> <entry> 99.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 99.1  </entry> <entry>'''[*100]'''<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 99.7  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </entry> <entry> 98.3  </entry> <entry> 99.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 99.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </entry> <entry> 96.8  </entry> <entry> 98.6  </entry> <entry> 98.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </entry> <entry> 98.0  </entry> <entry> 98.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 97.6  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O0                                                                                                                           </entry> <entry>  3.53 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 11.5  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 14.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3                                                                                                                           </entry> <entry> 97.6  </entry> <entry> 98.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 98.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 98.3  </entry> <entry> 99.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 99.0  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </entry> <entry> 97.3  </entry> <entry> 98.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 97.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </entry> <entry> 97.5  </entry> <entry> 98.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 98.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </entry> <entry> 97.9  </entry> <entry> 98.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 98.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O0                                                                                                                           </entry> <entry>  2.83 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 14.8  </entry> <entry> 16.3 <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?> </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O3                                                                                                                           </entry> <entry> 91.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 90.4  </entry> <entry> 90.6  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast                                                                                                                         </entry> <entry> 86.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 86.1  </entry> <entry> 86.2  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse -msse2                                                                                                            </entry> <entry> 72.1  </entry> <entry> 72.7  </entry> <entry> 72.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1                                                                                                         </entry> <entry> 84.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 84.6  </entry> <entry> 84.5  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1 -m64                                                                                                    </entry> <entry> 90.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 89.6  </entry> <entry> 89.7  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -march=corei7 -m64                                                                                               </entry> <entry> 82.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 81.7  </entry> <entry> 81.8  </entry></row>
+</tbody>
+</tgroup>
+</table>
+'''
+
+
+'''
+<table>
+<title>Counter function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</title>
+<tgroup cols="6" align="left">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="1*"/>
+<colspec colnum="3" colname="col3" colwidth="1*"/>
+<colspec colnum="4" colname="col4" colwidth="1*"/>
+<colspec colnum="5" colname="col5" colwidth="1*"/>
+<colspec colnum="6" colname="col6" colwidth="1*"/>
+<thead>
+<row><entry>Compiler</entry> <entry>Version</entry> <entry>Optimization Flags</entry>                                                               <entry>While Generate</entry> <entry>For Generate 1</entry> <entry>For Generate 2</entry></row>
+</thead>
+<tbody>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O0                                                                                                                           </entry> <entry> 19.3  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 22.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 18.6  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3                                                                                                                           </entry> <entry> 92.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.5  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 92.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.7  </entry> <entry> 92.7  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </entry> <entry> 92.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.8  </entry> <entry> 92.7  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </entry> <entry> 92.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.7  </entry> <entry> 92.7  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </entry> <entry> 93.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.7  </entry> <entry> 93.0  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O0                                                                                                                           </entry> <entry>  5.41 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 17.5  </entry> <entry> 18.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3                                                                                                                           </entry> <entry> 93.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.7  </entry> <entry> 93.1  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 93.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 93.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 87.1  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </entry> <entry> 93.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.0  </entry> <entry> 92.4  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </entry> <entry> 93.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.9  </entry> <entry> 92.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </entry> <entry> 93.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.9  </entry> <entry> 93.0  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O0                                                                                                                           </entry> <entry>  4.17 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 15.5  </entry> <entry> 16.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O3                                                                                                                           </entry> <entry> 64.9  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 89.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 84.3  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast                                                                                                                         </entry> <entry>'''[*100]'''<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 99.9  </entry> <entry> 99.4  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse -msse2                                                                                                            </entry> <entry> 65.2  </entry> <entry> 65.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 64.8  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1                                                                                                         </entry> <entry> 63.9  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 90.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 64.8  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1 -m64                                                                                                    </entry> <entry> 65.2  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 91.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 65.0  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -march=corei7 -m64                                                                                               </entry> <entry> 65.0  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 91.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 64.8  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry></row>
+</tbody>
+</tgroup>
+</table>
+'''
+
+'''
+<table>
+<title>Boost random number engine function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</title>
+<tgroup cols="6" align="left">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="1*"/>
+<colspec colnum="3" colname="col3" colwidth="1*"/>
+<colspec colnum="4" colname="col4" colwidth="1*"/>
+<colspec colnum="5" colname="col5" colwidth="1*"/>
+<colspec colnum="6" colname="col6" colwidth="1*"/>
+<thead>
+<row><entry>Compiler</entry> <entry>Version</entry> <entry>Optimization Flags</entry>                                                               <entry>While Generate</entry> <entry>For Generate 1</entry> <entry>For Generate 2</entry></row>
+</thead>
+<tbody>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O0                                                                                                                           </entry> <entry> 18.1  </entry> <entry> 17.4  </entry> <entry> 18.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3                                                                                                                           </entry> <entry> 93.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 84.9  </entry> <entry> 93.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 92.4  </entry> <entry> 84.3  </entry> <entry> 92.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </entry> <entry> 93.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 85.3  </entry> <entry> 93.3  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </entry> <entry> 99.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 90.1  </entry> <entry> 90.5  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </entry> <entry>'''[*100]'''<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 90.6  </entry> <entry> 99.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O0                                                                                                                           </entry> <entry>  9.44 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 17.7  </entry> <entry> 18.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3                                                                                                                           </entry> <entry> 92.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 84.7  </entry> <entry> 91.6  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 89.3  </entry> <entry> 83.4  </entry> <entry> 90.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </entry> <entry> 99.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 90.1  </entry> <entry> 98.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </entry> <entry> 99.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 91.0  </entry> <entry> 98.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </entry> <entry> 99.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 90.1  </entry> <entry> 98.8  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O0                                                                                                                           </entry> <entry>  7.48 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 15.8  </entry> <entry> 16.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O3                                                                                                                           </entry> <entry> 83.6  </entry> <entry> 87.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 83.2  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast                                                                                                                         </entry> <entry> 81.7  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 92.7  </entry> <entry> 99.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse -msse2                                                                                                            </entry> <entry> 61.6  </entry> <entry> 67.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 67.0  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1                                                                                                         </entry> <entry> 62.1  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 68.5  </entry> <entry> 72.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1 -m64                                                                                                    </entry> <entry> 62.3  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 68.6  </entry> <entry> 71.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -march=corei7 -m64                                                                                               </entry> <entry> 81.0  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 91.6  </entry> <entry> 98.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+</tbody>
+</tgroup>
+</table>
+'''
+
+
+'''
+<table>
+<title>Addition function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</title>
+<tgroup cols="6" align="left">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="1*"/>
+<colspec colnum="3" colname="col3" colwidth="1*"/>
+<colspec colnum="4" colname="col4" colwidth="1*"/>
+<colspec colnum="5" colname="col5" colwidth="1*"/>
+<colspec colnum="6" colname="col6" colwidth="1*"/>
+<thead>
+<row><entry>Compiler</entry> <entry>Version</entry> <entry>Optimization Flags</entry>                                                               <entry>While Generate</entry> <entry>For Generate 1</entry> <entry>For Generate 2</entry></row>
+</thead>
+<tbody>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O0                                                                                                                           </entry> <entry>  6.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry>  5.65 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  6.46 </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3                                                                                                                           </entry> <entry> 97.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 96.1  </entry> <entry> 94.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 97.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 96.4  </entry> <entry> 94.4  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </entry> <entry> 95.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 93.7  </entry> <entry> 91.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </entry> <entry> 93.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.0  </entry> <entry> 90.3  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </entry> <entry> 95.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 94.1  </entry> <entry> 92.7  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O0                                                                                                                           </entry> <entry>  1.28 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  4.98 </entry> <entry>  5.33 <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3                                                                                                                           </entry> <entry> 98.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 98.2  </entry> <entry> 90.6  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 98.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 97.3  </entry> <entry> 95.5  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </entry> <entry> 90.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 88.8  </entry> <entry> 87.2  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </entry> <entry> 89.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 88.0  </entry> <entry> 86.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </entry> <entry> 93.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.3  </entry> <entry> 90.7  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O0                                                                                                                           </entry> <entry>  0.916<?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  5.36 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 5.99  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O3                                                                                                                           </entry> <entry> 52.1  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 97.1  </entry> <entry> 97.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast                                                                                                                         </entry> <entry> 99.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 98.4  </entry> <entry> 96.6  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse -msse2                                                                                                            </entry> <entry> 41.4  </entry> <entry> 42.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 41.7  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1                                                                                                         </entry> <entry>'''[*100]'''<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 99.8  </entry> <entry> 96.2  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1 -m64                                                                                                    </entry> <entry> 94.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 93.1  </entry> <entry> 94.8  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -march=corei7 -m64                                                                                               </entry> <entry> 95.1  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 93.9  </entry> <entry> 92.0  </entry></row>
+</tbody>
+</tgroup>
+</table>
+'''
+
+
+'''
+<table>
+<title>Addition function object (bound functional) applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</title>
+<tgroup cols="6" align="left">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="1*"/>
+<colspec colnum="3" colname="col3" colwidth="1*"/>
+<colspec colnum="4" colname="col4" colwidth="1*"/>
+<colspec colnum="5" colname="col5" colwidth="1*"/>
+<colspec colnum="6" colname="col6" colwidth="1*"/>
+<thead>
+<row><entry>Compiler</entry> <entry>Version</entry> <entry>Optimization Flags</entry>                                                               <entry>While Generate</entry> <entry>For Generate 1</entry> <entry>For Generate 2</entry></row>
+</thead>
+<tbody>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O0                                                                                                                           </entry> <entry>  0.419<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry>  0.412</entry> <entry>  0.418</entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3                                                                                                                           </entry> <entry> 96.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 95.9  </entry> <entry> 96.7  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 95.4  </entry> <entry> 96.7  </entry> <entry> 97.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </entry> <entry> 78.6  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 93.0  </entry> <entry> 94.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </entry> <entry> 94.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 92.5  </entry> <entry> 90.9  </entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </entry> <entry> 96.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 95.0  </entry> <entry> 93.3  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O0                                                                                                                           </entry> <entry>  0.255<?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  0.386</entry> <entry>  0.389<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3                                                                                                                           </entry> <entry> 75.3  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 72.0  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 85.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 96.7  </entry> <entry> 98.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 97.3  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </entry> <entry> 90.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 86.8  </entry> <entry> 87.4  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </entry> <entry> 89.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 88.5  </entry> <entry> 87.2  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </entry> <entry> 94.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 93.1  </entry> <entry> 91.7  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O0                                                                                                                           </entry> <entry>  0.246<?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  0.314</entry> <entry> 0.318<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O3                                                                                                                           </entry> <entry> 87.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 37.5  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 38.2  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast                                                                                                                         </entry> <entry> 96.8  </entry> <entry> 99.1  </entry> <entry> 99.2  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse -msse2                                                                                                            </entry> <entry> 37.6  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 49.2  </entry> <entry> 49.3  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1                                                                                                         </entry> <entry> 94.2  </entry> <entry>'''[*100]'''<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 99.6  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1 -m64                                                                                                    </entry> <entry> 95.0  </entry> <entry> 97.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 96.2  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -march=corei7 -m64                                                                                               </entry> <entry> 93.3  </entry> <entry> 94.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 93.0  </entry></row>
+</tbody>
+</tgroup>
+</table>
+'''
+
+
+'''
+<table>
+<title>Incrementation function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</title>
+<tgroup cols="6" align="left">
+<colspec colnum="1" colname="col1" colwidth="1*"/>
+<colspec colnum="2" colname="col2" colwidth="1*"/>
+<colspec colnum="3" colname="col3" colwidth="1*"/>
+<colspec colnum="4" colname="col4" colwidth="1*"/>
+<colspec colnum="5" colname="col5" colwidth="1*"/>
+<colspec colnum="6" colname="col6" colwidth="1*"/>
+<thead>
+<row><entry>Compiler</entry> <entry>Version</entry> <entry>Optimization Flags</entry>                                                               <entry>While Generate</entry> <entry>For Generate 1</entry> <entry>For Generate 2</entry></row>
+</thead>
+<tbody>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O0                                                                                                                           </entry> <entry>  5.28 </entry> <entry>  4.49 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  5.32 <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3                                                                                                                           </entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.8  </entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 28.0  </entry> <entry> 28.6  </entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </entry> <entry> 28.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.5  </entry> <entry> 28.7  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.6 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O0                                                                                                                           </entry> <entry>  1.09 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  3.37 <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  3.81 <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3                                                                                                                           </entry> <entry> 28.5  </entry> <entry> 28.8  </entry> <entry> 29.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </entry> <entry> 28.7  </entry> <entry> 28.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.9  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </entry> <entry> 29.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.8  </entry> <entry> 28.8  </entry></row>
+<row><entry>g++ </entry> <entry>4.7 </entry> <entry>-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </entry> <entry> 29.0  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 28.9  </entry> <entry> 28.7  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O0                                                                                                                           </entry> <entry>  0.940<?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry>  4.28 </entry> <entry>  4.51 <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-O3                                                                                                                           </entry> <entry> 28.9  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 38.4  </entry> <entry> 38.5  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast                                                                                                                         </entry> <entry>'''[*100]'''<?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry> <entry> 49.0  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 99.1  </entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse -msse2                                                                                                            </entry> <entry> 38.4  </entry> <entry> 38.5  </entry> <entry> 38.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1                                                                                                         </entry> <entry> 95.3  </entry> <entry> 37.9  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 98.6  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -xSSE4.1 -m64                                                                                                    </entry> <entry> 96.7  </entry> <entry> 38.3  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 97.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+<row><entry>icpc</entry> <entry>13.0</entry> <entry>-fast -msse2 -march=corei7 -m64                                                                                               </entry> <entry> 93.0  </entry> <entry> 38.2  <?dbhtml bgcolor="#5A5AFA" ?><?dbfo bgcolor="#5A5AFA" ?></entry> <entry> 93.8  <?dbhtml bgcolor="#FA5A5A" ?><?dbfo bgcolor="#FA5A5A" ?></entry></row>
+</tbody>
+</tgroup>
+</table>
+'''
+
+
+[endsect]
+
+
+[section Conclusions]
+
+From the above measurements the following observations can be made.
+
+* The [link generate.compiler_optimizations.generate_loop_syntax.while_generate while generate function] is not always slower.
+* In most cases where the [link generate.compiler_optimizations.generate_loop_syntax.while_generate while generate function] is fast, both the other generate functions are not much slower.
+* Even if one does not consider the non-optimized cases (['O0 flag]), the while generate function is in 13 cases more than 10% slower than the respective fastest method.
+* The [link generate.compiler_optimizations.generate_loop_syntax.for_generate_1 first for generate function] is slow in 6 cases whereas the 
+[link generate.compiler_optimizations.generate_loop_syntax.for_generate_2 second for generate function] is slow in 4 cases only (not counting non-optimized cases).
+
+For the compilers, generators, generate functions and the cpu architecture considered here, there is evidence that a for-loop may be a better choice when dealing with Unit Stride Iterators.
+However, the test set up is by far not complete and the results can only be used to strengthen the hypothesis, but no proof can be given. Of course, the hypothesis can also not be rejected generally.
+
+Therefore, the Boost.Generate algorithm does dispatch to a similar for-loop based function when dealing with Unit Stride Iterators and plain function objects (not for Range Generators though, as this is left
+to the user by design of the Boost.Generate library) instead of relying upon the std::generate function template. It must however be noted that some available implementations of the c++ standard library, such as
+the GNU libstdc++ library, do a similar dispatch mechanism as well. 
+
+[endsect]
+
+
+[endsect]
+
+
+
+
+
+[xinclude autodoc.xml]
+
+
+
+[include auto_index_helpers.qbk]
+
+
+
+

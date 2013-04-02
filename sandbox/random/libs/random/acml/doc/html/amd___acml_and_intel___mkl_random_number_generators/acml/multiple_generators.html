@@ -1,0 +1,159 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Multiple Generators</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="up" href="../../boost_mkl_acml/acml.html" title="AMD&#174; ACML Generators">
+<link rel="prev" href="timings.html" title="Timings">
+<link rel="next" href="../../boost_mkl_acml/mkl.html" title="Intel&#174; MKL Generators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="timings.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_mkl_acml/acml.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../boost_mkl_acml/mkl.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators"></a><a class="link" href="multiple_generators.html" title="Multiple Generators">Multiple
+      Generators</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.different_seeds">Different
+        Seeds</a></span></dt>
+<dt><span class="section"><a href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.different_parameter_sets">Different
+        Parameter Sets</a></span></dt>
+<dt><span class="section"><a href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.block_splitting">Block-Splitting</a></span></dt>
+<dt><span class="section"><a href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.leap_frogging">Leap-frogging</a></span></dt>
+</dl></div>
+<p>
+        In parallel codes one usually is in need of several independent random number
+        generators. There exist different ways in order to achieve truly independent
+        random number streams.
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.different_seeds"></a><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.different_seeds" title="Different Seeds">Different
+        Seeds</a>
+</h4></div></div></div>
+<p>
+          As the statistical properties of the random number generators are only
+          guaranteed within sequences, not between sequences, this method is not
+          satisfactory and should be avoided.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.different_parameter_sets"></a><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.different_parameter_sets" title="Different Parameter Sets">Different
+        Parameter Sets</a>
+</h4></div></div></div>
+<p>
+          The Whichmann-Hill engine provides 273 different paramater sets (set the
+          third template argument accordingly). Thus only with this engine a limited
+          number of independent random number streams can be produced. Of course,
+          one could also use the three other engines (which have different statistical
+          properties) and thus in total there are 276 independent engines available.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.block_splitting"></a><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.block_splitting" title="Block-Splitting">Block-Splitting</a>
+</h4></div></div></div>
+<p>
+          Some of the engines allow for block-splitting, sometimes referred to as
+          "skip-ahead". This method consists of splitting the sequence
+          into k non-overlapping blocks, each of length n, where n is larger than
+          the maximum number of variates required from any of the sequences. Block-splitting
+          can only be applied to the NAG, the Wichmann-Hill and L&#8217;Ecuyer&#8217;s Combined
+          Recursive generator as the engines must be able to "fast-forward"
+          a large number of places. Wheter an engine possesses the ability to do
+          block-splitting can be inqired by a traits class: <code class="computeroutput"><a class="link" href="../../boost/random/acml/has_block_split.html" title="Struct template has_block_split">boost::random::acml::has_block_split</a></code>.
+        </p>
+<p>
+          In order to get indepent engines by block-splitting one can employ the
+          function <code class="computeroutput"><a class="link" href="../../boost/random/acml/make_independen_idp6189616.html" title="Function template make_independent_engines_by_block_split">boost::random::acml::make_independent_engines_by_block_split</a></code>.
+          See also the following example:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">nag</span> <span class="identifier">engine_t</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;</span> <span class="identifier">engines</span><span class="special">(</span><span class="number">100</span><span class="special">);</span>                                                                             <span class="comment">// 100 ACML engines</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">make_independent_engines_by_block_split</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;(</span><span class="identifier">engines</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">engines</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="number">10000</span><span class="special">);</span>  <span class="comment">// make engines independent (max 10000 variates per engine)</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.leap_frogging"></a><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.acml.multiple_generators.leap_frogging" title="Leap-frogging">Leap-frogging</a>
+</h4></div></div></div>
+<p>
+          Some engines allow for leap-frogging. With this method a set of k engines
+          produce independent sequences by generating every kth element of the sequence
+          a single engine would produce. Leap-frogging can only be applied to the
+          NAG and the Wichmann-Hill generator. Whether an engine possesses the ability
+          to do leap-frogging can be inqired by a traits class: <code class="computeroutput"><a class="link" href="../../boost/random/acml/has_leap_frog.html" title="Struct template has_leap_frog">boost::random::acml::has_leap_frog</a></code>.
+        </p>
+<p>
+          In order to get indepent engines by block-splitting one can employ the
+          function <code class="computeroutput"><a class="link" href="../../boost/random/acml/make_independen_idp6196384.html" title="Function template make_independent_engines_by_leap_frog">boost::random::acml::make_independent_engines_by_leap_frog</a></code>.
+          See also the following example:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">wh</span> <span class="identifier">engine_t</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;</span> <span class="identifier">engines</span><span class="special">(</span><span class="number">100</span><span class="special">);</span>                                                                             <span class="comment">// 100 ACML engines</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">make_independent_engines_by_leap_frog</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;(</span><span class="identifier">engines</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">engines</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>           <span class="comment">// make engines independent</span>
+</pre>
+<p>
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            Due to rounding, a sequence generated using leap-frogging and a sequence
+            constructed by taking every kth value from a set of variates generated
+            without leap-frogging may differ slightly. These differences should only
+            affect the least significant digit.
+          </p></td></tr>
+</table></div>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../../../../../doc/src/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            A sequence generated using leap-frogging and a sequence constructed by
+            taking every kth value from a set of variates generated without leap-frogging
+            are shifted by n-1 values where n is the number of engines. This is due
+            to the ACML implementation. In order to compare the two sequences one
+            has to discard n-1 values from from the sequence generated without leap-frogging.
+          </p></td></tr>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="timings.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_mkl_acml/acml.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../boost_mkl_acml/mkl.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

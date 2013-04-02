@@ -1,0 +1,114 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Tutorial</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="prev" href="rationale.html" title="Rationale">
+<link rel="next" href="concepts.html" title="Concepts">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="rationale.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="generate.tutorial"></a><a class="link" href="tutorial.html" title="Tutorial">Tutorial</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="tutorial.html#generate.tutorial.parallel_fibonacci_number_generator">Parallel
+      Fibonacci number generator</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#generate.tutorial.vectorization_for_strides_up_to_3_using_only_64_bit_floating_point_types">Vectorization
+      for strides up to 3 using only 64 bit floating point types</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#generate.tutorial.intel_mkl___amd_acml_random_numbers_and_distributions">Intel
+      MKL / AMD ACML random numbers and distributions</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.tutorial.parallel_fibonacci_number_generator"></a><a class="link" href="tutorial.html#generate.tutorial.parallel_fibonacci_number_generator" title="Parallel Fibonacci number generator">Parallel
+      Fibonacci number generator</a>
+</h3></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generate</span><span class="special">/</span><span class="identifier">generate</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">omp</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">ostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
+
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">;</span>
+
+<span class="keyword">struct</span> <span class="identifier">parallel_fibonacci_generator</span>
+<span class="special">{</span>
+	<span class="comment">// typedefs</span>
+	<span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="identifier">result_type</span><span class="special">;</span>                                                          <span class="comment">// generator's result type</span>
+	<span class="keyword">typedef</span> <span class="keyword">double</span> <span class="identifier">internal_type</span><span class="special">;</span>                                                               <span class="comment">// type used internally for computation</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range_generate</span><span class="special">::</span><span class="identifier">is_vectorizable_type_checked</span><span class="special">&lt;</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">is_vectorizable</span><span class="special">;</span>   <span class="comment">// metafunction class</span>
+	
+	<span class="comment">// range function call</span>
+	<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+	<span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">)</span>
+	<span class="special">{</span>
+		<span class="identifier">result_type</span><span class="special">*</span> <span class="identifier">m</span> <span class="special">=</span> <span class="special">&amp;(*</span><span class="identifier">begin</span><span class="special">);</span>                                                             <span class="comment">// raw pointer to data</span>
+		<span class="keyword">const</span> <span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">end</span><span class="special">-</span><span class="identifier">begin</span><span class="special">;</span>                                                             <span class="comment">// number of elements</span>
+
+		<span class="comment">// some constants</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">sqrt5</span> <span class="special">=</span> <span class="identifier">sqrt</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">internal_type</span><span class="special">&gt;(</span><span class="number">5</span><span class="special">));</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">f</span>     <span class="special">=</span> <span class="number">1</span> <span class="special">/</span> <span class="identifier">sqrt5</span><span class="special">;</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">phi</span>   <span class="special">=</span> <span class="special">(</span><span class="number">1</span> <span class="special">+</span> <span class="identifier">sqrt5</span><span class="special">)</span> <span class="special">/</span> <span class="number">2</span><span class="special">;</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">psi</span>   <span class="special">=</span> <span class="special">(</span><span class="number">1</span> <span class="special">-</span> <span class="identifier">sqrt5</span><span class="special">)</span> <span class="special">/</span> <span class="number">2</span><span class="special">;</span>
+
+		<span class="preprocessor">#pragma</span> <span class="identifier">omp</span> <span class="identifier">parallel</span> <span class="keyword">for</span> <span class="keyword">default</span><span class="special">(</span><span class="identifier">shared</span><span class="special">)</span> <span class="identifier">schedule</span><span class="special">(</span><span class="keyword">static</span><span class="special">)</span>
+		<span class="keyword">for</span> <span class="special">(</span><span class="identifier">size_t</span> <span class="identifier">i</span><span class="special">=</span><span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">&lt;</span><span class="identifier">n</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="identifier">m</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">f</span> <span class="special">*</span> <span class="special">(</span> <span class="identifier">pow</span><span class="special">(</span><span class="identifier">phi</span><span class="special">,</span> <span class="identifier">i</span><span class="special">+</span><span class="number">1</span><span class="special">)</span> <span class="special">-</span> <span class="identifier">pow</span><span class="special">(</span><span class="identifier">psi</span><span class="special">,</span> <span class="identifier">i</span><span class="special">+</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>                <span class="comment">// use Moivre-Binet's explicit formula</span>
+	<span class="special">}</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="identifier">omp_set_num_threads</span><span class="special">(</span><span class="number">8</span><span class="special">);</span>
+	<span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">parallel_fibonacci_generator</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">fibonacci_numbers</span><span class="special">(</span><span class="number">80</span><span class="special">);</span>
+	<span class="comment">// call boost::generate</span>
+	<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">parallel_fibonacci_generator</span><span class="special">());</span>
+	<span class="comment">// print generated values</span>
+	<span class="identifier">copy</span><span class="special">(</span><span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">ostream_iterator</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">parallel_fibonacci_generator</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&gt;(</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">"\n"</span><span class="special">));</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="generate.tutorial.vectorization_for_strides_up_to_3_using_only_64_bit_floating_point_types"></a><a class="link" href="tutorial.html#generate.tutorial.vectorization_for_strides_up_to_3_using_only_64_bit_floating_point_types" title="Vectorization for strides up to 3 using only 64 bit floating point types">Vectorization
+      for strides up to 3 using only 64 bit floating point types</a>
+</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="generate.tutorial.intel_mkl___amd_acml_random_numbers_and_distributions"></a><a class="link" href="tutorial.html#generate.tutorial.intel_mkl___amd_acml_random_numbers_and_distributions" title="Intel MKL / AMD ACML random numbers and distributions">Intel
+      MKL / AMD ACML random numbers and distributions</a>
+</h3></div></div></div></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2012 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="rationale.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+
+#-Wl,--start-group  $(MKLDIR)/lib/intel64/libmkl_intel_ilp64.a $(MKLDIR)/lib/intel64/libmkl_sequential.a $(MKLDIR)/lib/intel64/libmkl_core.a -Wl,--end-group 
+
+
+lib mkl_intel_ilp64 : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_intel_ilp64.a ;
+lib mkl_sequential : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_sequential.a ;
+lib mkl_core : : <file>/opt/intel/composer_xe_2013.0.079/mkl/lib/intel64/libmkl_core.a ;
+lib pthread m ;
+
+
+project /boost/random/mkl/test
+	: requirements <include>/opt/acml5.2.0/gfortran64_int64/include <cxxflags>-std=c++0x <library>mkl_intel_ilp64 <library>mkl_sequential <library>mkl_core <library>pthread <library>m
+	;
+
+
+run test_mcg31.cpp /boost//unit_test_framework ;
+run test_r250.cpp /boost//unit_test_framework ;
+run test_mrg32k3a.cpp /boost//unit_test_framework ;
+run test_mcg59.cpp /boost//unit_test_framework ;
+run test_wh.cpp /boost//unit_test_framework ;
+
+run test_mt19937.cpp /boost//unit_test_framework ;
+run test_mt2203.cpp /boost//unit_test_framework ;
+run test_sfmt19937.cpp /boost//unit_test_framework ;
+run test_sobol.cpp /boost//unit_test_framework ;
+run test_niederr.cpp /boost//unit_test_framework ;
+

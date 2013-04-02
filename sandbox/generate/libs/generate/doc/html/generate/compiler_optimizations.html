@@ -1,0 +1,1411 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Compiler Optimizations</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="prev" href="concepts.html" title="Concepts">
+<link rel="next" href="../boost_generate_header_reference.html" title="Boost.Generate Header Reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="concepts.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../boost_generate_header_reference.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="generate.compiler_optimizations"></a><a class="link" href="compiler_optimizations.html" title="Compiler Optimizations">Compiler Optimizations</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax">Generate
+      Loop Syntax</a></span></dt>
+<dt><span class="section"><a href="compiler_optimizations.html#generate.compiler_optimizations.generators">Generators</a></span></dt>
+<dt><span class="section"><a href="compiler_optimizations.html#generate.compiler_optimizations.timings">Timings</a></span></dt>
+<dt><span class="section"><a href="compiler_optimizations.html#generate.compiler_optimizations.conclusions">Conclusions</a></span></dt>
+</dl></div>
+<p>
+      The std::generate algorithm consists of a simple loop in which for each element
+      in a range a generator function object is invoked by it's function call operator.
+      The iteration must cover all elements in the range, however, the loop syntax
+      is not specified in the Standard. The hypothesis is that traditionally compilers
+      may be able to auto-vectorize for-loops to a greater extent than while-loops.
+      Although, this issue may be mitigated as compilers improve, the performance
+      gain may still be significant in today's compiler generations.
+    </p>
+<p>
+      In order to examine the effect of different implementations on the performance
+      of the standard generate algorithm, measurements have been carried out. The
+      test set up consists of simple generator function objects, which are outlined
+      in <a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators" title="Generators">this section</a>.
+      The data structure chosen is a <code class="literal">std::vector&lt;T&gt;</code>. Thus,
+      the iterator types operating on the vector satisfy the <a class="link" href="concepts.html#generate.concepts.unit_stride_iterator" title="Unit Stride Iterator">Unit
+      Stride Iterator concept</a> and are expected to benefit from compiler auto-vectorization
+      as the items are guaranteed to be arranged contiguously in memory.
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        This section is concerned with implementation details of the std::generate
+        algorithm and thus range generation is of no concern here.
+      </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.compiler_optimizations.generate_loop_syntax"></a><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax" title="Generate Loop Syntax">Generate
+      Loop Syntax</a>
+</h3></div></div></div>
+<p>
+        Three different flavours of the std::generate algorithm (applicable to Unit
+        Stride Iterators exclusively) are examined.
+      </p>
+<h5>
+<a name="generate.compiler_optimizations.generate_loop_syntax.h0"></a>
+        <span><a name="generate.compiler_optimizations.generate_loop_syntax.while_generate"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax.while_generate">While
+        Generate</a>
+      </h5>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ForwardIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Generator</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">while_generate</span><span class="special">(</span> <span class="identifier">ForwardIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">ForwardIterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Generator</span> <span class="identifier">gen</span> <span class="special">)</span>
+<span class="special">{</span>
+	<span class="keyword">while</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span>  <span class="special">*</span><span class="identifier">first</span><span class="special">++</span> <span class="special">=</span> <span class="identifier">gen</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="generate.compiler_optimizations.generate_loop_syntax.h1"></a>
+        <span><a name="generate.compiler_optimizations.generate_loop_syntax.for_generate_1"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax.for_generate_1">For
+        Generate 1</a>
+      </h5>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UnitStrideIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Generator</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">for_generate</span><span class="special">(</span> <span class="identifier">UnitStrideIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">UnitStrideIterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Generator</span> <span class="identifier">gen</span> <span class="special">)</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">UnitStrideIterator</span><span class="special">&gt;::</span><span class="identifier">difference_type</span> <span class="identifier">difference_type</span><span class="special">;</span>
+	<span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">UnitStrideIterator</span><span class="special">&gt;::</span><span class="identifier">pointer</span> <span class="identifier">pointer</span><span class="special">;</span>
+
+	<span class="keyword">const</span> <span class="identifier">difference_type</span> <span class="identifier">n</span><span class="special">(</span><span class="identifier">last</span><span class="special">-</span><span class="identifier">first</span><span class="special">);</span>
+	<span class="identifier">pointer</span> <span class="identifier">data</span><span class="special">(&amp;*</span><span class="identifier">first</span><span class="special">);</span>
+	<span class="keyword">for</span> <span class="special">(</span> <span class="identifier">difference_type</span> <span class="identifier">i</span><span class="special">=</span><span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">&lt;</span><span class="identifier">n</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="identifier">data</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">gen</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="generate.compiler_optimizations.generate_loop_syntax.h2"></a>
+        <span><a name="generate.compiler_optimizations.generate_loop_syntax.for_generate_2"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax.for_generate_2">For
+        Generate 2</a>
+      </h5>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UnitStrideIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Generator</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">for_generate2</span><span class="special">(</span> <span class="identifier">UnitStrideIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">UnitStrideIterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Generator</span> <span class="identifier">gen</span> <span class="special">)</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">UnitStrideIterator</span><span class="special">&gt;::</span><span class="identifier">pointer</span> <span class="identifier">pointer</span><span class="special">;</span>
+
+	<span class="identifier">pointer</span> <span class="identifier">end</span><span class="special">(&amp;*</span><span class="identifier">last</span><span class="special">);</span>
+	<span class="keyword">for</span> <span class="special">(</span> <span class="identifier">pointer</span> <span class="identifier">i</span><span class="special">=&amp;*</span><span class="identifier">first</span><span class="special">;</span> <span class="identifier">i</span><span class="special">!=</span><span class="identifier">end</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">*</span><span class="identifier">i</span> <span class="special">=</span> <span class="identifier">gen</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        Although the algorithms are semantically equal, the translation to machine
+        instructions differs (depending on the compiler and compilation flags thereof).
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.compiler_optimizations.generators"></a><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators" title="Generators">Generators</a>
+</h3></div></div></div>
+<p>
+        The following generators were used to test for the validity of the hypothesis
+        stated before. Stateless as well as generators with an internal state were
+        considered, however, all generator (except for the boost random number generator)
+        are of simple form.
+      </p>
+<h5>
+<a name="generate.compiler_optimizations.generators.h0"></a>
+        <span><a name="generate.compiler_optimizations.generators.initializer"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators.initializer">Initializer</a>
+      </h5>
+<p>
+        This generator simply sets each element to an initial value.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Value</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">initializer_generator</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="identifier">Value</span> <span class="identifier">result_type</span><span class="special">;</span>
+	<span class="identifier">initializer_generator</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">result_type</span><span class="special">&amp;</span> <span class="identifier">init</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">_init</span><span class="special">(</span><span class="identifier">init</span><span class="special">)</span> <span class="special">{}</span>
+	<span class="keyword">inline</span> <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">()()</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">_init</span><span class="special">;</span> <span class="special">}</span>
+	<span class="keyword">const</span> <span class="identifier">result_type</span> <span class="identifier">_init</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="generate.compiler_optimizations.generators.h1"></a>
+        <span><a name="generate.compiler_optimizations.generators.counter"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators.counter">Counter</a>
+      </h5>
+<p>
+        This generator enumerates the items. It is therefore required to save the
+        current index in an internal state.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Value</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">counter_generator</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="identifier">Value</span> <span class="identifier">result_type</span><span class="special">;</span>
+	<span class="identifier">counter_generator</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">init</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">c</span><span class="special">(</span><span class="identifier">init</span><span class="special">)</span> <span class="special">{}</span>
+	<span class="keyword">inline</span> <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">()()</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">c</span><span class="special">++</span>
+	<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">c</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="generate.compiler_optimizations.generators.h2"></a>
+        <span><a name="generate.compiler_optimizations.generators.random_number_generator"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators.random_number_generator">Random
+        Number Generator</a>
+      </h5>
+<p>
+        This is a Mersenne-Twister pseudo-random number generator from Boost.Random
+        (which does rely on internal states as well).
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mt19937</span>
+</pre>
+<h5>
+<a name="generate.compiler_optimizations.generators.h3"></a>
+        <span><a name="generate.compiler_optimizations.generators.adding_generator"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators.adding_generator">Adding
+        Generator</a>
+      </h5>
+<p>
+        In this generator, two values are added and assigned to each item.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">adder_generator</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="keyword">float</span> <span class="identifier">result_type</span><span class="special">;</span>
+	<span class="keyword">inline</span> <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">()()</span>
+	<span class="special">{</span>
+		<span class="keyword">return</span> <span class="number">2.f</span> <span class="special">+</span> <span class="number">6.f</span><span class="special">;</span>
+	<span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="generate.compiler_optimizations.generators.h4"></a>
+        <span><a name="generate.compiler_optimizations.generators.adding_by_a_functional"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators.adding_by_a_functional">Adding
+        by a Functional</a>
+      </h5>
+<p>
+        A semantically equal generator can also be constructed from a <code class="literal">std::plus&lt;T&gt;</code>
+        function object.
+      </p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">plus</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;(),</span><span class="number">2.f</span><span class="special">,</span><span class="number">6.f</span><span class="special">)</span>
+</pre>
+<h5>
+<a name="generate.compiler_optimizations.generators.h5"></a>
+        <span><a name="generate.compiler_optimizations.generators.incrementing_generator"></a></span><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generators.incrementing_generator">Incrementing
+        Generator</a>
+      </h5>
+<p>
+        This generator adds a figure to evey item, and therefore it must have an
+        internal state.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">adder_generator_state</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="keyword">float</span> <span class="identifier">result_type</span><span class="special">;</span>
+	<span class="identifier">adder_generator_state</span><span class="special">(</span><span class="identifier">result_type</span><span class="special">*</span> <span class="identifier">p</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">data</span><span class="special">(</span><span class="identifier">p</span><span class="special">),</span> <span class="identifier">c</span><span class="special">(</span><span class="number">0</span><span class="special">)</span> <span class="special">{}</span>
+	<span class="keyword">inline</span> <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">()()</span>
+	<span class="special">{</span>
+		<span class="keyword">return</span> <span class="identifier">data</span><span class="special">[</span><span class="identifier">c</span><span class="special">]</span> <span class="special">+</span> <span class="number">10.f</span><span class="special">;</span>
+		<span class="special">++</span><span class="identifier">c</span><span class="special">;</span>
+	<span class="special">}</span>
+	<span class="identifier">result_type</span><span class="special">*</span> <span class="identifier">data</span><span class="special">;</span>
+	<span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">c</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.compiler_optimizations.timings"></a><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.timings" title="Timings">Timings</a>
+</h3></div></div></div>
+<p>
+        The timings were conducted on a linux (Ubuntu 12.04, 64 bit) machine with
+        Intel&#174; Core&#8482; i7-3720QM CPU (2.60GHz). The tested compilers are GNU g++
+        version 4.6, GNU g++ version 4.7 and Intel&#174; icpc version 13.0. Different
+        optimization flags have been set in order to assist in auto-vectorization.
+        Each set up was repeated 2000 times. In order to prevent artefacts introduced
+        by paging and cache effects, a number of runs for every method were carried
+        out beforehead without measuring the time.
+      </p>
+<p>
+        The mean wall-clock time is given in the tables below, where it is normalized
+        to the most rapid generate function per tested generator function object.
+        The red shaded cells indicate the quickest method per tested compiler set
+        up, whereas the blue shaded cells highlight those test cases which are more
+        than ten percent slower than the fastest generate method per compiler set
+        up. Thus, the red and blue cells can be used in order to quickly gain insight
+        in how the methods differ.
+      </p>
+<p>
+        </p>
+<div class="table">
+<a name="idp6078144"></a><p class="title"><b>Table&#160;1.2.&#160;Initializer function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</b></p>
+<div class="table-contents"><table class="table" summary="Initializer function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).">
+<colgroup>
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+</colgroup>
+<thead><tr>
+<th align="left">Compiler</th>
+<th align="left">Version</th>
+<th align="left">Optimization Flags</th>
+<th align="left">While Generate</th>
+<th align="left">For Generate 1</th>
+<th align="left">For Generate 2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 15.7  </td>
+<td align="left"> 14.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 15.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td align="left"> 98.0  </td>
+<td align="left"> 98.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 99.0  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 99.1  </td>
+<td bgcolor="#FA5A5A" align="left"><span class="bold"><strong>100</strong></span></td>
+<td align="left"> 99.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </td>
+<td align="left"> 98.3  </td>
+<td bgcolor="#FA5A5A" align="left"> 99.2  </td>
+<td bgcolor="#FA5A5A" align="left"> 99.2  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </td>
+<td align="left"> 96.8  </td>
+<td align="left"> 98.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </td>
+<td align="left"> 98.0  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.8  </td>
+<td align="left"> 97.6  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  3.53 </td>
+<td bgcolor="#5A5AFA" align="left"> 11.5  </td>
+<td bgcolor="#FA5A5A" align="left"> 14.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td align="left"> 97.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.1  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.1  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 98.3  </td>
+<td bgcolor="#FA5A5A" align="left"> 99.2  </td>
+<td align="left"> 99.0  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </td>
+<td align="left"> 97.3  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.1  </td>
+<td align="left"> 97.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </td>
+<td align="left"> 97.5  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.1  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.1  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </td>
+<td align="left"> 97.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.8  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.8  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  2.83 </td>
+<td align="left"> 14.8  </td>
+<td bgcolor="#FA5A5A" align="left"> 16.3  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 91.0  </td>
+<td align="left"> 90.4  </td>
+<td align="left"> 90.6  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast                                                                                                                         </td>
+<td bgcolor="#FA5A5A" align="left"> 86.7  </td>
+<td align="left"> 86.1  </td>
+<td align="left"> 86.2  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse -msse2                                                                                                            </td>
+<td align="left"> 72.1  </td>
+<td align="left"> 72.7  </td>
+<td bgcolor="#FA5A5A" align="left"> 72.9  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1                                                                                                         </td>
+<td bgcolor="#FA5A5A" align="left"> 84.9  </td>
+<td align="left"> 84.6  </td>
+<td align="left"> 84.5  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1 -m64                                                                                                    </td>
+<td bgcolor="#FA5A5A" align="left"> 90.0  </td>
+<td align="left"> 89.6  </td>
+<td align="left"> 89.7  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -march=corei7 -m64                                                                                               </td>
+<td bgcolor="#FA5A5A" align="left"> 82.3  </td>
+<td align="left"> 81.7  </td>
+<td align="left"> 81.8  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+      </p>
+<p>
+        </p>
+<div class="table">
+<a name="idp6151136"></a><p class="title"><b>Table&#160;1.3.&#160;Counter function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</b></p>
+<div class="table-contents"><table class="table" summary="Counter function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).">
+<colgroup>
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+</colgroup>
+<thead><tr>
+<th align="left">Compiler</th>
+<th align="left">Version</th>
+<th align="left">Optimization Flags</th>
+<th align="left">While Generate</th>
+<th align="left">For Generate 1</th>
+<th align="left">For Generate 2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left"> 19.3  </td>
+<td bgcolor="#FA5A5A" align="left"> 22.6  </td>
+<td bgcolor="#5A5AFA" align="left"> 18.6  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 92.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 92.6  </td>
+<td align="left"> 92.5  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td bgcolor="#FA5A5A" align="left"> 92.9  </td>
+<td align="left"> 92.7  </td>
+<td align="left"> 92.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </td>
+<td bgcolor="#FA5A5A" align="left"> 92.9  </td>
+<td align="left"> 92.8  </td>
+<td align="left"> 92.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </td>
+<td bgcolor="#FA5A5A" align="left"> 92.8  </td>
+<td align="left"> 92.7  </td>
+<td align="left"> 92.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </td>
+<td bgcolor="#FA5A5A" align="left"> 93.2  </td>
+<td align="left"> 92.7  </td>
+<td align="left"> 93.0  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  5.41 </td>
+<td align="left"> 17.5  </td>
+<td bgcolor="#FA5A5A" align="left"> 18.2  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 93.3  </td>
+<td align="left"> 92.7  </td>
+<td align="left"> 93.1  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td bgcolor="#FA5A5A" align="left"> 93.0  </td>
+<td bgcolor="#FA5A5A" align="left"> 93.0  </td>
+<td align="left"> 87.1  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </td>
+<td bgcolor="#FA5A5A" align="left"> 93.0  </td>
+<td align="left"> 92.0  </td>
+<td align="left"> 92.4  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </td>
+<td bgcolor="#FA5A5A" align="left"> 93.1  </td>
+<td align="left"> 92.9  </td>
+<td align="left"> 92.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </td>
+<td bgcolor="#FA5A5A" align="left"> 93.1  </td>
+<td align="left"> 92.9  </td>
+<td align="left"> 93.0  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  4.17 </td>
+<td align="left"> 15.5  </td>
+<td bgcolor="#FA5A5A" align="left"> 16.0  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left"> 64.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 89.8  </td>
+<td align="left"> 84.3  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast                                                                                                                         </td>
+<td bgcolor="#FA5A5A" align="left"><span class="bold"><strong>100</strong></span></td>
+<td align="left"> 99.9  </td>
+<td align="left"> 99.4  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse -msse2                                                                                                            </td>
+<td align="left"> 65.2  </td>
+<td bgcolor="#FA5A5A" align="left"> 65.7  </td>
+<td align="left"> 64.8  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1                                                                                                         </td>
+<td bgcolor="#5A5AFA" align="left"> 63.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 90.0  </td>
+<td bgcolor="#5A5AFA" align="left"> 64.8  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1 -m64                                                                                                    </td>
+<td bgcolor="#5A5AFA" align="left"> 65.2  </td>
+<td bgcolor="#FA5A5A" align="left"> 91.7  </td>
+<td bgcolor="#5A5AFA" align="left"> 65.0  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -march=corei7 -m64                                                                                               </td>
+<td bgcolor="#5A5AFA" align="left"> 65.0  </td>
+<td bgcolor="#FA5A5A" align="left"> 91.8  </td>
+<td bgcolor="#5A5AFA" align="left"> 64.8  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+      </p>
+<p>
+        </p>
+<div class="table">
+<a name="idp6225328"></a><p class="title"><b>Table&#160;1.4.&#160;Boost random number engine function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</b></p>
+<div class="table-contents"><table class="table" summary="Boost random number engine function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).">
+<colgroup>
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+</colgroup>
+<thead><tr>
+<th align="left">Compiler</th>
+<th align="left">Version</th>
+<th align="left">Optimization Flags</th>
+<th align="left">While Generate</th>
+<th align="left">For Generate 1</th>
+<th align="left">For Generate 2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td align="left"> 18.1  </td>
+<td align="left"> 17.4  </td>
+<td bgcolor="#FA5A5A" align="left"> 18.2  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 93.0  </td>
+<td align="left"> 84.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 93.0  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 92.4  </td>
+<td align="left"> 84.3  </td>
+<td bgcolor="#FA5A5A" align="left"> 92.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </td>
+<td bgcolor="#FA5A5A" align="left"> 93.5  </td>
+<td align="left"> 85.3  </td>
+<td align="left"> 93.3  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </td>
+<td bgcolor="#FA5A5A" align="left"> 99.6  </td>
+<td align="left"> 90.1  </td>
+<td align="left"> 90.5  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </td>
+<td bgcolor="#FA5A5A" align="left"><span class="bold"><strong>100</strong></span></td>
+<td align="left"> 90.6  </td>
+<td align="left"> 99.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  9.44 </td>
+<td align="left"> 17.7  </td>
+<td bgcolor="#FA5A5A" align="left"> 18.3  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 92.6  </td>
+<td align="left"> 84.7  </td>
+<td align="left"> 91.6  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 89.3  </td>
+<td align="left"> 83.4  </td>
+<td bgcolor="#FA5A5A" align="left"> 90.2  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </td>
+<td bgcolor="#FA5A5A" align="left"> 99.1  </td>
+<td align="left"> 90.1  </td>
+<td align="left"> 98.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </td>
+<td bgcolor="#FA5A5A" align="left"> 99.3  </td>
+<td align="left"> 91.0  </td>
+<td align="left"> 98.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </td>
+<td bgcolor="#FA5A5A" align="left"> 99.6  </td>
+<td align="left"> 90.1  </td>
+<td align="left"> 98.8  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  7.48 </td>
+<td align="left"> 15.8  </td>
+<td bgcolor="#FA5A5A" align="left"> 16.3  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O3                                                                                                                           </td>
+<td align="left"> 83.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 87.7  </td>
+<td align="left"> 83.2  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast                                                                                                                         </td>
+<td bgcolor="#5A5AFA" align="left"> 81.7  </td>
+<td align="left"> 92.7  </td>
+<td bgcolor="#FA5A5A" align="left"> 99.9  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse -msse2                                                                                                            </td>
+<td align="left"> 61.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 67.1  </td>
+<td align="left"> 67.0  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1                                                                                                         </td>
+<td bgcolor="#5A5AFA" align="left"> 62.1  </td>
+<td align="left"> 68.5  </td>
+<td bgcolor="#FA5A5A" align="left"> 72.3  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1 -m64                                                                                                    </td>
+<td bgcolor="#5A5AFA" align="left"> 62.3  </td>
+<td align="left"> 68.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 71.9  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -march=corei7 -m64                                                                                               </td>
+<td bgcolor="#5A5AFA" align="left"> 81.0  </td>
+<td align="left"> 91.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.7  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+      </p>
+<p>
+        </p>
+<div class="table">
+<a name="idp6297728"></a><p class="title"><b>Table&#160;1.5.&#160;Addition function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</b></p>
+<div class="table-contents"><table class="table" summary="Addition function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).">
+<colgroup>
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+</colgroup>
+<thead><tr>
+<th align="left">Compiler</th>
+<th align="left">Version</th>
+<th align="left">Optimization Flags</th>
+<th align="left">While Generate</th>
+<th align="left">For Generate 1</th>
+<th align="left">For Generate 2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left">  6.5  </td>
+<td bgcolor="#5A5AFA" align="left">  5.65 </td>
+<td align="left">  6.46 </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 97.8  </td>
+<td align="left"> 96.1  </td>
+<td align="left"> 94.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td bgcolor="#FA5A5A" align="left"> 97.5  </td>
+<td align="left"> 96.4  </td>
+<td align="left"> 94.4  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </td>
+<td bgcolor="#FA5A5A" align="left"> 95.0  </td>
+<td align="left"> 93.7  </td>
+<td align="left"> 91.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </td>
+<td bgcolor="#FA5A5A" align="left"> 93.5  </td>
+<td align="left"> 92.0  </td>
+<td align="left"> 90.3  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </td>
+<td bgcolor="#FA5A5A" align="left"> 95.5  </td>
+<td align="left"> 94.1  </td>
+<td align="left"> 92.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  1.28 </td>
+<td align="left">  4.98 </td>
+<td bgcolor="#FA5A5A" align="left">  5.33 </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 98.5  </td>
+<td align="left"> 98.2  </td>
+<td align="left"> 90.6  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td bgcolor="#FA5A5A" align="left"> 98.1  </td>
+<td align="left"> 97.3  </td>
+<td align="left"> 95.5  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </td>
+<td bgcolor="#FA5A5A" align="left"> 90.2  </td>
+<td align="left"> 88.8  </td>
+<td align="left"> 87.2  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </td>
+<td bgcolor="#FA5A5A" align="left"> 89.3  </td>
+<td align="left"> 88.0  </td>
+<td align="left"> 86.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </td>
+<td bgcolor="#FA5A5A" align="left"> 93.6  </td>
+<td align="left"> 92.3  </td>
+<td align="left"> 90.7  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  0.916</td>
+<td bgcolor="#5A5AFA" align="left">  5.36 </td>
+<td bgcolor="#FA5A5A" align="left"> 5.99  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left"> 52.1  </td>
+<td align="left"> 97.1  </td>
+<td bgcolor="#FA5A5A" align="left"> 97.2  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast                                                                                                                         </td>
+<td bgcolor="#FA5A5A" align="left"> 99.5  </td>
+<td align="left"> 98.4  </td>
+<td align="left"> 96.6  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse -msse2                                                                                                            </td>
+<td align="left"> 41.4  </td>
+<td bgcolor="#FA5A5A" align="left"> 42.0  </td>
+<td align="left"> 41.7  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1                                                                                                         </td>
+<td bgcolor="#FA5A5A" align="left"><span class="bold"><strong>100</strong></span></td>
+<td align="left"> 99.8  </td>
+<td align="left"> 96.2  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1 -m64                                                                                                    </td>
+<td bgcolor="#FA5A5A" align="left"> 94.9  </td>
+<td align="left"> 93.1  </td>
+<td align="left"> 94.8  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -march=corei7 -m64                                                                                               </td>
+<td bgcolor="#FA5A5A" align="left"> 95.1  </td>
+<td align="left"> 93.9  </td>
+<td align="left"> 92.0  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+      </p>
+<p>
+        </p>
+<div class="table">
+<a name="idp6369456"></a><p class="title"><b>Table&#160;1.6.&#160;Addition function object (bound functional) applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</b></p>
+<div class="table-contents"><table class="table" summary="Addition function object (bound functional) applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).">
+<colgroup>
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+</colgroup>
+<thead><tr>
+<th align="left">Compiler</th>
+<th align="left">Version</th>
+<th align="left">Optimization Flags</th>
+<th align="left">While Generate</th>
+<th align="left">For Generate 1</th>
+<th align="left">For Generate 2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left">  0.419</td>
+<td align="left">  0.412</td>
+<td align="left">  0.418</td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 96.9  </td>
+<td align="left"> 95.9  </td>
+<td align="left"> 96.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 95.4  </td>
+<td align="left"> 96.7  </td>
+<td bgcolor="#FA5A5A" align="left"> 97.9  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </td>
+<td bgcolor="#5A5AFA" align="left"> 78.6  </td>
+<td align="left"> 93.0  </td>
+<td bgcolor="#FA5A5A" align="left"> 94.5  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </td>
+<td bgcolor="#FA5A5A" align="left"> 94.0  </td>
+<td align="left"> 92.5  </td>
+<td align="left"> 90.9  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </td>
+<td bgcolor="#FA5A5A" align="left"> 96.2  </td>
+<td align="left"> 95.0  </td>
+<td align="left"> 93.3  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  0.255</td>
+<td align="left">  0.386</td>
+<td bgcolor="#FA5A5A" align="left">  0.389</td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left"> 75.3  </td>
+<td bgcolor="#5A5AFA" align="left"> 72.0  </td>
+<td bgcolor="#FA5A5A" align="left"> 85.9  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 96.7  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.3  </td>
+<td align="left"> 97.3  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </td>
+<td bgcolor="#FA5A5A" align="left"> 90.7  </td>
+<td align="left"> 86.8  </td>
+<td align="left"> 87.4  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </td>
+<td bgcolor="#FA5A5A" align="left"> 89.2  </td>
+<td align="left"> 88.5  </td>
+<td align="left"> 87.2  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </td>
+<td bgcolor="#FA5A5A" align="left"> 94.3  </td>
+<td align="left"> 93.1  </td>
+<td align="left"> 91.7  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  0.246</td>
+<td align="left">  0.314</td>
+<td bgcolor="#FA5A5A" align="left"> 0.318</td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 87.6  </td>
+<td bgcolor="#5A5AFA" align="left"> 37.5  </td>
+<td bgcolor="#5A5AFA" align="left"> 38.2  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast                                                                                                                         </td>
+<td align="left"> 96.8  </td>
+<td align="left"> 99.1  </td>
+<td bgcolor="#FA5A5A" align="left"> 99.2  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse -msse2                                                                                                            </td>
+<td bgcolor="#5A5AFA" align="left"> 37.6  </td>
+<td align="left"> 49.2  </td>
+<td bgcolor="#FA5A5A" align="left"> 49.3  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1                                                                                                         </td>
+<td align="left"> 94.2  </td>
+<td bgcolor="#FA5A5A" align="left"><span class="bold"><strong>100</strong></span></td>
+<td align="left"> 99.6  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1 -m64                                                                                                    </td>
+<td align="left"> 95.0  </td>
+<td bgcolor="#FA5A5A" align="left"> 97.5  </td>
+<td align="left"> 96.2  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -march=corei7 -m64                                                                                               </td>
+<td align="left"> 93.3  </td>
+<td bgcolor="#FA5A5A" align="left"> 94.6  </td>
+<td align="left"> 93.0  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+      </p>
+<p>
+        </p>
+<div class="table">
+<a name="idp6442176"></a><p class="title"><b>Table&#160;1.7.&#160;Incrementation function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).</b></p>
+<div class="table-contents"><table class="table" summary="Incrementation function object applied to a vector of size 1000000. Timings are normalized to the fastest (in percent).">
+<colgroup>
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+<col align="left">
+</colgroup>
+<thead><tr>
+<th align="left">Compiler</th>
+<th align="left">Version</th>
+<th align="left">Optimization Flags</th>
+<th align="left">While Generate</th>
+<th align="left">For Generate 1</th>
+<th align="left">For Generate 2</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td align="left">  5.28 </td>
+<td bgcolor="#5A5AFA" align="left">  4.49 </td>
+<td bgcolor="#FA5A5A" align="left">  5.32 </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+<td align="left"> 28.8  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 28.0  </td>
+<td align="left"> 28.6  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -ftree-vectorizer-verbose=5                                                                 </td>
+<td bgcolor="#FA5A5A" align="left"> 28.7  </td>
+<td align="left"> 28.5  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.7  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7                                                                               </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.6 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -march=corei7 -ffast-math -fassociative-math                                                </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  1.09 </td>
+<td bgcolor="#5A5AFA" align="left">  3.37 </td>
+<td bgcolor="#FA5A5A" align="left">  3.81 </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3                                                                                                                           </td>
+<td align="left"> 28.5  </td>
+<td align="left"> 28.8  </td>
+<td bgcolor="#FA5A5A" align="left"> 29.0  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -msse -msse2 -floop-parallelize-all                                                                      </td>
+<td align="left"> 28.7  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.8  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all                                              </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 28.9  </td>
+<td align="left"> 28.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7                                </td>
+<td bgcolor="#FA5A5A" align="left"> 29.0  </td>
+<td align="left"> 28.8  </td>
+<td align="left"> 28.8  </td>
+</tr>
+<tr>
+<td align="left">g++ </td>
+<td align="left">4.7 </td>
+<td align="left">-O3 -ftree-vectorize -mmmx -msse -msse2 -msse4.1 -msse4.2 -floop-parallelize-all -march=corei7 -ffast-math -fassociative-math </td>
+<td bgcolor="#FA5A5A" align="left"> 29.0  </td>
+<td align="left"> 28.9  </td>
+<td align="left"> 28.7  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O0                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left">  0.940</td>
+<td align="left">  4.28 </td>
+<td bgcolor="#FA5A5A" align="left">  4.51 </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-O3                                                                                                                           </td>
+<td bgcolor="#5A5AFA" align="left"> 28.9  </td>
+<td align="left"> 38.4  </td>
+<td bgcolor="#FA5A5A" align="left"> 38.5  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast                                                                                                                         </td>
+<td bgcolor="#FA5A5A" align="left"><span class="bold"><strong>100</strong></span></td>
+<td bgcolor="#5A5AFA" align="left"> 49.0  </td>
+<td align="left"> 99.1  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse -msse2                                                                                                            </td>
+<td align="left"> 38.4  </td>
+<td align="left"> 38.5  </td>
+<td bgcolor="#FA5A5A" align="left"> 38.6  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1                                                                                                         </td>
+<td align="left"> 95.3  </td>
+<td bgcolor="#5A5AFA" align="left"> 37.9  </td>
+<td bgcolor="#FA5A5A" align="left"> 98.6  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -xSSE4.1 -m64                                                                                                    </td>
+<td align="left"> 96.7  </td>
+<td bgcolor="#5A5AFA" align="left"> 38.3  </td>
+<td bgcolor="#FA5A5A" align="left"> 97.8  </td>
+</tr>
+<tr>
+<td align="left">icpc</td>
+<td align="left">13.0</td>
+<td align="left">-fast -msse2 -march=corei7 -m64                                                                                               </td>
+<td align="left"> 93.0  </td>
+<td bgcolor="#5A5AFA" align="left"> 38.2  </td>
+<td bgcolor="#FA5A5A" align="left"> 93.8  </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p><br class="table-break">
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.compiler_optimizations.conclusions"></a><a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.conclusions" title="Conclusions">Conclusions</a>
+</h3></div></div></div>
+<p>
+        From the above measurements the following observations can be made.
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            The <a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax.while_generate">while
+            generate function</a> is not always slower.
+          </li>
+<li class="listitem">
+            In most cases where the <a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax.while_generate">while
+            generate function</a> is fast, both the other generate functions are
+            not much slower.
+          </li>
+<li class="listitem">
+            Even if one does not consider the non-optimized cases (<span class="emphasis"><em>O0 flag</em></span>),
+            the while generate function is in 13 cases more than 10% slower than
+            the respective fastest method.
+          </li>
+<li class="listitem">
+            The <a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax.for_generate_1">first
+            for generate function</a> is slow in 6 cases whereas the <a class="link" href="compiler_optimizations.html#generate.compiler_optimizations.generate_loop_syntax.for_generate_2">second
+            for generate function</a> is slow in 4 cases only (not counting non-optimized
+            cases).
+          </li>
+</ul></div>
+<p>
+        For the compilers, generators, generate functions and the cpu architecture
+        considered here, there is evidence that a for-loop may be a better choice
+        when dealing with Unit Stride Iterators. However, the test set up is by far
+        not complete and the results can only be used to strengthen the hypothesis,
+        but no proof can be given. Of course, the hypothesis can also not be rejected
+        generally.
+      </p>
+<p>
+        Therefore, the Boost.Generate algorithm does dispatch to a similar for-loop
+        based function when dealing with Unit Stride Iterators and plain function
+        objects (not for Range Generators though, as this is left to the user by
+        design of the Boost.Generate library) instead of relying upon the std::generate
+        function template. It must however be noted that some available implementations
+        of the c++ standard library, such as the GNU libstdc++ library, do a similar
+        dispatch mechanism as well.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="concepts.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../boost_generate_header_reference.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

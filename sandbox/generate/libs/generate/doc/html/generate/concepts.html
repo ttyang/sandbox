@@ -1,0 +1,606 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Concepts</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="prev" href="examples.html" title="Examples">
+<link rel="next" href="compiler_optimizations.html" title="Compiler Optimizations">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="examples.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="compiler_optimizations.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="generate.concepts"></a><a class="link" href="concepts.html" title="Concepts">Concepts</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="concepts.html#generate.concepts.constant_stride_iterator">Constant
+      Stride Iterator</a></span></dt>
+<dt><span class="section"><a href="concepts.html#generate.concepts.unit_stride_iterator">Unit Stride Iterator</a></span></dt>
+<dt><span class="section"><a href="concepts.html#generate.concepts.range_generator">Range Generator</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.concepts.constant_stride_iterator"></a><a class="link" href="concepts.html#generate.concepts.constant_stride_iterator" title="Constant Stride Iterator">Constant
+      Stride Iterator</a>
+</h3></div></div></div>
+<h5>
+<a name="generate.concepts.constant_stride_iterator.h0"></a>
+        <span><a name="generate.concepts.constant_stride_iterator.description"></a></span><a class="link" href="concepts.html#generate.concepts.constant_stride_iterator.description">Description</a>
+      </h5>
+<p>
+        A Constant Stride Iterator is an iterator whose values are guaranteed to
+        be aligned with a constant stride in memory.
+      </p>
+<h5>
+<a name="generate.concepts.constant_stride_iterator.h1"></a>
+        <span><a name="generate.concepts.constant_stride_iterator.refinement_of"></a></span><a class="link" href="concepts.html#generate.concepts.constant_stride_iterator.refinement_of">Refinement
+        of</a>
+      </h5>
+<p>
+        Random Access Iterator.
+      </p>
+<h5>
+<a name="generate.concepts.constant_stride_iterator.h2"></a>
+        <span><a name="generate.concepts.constant_stride_iterator.notation"></a></span><a class="link" href="concepts.html#generate.concepts.constant_stride_iterator.notation">Notation</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">X</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A type that models the Constant Stride Iterator concept
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">i,j</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Objects of type <code class="literal">X</code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">n</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Integer constant: stride between the values the iterator is pointing
+                  to.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="generate.concepts.constant_stride_iterator.h3"></a>
+        <span><a name="generate.concepts.constant_stride_iterator.invariants"></a></span><a class="link" href="concepts.html#generate.concepts.constant_stride_iterator.invariants">Invariants</a>
+      </h5>
+<p>
+        Additional to the invariants defined by Random Access Iterator, the following
+        must hold:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Semantics
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  Constant stride access
+                </p>
+              </td>
+<td>
+                <p>
+                  if <code class="literal">j == ++X(i)</code>, then <code class="literal">(&amp;(*j) - &amp;(*i))
+                  == n</code>.
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<h5>
+<a name="generate.concepts.constant_stride_iterator.h4"></a>
+        <span><a name="generate.concepts.constant_stride_iterator.models"></a></span><a class="link" href="concepts.html#generate.concepts.constant_stride_iterator.models">Models</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <code class="literal">T*</code> (with stride 1)
+          </li>
+<li class="listitem">
+            <code class="literal">std::vector&lt;T&gt;::iterator</code> (with stride 1)
+          </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.concepts.unit_stride_iterator"></a><a class="link" href="concepts.html#generate.concepts.unit_stride_iterator" title="Unit Stride Iterator">Unit Stride Iterator</a>
+</h3></div></div></div>
+<h5>
+<a name="generate.concepts.unit_stride_iterator.h0"></a>
+        <span><a name="generate.concepts.unit_stride_iterator.description"></a></span><a class="link" href="concepts.html#generate.concepts.unit_stride_iterator.description">Description</a>
+      </h5>
+<p>
+        A Unit Stride Iterator is an iterator whose values are guaranteed to be aligned
+        contiguously in memory.
+      </p>
+<h5>
+<a name="generate.concepts.unit_stride_iterator.h1"></a>
+        <span><a name="generate.concepts.unit_stride_iterator.refinement_of"></a></span><a class="link" href="concepts.html#generate.concepts.unit_stride_iterator.refinement_of">Refinement
+        of</a>
+      </h5>
+<p>
+        <a class="link" href="concepts.html#generate.concepts.constant_stride_iterator" title="Constant Stride Iterator">Constant Stride
+        Iterator</a>.
+      </p>
+<h5>
+<a name="generate.concepts.unit_stride_iterator.h2"></a>
+        <span><a name="generate.concepts.unit_stride_iterator.notation"></a></span><a class="link" href="concepts.html#generate.concepts.unit_stride_iterator.notation">Notation</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">X</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A type that models the Unit Stride Iterator concept
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">i,j</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Objects of type <code class="literal">X</code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="generate.concepts.unit_stride_iterator.h3"></a>
+        <span><a name="generate.concepts.unit_stride_iterator.invariants"></a></span><a class="link" href="concepts.html#generate.concepts.unit_stride_iterator.invariants">Invariants</a>
+      </h5>
+<p>
+        Additional to the invariants defined by <a class="link" href="concepts.html#generate.concepts.constant_stride_iterator" title="Constant Stride Iterator">Constant
+        Stride Iterator</a>, the following must hold:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Semantics
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  Unit stride access
+                </p>
+              </td>
+<td>
+                <p>
+                  if <code class="literal">j==++X(i)</code>, then <code class="literal">(&amp;(*j) - &amp;(*i))
+                  == 1</code>.
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<h5>
+<a name="generate.concepts.unit_stride_iterator.h4"></a>
+        <span><a name="generate.concepts.unit_stride_iterator.models"></a></span><a class="link" href="concepts.html#generate.concepts.unit_stride_iterator.models">Models</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <code class="literal">T*</code>
+          </li>
+<li class="listitem">
+            <code class="literal">std::vector&lt;T&gt;::iterator</code>
+          </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.concepts.range_generator"></a><a class="link" href="concepts.html#generate.concepts.range_generator" title="Range Generator">Range Generator</a>
+</h3></div></div></div>
+<h5>
+<a name="generate.concepts.range_generator.h0"></a>
+        <span><a name="generate.concepts.range_generator.description"></a></span><a class="link" href="concepts.html#generate.concepts.range_generator.description">Description</a>
+      </h5>
+<p>
+        A Range Generator provides an interface for assigning values to a range.
+      </p>
+<h5>
+<a name="generate.concepts.range_generator.h1"></a>
+        <span><a name="generate.concepts.range_generator.associated_types"></a></span><a class="link" href="concepts.html#generate.concepts.range_generator.associated_types">Associated
+        Types</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Type
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  is_range_generator
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>Optional</strong></span>. Metafunction class.
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<h5>
+<a name="generate.concepts.range_generator.h2"></a>
+        <span><a name="generate.concepts.range_generator.notation"></a></span><a class="link" href="concepts.html#generate.concepts.range_generator.notation">Notation</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">X</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A type that models the Range Generator concept
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">x</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Object of type <code class="literal">X</code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">I</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Forward Iterator type
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">a,b</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Objects of type <code class="literal">I</code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="generate.concepts.range_generator.h3"></a>
+        <span><a name="generate.concepts.range_generator.valid_expressions"></a></span><a class="link" href="concepts.html#generate.concepts.range_generator.valid_expressions">Valid
+        Expressions</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Type Requirements
+                </p>
+              </th>
+<th>
+                <p>
+                  Return Type
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  Optional metafunction
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">X::is_range_generator::apply&lt;I&gt;::type</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  bool constant type (e.g. <code class="literal">boost::mpl::bool_</code>)
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Range function call
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">x(a,b)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::is_range_generator&lt;X,I&gt;::type::value</code>
+                  is <code class="literal">true</code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  void
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<h5>
+<a name="generate.concepts.range_generator.h4"></a>
+        <span><a name="generate.concepts.range_generator.expressions_semantics"></a></span><a class="link" href="concepts.html#generate.concepts.range_generator.expressions_semantics">Expressions
+        Semantics</a>
+      </h5>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Preconditions
+                </p>
+              </th>
+<th>
+                <p>
+                  Semantics
+                </p>
+              </th>
+<th>
+                <p>
+                  Postconditions
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  Optional metafunction
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">X::is_range_generator::apply&lt;I&gt;::type</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  checks whether the type <code class="literal">I</code> is suitable for <span class="emphasis"><em>Range
+                  Generation</em></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Range function call
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">x(a,b)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">b-a</code> must be positive. Including <code class="literal">a</code>
+                  there must be <code class="literal">b-a</code> dereferenceable or past-the-end
+                  iterators following <code class="literal">a</code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  generates values of type <code class="literal">I::value_type</code> and assigns
+                  them to the range <code class="literal">[a,b)</code>
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="examples.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="compiler_optimizations.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

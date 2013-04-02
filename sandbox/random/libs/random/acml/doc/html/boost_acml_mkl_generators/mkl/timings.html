@@ -1,0 +1,1997 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Timings</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="Boost.ACML_MKL_generators">
+<link rel="up" href="../../boost_random/mkl.html" title="Intel&#174; MKL Generators">
+<link rel="prev" href="distributions.html" title="Distributions">
+<link rel="next" href="multiple_generators.html" title="Multiple Generators">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="distributions.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/mkl.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="multiple_generators.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_acml_mkl_generators.mkl.timings"></a><a class="link" href="timings.html" title="Timings">Timings</a>
+</h3></div></div></div>
+<p>
+        The following figures show the performance of the Intel&#174; MKL, AMD&#174; ACML,
+        Boost.Random and Standard.Numerics engines applied to different distributions
+        (both Standard and Boost). The timings were conducted on a linux (Ubuntu
+        12.04, 64 bit) machine with Intel&#174; Core&#8482; i7-3720QM CPU (2.60GHz) and GCC
+        compiler.
+      </p>
+<div class="table">
+<a name="boost_acml_mkl_generators.mkl.timings.uniform_real_distribution_with_mersenne_twister_19937"></a><p class="title"><b>Table&#160;6.&#160;Uniform real distribution with Mersenne Twister 19937</b></p>
+<div class="table-contents"><table class="table" summary="Uniform real distribution with Mersenne Twister 19937">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  engine
+                </p>
+              </th>
+<th>
+                <p>
+                  distribution
+                </p>
+              </th>
+<th>
+                <p>
+                  variate_generator
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>3</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>4</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>5</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.010548
+                </p>
+              </td>
+<td>
+                <p>
+                  11%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.055078
+                </p>
+              </td>
+<td>
+                <p>
+                  18%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.525434
+                </p>
+              </td>
+<td>
+                <p>
+                  22%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">std::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.010986
+                </p>
+              </td>
+<td>
+                <p>
+                  10%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.112632
+                </p>
+              </td>
+<td>
+                <p>
+                  8.8%
+                </p>
+              </td>
+<td>
+                <p>
+                  1.09825
+                </p>
+              </td>
+<td>
+                <p>
+                  10%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.281552
+                </p>
+              </td>
+<td>
+                <p>
+                  0.40%
+                </p>
+              </td>
+<td>
+                <p>
+                  2.79961
+                </p>
+              </td>
+<td>
+                <p>
+                  0.35%
+                </p>
+              </td>
+<td>
+                <p>
+                  27.9886
+                </p>
+              </td>
+<td>
+                <p>
+                  0.41%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.28108
+                </p>
+              </td>
+<td>
+                <p>
+                  0.40%
+                </p>
+              </td>
+<td>
+                <p>
+                  2.79716
+                </p>
+              </td>
+<td>
+                <p>
+                  0.35%
+                </p>
+              </td>
+<td>
+                <p>
+                  27.9637
+                </p>
+              </td>
+<td>
+                <p>
+                  0.41%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.00176
+                </p>
+              </td>
+<td>
+                <p>
+                  64%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.015184
+                </p>
+              </td>
+<td>
+                <p>
+                  65%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.159364
+                </p>
+              </td>
+<td>
+                <p>
+                  72%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.001706
+                </p>
+              </td>
+<td>
+                <p>
+                  66%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.015216
+                </p>
+              </td>
+<td>
+                <p>
+                  65%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.159168
+                </p>
+              </td>
+<td>
+                <p>
+                  72%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  plain ACML function
+                </p>
+              </td>
+<td>
+                <p>
+                  plain ACML function
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  0.001708
+                </p>
+              </td>
+<td>
+                <p>
+                  66%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.015066
+                </p>
+              </td>
+<td>
+                <p>
+                  66%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.15879
+                </p>
+              </td>
+<td>
+                <p>
+                  72%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.06791
+                </p>
+              </td>
+<td>
+                <p>
+                  1.7%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.673732
+                </p>
+              </td>
+<td>
+                <p>
+                  1.5%
+                </p>
+              </td>
+<td>
+                <p>
+                  6.73015
+                </p>
+              </td>
+<td>
+                <p>
+                  1.7%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.036828
+                </p>
+              </td>
+<td>
+                <p>
+                  3.1%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.365108
+                </p>
+              </td>
+<td>
+                <p>
+                  2.7%
+                </p>
+              </td>
+<td>
+                <p>
+                  3.63906
+                </p>
+              </td>
+<td>
+                <p>
+                  3.2%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.001302
+                </p>
+              </td>
+<td>
+                <p>
+                  87%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.010272
+                </p>
+              </td>
+<td>
+                <p>
+                  97%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.115526
+                </p>
+              </td>
+<td>
+                <p>
+                  99%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.001134
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.009916
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.115468
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  plain MKL function
+                </p>
+              </td>
+<td>
+                <p>
+                  plain MKL function
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  0.00113
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.009962
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.11493
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="table">
+<a name="boost_acml_mkl_generators.mkl.timings.normal_distribution_with_mersenne_twister_19937"></a><p class="title"><b>Table&#160;7.&#160;Normal distribution with Mersenne Twister 19937</b></p>
+<div class="table-contents"><table class="table" summary="Normal distribution with Mersenne Twister 19937">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  engine
+                </p>
+              </th>
+<th>
+                <p>
+                  distribution
+                </p>
+              </th>
+<th>
+                <p>
+                  variate_generator
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>3</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>4</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>5</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0533
+                </p>
+              </td>
+<td>
+                <p>
+                  9.9%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5296
+                </p>
+              </td>
+<td>
+                <p>
+                  10%
+                </p>
+              </td>
+<td>
+                <p>
+                  5.2750
+                </p>
+              </td>
+<td>
+                <p>
+                  11%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">std::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0458
+                </p>
+              </td>
+<td>
+                <p>
+                  11%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.4486
+                </p>
+              </td>
+<td>
+                <p>
+                  12%
+                </p>
+              </td>
+<td>
+                <p>
+                  4.4607
+                </p>
+              </td>
+<td>
+                <p>
+                  13%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3887
+                </p>
+              </td>
+<td>
+                <p>
+                  1.4%
+                </p>
+              </td>
+<td>
+                <p>
+                  3.8658
+                </p>
+              </td>
+<td>
+                <p>
+                  1.4%
+                </p>
+              </td>
+<td>
+                <p>
+                  38.6177
+                </p>
+              </td>
+<td>
+                <p>
+                  1.5%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3340
+                </p>
+              </td>
+<td>
+                <p>
+                  1.6%
+                </p>
+              </td>
+<td>
+                <p>
+                  3.3135
+                </p>
+              </td>
+<td>
+                <p>
+                  1.7%
+                </p>
+              </td>
+<td>
+                <p>
+                  33.1321
+                </p>
+              </td>
+<td>
+                <p>
+                  1.7%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0103
+                </p>
+              </td>
+<td>
+                <p>
+                  51%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.1049
+                </p>
+              </td>
+<td>
+                <p>
+                  53%
+                </p>
+              </td>
+<td>
+                <p>
+                  1.0072
+                </p>
+              </td>
+<td>
+                <p>
+                  56%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0103
+                </p>
+              </td>
+<td>
+                <p>
+                  51%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.1033
+                </p>
+              </td>
+<td>
+                <p>
+                  54%
+                </p>
+              </td>
+<td>
+                <p>
+                  1.0088
+                </p>
+              </td>
+<td>
+                <p>
+                  56%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  plain ACML function
+                </p>
+              </td>
+<td>
+                <p>
+                  plain ACML function
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0104
+                </p>
+              </td>
+<td>
+                <p>
+                  51%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.1036
+                </p>
+              </td>
+<td>
+                <p>
+                  54%
+                </p>
+              </td>
+<td>
+                <p>
+                  1.0082
+                </p>
+              </td>
+<td>
+                <p>
+                  56%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3645
+                </p>
+              </td>
+<td>
+                <p>
+                  1.4%
+                </p>
+              </td>
+<td>
+                <p>
+                  3.5718
+                </p>
+              </td>
+<td>
+                <p>
+                  1.6%
+                </p>
+              </td>
+<td>
+                <p>
+                  35.6541
+                </p>
+              </td>
+<td>
+                <p>
+                  1.6%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  9.8315
+                </p>
+              </td>
+<td>
+                <p>
+                  0.054%
+                </p>
+              </td>
+<td>
+                <p>
+                  98.4091
+                </p>
+              </td>
+<td>
+                <p>
+                  0.057%
+                </p>
+              </td>
+<td>
+                <p>
+                  984.4130
+                </p>
+              </td>
+<td>
+                <p>
+                  0.058%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0054
+                </p>
+              </td>
+<td>
+                <p>
+                  98%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0559
+                </p>
+              </td>
+<td>
+                <p>
+                  99%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5686
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0053
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0556
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5681
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  plain MKL function
+                </p>
+              </td>
+<td>
+                <p>
+                  plain MKL function
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0054
+                </p>
+              </td>
+<td>
+                <p>
+                  98%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0567
+                </p>
+              </td>
+<td>
+                <p>
+                  98%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5683
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="table">
+<a name="boost_acml_mkl_generators.mkl.timings.exponential_distribution_with_mersenne_twister_19937"></a><p class="title"><b>Table&#160;8.&#160;Exponential distribution with Mersenne Twister 19937</b></p>
+<div class="table-contents"><table class="table" summary="Exponential distribution with Mersenne Twister 19937">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  engine
+                </p>
+              </th>
+<th>
+                <p>
+                  distribution
+                </p>
+              </th>
+<th>
+                <p>
+                  variate_generator
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>3</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>4</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+<th>
+                <p>
+                  run time for 10<sup>5</sup> numbers [ms]
+                </p>
+              </th>
+<th>
+                <p>
+                  approx. speed compared to fastest
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0439
+                </p>
+              </td>
+<td>
+                <p>
+                  7.2%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.4343
+                </p>
+              </td>
+<td>
+                <p>
+                  7.1%
+                </p>
+              </td>
+<td>
+                <p>
+                  4.3195
+                </p>
+              </td>
+<td>
+                <p>
+                  7.6%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">std::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0507
+                </p>
+              </td>
+<td>
+                <p>
+                  6.3%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5013
+                </p>
+              </td>
+<td>
+                <p>
+                  6.2%
+                </p>
+              </td>
+<td>
+                <p>
+                  4.9984
+                </p>
+              </td>
+<td>
+                <p>
+                  6.6%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3210
+                </p>
+              </td>
+<td>
+                <p>
+                  0.99%
+                </p>
+              </td>
+<td>
+                <p>
+                  3.1737
+                </p>
+              </td>
+<td>
+                <p>
+                  0.98%
+                </p>
+              </td>
+<td>
+                <p>
+                  31.7263
+                </p>
+              </td>
+<td>
+                <p>
+                  1.0%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3228
+                </p>
+              </td>
+<td>
+                <p>
+                  0.99%
+                </p>
+              </td>
+<td>
+                <p>
+                  3.1974
+                </p>
+              </td>
+<td>
+                <p>
+                  0.97%
+                </p>
+              </td>
+<td>
+                <p>
+                  31.9974
+                </p>
+              </td>
+<td>
+                <p>
+                  1.0%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0060
+                </p>
+              </td>
+<td>
+                <p>
+                  53%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0578
+                </p>
+              </td>
+<td>
+                <p>
+                  54%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5663
+                </p>
+              </td>
+<td>
+                <p>
+                  58%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::acml::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0060
+                </p>
+              </td>
+<td>
+                <p>
+                  53%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0579
+                </p>
+              </td>
+<td>
+                <p>
+                  54%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5671
+                </p>
+              </td>
+<td>
+                <p>
+                  58%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  plain ACML function
+                </p>
+              </td>
+<td>
+                <p>
+                  plain ACML function
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0061
+                </p>
+              </td>
+<td>
+                <p>
+                  52%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0575
+                </p>
+              </td>
+<td>
+                <p>
+                  54%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.5633
+                </p>
+              </td>
+<td>
+                <p>
+                  58%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0948
+                </p>
+              </td>
+<td>
+                <p>
+                  3.4%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.9251
+                </p>
+              </td>
+<td>
+                <p>
+                  3.4%
+                </p>
+              </td>
+<td>
+                <p>
+                  9.2560
+                </p>
+              </td>
+<td>
+                <p>
+                  3.65
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  no
+                </p>
+              </td>
+<td>
+                <p>
+                  0.1086
+                </p>
+              </td>
+<td>
+                <p>
+                  2.9%
+                </p>
+              </td>
+<td>
+                <p>
+                  1.0680
+                </p>
+              </td>
+<td>
+                <p>
+                  2.9%
+                </p>
+              </td>
+<td>
+                <p>
+                  10.6798
+                </p>
+              </td>
+<td>
+                <p>
+                  3.1%
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">std::uniform_real_distribution&lt;double&gt; </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0032
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0310
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3294
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="literal">boost::random::mkl::mt19937 </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal">boost::random::uniform_real_distribution&lt;double&gt;
+                  </code>
+                </p>
+              </td>
+<td>
+                <p>
+                  yes
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0032
+                </p>
+              </td>
+<td>
+                <p>
+                  99%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0311
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3296
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  plain MKL function
+                </p>
+              </td>
+<td>
+                <p>
+                  plain MKL function
+                </p>
+              </td>
+<td>
+                <p>
+                  -
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0032
+                </p>
+              </td>
+<td>
+                <p>
+                  99%
+                </p>
+              </td>
+<td>
+                <p>
+                  0.0311
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+<td>
+                <p>
+                  0.3293
+                </p>
+              </td>
+<td>
+                <p>
+                  <span class="bold"><strong>100%</strong></span>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><h5>
+<a name="boost_acml_mkl_generators.mkl.timings.h0"></a>
+        <span><a name="boost_acml_mkl_generators.mkl.timings.discussion"></a></span><a class="link" href="timings.html#boost_acml_mkl_generators.mkl.timings.discussion">Discussion</a>
+      </h5>
+<p>
+        The MKL engines as well as the ACML engines perform equally well as the direct
+        invokation of the respective library's c-API independent of the distributon
+        class when a variate generator is applied. Thus, the wrapping in a c++ class
+        conforming the Uniform Random Number Generator concept does not introduce
+        significant overhead.
+      </p>
+<p>
+        The MKL engines used through a variate generator perform approximately 4.5-14
+        times faster than the Boost engines (with Boost distributions) and they are
+        around 7.5-16 times faster than the Standard engines (with Standard distributions)
+        depending on the distribution.
+      </p>
+<p>
+        The ACML engines used through a variate generator are approximately 3-7.5
+        times faster than the Boost engines (with Boost distributions) and they perform
+        around 4-9 times better than the Standard engines (with Standard distributions)
+        depending on the distribution.
+      </p>
+<p>
+        For a time-critical code it thus may be of benefit to employ either the ACML
+        or the MKL engines presented here. The speed-up can however only be achieved
+        when using the engines in combination with a boost::variate_generator. Using
+        the distributions directly with an optimized engine will generally slow down
+        the code severely.
+      </p>
+<h5>
+<a name="boost_acml_mkl_generators.mkl.timings.h1"></a>
+        <span><a name="boost_acml_mkl_generators.mkl.timings.c__11"></a></span><a class="link" href="timings.html#boost_acml_mkl_generators.mkl.timings.c__11">C++11</a>
+      </h5>
+<p>
+        The variate_generator is a feature of the Boost.Random library and the c++03
+        TR1 extension. In the current c++ standard the variate_generator has not
+        been taken over. The lack of such a mechanism makes it hard using c++11 libraries
+        and syntax to find an appropriate alternative to a partially optimized random
+        number generating mechanism as presented here. Thus, one might be better
+        off using the boost::variate_generator still in c++11 code.
+      </p>
+<p>
+        ref paper here
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="distributions.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/mkl.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="multiple_generators.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

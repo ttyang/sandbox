@@ -1,0 +1,8 @@
+
+
+
+project /boost/generate/test/ : ;
+
+
+exe range_generate : range_generate.cpp ;
+

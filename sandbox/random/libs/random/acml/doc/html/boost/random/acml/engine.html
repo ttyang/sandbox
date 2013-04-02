@@ -1,0 +1,600 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template engine</title>
+<link rel="stylesheet" href="../../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="up" href="../../../headers.html#header.boost.random.acml.engine_hpp" title="Header &lt;boost/random/acml/engine.hpp&gt;">
+<link rel="prev" href="../../../headers.html" title="Headers">
+<link rel="next" href="has_block_split.html" title="Struct template has_block_split">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../headers.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../headers.html#header.boost.random.acml.engine_hpp"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="has_block_split.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.random.acml.engine"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template engine</span></h2>
+<p>boost::random::acml::engine &#8212; Class wrapping the AMD ACML base random number generators. </p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../headers.html#header.boost.random.acml.engine_hpp" title="Header &lt;boost/random/acml/engine.hpp&gt;">boost/random/acml/engine.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">long</span> genid_ <span class="special">=</span> <span class="number">1</span><span class="special">,</span> <span class="keyword">bool</span> single <span class="special">=</span> <span class="keyword">false</span><span class="special">,</span> <span class="keyword">long</span> subid_ <span class="special">=</span> <span class="number">1</span><span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="engine.html#boost.random.acml.enginetypes">types</a></span>
+  <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_c</span><span class="special">&lt;</span> <span class="identifier">single</span><span class="special">,</span> <span class="keyword">float</span><span class="special">,</span> <span class="keyword">double</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>                                <a class="link" href="engine.html#boost.random.acml.engine.internal_type"><span class="identifier">internal_type</span></a><span class="special">;</span>     
+  <span class="keyword">typedef</span> <span class="keyword">long</span>                                                                           <a class="link" href="engine.html#boost.random.acml.engine.result_type"><span class="identifier">result_type</span></a><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="keyword">long</span>                                                                           <a class="link" href="engine.html#boost.random.acml.engine.seed_type"><span class="identifier">seed_type</span></a><span class="special">;</span>         
+  <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range_generate</span><span class="special">::</span><span class="identifier">unit_stride_range_generator_type_checked</span><span class="special">&lt;</span> <span class="identifier">result_type</span> <span class="special">&gt;</span> <a class="link" href="engine.html#boost.random.acml.engine.is_range_generator"><span class="identifier">is_range_generator</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="keyword">long</span> <span class="special">&gt;</span>                                                            <a class="link" href="engine.html#boost.random.acml.engine.state_type"><span class="identifier">state_type</span></a><span class="special">;</span>        
+
+  <span class="comment">// <a class="link" href="engine.html#boost.random.acml.engineconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="engine.html#idp6145792-bb"><span class="identifier">engine</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">explicit</span> <a class="link" href="engine.html#idp6146176-bb"><span class="identifier">engine</span></a><span class="special">(</span><span class="keyword">long</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> SeedSeq<span class="special">&gt;</span> <span class="keyword">explicit</span> <a class="link" href="engine.html#idp6148192-bb"><span class="identifier">engine</span></a><span class="special">(</span><span class="identifier">SeedSeq</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <a class="link" href="engine.html#idp6150960-bb"><span class="identifier">engine</span></a><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">It</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="engine.html#idp6154880-bb"><span class="identifier">engine</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  engine&amp; <a class="link" href="engine.html#idp6157040-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a class="link" href="engine.html" title="Class template engine">engine</a><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="engine.html#idm19872-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="engine.html#idm19472-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="engine.html#idp5229088-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="keyword">long</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sseq<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="engine.html#idp5231856-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="identifier">Sseq</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="engine.html#idp5235904-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="identifier">It</span><span class="special">,</span> <span class="identifier">It</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="engine.html#idp5240992-bb"><span class="identifier">discard</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> UnitStrideIterator<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a class="link" href="engine.html#idp5243776-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">UnitStrideIterator</span><span class="special">,</span> <span class="identifier">UnitStrideIterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="engine.html#idp6136352-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="engine.html#idp6138240-bb"><span class="identifier">min</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="engine.html#idp6140128-bb"><span class="identifier">max</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">state_type</span> <span class="special">&amp;</span> <a class="link" href="engine.html#idp6142016-bb"><span class="identifier">state</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">state_type</span> <span class="special">&amp;</span> <a class="link" href="engine.html#idp6143904-bb"><span class="identifier">state</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="engine.html#idp6159328-bb">friend functions</a></span>
+  <span class="keyword">friend</span> <span class="keyword">bool</span> <a class="link" href="engine.html#idp6159696-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">friend</span> <span class="keyword">bool</span> <a class="link" href="engine.html#idp6164368-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+    <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+    <a class="link" href="engine.html#idp6169040-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+    <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+    <a class="link" href="engine.html#idp6174576-bb"><span class="keyword">operator</span><span class="special">&gt;&gt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// public data members</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">long</span> <span class="identifier">genid</span><span class="special">;</span>  <span class="comment">// AMD ACML GENID index. </span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">long</span> <span class="identifier">subid</span><span class="special">;</span>  <span class="comment">// AMD ACML SUBID index. </span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">long</span> <span class="identifier">default_seed</span><span class="special">;</span>  <span class="comment">// Default seed parameter. </span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="idp6312784"></a><h2>Description</h2>
+<p>Implements the boost uniform random number generator concept. 
+</p>
+<div class="refsect2">
+<a name="idp6313504"></a><h3>Template Parameters</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><span class="keyword">long</span> genid_ <span class="special">=</span> <span class="number">1</span></pre></li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> single <span class="special">=</span> <span class="keyword">false</span></pre>
+<p>Use single precision? </p>
+</li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">long</span> subid_ <span class="special">=</span> <span class="number">1</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp6323568"></a><h3>
+<a name="boost.random.acml.enginetypes"></a><code class="computeroutput">engine</code> 
+        public
+       types</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<p>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_c</span><span class="special">&lt;</span> <span class="identifier">single</span><span class="special">,</span> <span class="keyword">float</span><span class="special">,</span> <span class="keyword">double</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a name="boost.random.acml.engine.internal_type"></a><span class="identifier">internal_type</span><span class="special">;</span></p>
+<p>Single or double precision. </p>
+</li>
+<li class="listitem">
+<p>
+<span class="keyword">typedef</span> <span class="keyword">long</span> <a name="boost.random.acml.engine.result_type"></a><span class="identifier">result_type</span><span class="special">;</span></p>
+<p>Type of the resulting random value. </p>
+</li>
+<li class="listitem">
+<p>
+<span class="keyword">typedef</span> <span class="keyword">long</span> <a name="boost.random.acml.engine.seed_type"></a><span class="identifier">seed_type</span><span class="special">;</span></p>
+<p>Type of the seed values. </p>
+</li>
+<li class="listitem">
+<p>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range_generate</span><span class="special">::</span><span class="identifier">unit_stride_range_generator_type_checked</span><span class="special">&lt;</span> <span class="identifier">result_type</span> <span class="special">&gt;</span> <a name="boost.random.acml.engine.is_range_generator"></a><span class="identifier">is_range_generator</span><span class="special">;</span></p>
+<p>Required for the engine to model a Range Generator. </p>
+</li>
+<li class="listitem">
+<p>
+<span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span> <span class="keyword">long</span> <span class="special">&gt;</span> <a name="boost.random.acml.engine.state_type"></a><span class="identifier">state_type</span><span class="special">;</span></p>
+<p>Type of the internal state. </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp6359008"></a><h3>
+<a name="boost.random.acml.engineconstruct-copy-destruct"></a><code class="computeroutput">engine</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="idp6145792-bb"></a><span class="identifier">engine</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Construct an instance with default parameters. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">explicit</span> <a name="idp6146176-bb"></a><span class="identifier">engine</span><span class="special">(</span><span class="keyword">long</span> value<span class="special">)</span><span class="special">;</span></pre>Construct with user defined seed value. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">value</code></span></p></td>
+<td><p>Seed value. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> SeedSeq<span class="special">&gt;</span> <span class="keyword">explicit</span> <a name="idp6148192-bb"></a><span class="identifier">engine</span><span class="special">(</span><span class="identifier">SeedSeq</span> <span class="special">&amp;</span> seq<span class="special">)</span><span class="special">;</span></pre>Construct with seed sequence. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">seq</code></span></p></td>
+<td><p>Seed sequence. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <a name="idp6150960-bb"></a><span class="identifier">engine</span><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span> first<span class="special">,</span> <span class="identifier">It</span> <span class="special">&amp;</span> last<span class="special">)</span><span class="special">;</span></pre>Construct from seed values. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">first</code></span></p></td>
+<td><p>Iterator pointing to the first seed value. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">last</code></span></p></td>
+<td><p>Iterator pointing past-the-end of seed value sequence. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">It</code></span></p></td>
+<td><p>Input iterator type. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="idp6154880-bb"></a><span class="identifier">engine</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span> e<span class="special">)</span><span class="special">;</span></pre>Copy construct. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">e</code></span></p></td>
+<td><p>Other engine </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout">engine&amp; <a name="idp6157040-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a class="link" href="engine.html" title="Class template engine">engine</a> rhs<span class="special">)</span><span class="special">;</span></pre>Assignment operator. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">rhs</code></span></p></td>
+<td><p>Instance to copy from. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Reference to this instance. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp6420064"></a><h3>
+<a name="idm19872-bb"></a><code class="computeroutput">engine</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idm19472-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Set default seed value. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp5229088-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="keyword">long</span> s<span class="special">)</span><span class="special">;</span></pre>Set seed value. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">s</code></span></p></td>
+<td><p>Seed value. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sseq<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp5231856-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="identifier">Sseq</span> <span class="special">&amp;</span> q<span class="special">)</span><span class="special">;</span></pre>Set state by seed sequence. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">q</code></span></p></td>
+<td><p>Seed sequence. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">Sseq</code></span></p></td>
+<td><p>Seed sequence type. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <span class="keyword">void</span> <a name="idp5235904-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="identifier">It</span> first<span class="special">,</span> <span class="identifier">It</span> last<span class="special">)</span><span class="special">;</span></pre>Set state by sequence of seed values. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">first</code></span></p></td>
+<td><p>Iterator pointing to the first seed value. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">last</code></span></p></td>
+<td><p>Iterator pointing past-the-end of seed value sequence. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">It</code></span></p></td>
+<td><p>Input iterator type. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="idp5240992-bb"></a><span class="identifier">discard</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> z<span class="special">)</span><span class="special">;</span></pre>Discard values. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">z</code></span></p></td>
+<td><p>Number of values to be discarded. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> UnitStrideIterator<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="idp5243776-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">UnitStrideIterator</span> first<span class="special">,</span> <span class="identifier">UnitStrideIterator</span> last<span class="special">)</span><span class="special">;</span></pre>Range function call. <p>Assign random values to a range. 
+
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">first</code></span></p></td>
+<td><p>Start iterator. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">last</code></span></p></td>
+<td><p>Past-the-end iterator. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Template Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><code class="computeroutput">UnitStrideIterator</code></span></p></td>
+<td><p>Iterator type which implements the Unit Stride Iterator concept. </p></td>
+</tr></tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Requires:</span></p></td>
+<td><p><code class="computeroutput">UnitStrideIterator</code> must meet the requirements of a Unit Stride Iterator and it's value_type must be equal to the engine's result type. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="idp6136352-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Element function call. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>A single random value. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="idp6138240-bb"></a><span class="identifier">min</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Minimum value that the engine can return. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Minimum value </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="idp6140128-bb"></a><span class="identifier">max</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Maximum value that the engine can return. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Maximum value </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">state_type</span> <span class="special">&amp;</span> <a name="idp6142016-bb"></a><span class="identifier">state</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Get access to internal state object. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>State. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">state_type</span> <span class="special">&amp;</span> <a name="idp6143904-bb"></a><span class="identifier">state</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Get read access to internal state object. <p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>State. </p></td>
+</tr></tbody>
+</table></div>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="idp6528304"></a><h3>
+<a name="idp6159328-bb"></a><code class="computeroutput">engine</code> friend functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">friend</span> <span class="keyword">bool</span> <a name="idp6159696-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span> a<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span> b<span class="special">)</span><span class="special">;</span></pre>Equality operator. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">a</code></span></p></td>
+<td><p>Left hand side instance. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">b</code></span></p></td>
+<td><p>Right hand side instance. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Returns true if a and b are in the same state. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">friend</span> <span class="keyword">bool</span> <a name="idp6164368-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span> a<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span> b<span class="special">)</span><span class="special">;</span></pre>Inequality operator. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">a</code></span></p></td>
+<td><p>Left hand side instance. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">b</code></span></p></td>
+<td><p>Right hand side instance. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Returns true if a and b are not in the same state. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+  <a name="idp6169040-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> os<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span> e<span class="special">)</span><span class="special">;</span></pre>Writes state to output stream. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">e</code></span></p></td>
+<td><p>Instance of engine. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">os</code></span></p></td>
+<td><p>Output stream instance. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Reference to output stream. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+  <a name="idp6174576-bb"></a><span class="keyword">operator</span><span class="special">&gt;&gt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> is<span class="special">,</span> <a class="link" href="engine.html" title="Class template engine">engine</a> <span class="special">&amp;</span> e<span class="special">)</span><span class="special">;</span></pre>Reads state from input stream. <p>
+
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term">Parameters:</span></p></td>
+<td><div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><code class="computeroutput">e</code></span></p></td>
+<td><p>Instance of engine. </p></td>
+</tr>
+<tr>
+<td><p><span class="term"><code class="computeroutput">is</code></span></p></td>
+<td><p>Input stream instance. </p></td>
+</tr>
+</tbody>
+</table></div></td>
+</tr>
+<tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>Reference to input stream. </p></td>
+</tr>
+</tbody>
+</table></div>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../../../headers.html"><img src="../../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../headers.html#header.boost.random.acml.engine_hpp"><img src="../../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="has_block_split.html"><img src="../../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

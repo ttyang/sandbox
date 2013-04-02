@@ -1,0 +1,365 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Introduction</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="prev" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="next" href="rationale.html" title="Rationale">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="generate.intro"></a><a class="link" href="intro.html" title="Introduction">Introduction</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="intro.html#generate.intro.usage">Usage</a></span></dt>
+<dt><span class="section"><a href="intro.html#generate.intro.random_number_generation">Motivating Example:
+      Random Number Generation</a></span></dt>
+<dt><span class="section"><a href="intro.html#generate.intro.compiler_auto_vectorization">Compiler
+      Auto-Vectorization</a></span></dt>
+</dl></div>
+<p>
+      This library introduces new concepts and extensions to the <span class="emphasis"><em>std::generate</em></span>
+      algorithm in the C++ Standard Template Library (STL) as there are shortcomings
+      concerning performance in the original design. The following work presents
+      a more flexible algorithm called <span class="bold"><strong><span class="emphasis"><em>boost::generate</em></span></strong></span>
+      which requires extension of the current STL concepts. The main goal is to make
+      use of more efficient ways to assign values to a range by retaining the same
+      interface.
+    </p>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.intro.usage"></a><a class="link" href="intro.html#generate.intro.usage" title="Usage">Usage</a>
+</h3></div></div></div>
+<p>
+        In contrast to the Standard Generate algorithm the <span class="bold"><strong><span class="emphasis"><em>boost::generate</em></span></strong></span>
+        algorithm allows an extended generator function object. Not only a nullary
+        function call operator must be provided but also a <span class="bold"><strong><span class="emphasis"><em>range
+        function call operator</em></span></strong></span> can be exposed by the generator:
+      </p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">generator</span>
+<span class="special">{</span>
+	<span class="comment">/*return_type*/</span> <span class="keyword">operator</span><span class="special">()();</span>                                              <span class="comment">// required for std::generate</span>
+	<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Iterator</span><span class="special">&gt;</span> <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">);</span>  <span class="comment">// alternative member function: range function call operator</span>
+<span class="special">};</span>
+</pre>
+<p>
+        In order to make use of the <span class="emphasis"><em>range function call</em></span> the
+        traits class <code class="computeroutput"><a class="link" href="../boost/is_range_generator.html" title="Struct template is_range_generator">boost::is_range_generator</a></code>
+        must be specialized. One does not have to specialize the traits class in
+        one of the following cases:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            The <span class="emphasis"><em>range function call</em></span> shall only be employed for
+            iterators which satisfy the <a class="link" href="concepts.html#generate.concepts.unit_stride_iterator" title="Unit Stride Iterator">Unit
+            stride Iterator concept</a>.
+          </li>
+<li class="listitem">
+            The generator class exposes a publicly accessible type named <code class="literal">is_range_generator</code>
+            which models a metafunction class working on Iterator types (see also
+            <a class="link" href="rationale.html#generate.rationale.vectorizable_iterators.predefined_metafunction_classes" title="Table&#160;1.1.&#160;Predefined Metafunction Classes">this
+            table</a> for predefined classes).
+          </li>
+</ul></div>
+<p>
+        The algorithm decides at compile time whether the generator class satisfies
+        the <a class="link" href="concepts.html#generate.concepts.range_generator" title="Range Generator">Range Generator concept</a>
+        and will either invoke the <span class="emphasis"><em>range generation function call operator</em></span>
+        or it will dispatch to the <span class="emphasis"><em>std::generate</em></span> function template.
+      </p>
+<p>
+        We shall introduce and explain the design and rationale of this library through
+        the following example.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.intro.random_number_generation"></a><a class="link" href="intro.html#generate.intro.random_number_generation" title="Motivating Example: Random Number Generation">Motivating Example:
+      Random Number Generation</a>
+</h3></div></div></div>
+<p>
+        Imagine one would like to generate (normally distributed) pseudo random numbers.
+        Let's first have a look at the c++ numerics library.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">N</span> <span class="special">=</span> <span class="number">1000000</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">samples</span><span class="special">(</span><span class="identifier">N</span><span class="special">);</span>
+
+<span class="comment">// generate N standard normal distributed random samples</span>
+<span class="comment">// using the c++11 numerics (random) library</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">normal_distribution</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">dist</span><span class="special">(</span><span class="number">0</span><span class="special">,</span><span class="number">1</span><span class="special">);</span>                                        <span class="comment">// probability distribution function</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">urng</span><span class="special">;</span>                                                                 <span class="comment">// uniform random number generator</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">samples</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">samples</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">bind</span><span class="special">(</span> <span class="identifier">dist</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">urng</span><span class="special">)</span> <span class="special">)</span> <span class="special">);</span> <span class="comment">// generate normal distributed variates</span>
+</pre>
+<p>
+      </p>
+<p>
+        While this certainly does work, it is not the fastest way of producing normally
+        distributed random samples. Of course there exist a variety of other libraries
+        which can be employed for this purpose. The Intel&#174; Math Kernel Library (MKL)
+        provides statistical functions (VSL: Vector Statistical Library) among which
+        there are a number of pseudo random number generators (PRNGs). These PRNGs
+        are highly optimized to generate vectors of random numbers. Let's see how
+        one would use this library.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// generate N standard normal distributed random samples</span>
+<span class="comment">// using Intel Math Kernel Library's (MKL) Statistical Functions</span>
+<span class="identifier">VSLStreamStatePtr</span> <span class="identifier">stream</span><span class="special">;</span>
+<span class="identifier">vslNewStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">,</span> <span class="identifier">VSL_BRNG_MT19937</span><span class="special">,</span> <span class="number">42</span><span class="special">);</span>                                       <span class="comment">// uniform random number generator stream</span>
+<span class="identifier">vdRngGaussian</span><span class="special">(</span><span class="identifier">VSL_RNG_METHOD_GAUSSIAN_BOXMULLER</span><span class="special">,</span> <span class="identifier">stream</span><span class="special">,</span> <span class="identifier">N</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">samples</span><span class="special">[</span><span class="number">0</span><span class="special">],</span> <span class="number">0</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>    <span class="comment">// generate normal distributed variates</span>
+<span class="identifier">vslDeleteStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">);</span>                                                          <span class="comment">// delete stream</span>
+</pre>
+<p>
+      </p>
+<p>
+        Mesured on a Intel&#174; Core&#8482; i7-3720QM CPU (2.60GHz) the MKL version uses
+        8 milliseconds whereas the standard random library uses 51 milliseconds.
+      </p>
+<p>
+        However, the interface provided by the Intel&#174; MKL are plain C functions
+        and thus one can not employ standard C++ techniques such as the generate
+        algorithm from the STL. Nevertheless, by wrapping the C function in a function
+        object, a standard conforming generator function object can be created.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">mkl_generator</span>
+<span class="special">{</span>
+	<span class="identifier">mkl_generator</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">vslNewStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">,</span> <span class="identifier">VSL_BRNG_MT19937</span><span class="special">,</span> <span class="number">42</span><span class="special">);</span> <span class="special">}</span>
+	<span class="identifier">mkl_generator</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mkl_generator</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">vslCopyStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">,</span> <span class="identifier">other</span><span class="special">.</span><span class="identifier">stream</span><span class="special">);</span> <span class="special">}</span>
+	<span class="special">~</span><span class="identifier">mkl_generator</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">vslDeleteStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">);</span> <span class="special">}</span>
+
+	<span class="keyword">inline</span> <span class="keyword">double</span> <span class="keyword">operator</span><span class="special">()()</span>
+	<span class="special">{</span>
+		<span class="keyword">double</span> <span class="identifier">result</span><span class="special">;</span>
+		<span class="identifier">vdRngGaussian</span><span class="special">(</span><span class="identifier">VSL_RNG_METHOD_GAUSSIAN_BOXMULLER</span><span class="special">,</span> <span class="identifier">stream</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">result</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
+		<span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
+	<span class="special">}</span>
+
+	<span class="identifier">VSLStreamStatePtr</span> <span class="identifier">stream</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        Now, with this generator at hand, let's again employ the standard generate
+        algorithm.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// generate N standard normal distributed random samples</span>
+<span class="comment">// using Intel Math Kernel Library's (MKL) Statistical Functions wrapped by a generator function object</span>
+<span class="identifier">mkl_generator</span> <span class="identifier">gen</span><span class="special">;</span>                                                                 <span class="comment">// create generator</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">samples</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">samples</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">gen</span><span class="special">));</span>                      <span class="comment">// generate normal distributed variates</span>
+</pre>
+<p>
+      </p>
+<p>
+        Measured on the same machine, this way of producing random samples takes
+        193 milliseconds. The slow performance is of course due to the fact, that
+        we did not make use of the inherent vector optimization provided by the MKL
+        library. Instead in our generator function object, we compute a single sample
+        every time the generator is called.
+      </p>
+<p>
+        This gives raise to the question if the std::generate concept is at all useful
+        for problems of this kind. Put another way, how can the std::generate be
+        extended in order to perform as fast as the plain MKL functions do?
+      </p>
+<p>
+        Support for vectorized operations can be gained by introducing a <span class="bold"><strong><span class="emphasis"><em>range function call</em></span></strong></span>:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">mkl_generator_refined</span>
+<span class="special">{</span>
+	<span class="identifier">mkl_generator_refined</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">vslNewStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">,</span> <span class="identifier">VSL_BRNG_MT19937</span><span class="special">,</span> <span class="number">42</span><span class="special">);</span> <span class="special">}</span>
+	<span class="identifier">mkl_generator_refined</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mkl_generator_refined</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">vslCopyStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">,</span> <span class="identifier">other</span><span class="special">.</span><span class="identifier">stream</span><span class="special">);</span> <span class="special">}</span>
+	<span class="special">~</span><span class="identifier">mkl_generator_refined</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">vslDeleteStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">);</span> <span class="special">}</span>
+
+	<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+	<span class="keyword">inline</span> <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">)</span>
+	<span class="special">{</span>
+		<span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">n</span> <span class="special">=</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">last</span> <span class="special">-</span> <span class="identifier">first</span><span class="special">);</span>
+		<span class="identifier">vdRngGaussian</span><span class="special">(</span><span class="identifier">VSL_RNG_METHOD_GAUSSIAN_BOXMULLER</span><span class="special">,</span> <span class="identifier">stream</span><span class="special">,</span> <span class="identifier">n</span><span class="special">,</span> <span class="special">&amp;(*</span><span class="identifier">first</span><span class="special">),</span> <span class="number">0</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
+	<span class="special">}</span>
+
+	<span class="identifier">VSLStreamStatePtr</span> <span class="identifier">stream</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        With this interface one can make use of the optimized MKL function.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// generate N standard normal distributed random samples</span>
+<span class="comment">// using Intel Math Kernel Library's (MKL) Statistical Functions wrapped by another generator function object</span>
+<span class="identifier">mkl_generator_refined</span> <span class="identifier">gen2</span><span class="special">;</span>                                                       <span class="comment">// create generator</span>
+<span class="identifier">gen2</span><span class="special">(</span><span class="identifier">samples</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">samples</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>                                             <span class="comment">// generate normal distributed variates</span>
+</pre>
+<p>
+      </p>
+<p>
+        The time consumed by this generation is again equal to 8 milliseconds.
+      </p>
+<p>
+        However, this generator class does not meet the requirements of the standard
+        generate algorithm. In addition, the generator's interface is not general
+        enough. Assuming non-contiguous memory for the underlying data structure,
+        vector optimizations may not be possible. The Iterator class must as well
+        provide the difference operator. Thus, not every Iterator class can be used
+        with this generator.
+      </p>
+<p>
+        Therefore, the <span class="bold"><strong><span class="emphasis"><em>boost::generate</em></span></strong></span>
+        algorithm proposed here must be able to determine at compile time whether
+        a <span class="emphasis"><em>range function call</em></span> as introduced above is possible.
+        In case the requirements are not met, a <span class="bold"><strong><span class="emphasis"><em>dispatch</em></span></strong></span>
+        to the original serial standard generate algorithm is done. While introducing
+        a new concept for vectorizable iterators (<a class="link" href="concepts.html#generate.concepts.constant_stride_iterator" title="Constant Stride Iterator">Constant
+        Stride Iterators</a>) and a novel concept for <a class="link" href="concepts.html#generate.concepts.range_generator" title="Range Generator">Range
+        Generators</a>, the <span class="bold"><strong><span class="emphasis"><em>boost::generate</em></span></strong></span>
+        algorithm retains the same interface as the original generate algorithm but
+        in addition provides means for vectorizing.
+      </p>
+<p>
+        In our example for the random numbers the generator class can easily be altered
+        to conform the <a class="link" href="concepts.html#generate.concepts.range_generator" title="Range Generator">Range Generator
+        concept</a>:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">mkl_range_generator</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range_generate</span><span class="special">::</span><span class="identifier">unit_stride_range_generator_type_checked</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">is_range_generator</span><span class="special">;</span>
+	
+	<span class="identifier">mkl_range_generator</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">vslNewStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">,</span> <span class="identifier">VSL_BRNG_MT19937</span><span class="special">,</span> <span class="number">42</span><span class="special">);</span> <span class="special">}</span>
+	<span class="identifier">mkl_range_generator</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mkl_range_generator</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">vslCopyStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">,</span> <span class="identifier">other</span><span class="special">.</span><span class="identifier">stream</span><span class="special">);</span> <span class="special">}</span>
+	<span class="special">~</span><span class="identifier">mkl_range_generator</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">vslDeleteStream</span><span class="special">(&amp;</span><span class="identifier">stream</span><span class="special">);</span> <span class="special">}</span>
+
+	<span class="keyword">inline</span> <span class="keyword">double</span> <span class="keyword">operator</span><span class="special">()()</span>
+	<span class="special">{</span>
+		<span class="keyword">double</span> <span class="identifier">result</span><span class="special">;</span>
+		<span class="identifier">vdRngGaussian</span><span class="special">(</span><span class="identifier">VSL_RNG_METHOD_GAUSSIAN_BOXMULLER</span><span class="special">,</span> <span class="identifier">stream</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">result</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
+		<span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
+	<span class="special">}</span>
+
+	<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">UnitStrideIterator</span><span class="special">&gt;</span>
+	<span class="keyword">inline</span> <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">UnitStrideIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">UnitStrideIterator</span> <span class="identifier">last</span><span class="special">)</span>
+	<span class="special">{</span>
+		<span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">n</span> <span class="special">=</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">last</span> <span class="special">-</span> <span class="identifier">first</span><span class="special">);</span>
+		<span class="identifier">vdRngGaussian</span><span class="special">(</span><span class="identifier">VSL_RNG_METHOD_GAUSSIAN_BOXMULLER</span><span class="special">,</span> <span class="identifier">stream</span><span class="special">,</span> <span class="identifier">n</span><span class="special">,</span> <span class="special">&amp;(*</span><span class="identifier">first</span><span class="special">),</span> <span class="number">0</span><span class="special">,</span> <span class="number">1</span><span class="special">);</span>
+	<span class="special">}</span>
+
+	<span class="identifier">VSLStreamStatePtr</span> <span class="identifier">stream</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        The only difference to the previous generator is the typedef <code class="literal">is_range_generator</code>.
+        Here we have used a predifined convinience class (<code class="computeroutput"><a class="link" href="../boost/range_generate/unit_stride_range_idm23904.html" title="Struct template unit_stride_range_generator_type_checked">unit_stride_range_generator_type_checked</a></code>)
+        which makes sure that the range function call will only be invoked for iterators
+        which satisfy the Unit Stride Iterator concept and whose value type is <code class="literal">double</code>.
+        For all other iterators, the standard generate algorithm (using the nullary
+        function call operator) will be employed. Then this generator can be used
+        with <span class="bold"><strong><span class="emphasis"><em>boost::generate</em></span></strong></span>
+        (runtime: 8 milliseconds):
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// generate N standard normal distributed random samples</span>
+<span class="comment">// using Intel Math Kernel Library's (MKL) Statistical Functions wrapped by a range generator function object</span>
+<span class="identifier">mkl_range_generator</span> <span class="identifier">gen3</span><span class="special">;</span>                                                         <span class="comment">// create generator</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">samples</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">samples</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">gen3</span><span class="special">));</span>                  <span class="comment">// generate normal distributed variates</span>
+</pre>
+<p>
+      </p>
+<p>
+        For a data structures whose iterators do not confine the <a class="link" href="concepts.html#generate.concepts.unit_stride_iterator" title="Unit Stride Iterator">Unit
+        Stride iterator concept</a>, the original <span class="emphasis"><em>std::generate</em></span>
+        algorithm is invoked internally:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// generate N standard normal distributed random samples for a linked list</span>
+<span class="comment">// using Intel Math Kernel Library's (MKL) Statistical Functions wrapped by a range generator function object</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">samples_list</span><span class="special">(</span><span class="identifier">N</span><span class="special">);</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">samples_list</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">samples_list</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">gen3</span><span class="special">));</span>        <span class="comment">// generate normal distributed variates</span>
+</pre>
+<p>
+      </p>
+<p>
+        This time the runtime was measured to be 193 milliseconds, thus as slow as
+        expected from our previous experiment with <span class="emphasis"><em>std::generate</em></span>.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.intro.compiler_auto_vectorization"></a><a class="link" href="intro.html#generate.intro.compiler_auto_vectorization" title="Compiler Auto-Vectorization">Compiler
+      Auto-Vectorization</a>
+</h3></div></div></div>
+<p>
+        The <span class="bold"><strong><span class="emphasis"><em>std::generate</em></span></strong></span> algorithm
+        provided by the c++ Standard Template Library (STL [lib.alg.generate]) is
+        typically implemented through a <span class="emphasis"><em>while</em></span>-loop as it is
+        not specified how to traverse along the elements in the range specified by
+        the iterators.
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ForwardIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Generator</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">generate</span> <span class="special">(</span> <span class="identifier">ForwardIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">ForwardIterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Generator</span> <span class="identifier">gen</span> <span class="special">)</span>
+<span class="special">{</span>
+  <span class="keyword">while</span> <span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span>  <span class="special">*</span><span class="identifier">first</span><span class="special">++</span> <span class="special">=</span> <span class="identifier">gen</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+        Unfortunately, the while-loop seems to hinder compiler optimization (e.g.
+        auto-vectorization) for <code class="literal">Iterator</code> types which represent
+        contiguous memory layouts like <code class="literal">int*</code> or <code class="literal">std::vector&lt;int&gt;::iterator</code>.
+        Tests have been carried out in order to measure the difference in performance
+        using different implementations for the standard generate algorithm. See
+        <a class="link" href="compiler_optimizations.html" title="Compiler Optimizations">this section</a> for the
+        results.
+      </p>
+<p>
+        Therefore, <span class="bold"><strong>boost::generate</strong></span> employs a for-loop
+        when dealing with Unit Stride Iterators instead of dispatching to the std::generate
+        function (cases where <span class="emphasis"><em>no</em></span> Range Generator is involved).
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

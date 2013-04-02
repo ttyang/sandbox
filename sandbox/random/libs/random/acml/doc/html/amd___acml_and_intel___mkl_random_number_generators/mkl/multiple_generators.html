@@ -1,0 +1,125 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Multiple Generators</title>
+<link rel="stylesheet" href="../../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="up" href="../../boost_mkl_acml/mkl.html" title="Intel&#174; MKL Generators">
+<link rel="prev" href="timings.html" title="Timings">
+<link rel="next" href="../../headers.html" title="Headers">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="timings.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_mkl_acml/mkl.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../headers.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators"></a><a class="link" href="multiple_generators.html" title="Multiple Generators">Multiple
+      Generators</a>
+</h3></div></div></div>
+<p>
+        In parallel codes one usually is in need of several independent random number
+        generators. There exist different ways in order to achieve truly independent
+        random number streams.
+      </p>
+<h5>
+<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.h0"></a>
+        <span><a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.different_seeds"></a></span><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.different_seeds">Different
+        Seeds</a>
+      </h5>
+<p>
+        As the statistical properties of the random number generators are only guaranteed
+        within sequences, not between sequences, this method is not satisfactory
+        and should be avoided.
+      </p>
+<h5>
+<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.h1"></a>
+        <span><a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.different_parameter_sets"></a></span><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.different_parameter_sets">Different
+        Parameter Sets</a>
+      </h5>
+<p>
+        The Whichmann-Hill engine <code class="computeroutput"><a class="link" href="../../boost/random/mkl/wh.html" title="Type definition wh">wh</a></code>
+        provides 273 different parameter sets and the Mersenne Twister engine <code class="computeroutput"><a class="link" href="../../boost/random/mkl/mt2203.html" title="Type definition mt2203">mt2203</a></code> provides 6024 different
+        parameter sets. Thus only with this enginea a limited number of independent
+        random number streams can be produced. Of course, one could also use the
+        three other engines (which have different statistical properties) and thus
+        in total there are 6304 independent engines available.
+      </p>
+<h5>
+<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.h2"></a>
+        <span><a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.block_splitting"></a></span><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.block_splitting">Block-Splitting</a>
+      </h5>
+<p>
+        Some of the engines allow for block-splitting, sometimes referred to as "skip-ahead".
+        This method consists of splitting the sequence into k non-overlapping blocks,
+        each of length n, where n is larger than the maximum number of variates required
+        from any of the sequences. Block-splitting can only be applied to <code class="computeroutput"><a class="link" href="../../boost/random/mkl/mcg31.html" title="Type definition mcg31">mcg31</a></code>, <code class="computeroutput"><a class="link" href="../../boost/random/mkl/mrg32k3a.html" title="Type definition mrg32k3a">mrg32k3a</a></code>,
+        <code class="computeroutput"><a class="link" href="../../boost/random/mkl/mcg59.html" title="Type definition mcg59">mcg59</a></code>, <code class="computeroutput"><a class="link" href="../../boost/random/mkl/wh.html" title="Type definition wh">wh</a></code>, <code class="computeroutput"><a class="link" href="../../boost/random/mkl/sobol.html" title="Type definition sobol">sobol</a></code>
+        and <code class="computeroutput"><a class="link" href="../../boost/random/mkl/niederr.html" title="Type definition niederr">niederr</a></code> as the
+        engines must be able to "fast-forward" a large number of places.
+        Wheter an engine possesses the ability to do block-splitting can be inqired
+        by a traits class: <code class="computeroutput"><a class="link" href="../../boost/random/mkl/has_block_split.html" title="Struct template has_block_split">boost::random::mkl::has_block_split</a></code>.
+      </p>
+<p>
+        In order to get indepent engines by block-splitting one can employ the function
+        <code class="computeroutput"><a class="link" href="../../boost/random/mkl/make_independen_idp6294720.html" title="Function template make_independent_engines_by_block_split">boost::random::mkl::make_independent_engines_by_block_split</a></code>.
+        See also the following example:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">mcg31</span> <span class="identifier">engine_t</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;</span> <span class="identifier">engines</span><span class="special">(</span><span class="number">100</span><span class="special">);</span>                                                                             <span class="comment">// 100 MKL engines</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">make_independent_engines_by_block_split</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;(</span><span class="identifier">engines</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">engines</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="number">10000</span><span class="special">);</span>   <span class="comment">// make engines independent (max 10000 variates per engine)</span>
+</pre>
+<p>
+      </p>
+<h5>
+<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.h3"></a>
+        <span><a name="amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.leap_frogging"></a></span><a class="link" href="multiple_generators.html#amd___acml_and_intel___mkl_random_number_generators.mkl.multiple_generators.leap_frogging">Leap-frogging</a>
+      </h5>
+<p>
+        Some engines allow for leap-frogging. With this method a set of k engines
+        produce independent sequences by generating every kth element of the sequence
+        a single engine would produce. Leap-frogging can only be applied to <code class="computeroutput"><a class="link" href="../../boost/random/mkl/mcg31.html" title="Type definition mcg31">mcg31</a></code>, <code class="computeroutput"><a class="link" href="../../boost/random/mkl/mcg59.html" title="Type definition mcg59">mcg59</a></code>
+        and <code class="computeroutput"><a class="link" href="../../boost/random/mkl/wh.html" title="Type definition wh">wh</a></code>. Whether an engine
+        possesses the ability to do leap-frogging can be inqired by a traits class:
+        <code class="computeroutput"><a class="link" href="../../boost/random/mkl/has_leap_frog.html" title="Struct template has_leap_frog">boost::random::mkl::has_leap_frog</a></code>.
+      </p>
+<p>
+        In order to get indepent engines by block-splitting one can employ the function
+        <code class="computeroutput"><a class="link" href="../../boost/random/mkl/make_independen_idp6301488.html" title="Function template make_independent_engines_by_leap_frog">boost::random::mkl::make_independent_engines_by_leap_frog</a></code>.
+        See also the following example:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">mcg31</span> <span class="identifier">engine_t</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;</span> <span class="identifier">engines</span><span class="special">(</span><span class="number">100</span><span class="special">);</span>                                                                             <span class="comment">// 100 MKL engines</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">make_independent_engines_by_leap_frog</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&gt;(</span><span class="identifier">engines</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">engines</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>            <span class="comment">// make engines independent</span>
+</pre>
+<p>
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="timings.html"><img src="../../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_mkl_acml/mkl.html"><img src="../../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../../headers.html"><img src="../../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

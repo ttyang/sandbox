@@ -1,0 +1,240 @@
+[/
+ / Copyright (c) 2013 Fabian Bösch
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See
+ / accompanying file LICENSE_1_0.txt or copy at
+ / http://www.boost.org/LICENSE_1_0.txt)
+]
+
+Intel® provides highly optimized uniform random number generators in the Intel® Math Kernel Library(MKL). The random number generation mechanisms can be found in the library's component
+called Vector Statistical Library (VSL).
+The existing C API has been wrapped into C++ classes which meet the 
+requirements of a [prng pseudo-random number generator].
+This library provides class templates hidden in
+`namespace boost::random::mkl` (see __mkl_engine).
+
+The random number engines accept one template argument:
+
+	template <int brng>
+	class engine;
+
+where [^brng] is a code defined in the MKL library which refers to a specific random number generator.
+
+[table generators
+	[[generator] [method] [approx. length of cycle] [comment]]
+	[[__mkl_mcg31] [31-bit multiplicative congruential generator.] [2[sup 31]-2] [-]]
+	[[__mkl_r250] [Generalized feedback shift register generator.] [2[sup 250]] [-]]
+	[[__mkl_mrg32k3a] [Combined multiple recursive generator with two components of order 3.] [2[sup 191]] [-]]
+	[[__mkl_mcg59] [59-bit multiplicative congruential generator.] [2[sup 57]] [-]]
+	[[__mkl_wh, [^engine<VSL_BRNG_WH+1>], ... [^engine<VSL_BRNG_WH+272]] [Set of 273 Wichmann-Hill combined multiplicative congruential generators.] [2[sup 80]] [273 sets of parameters.]]
+	[[__mkl_mt19937_] [Mersenne Twister pseudorandom number generator.] [2[sup 19937]-1] [-]]
+	[[__mkl_sfmt19937] [SIMD-oriented Fast Mersenne Twister pseudorandom number generator.] [2[sup 19937]-1] [-]]
+	[[__mkl_mt2203, [^engine<VSL_BRNG_MT2203+1>], ... [^engine<VSL_BRNG_MT2203+6023>]] [Set of 6024 Mersenne-Twister pseudorandom number generators.] [2[sup 2203]-1] [6024 sets of parameters.]]
+	[[__mkl_sobol] [32-bit Gray code-based generator producing low-discrepancy sequences for dimensions 1 ≤ s ≤ 40.] [2[sup 32]] [User-defined dimensions are also available.]]
+	[[__mkl_niederr] [32-bit Gray code-based generator producing low-discrepancy sequences for dimensions 1 ≤ s ≤ 318.] [2[sup 32]] [User-defined dimensions are also available.]]
+]
+
+For further informations about the random number generators please refer to the Intel® MKL documentation
+[#footnote.id][footnote [@http://software.intel.com/sites/products/documentation/doclib/mkl_sa/11/mklman/index.htm]]
+and the Intel® VSL notes
+[footnote Intel Math Kernel Library: Vector Statistical Library Notes, Document Number: 310713-009US, [@http://developer.intel.com/software/products/perflib/index.htm]]
+
+[note In order for these generators to work one must have installed the Intel® MKL and appropriately linked the library to the executable.]
+
+
+[section Range Function Call]
+
+The Intel® MKL random number generation mechanisms are vectorized and highly optimized. However, the usual boost random number generator interface only provides 
+a unary function call operator to generate a random variate. As this is insufficient in order to make use of the vectorized MKL functions, the MKL engines 
+provide an extended interface with an additional __mkl_engine_range_function_call. This example illustrates the usage:
+
+	__mkl_mt19937 engine;
+	std::vector<typename boost::random::mkl::mt19937::result_type> v;
+	engine(v.begin(), v.end());
+
+Through this interface these wrapper template classes are equally fast as the raw Intel® MKL/VSL functions (see this [mkl_timings section]).
+
+[note one must use the [*['range function call]] with iterators which model the [unit_stride_iterator Unit Stride Iterator concept]. Otherwise, the iterators are not suitable for vectorization.]
+
+The MKL/VSL functions are vectorized, thus it is not allowed to use the ['range function call] with std::list iterators for example. In order to inquire whether
+your iterator class is suitable for vectorization the engines provide a metafunction class: __mkl_engine_is_vectorizable. This metafunction class has a nested
+template class called apply which returns an integral constant wrapper of type bool. Thus, it is similar to a traits class. The following code line illustrates how
+one can make sure that a range function call is possible.
+
+	boost::random::mkl::mt19937::is_range_generator::apply<YourIteratorClass>::type::value == true
+
+Alternatively, one could also employ the following traits class:
+
+	boost::is_range_generator<typename boost::random::acml::mt19937, YourIteratorClass>::type::value == true
+
+The mechanism used here is described in the Boost.Generate documentation and is called a [range_generator Range Generator]. Therefore, this engines can also be used
+with __boost_generate.
+
+[endsect]
+
+
+[section Initialization]
+
+Apart from default construction the engines can be initialized with a seed value.
+Using construction by seed sequence or by an iterator range, multiple seed values can be taken into account. The number of accepted values as well as their interpretation
+differs for the different engines. For a detailed description please refer to the Intel® VSL notes.
+
+[endsect]
+
+
+
+[section Distributions]
+
+The Intel® Math Kernel Library (MKL) also provides functions to generate differently distributed random numbers. These functions are as well highly optimized and
+usually perform better than Boost or Standard random distributions. The MKL engines presented here
+are able to make use of these fast functions due to the employment of a __variate_generator.
+
+The __variate_generator class template was specialized for some distrbibutions from Boost.Random and the Standard's nummerics library, as well as for some 
+distributions in the Standard's TR1 extension. In order to inquire whether the distribution you intend to use is able to profit from ACML enhancements, one can
+employ the following traits class: __mkl_variate_generator.
+
+Depending on the library of choice for the distribution classes, one can include the following headers:
+
+[table Headers for variate_generator specializations
+	[[Header] [Purpose]]	
+	[[__mkl_boost_distributions] [Boost.Random distributions]]
+	[[__mkl_0x_distributions] [Standard.Numerics distributions]]
+	[[__mkl_tr1_distributions] [Standard.TR1 distributions]]
+]
+
+The specialized variate_generators again meet the requirements of a [range_generator Range Generator]. The random variates should be generated through a ['range function call]
+in order to profit from the vectorized ACML functions. 
+The following example shall illustrate the usage of the variate generator in combination with the MKL engines.
+
+[import ../example/distributions.cpp]
+[mkl_distributions_example]
+
+[caution The MKL random number engines will work used directly with Boost/Standard distributions (without a variate_generator). They will however be usually slower, because no
+advantage is taken from the vectorized MKL functions.]
+
+[note Due to a bug in the gcc libstdc++ library which persisted up to version 20120906 some of the Standard.Numerics variate_generator specializations are not available for earlier versions of this library.]
+
+[note The discrete uniform distribution in the MKL library accepts a half open range [a,b) and thus, using a uniform int distribution with a MKL engine (through a variate_generator) with 
+b = std::numeric_limits<int>::max() will not result in vectorized MKL function calls.]
+
+[endsect]
+
+
+[section Timings]
+
+The following figures show the performance of the Intel® MKL, AMD® ACML, Boost.Random and Standard.Numerics engines applied to different distributions (both Standard and Boost). 
+The timings were conducted on a linux (Ubuntu 12.04, 64 bit) machine with Intel® Core™ i7-3720QM CPU (2.60GHz) and GCC compiler.
+
+
+[table Uniform real distribution with Mersenne Twister 19937
+	[[engine                          ] [distribution                                        ] [variate_generator ] [run time for 10[sup 3] numbers \[ms\]] [approx. speed compared to fastest] [run time for 10[sup 4] numbers \[ms\]] [approx. speed compared to fastest ] [run time for 10[sup 5] numbers \[ms\]] [approx. speed compared to fastest ]]
+	[[[^boost::random::mt19937       ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [      0.010548] [    11%] [      0.055078] [    18%] [      0.525434] [   22%]]
+	[[[^std::mt19937                 ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [      0.010986] [    10%] [      0.112632] [   8.8%] [       1.09825] [   10%]]
+	[[[^boost::random::acml::mt19937 ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [      0.281552] [  0.40%] [       2.79961] [  0.35%] [       27.9886] [ 0.41%]]
+	[[[^boost::random::acml::mt19937 ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [       0.28108] [  0.40%] [       2.79716] [  0.35%] [       27.9637] [ 0.41%]]
+	[[[^boost::random::acml::mt19937 ]] [[^std::uniform_real_distribution<double>           ]] [yes               ] [       0.00176] [    64%] [      0.015184] [    65%] [      0.159364] [   72%]]
+	[[[^boost::random::acml::mt19937 ]] [[^boost::random::uniform_real_distribution<double> ]] [yes               ] [      0.001706] [    66%] [      0.015216] [    65%] [      0.159168] [   72%]]
+	[[plain ACML function             ] [plain ACML function                                 ] [-                 ] [      0.001708] [    66%] [      0.015066] [    66%] [       0.15879] [   72%]]
+	[[[^boost::random::mkl::mt19937  ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [       0.06791] [   1.7%] [      0.673732] [   1.5%] [       6.73015] [  1.7%]]
+	[[[^boost::random::mkl::mt19937  ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [      0.036828] [   3.1%] [      0.365108] [   2.7%] [       3.63906] [  3.2%]]
+	[[[^boost::random::mkl::mt19937  ]] [[^std::uniform_real_distribution<double>           ]] [yes               ] [      0.001302] [    87%] [      0.010272] [    97%] [      0.115526] [   99%]]
+	[[[^boost::random::mkl::mt19937  ]] [[^boost::random::uniform_real_distribution<double> ]] [yes               ] [      0.001134] [[*100%]] [      0.009916] [[*100%]] [      0.115468] [[*100%]]]
+	[[plain MKL function              ] [plain MKL function                                  ] [-                 ] [       0.00113] [[*100%]] [      0.009962] [[*100%]] [       0.11493] [[*100%]]]
+]
+
+[table Normal distribution with Mersenne Twister 19937
+	[[engine                          ] [distribution                                        ] [variate_generator ] [run time for 10[sup 3] numbers \[ms\]] [approx. speed compared to fastest] [run time for 10[sup 4] numbers \[ms\]] [approx. speed compared to fastest ] [run time for 10[sup 5] numbers \[ms\]] [approx. speed compared to fastest ]]
+    [[[^boost::random::mt19937       ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [0.0533   ] [   9.9%] [  0.5296   ] [    10%] [  5.2750   ] [    11%]]
+    [[[^std::mt19937                 ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [0.0458   ] [    11%] [  0.4486   ] [    12%] [  4.4607   ] [    13%]]
+    [[[^boost::random::acml::mt19937 ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [0.3887   ] [   1.4%] [  3.8658   ] [   1.4%] [ 38.6177   ] [   1.5%]]
+    [[[^boost::random::acml::mt19937 ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [0.3340   ] [   1.6%] [  3.3135   ] [   1.7%] [ 33.1321   ] [   1.7%]]
+    [[[^boost::random::acml::mt19937 ]] [[^std::uniform_real_distribution<double>           ]] [yes               ] [0.0103   ] [    51%] [  0.1049   ] [    53%] [  1.0072   ] [    56%]]
+    [[[^boost::random::acml::mt19937 ]] [[^boost::random::uniform_real_distribution<double> ]] [yes               ] [0.0103   ] [    51%] [  0.1033   ] [    54%] [  1.0088   ] [    56%]]
+    [[plain ACML function             ] [plain ACML function                                 ] [-                 ] [0.0104   ] [    51%] [  0.1036   ] [    54%] [  1.0082   ] [    56%]]
+    [[[^boost::random::mkl::mt19937  ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [0.3645   ] [   1.4%] [  3.5718   ] [   1.6%] [ 35.6541   ] [   1.6%]]
+    [[[^boost::random::mkl::mt19937  ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [9.8315   ] [ 0.054%] [ 98.4091   ] [ 0.057%] [984.4130   ] [ 0.058%]]
+    [[[^boost::random::mkl::mt19937  ]] [[^std::uniform_real_distribution<double>           ]] [yes               ] [0.0054   ] [    98%] [  0.0559   ] [    99%] [  0.5686   ] [[*100%]]]
+    [[[^boost::random::mkl::mt19937  ]] [[^boost::random::uniform_real_distribution<double> ]] [yes               ] [0.0053   ] [[*100%]] [   0.0556  ] [[*100%]] [   0.5681  ] [[*100%]]]
+    [[plain MKL function              ] [plain MKL function                                  ] [-                 ] [0.0054   ] [    98%] [  0.0567   ] [    98%] [  0.5683   ] [[*100%]]]
+]
+
+[table Exponential distribution with Mersenne Twister 19937
+	[[engine                          ] [distribution                                        ] [variate_generator ] [run time for 10[sup 3] numbers \[ms\]] [approx. speed compared to fastest] [run time for 10[sup 4] numbers \[ms\]] [approx. speed compared to fastest ] [run time for 10[sup 5] numbers \[ms\]] [approx. speed compared to fastest ]]
+    [[[^boost::random::mt19937       ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [0.0439  ] [   7.2%] [0.4343  ] [   7.1%] [ 4.3195  ] [  7.6%]]
+    [[[^std::mt19937                 ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [0.0507  ] [   6.3%] [0.5013  ] [   6.2%] [ 4.9984  ] [  6.6%]]
+    [[[^boost::random::acml::mt19937 ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [0.3210  ] [  0.99%] [3.1737  ] [  0.98%] [31.7263  ] [  1.0%]]
+    [[[^boost::random::acml::mt19937 ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [0.3228  ] [  0.99%] [3.1974  ] [  0.97%] [31.9974  ] [  1.0%]]
+    [[[^boost::random::acml::mt19937 ]] [[^std::uniform_real_distribution<double>           ]] [yes               ] [0.0060  ] [    53%] [0.0578  ] [    54%] [ 0.5663  ] [   58%]]
+    [[[^boost::random::acml::mt19937 ]] [[^boost::random::uniform_real_distribution<double> ]] [yes               ] [0.0060  ] [    53%] [0.0579  ] [    54%] [ 0.5671  ] [   58%]]
+    [[plain ACML function             ] [plain ACML function                                 ] [-                 ] [0.0061  ] [    52%] [0.0575  ] [    54%] [ 0.5633  ] [   58%]]
+    [[[^boost::random::mkl::mt19937  ]] [[^std::uniform_real_distribution<double>           ]] [no                ] [0.0948  ] [   3.4%] [0.9251  ] [   3.4%] [ 9.2560  ] [  3.65]]
+    [[[^boost::random::mkl::mt19937  ]] [[^boost::random::uniform_real_distribution<double> ]] [no                ] [0.1086  ] [   2.9%] [1.0680  ] [   2.9%] [10.6798  ] [  3.1%]]
+    [[[^boost::random::mkl::mt19937  ]] [[^std::uniform_real_distribution<double>           ]] [yes               ] [0.0032  ] [[*100%]] [0.0310  ] [[*100%]] [ 0.3294  ] [[*100%]]]
+    [[[^boost::random::mkl::mt19937  ]] [[^boost::random::uniform_real_distribution<double> ]] [yes               ] [0.0032  ] [    99%] [0.0311  ] [[*100%]] [ 0.3296  ] [[*100%]]]
+    [[plain MKL function              ] [plain MKL function                                  ] [-                 ] [0.0032  ] [    99%] [0.0311  ] [[*100%]] [ 0.3293  ] [[*100%]]]
+]
+
+[heading Discussion]
+
+The MKL engines as well as the ACML engines perform equally well as the direct invokation of the respective library's c-API independent of the distributon class when a variate generator is applied. 
+Thus, the wrapping in a c++ class conforming the Uniform Random Number Generator concept does not introduce significant overhead.
+
+The MKL engines used through a variate generator perform approximately 4.5-14 times faster than the Boost engines (with Boost distributions) and they are around 7.5-16 times faster than the
+Standard engines (with Standard distributions) depending on the distribution.
+
+The ACML engines used through a variate generator are approximately 3-7.5 times faster than the Boost engines (with Boost distributions) and they perform around 4-9 times better than the
+Standard engines (with Standard distributions) depending on the distribution.
+
+For a time-critical code it thus may be of benefit to employ either the ACML or the MKL engines presented here. The speed-up can however only be achieved when using the engines in combination
+with a boost::variate_generator. Using the distributions directly with an optimized engine will generally slow down the code severely.
+
+
+[heading C++11]
+
+The variate_generator is a feature of the Boost.Random library and the c++03 TR1 extension. In the current c++ standard the variate_generator has not been taken over. The lack of such a mechanism
+makes it hard using c++11 libraries and syntax to find an appropriate alternative to a partially optimized random number generating mechanism as presented here. 
+Thus, one might be better off using the boost::variate_generator still in c++11 code.
+
+[endsect]
+
+[section Multiple Generators]
+
+In parallel codes one usually is in need of several independent random number generators. There exist different ways in order to achieve truly independent random number streams.
+
+[heading Different Seeds]
+
+As the statistical properties of the random number generators are only guaranteed within sequences, not between sequences, this method is not satisfactory and should be avoided.
+
+
+[heading Different Parameter Sets]
+
+The Whichmann-Hill engine __mkl_wh provides 273 different parameter sets and the Mersenne Twister engine __mkl_mt2203 provides 6024 different parameter sets. 
+Thus only with this enginea a limited number of independent random number streams can be produced. 
+Of course, one could also use the three other engines (which have different statistical properties) and thus in total there are 6304 independent engines available. 
+
+
+[heading Block-Splitting]
+
+Some of the engines allow for block-splitting, sometimes referred to as "skip-ahead". This method consists of splitting the sequence
+into k non-overlapping blocks, each of length n, where n is larger than the maximum number of variates required from any of the sequences.
+Block-splitting can only be applied to __mkl_mcg31, __mkl_mrg32k3a, __mkl_mcg59, __mkl_wh, __mkl_sobol and __mkl_niederr as the engines must be able to "fast-forward" a large
+number of places. Wheter an engine possesses the ability to do block-splitting can be inqired by a traits class: __mkl_has_block_split.
+
+In order to get indepent engines by block-splitting one can employ the function __mkl_block_split. See also the following example:
+
+[import ../example/independent_engines.cpp]
+[mkl_independent_engines_example_block_split]
+
+[heading Leap-frogging]
+
+Some engines allow for leap-frogging. With this method a set of k engines produce independent sequences by generating every kth element
+of the sequence a single engine would produce. Leap-frogging can only be applied to __mkl_mcg31, __mkl_mcg59 and __mkl_wh.
+Whether an engine possesses the ability to do leap-frogging can be inqired by a traits class: __mkl_has_leap_frog.
+
+In order to get indepent engines by block-splitting one can employ the function __mkl_leap_frog. See also the following example:
+
+[mkl_independent_engines_example_leap_frog]
+
+
+
+[endsect]

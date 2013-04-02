@@ -1,0 +1,13 @@
+
+
+lib acml : : <file>/opt/acml5.2.0/gfortran64_int64/lib/libacml.a ;
+lib gfortran rt dl m ;
+
+
+project /boost/generate/example/acml
+	: requirements <include>/opt/acml5.2.0/gfortran64_int64/include <cxxflags>-std=c++0x <library>acml <library>gfortran <library>rt <library>dl <library>m
+	;
+
+
+exe acml_example : acml.cpp ;
+

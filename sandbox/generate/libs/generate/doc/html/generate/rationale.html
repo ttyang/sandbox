@@ -1,0 +1,402 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Rationale</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="prev" href="intro.html" title="Introduction">
+<link rel="next" href="examples.html" title="Examples">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="intro.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="generate.rationale"></a><a class="link" href="rationale.html" title="Rationale">Rationale</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="rationale.html#generate.rationale.goals">Goals</a></span></dt>
+<dt><span class="section"><a href="rationale.html#generate.rationale.vectorizable_iterators">Vectorizable
+      iterators</a></span></dt>
+<dt><span class="section"><a href="rationale.html#generate.rationale.generator_interface__traits_class_and_metafunction_classes">Generator
+      interface, traits class and metafunction classes</a></span></dt>
+<dt><span class="section"><a href="rationale.html#generate.rationale.dispatch_mechanism">Dispatch mechanism</a></span></dt>
+<dt><span class="section"><a href="rationale.html#generate.rationale.type_inference">Type inference</a></span></dt>
+<dt><span class="section"><a href="rationale.html#generate.rationale.conclusion">Conclusion</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.rationale.goals"></a><a class="link" href="rationale.html#generate.rationale.goals" title="Goals">Goals</a>
+</h3></div></div></div>
+<p>
+        The goals of the improved <span class="emphasis"><em>generate</em></span> algorithm are
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            retain the same interface as the <span class="emphasis"><em>std::generate</em></span> algorithm
+          </li>
+<li class="listitem">
+            provide means for range generation / explicit vectorization
+          </li>
+<li class="listitem">
+            compile-time mechanism for determining whether range generation can be
+            employed
+          </li>
+<li class="listitem">
+            experimental: infere from type whether range generation is possible
+          </li>
+</ul></div>
+</div>
+<p>
+      In conclusion, the <span class="bold"><strong><span class="emphasis"><em>boost::generate</em></span></strong></span>
+      algorithm extends the standard algorithm such that highly (vector) optimized
+      generators can be employed without a loss of performance.
+    </p>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.rationale.vectorizable_iterators"></a><a class="link" href="rationale.html#generate.rationale.vectorizable_iterators" title="Vectorizable iterators">Vectorizable
+      iterators</a>
+</h3></div></div></div>
+<p>
+        The generate algorithm's generic interface takes two iterators as arguments
+        which define a range where the generator is applied to. These iterators,
+        however, may not be suitable for range generation. Consider a generator which
+        internally relies on optimized vector operations. If used with an iterator
+        type whose values are not aligned contiguously in memory and cannot be accessed
+        randomly (e.g. for a linked list iterator), vectorization is likely to be
+        impossible. Thus, there are memory requirements for an iterator's underlying
+        data structure in order to be to be naturally vectorizable.
+      </p>
+<p>
+        For the purpose of describing iterator classes which are suitable for vectorization,
+        the Random Access Iterator concept is refined for Iterators whose values
+        are organized with a constant stride in memory:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <a class="link" href="concepts.html#generate.concepts.constant_stride_iterator" title="Constant Stride Iterator">Constant Stride
+            Iterator concept</a>
+          </li>
+<li class="listitem">
+            <a class="link" href="concepts.html#generate.concepts.unit_stride_iterator" title="Unit Stride Iterator">Unit Stride Iterator
+            concept</a>
+          </li>
+</ul></div>
+<p>
+        In order to determine whether a particular iterator class models the Constant
+        Stride Iterator concept a <code class="computeroutput"><a class="link" href="../boost/is_constant_str_idp7056880.html" title="Struct template is_constant_stride_iterator">traits
+        class</a></code> is employed. Currently only pointers and <code class="literal">std::vector&lt;T&gt;::iterator</code>
+        types are supported. The user can add other types by direct specialization
+        of the traits class or by using a <code class="computeroutput"><a class="link" href="../BOOST_IS_CONSTANT_STRIDE_ITERATOR.html" title="Macro BOOST_IS_CONSTANT_STRIDE_ITERATOR">convinience
+        macro</a></code>.
+      </p>
+<p>
+        Introducung range generation (vectorization) ability for Constant (or Unit)
+        Stride Iterators in your generator class can be easily achieved by using
+        a convinience class:
+      </p>
+<div class="table">
+<a name="generate.rationale.vectorizable_iterators.predefined_metafunction_classes"></a><p class="title"><b>Table&#160;1.1.&#160;Predefined Metafunction Classes</b></p>
+<div class="table-contents"><table class="table" summary="Predefined Metafunction Classes">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Class
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../boost/range_generate/unit_stride_range_idm29248.html" title="Struct unit_stride_range_generator">unit_stride_range_generator</a></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Range genereration for Unit Stride Iterators.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../boost/range_generate/unit_stride_range_idm23904.html" title="Struct template unit_stride_range_generator_type_checked">unit_stride_range_generator_type_checked</a></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Range generation for Unit Stride Iterators with specific <code class="literal">value_type</code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../boost/range_generate/constant_stride_idp5656864.html" title="Struct constant_stride_range_generator">constant_stride_range_generator</a></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Range generation for Constant Stride Iterators.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><a class="link" href="../boost/range_generate/constant_stride_idp5662208.html" title="Struct template constant_stride_range_generator_type_checked">constant_stride_range_generator_type_checked</a></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Range generation for Constant Stride Iterators with specific <code class="literal">value_type</code>.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+        The purpose of this classes shall be further explained in the next section.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.rationale.generator_interface__traits_class_and_metafunction_classes"></a><a class="link" href="rationale.html#generate.rationale.generator_interface__traits_class_and_metafunction_classes" title="Generator interface, traits class and metafunction classes">Generator
+      interface, traits class and metafunction classes</a>
+</h3></div></div></div>
+<p>
+        As already mentioned in the <a class="link" href="intro.html#generate.intro.random_number_generation" title="Motivating Example: Random Number Generation">motivating
+        example</a> a generator which is able to handle assignment of a range
+        at once must propose a different interface as required by the C++ standard
+        for the generate algorithm. In particular, a <span class="bold"><strong><span class="emphasis"><em>range
+        function call</em></span></strong></span> is proposed:
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">Iterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">last</span><span class="special">);</span>
+</pre>
+<p>
+        Using this operator, only one function call from the generate algorithm to
+        the generator is necessary. All the computation and iteration is then handled
+        by the generator itself. This kind of generation shall be denoted <span class="bold"><strong><span class="emphasis"><em>range generation</em></span></strong></span>.
+      </p>
+<p>
+        As mentioned in the previous section, <span class="emphasis"><em>range generation</em></span>
+        might not be applicable to every iterator class. Put another way, as the
+        <span class="emphasis"><em>range function call</em></span> can not be specialized for different
+        types, another mechanism is required to inquire whether range generation
+        is possible. This can be achieved by at traits class which takes a generator
+        class and an iterator type as input (see <code class="computeroutput"><a class="link" href="../boost/is_range_generator.html" title="Struct template is_range_generator">boost::is_range_generator</a></code>).
+      </p>
+<p>
+        In order to simplify the usage of this library, another optional extension
+        to the generator class's interface is proposed. The generator may expose
+        an associated type called <span class="bold"><strong><code class="literal">is_range_generator</code></strong></span>.
+        This type models a <span class="bold"><strong><span class="emphasis"><em>metafunction class</em></span></strong></span>
+        (a class with a publicly-accessible nested metafunction called apply):
+      </p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">is_range_generator</span>
+<span class="special">{</span>
+	<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+	<span class="keyword">struct</span> <span class="identifier">apply</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+        The unary metafunction <code class="literal">apply</code>'s result is acessible through
+        the nested typedef <code class="literal">type</code>. The result type is required to
+        model an integral constant bool type (e.g. <code class="literal">boost::mpl::bool_</code>).
+      </p>
+<p>
+        As long as the traits class <code class="computeroutput"><a class="link" href="../boost/is_range_generator.html" title="Struct template is_range_generator">boost::is_range_generator</a></code>
+        is not specialized, this metafunction class determines whether a generator's
+        range function call can be invoked. In particular, if the following expression
+        results to <code class="literal">true</code>, the range generation ability is assumed:
+      </p>
+<pre class="programlisting"><span class="identifier">YourGenerator</span><span class="special">::</span><span class="identifier">is_range_generator</span><span class="special">::</span><span class="identifier">apply</span><span class="special">&lt;</span><span class="identifier">SomeIteratorClass</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span>
+</pre>
+<p>
+        The requirements described here are summed up in the <a class="link" href="concepts.html#generate.concepts.range_generator" title="Range Generator">Range
+        Generator concept</a>. A natural choice for iterators which can be used
+        for vectorizing are <a class="link" href="concepts.html#generate.concepts.constant_stride_iterator" title="Constant Stride Iterator">Constant
+        Stride Iterators</a> and <a class="link" href="concepts.html#generate.concepts.unit_stride_iterator" title="Unit Stride Iterator">Unit
+        Stride Iterators</a>. Predifined metafunction classes are available for
+        these iterator categories (see previous section).
+      </p>
+<p>
+        In conclusion, the <a class="link" href="concepts.html#generate.concepts.range_generator" title="Range Generator">Range
+        Generator concept</a> enables the user to specify which iterator types
+        are allowed for range generation. The <span class="bold"><strong><span class="emphasis"><em>boost::generate</em></span></strong></span>
+        algorithm is able to decide at compile time whether range generation (which
+        can be a more efficient way of generating values in many cases) can be employed,
+        and it can dispatch to the correspondingly appropriate function (see also
+        the next section).
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.rationale.dispatch_mechanism"></a><a class="link" href="rationale.html#generate.rationale.dispatch_mechanism" title="Dispatch mechanism">Dispatch mechanism</a>
+</h3></div></div></div>
+<p>
+        As a reminder, consider the interface of the <span class="emphasis"><em>std::generate</em></span>
+        algorithm.
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ForwardIterator</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Generator</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">generate</span> <span class="special">(</span><span class="identifier">ForwardIterator</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">ForwardIterator</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Generator</span> <span class="identifier">gen</span><span class="special">);</span>
+</pre>
+<p>
+        We want to preserve this interface for the <span class="emphasis"><em>boost::generate</em></span>
+        algorithm. However, internally several checks are carried out to find out
+        whether the generator type (<code class="literal">Generator</code>) models a <span class="emphasis"><em>Range
+        Generator</em></span>
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            does the traits class <code class="computeroutput"><a class="link" href="../boost/is_range_generator.html" title="Struct template is_range_generator">boost::is_range_generator</a></code>
+            return true for the <code class="literal">Generator</code> and the <code class="literal">Iterator</code>
+            types?
+          </li>
+<li class="listitem">
+            if it is not specialized:
+            <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                  does the generator expose an associated type <code class="literal">is_range_generator</code>?
+                </li>
+<li class="listitem">
+                  does the iterator type (<code class="literal">Iterator</code>) satisfy the
+                  metafunction (<code class="literal">Generator::is_vectorizable::apply&lt;Iterator&gt;::type::value
+                  == true</code>)?
+                </li>
+</ul></div>
+          </li>
+</ul></div>
+<p>
+        If the above <span class="emphasis"><em>Range Generator</em></span> test is passed, the algorithm
+        will call the generator's <span class="emphasis"><em>range function call</em></span> ( <code class="literal">gen(first,last);</code>
+        ). Otherwise, we employ a further (experimental) check whether the generator
+        class really is not vectorizable (see next section). If again it is found
+        that <span class="emphasis"><em>range generation</em></span> cannot be applied, the standard
+        generate algorithm is invoked ( <code class="literal">std::generate(first,last,gen);</code>
+        ). However, there is one exception. When, the iterator satisfies the Unit
+        Stride Iterator concept, the std::generate function is not invoked but an
+        own implementation thereof is used. The reasons are given in <a class="link" href="compiler_optimizations.html" title="Compiler Optimizations">this
+        section</a>.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.rationale.type_inference"></a><a class="link" href="rationale.html#generate.rationale.type_inference" title="Type inference">Type inference</a>
+</h3></div></div></div>
+<p>
+        This is an experimental feature. If a generator class is found not to satisfy
+        the <span class="emphasis"><em>Range Generator concept</em></span> because it the <code class="computeroutput"><a class="link" href="../boost/is_range_generator.html" title="Struct template is_range_generator">traits class</a></code> is not specialized
+        and the generator does not expose an associated type <code class="literal">is_range_generator</code>,
+        the algorithm tries to determine whether this generator still might be suitable
+        for vectorization.
+      </p>
+<p>
+        If the generator class declares a <span class="emphasis"><em>range function call</em></span>
+        and the iterator type models the <span class="emphasis"><em>Unit Stride Iterator concept</em></span>
+        the <span class="emphasis"><em>range function call</em></span> is invoked nevertheless.
+      </p>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../../../../../doc/src/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          If a function object declares a member function, the signature of which
+          can be interpreted as range function call operator, a range generation
+          can be invoked unintentionally (e.g. when using <code class="literal">std::bind</code>
+          this can become a problem, because a binary function bound as a nullary
+          function object by std::bind still exposes a binary function call operator).
+        </p></td></tr>
+</table></div>
+<p>
+        In order to suppress this functionality, define the following directive:
+      </p>
+<pre class="programlisting"><span class="identifier">BOOST_GENERATE_NO_EXPERIMENTAL_TYPE_INFERENCE</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.rationale.conclusion"></a><a class="link" href="rationale.html#generate.rationale.conclusion" title="Conclusion">Conclusion</a>
+</h3></div></div></div>
+<p>
+        So why the fuzz? Why bothering introducing new concepts and another generate
+        algorithm? If we want our generator to work fast, we could have used a generator
+        "as is" without the <span class="emphasis"><em>boost::generate</em></span> algorithm:
+      </p>
+<pre class="programlisting"><span class="identifier">generator</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span><span class="identifier">last</span><span class="special">);</span>
+</pre>
+<p>
+        Although it may not be very nice in terms of standard interfaces, this seems
+        to be simple and efficient as well. However, the user is required to know
+        whether the generator is a Range Generator or not and thus, the user always
+        must take care which function call operator can be called. Depending on the
+        data structure which one intends to fill with generated values, a generator
+        may use different methods and therefore, when it comes to generic programming,
+        this approach quickly becomes insufficient
+      </p>
+<p>
+        On the other hand, the Boost.Generate library places a powerful though simple
+        tool at disposal. Consider the follwing example from the Boost.Random library
+        where optimized random number generators can be found at <a href="../../../../../../random/libs/random/acml/doc/html/boost_mkl_acml/mkl.html" target="_top">boost/random/mkl</a>
+        and <a href="../../../../../../random/libs/random/acml/doc/html/boost_mkl_acml/acml.html" target="_top">boost/random/acml</a>.
+        These wrapper classes for the Intel&#174; Math Kernel Library's and the AMD&#174;
+        Core Math Library's random number engines (see also <a class="link" href="examples.html#generate.examples.mkl_acml" title="Intel MKL / AMD ACML random numbers and distributions">this
+        example</a>) meet the requirements of the Range Generator concept. As
+        it turns out, there are also specializations for the <code class="literal">boost::variate_generator</code>
+        class template available for these engines which in turn are also Range Generators.
+        These variate generators can be used with either Boost or Standard random
+        distributions and whenever an appropriate fast implementation can be found
+        in the MKL or ACML, respectively, the optimized method is used instead of
+        the default implementation. Thus we can use
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span><span class="identifier">last</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variate_generator</span><span class="special">&lt;</span><span class="identifier">special_engine_type</span><span class="special">,</span> <span class="identifier">distribution_type</span><span class="special">&gt;(</span><span class="identifier">engine</span><span class="special">,</span><span class="identifier">distribution</span><span class="special">));</span>
+</pre>
+<p>
+        and whenever a variate generator is specialized for a particular engine /
+        distribution pair and the iterator is a Unit Stride Iterator, this will result
+        in a <span class="emphasis"><em>range function call</em></span> which in turn invokes some
+        vectorized function from the ACML/MKL and thus is much more efficient. For
+        timings see <a href="../../../../../../random/libs/random/acml/doc/html/amd___acml_and_intel___mkl_random_number_generators/mkl/timings.html" target="_top">this
+        link</a>.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="intro.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="examples.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

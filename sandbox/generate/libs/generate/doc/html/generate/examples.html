@@ -1,0 +1,259 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Examples</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.Generate">
+<link rel="prev" href="rationale.html" title="Rationale">
+<link rel="next" href="concepts.html" title="Concepts">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="rationale.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="generate.examples"></a><a class="link" href="examples.html" title="Examples">Examples</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="examples.html#generate.examples.omp_fibonacci_number_generator">OMP
+      Fibonacci number generator</a></span></dt>
+<dt><span class="section"><a href="examples.html#generate.examples.omp_stride_initializer">OMP stride
+      initializer</a></span></dt>
+<dt><span class="section"><a href="examples.html#generate.examples.mkl_acml">Intel MKL / AMD ACML random
+      numbers and distributions</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.examples.omp_fibonacci_number_generator"></a><a class="link" href="examples.html#generate.examples.omp_fibonacci_number_generator" title="OMP Fibonacci number generator">OMP
+      Fibonacci number generator</a>
+</h3></div></div></div>
+<p>
+        In this example open mp parallelization is used to create fibonacci numbers.
+        The generator outlined below works in prallel by using an omp pragma for
+        it's for loop. Nevertheless, the generate algorithm can be employed. Note
+        that the generator does only work for Unit Stride iterators with <code class="literal">value_type</code>
+        equal to <code class="literal">unsigned long</code>.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generate</span><span class="special">/</span><span class="identifier">generate</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">omp</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
+
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">;</span>
+
+<span class="keyword">struct</span> <span class="identifier">omp_fibonacci_generator</span>
+<span class="special">{</span>
+	<span class="comment">// typedefs</span>
+	<span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="identifier">result_type</span><span class="special">;</span>                                                                         <span class="comment">// generator's result type</span>
+	<span class="keyword">typedef</span> <span class="keyword">double</span> <span class="identifier">internal_type</span><span class="special">;</span>                                                                              <span class="comment">// type used internally for computation</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range_generate</span><span class="special">::</span><span class="identifier">unit_stride_range_generator_type_checked</span><span class="special">&lt;</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">is_range_generator</span><span class="special">;</span>   <span class="comment">// metafunction class</span>
+	
+	<span class="comment">// range function call</span>
+	<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+	<span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">)</span>
+	<span class="special">{</span>
+		<span class="identifier">result_type</span><span class="special">*</span> <span class="identifier">m</span> <span class="special">=</span> <span class="special">&amp;(*</span><span class="identifier">begin</span><span class="special">);</span>                                                                        <span class="comment">// raw pointer to data</span>
+		<span class="keyword">const</span> <span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="identifier">end</span><span class="special">-</span><span class="identifier">begin</span><span class="special">;</span>                                                                        <span class="comment">// number of elements</span>
+		<span class="comment">// some constants</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">sqrt5</span> <span class="special">=</span> <span class="identifier">sqrt</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">internal_type</span><span class="special">&gt;(</span><span class="number">5</span><span class="special">));</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">f</span>     <span class="special">=</span> <span class="number">1</span> <span class="special">/</span> <span class="identifier">sqrt5</span><span class="special">;</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">phi</span>   <span class="special">=</span> <span class="special">(</span><span class="number">1</span> <span class="special">+</span> <span class="identifier">sqrt5</span><span class="special">)</span> <span class="special">/</span> <span class="number">2</span><span class="special">;</span>
+		<span class="keyword">const</span> <span class="identifier">internal_type</span> <span class="identifier">psi</span>   <span class="special">=</span> <span class="special">(</span><span class="number">1</span> <span class="special">-</span> <span class="identifier">sqrt5</span><span class="special">)</span> <span class="special">/</span> <span class="number">2</span><span class="special">;</span>
+		<span class="preprocessor">#pragma</span> <span class="identifier">omp</span> <span class="identifier">parallel</span> <span class="keyword">for</span> <span class="keyword">default</span><span class="special">(</span><span class="identifier">shared</span><span class="special">)</span> <span class="identifier">schedule</span><span class="special">(</span><span class="keyword">static</span><span class="special">)</span>                                          <span class="comment">// omp parallelization</span>
+		<span class="keyword">for</span> <span class="special">(</span><span class="identifier">size_t</span> <span class="identifier">i</span><span class="special">=</span><span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">&lt;</span><span class="identifier">n</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="identifier">m</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">f</span> <span class="special">*</span> <span class="special">(</span> <span class="identifier">pow</span><span class="special">(</span><span class="identifier">phi</span><span class="special">,</span> <span class="identifier">i</span><span class="special">+</span><span class="number">1</span><span class="special">)</span> <span class="special">-</span> <span class="identifier">pow</span><span class="special">(</span><span class="identifier">psi</span><span class="special">,</span> <span class="identifier">i</span><span class="special">+</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>                           <span class="comment">// use Moivre-Binet's explicit formula</span>
+	<span class="special">}</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="identifier">omp_set_num_threads</span><span class="special">(</span><span class="number">8</span><span class="special">);</span>
+	<span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">omp_fibonacci_generator</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">fibonacci_numbers</span><span class="special">(</span><span class="number">80</span><span class="special">);</span>
+	<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">omp_fibonacci_generator</span><span class="special">());</span>            <span class="comment">// call boost::generate</span>
+	<span class="identifier">copy</span><span class="special">(</span><span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">fibonacci_numbers</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">ostream_iterator</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">omp_fibonacci_generator</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&gt;(</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">"\n"</span><span class="special">));</span> <span class="comment">// print generated values</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.examples.omp_stride_initializer"></a><a class="link" href="examples.html#generate.examples.omp_stride_initializer" title="OMP stride initializer">OMP stride
+      initializer</a>
+</h3></div></div></div>
+<p>
+        This example again uses open mp parallelization as well as a Constant Stride
+        Iterator. Note the use of the macro BOOST_IS_CONSTANT_STRIDE_ITERATOR.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generate</span><span class="special">/</span><span class="identifier">generate</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">omp</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">iterator</span><span class="special">/</span><span class="identifier">iterator_facade</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">;</span>
+
+<span class="comment">// a constant stride iterator class</span>
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Value</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">stride</span><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">stride_iterator</span> <span class="special">:</span>
+<span class="keyword">public</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_facade</span><span class="special">&lt;</span> <span class="identifier">stride_iterator</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">,</span> <span class="identifier">stride</span><span class="special">&gt;,</span> <span class="identifier">Value</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random_access_traversal_tag</span><span class="special">&gt;</span>
+<span class="special">{</span>
+	<span class="keyword">public</span><span class="special">:</span>
+
+	<span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_facade</span><span class="special">&lt;</span><span class="identifier">stride_iterator</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">,</span> <span class="identifier">stride</span><span class="special">&gt;,</span> <span class="identifier">Value</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random_access_traversal_tag</span><span class="special">&gt;::</span><span class="identifier">difference_type</span> <span class="identifier">difference_type</span><span class="special">;</span>
+	<span class="identifier">stride_iterator</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">m</span><span class="special">(</span><span class="number">0</span><span class="special">)</span> <span class="special">{}</span>
+	<span class="keyword">explicit</span> <span class="identifier">stride_iterator</span><span class="special">(</span><span class="identifier">Value</span><span class="special">*</span> <span class="identifier">p</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">m</span><span class="special">(</span><span class="identifier">p</span><span class="special">)</span> <span class="special">{}</span>
+
+	<span class="keyword">private</span><span class="special">:</span>
+
+	<span class="keyword">friend</span> <span class="keyword">class</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_core_access</span><span class="special">;</span>
+	<span class="keyword">void</span> <span class="identifier">increment</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">m</span> <span class="special">+=</span> <span class="identifier">stride</span><span class="special">;</span> <span class="special">}</span>
+	<span class="keyword">void</span> <span class="identifier">decrement</span><span class="special">()</span> <span class="special">{</span> <span class="identifier">m</span> <span class="special">-=</span> <span class="identifier">stride</span><span class="special">;</span> <span class="special">}</span>
+	<span class="keyword">void</span> <span class="identifier">advance</span><span class="special">(</span><span class="identifier">difference_type</span> <span class="identifier">n</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">m</span> <span class="special">+=</span> <span class="identifier">n</span><span class="special">*</span><span class="identifier">stride</span><span class="special">;}</span>
+	<span class="identifier">difference_type</span> <span class="identifier">distance_to</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">stride_iterator</span><span class="special">&amp;</span> <span class="identifier">z</span><span class="special">)</span> <span class="keyword">const</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">(</span><span class="identifier">z</span><span class="special">.</span><span class="identifier">m</span> <span class="special">-</span> <span class="identifier">m</span><span class="special">)</span> <span class="special">/</span> <span class="identifier">stride</span><span class="special">;</span> <span class="special">}</span>
+	<span class="keyword">bool</span> <span class="identifier">equal</span><span class="special">(</span><span class="identifier">stride_iterator</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">other</span><span class="special">)</span> <span class="keyword">const</span> <span class="special">{</span> <span class="keyword">return</span> <span class="keyword">this</span><span class="special">-&gt;</span><span class="identifier">m</span> <span class="special">==</span> <span class="identifier">other</span><span class="special">.</span><span class="identifier">m</span><span class="special">;</span> <span class="special">}</span>
+	<span class="identifier">Value</span><span class="special">&amp;</span> <span class="identifier">dereference</span><span class="special">()</span> <span class="keyword">const</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">*</span><span class="identifier">m</span><span class="special">;</span> <span class="special">}</span>
+	<span class="identifier">Value</span><span class="special">*</span> <span class="identifier">m</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">ResultType</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">initializer</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range_generate</span><span class="special">::</span><span class="identifier">constant_stride_range_generator_type_checked</span><span class="special">&lt;</span><span class="identifier">ResultType</span><span class="special">&gt;</span> <span class="identifier">is_range_generator</span><span class="special">;</span>  <span class="comment">// metafunction class</span>
+
+	<span class="identifier">initializer</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">ResultType</span><span class="special">&amp;</span> <span class="identifier">i</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">initial_value</span><span class="special">(</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{}</span>	
+
+	<span class="comment">// range function call</span>
+	<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Iterator</span><span class="special">&gt;</span>
+	<span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">Iterator</span> <span class="identifier">begin</span><span class="special">,</span> <span class="identifier">Iterator</span> <span class="identifier">end</span><span class="special">)</span>
+	<span class="special">{</span>
+		<span class="keyword">const</span> <span class="identifier">size_t</span> <span class="identifier">s</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">stride</span><span class="special">&lt;</span><span class="identifier">Iterator</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">;</span>		
+		<span class="keyword">const</span> <span class="identifier">size_t</span> <span class="identifier">n</span> <span class="special">=</span> <span class="special">(</span><span class="identifier">end</span><span class="special">-</span><span class="identifier">begin</span><span class="special">)*</span><span class="identifier">s</span><span class="special">;</span>		
+		<span class="identifier">ResultType</span><span class="special">*</span> <span class="identifier">data</span> <span class="special">=</span> <span class="special">&amp;(*</span><span class="identifier">begin</span><span class="special">);</span>
+		<span class="preprocessor">#pragma</span> <span class="identifier">omp</span> <span class="identifier">parallel</span> <span class="keyword">for</span> <span class="keyword">default</span><span class="special">(</span><span class="identifier">shared</span><span class="special">)</span> <span class="identifier">schedule</span><span class="special">(</span><span class="keyword">static</span><span class="special">)</span>                                            <span class="comment">// omp parallelization</span>
+		<span class="keyword">for</span> <span class="special">(</span><span class="identifier">size_t</span> <span class="identifier">i</span><span class="special">=</span><span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">&lt;</span><span class="identifier">n</span><span class="special">;</span> <span class="identifier">i</span><span class="special">+=</span><span class="identifier">s</span><span class="special">)</span> <span class="identifier">data</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">initial_value</span><span class="special">;</span>
+	<span class="special">}</span>
+	<span class="keyword">const</span> <span class="identifier">ResultType</span> <span class="identifier">initial_value</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">typedef</span> <span class="identifier">stride_iterator</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="number">4</span><span class="special">&gt;</span> <span class="identifier">iter</span><span class="special">;</span>                                                                             <span class="comment">// iterator with stride 4 and value_type double</span>
+
+<span class="identifier">BOOST_IS_CONSTANT_STRIDE_ITERATOR</span><span class="special">(</span><span class="identifier">iter</span><span class="special">,</span> <span class="number">4</span><span class="special">)</span>                                                                           <span class="comment">// specialize traits class</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="identifier">omp_set_num_threads</span><span class="special">(</span><span class="number">8</span><span class="special">);</span>
+	<span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">1000</span><span class="special">);</span>
+	<span class="identifier">iter</span> <span class="identifier">begin</span><span class="special">(&amp;*</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()),</span> <span class="identifier">end</span><span class="special">(&amp;*</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>                                                                     <span class="comment">// construct stride iterators</span>
+	<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">begin</span><span class="special">,</span> <span class="identifier">end</span><span class="special">,</span> <span class="identifier">initializer</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(</span><span class="number">3</span><span class="special">));</span>                                                         <span class="comment">// call boost::generate</span>
+	<span class="identifier">copy</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">ostream_iterator</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">"\n"</span><span class="special">));</span>                                              <span class="comment">// print generated values</span>
+	<span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generate.examples.mkl_acml"></a><a class="link" href="examples.html#generate.examples.mkl_acml" title="Intel MKL / AMD ACML random numbers and distributions">Intel MKL / AMD ACML random
+      numbers and distributions</a>
+</h3></div></div></div>
+<p>
+        As previously mentioned the Boost.Random library provides fast random number
+        generators (<a href="../../../../../../random/libs/random/acml/doc/html/boost_mkl_acml/mkl.html" target="_top">boost/random/mkl</a>
+        and <a href="../../../../../../random/libs/random/acml/doc/html/boost_mkl_acml/acml.html" target="_top">boost/random/acml</a>).
+        This random number generators can be combined with a particular distribution
+        class through the use of a variate_generator. The variate_generator class
+        templates are specialized for the optimized MKL and ACML engines and provied
+        the necessary interface to model a Range Generator.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mkl</span><span class="special">/</span><span class="identifier">engine</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">mkl</span><span class="special">/</span><span class="identifier">c</span><span class="special">++</span><span class="number">11</span><span class="special">/</span><span class="identifier">distributions</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>                              <span class="comment">// specializations of the variate_generator class template for c++11 distribution classes</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
+
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">;</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="keyword">double</span> <span class="identifier">result_type</span><span class="special">;</span>
+	<span class="keyword">typedef</span> <span class="identifier">normal_distribution</span><span class="special">&lt;</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">distribution_t</span><span class="special">;</span>                 <span class="comment">// standard normal distribution</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">engine_t</span><span class="special">;</span>                            <span class="comment">// random number engine wrapper for Intel MKL functions</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variate_generator</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&amp;,</span><span class="identifier">distribution_t</span><span class="special">&gt;</span> <span class="identifier">generator_t</span><span class="special">;</span>  <span class="comment">// variate generator internally uses Intel MKL functions</span>
+
+	<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">1000</span><span class="special">);</span>
+	<span class="identifier">distribution_t</span> <span class="identifier">distribution</span><span class="special">;</span>
+	<span class="identifier">engine_t</span> <span class="identifier">engine</span><span class="special">;</span>
+	<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">generator_t</span><span class="special">(</span><span class="identifier">engine</span><span class="special">,</span><span class="identifier">distribution</span><span class="special">));</span>   <span class="comment">// generate variates</span>
+	<span class="identifier">copy</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">ostream_iterator</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">"\n"</span><span class="special">));</span>          <span class="comment">// print generated values</span>
+	<span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">acml</span><span class="special">/</span><span class="identifier">engine</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">random</span><span class="special">/</span><span class="identifier">acml</span><span class="special">/</span><span class="identifier">c</span><span class="special">++</span><span class="number">11</span><span class="special">/</span><span class="identifier">distributions</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>                             <span class="comment">// specializations of the variate_generator class template for c++11 distribution classes</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
+
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">std</span><span class="special">;</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+	<span class="keyword">typedef</span> <span class="keyword">double</span> <span class="identifier">result_type</span><span class="special">;</span>
+	<span class="keyword">typedef</span> <span class="identifier">normal_distribution</span><span class="special">&lt;</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">distribution_t</span><span class="special">;</span>                 <span class="comment">// standard normal distribution</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">mt19937</span> <span class="identifier">engine_t</span><span class="special">;</span>                           <span class="comment">// random number engine wrapper for AMD ACML functions</span>
+	<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">variate_generator</span><span class="special">&lt;</span><span class="identifier">engine_t</span><span class="special">&amp;,</span><span class="identifier">distribution_t</span><span class="special">&gt;</span> <span class="identifier">generator_t</span><span class="special">;</span>  <span class="comment">// variate generator internally uses AMD ACML functions</span>
+
+	<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">1000</span><span class="special">);</span>
+	<span class="identifier">distribution_t</span> <span class="identifier">distribution</span><span class="special">;</span>
+	<span class="identifier">engine_t</span> <span class="identifier">engine</span><span class="special">;</span>
+	<span class="identifier">boost</span><span class="special">::</span><span class="identifier">generate</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">generator_t</span><span class="special">(</span><span class="identifier">engine</span><span class="special">,</span><span class="identifier">distribution</span><span class="special">));</span>   <span class="comment">// generate variates</span>
+	<span class="identifier">copy</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">ostream_iterator</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">"\n"</span><span class="special">));</span>          <span class="comment">// print generated values</span>
+	<span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="rationale.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="concepts.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

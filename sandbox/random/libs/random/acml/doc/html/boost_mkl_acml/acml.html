@@ -1,0 +1,349 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>AMD&#174; ACML Generators</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="prev" href="../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="next" href="../amd___acml_and_intel___mkl_random_number_generators/acml/initialization.html" title="Initialization">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../amd___acml_and_intel___mkl_random_number_generators/acml/initialization.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_mkl_acml.acml"></a><a class="link" href="acml.html" title="AMD&#174; ACML Generators">AMD&#174; ACML Generators</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="acml.html#amd___acml_and_intel___mkl_random_number_generators.acml.range_function_call">Range
+      Function Call</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/acml/initialization.html">Initialization</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/acml/distributions.html">Distributions</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/acml/timings.html">Timings</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/acml/multiple_generators.html">Multiple
+      Generators</a></span></dt>
+</dl></div>
+<p>
+      AMD&#174; provides highly optimized uniform random number generators in the AMD&#174;
+      Core Math Library (ACML). The existing C API has been wrapped into C++ classes
+      which meet the requirements of a <a href="http://www.boost.org/doc/libs/1_53_0/doc/html/boost_random/reference.html#boost_random.reference.concepts.pseudo_random_number_generator" target="_top">pseudo-random
+      number generator</a>. This library provides class templates hidden in
+      <code class="computeroutput"><span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span></code> (see
+      <code class="computeroutput"><a class="link" href="../boost/random/acml/engine.html" title="Class template engine">engine</a></code>).
+    </p>
+<p>
+      The random number engines accept three template arguments:
+    </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">long</span> <span class="identifier">genid</span><span class="special">=</span><span class="number">1</span><span class="special">,</span> <span class="keyword">bool</span> <span class="identifier">single</span><span class="special">=</span><span class="keyword">false</span><span class="special">,</span> <span class="keyword">long</span> <span class="identifier">subid</span><span class="special">=</span><span class="number">1</span><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">engine</span><span class="special">;</span>
+</pre>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <span class="bold"><strong><code class="literal">genid</code></strong></span> can be a number
+          in {1,2,3,4}
+        </li>
+<li class="listitem">
+          <span class="bold"><strong><code class="literal">single</code></strong></span> indicates whether
+          the random number generator internally uses single precision operations
+        </li>
+<li class="listitem">
+          <span class="bold"><strong><code class="literal">subid</code></strong></span> can be a number
+          between 1 and 273 and is only meaningful if <span class="bold"><strong><code class="literal">genid</code></strong></span>
+          is equal to 2
+        </li>
+</ul></div>
+<div class="table">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.generators"></a><p class="title"><b>Table&#160;1.1.&#160;generators</b></p>
+<div class="table-contents"><table class="table" summary="generators">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                generator
+              </p>
+            </th>
+<th>
+              <p>
+                method
+              </p>
+            </th>
+<th>
+              <p>
+                approx. length of cycle
+              </p>
+            </th>
+<th>
+              <p>
+                comment
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="literal">engine&lt;1&gt;</code>, <code class="literal">engine&lt;1,true&gt;</code>
+              </p>
+            </td>
+<td>
+              <p>
+                NAG basic generator: linear congruential generator
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>57</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">engine&lt;2&gt;</code>, <code class="literal">engine&lt;2,true&gt;</code>,
+                <code class="literal">engine&lt;2,false,2&gt;</code>, <code class="literal">engine&lt;2,true,2&gt;</code>,
+                ..., <code class="literal">engine&lt;2,false,237&gt;</code>, <code class="literal">engine&lt;2,true,273&gt;</code>
+              </p>
+            </td>
+<td>
+              <p>
+                Whichman-Hill generator: combination of four linear congruential
+                generators
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>80</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                there are 273 sets of parameters
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">engine&lt;3&gt;</code>, <code class="literal">engine&lt;3,true&gt;</code>
+              </p>
+            </td>
+<td>
+              <p>
+                Mersenne Twister generator: twisted generalized feedback shift register
+                generator
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>19937</sup>-1
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="literal">engine&lt;4&gt;</code>, <code class="literal">engine&lt;4,true&gt;</code>
+              </p>
+            </td>
+<td>
+              <p>
+                L&#8217;Ecuyer&#8217;s combined recursive generator: combination of two multiple
+                recursive generators
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>191</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+      Most often used random number generators have a typedef in <code class="computeroutput"><span class="keyword">namespace</span>
+      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span></code>:
+    </p>
+<div class="table">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.convenience_typedefs"></a><p class="title"><b>Table&#160;1.2.&#160;convenience typedefs</b></p>
+<div class="table-contents"><table class="table" summary="convenience typedefs">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                alias
+              </p>
+            </th>
+<th>
+              <p>
+                type
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/acml/nag.html" title="Type definition nag">nag</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal">engine&lt;1&gt;</code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/acml/wh.html" title="Type definition wh">wh</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal">engine&lt;2&gt;</code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/acml/mt19937.html" title="Type definition mt19937">mt19937</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal">engine&lt;3&gt;</code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/acml/mrg32k3a.html" title="Type definition mrg32k3a">mrg32k3a</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal">engine&lt;4&gt;</code>
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        In order for these generators to work one must have installed the AMD&#174; ACML
+        and appropriately linked the library to the executable.
+      </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.acml.range_function_call"></a><a class="link" href="acml.html#amd___acml_and_intel___mkl_random_number_generators.acml.range_function_call" title="Range Function Call">Range
+      Function Call</a>
+</h3></div></div></div>
+<p>
+        The AMD&#174; ACML random number generation mechanisms are vectorized and highly
+        optimized. However, the usual boost random number generator interface only
+        provides a unary function call operator to generate a random variate. As
+        this is insufficient in order to make use of the vectorized ACML functions,
+        the ACML engines provide an extended interface with an additional <code class="computeroutput"><a class="link" href="../boost/random/acml/engine.html#idp5243776-bb">range function call</a></code>.
+        This example illustrates the usage:
+      </p>
+<pre class="programlisting"><code class="computeroutput"><a class="link" href="../boost/random/acml/mt19937.html" title="Type definition mt19937">boost::random::acml::mt19937</a></code> <span class="identifier">engine</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">;</span>
+<span class="identifier">engine</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+</pre>
+<p>
+        Through this interface these wrapper template classes are equally fast as
+        the raw AMD&#174; ACML functions (see this <a class="link" href="../amd___acml_and_intel___mkl_random_number_generators/mkl/timings.html" title="Timings">section</a>).
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          one must use the <span class="bold"><strong><span class="emphasis"><em>range function call</em></span></strong></span>
+          with iterators which model the <a href="../../../../../../../generate/libs/generate/doc/html/generate/concepts.html#generate.concepts.unit_stride_iterator" target="_top">Unit
+          Stride Iterator concept</a>. Otherwise, the iterators are not suitable
+          for vectorization.
+        </p></td></tr>
+</table></div>
+<p>
+        The ACML functions are vectorized, thus it is not allowed to use the <span class="emphasis"><em>range
+        function call</em></span> with std::list iterators for example. In order to
+        inquire whether your iterator class is suitable for vectorization the engines
+        provide a metafunction class: <code class="computeroutput"><a class="link" href="../boost/random/acml/engine.html#boost.random.acml.engine.is_range_generator">boost::random::acml::engine::is_range_generator</a></code>.
+        This metafunction class has a nested template class called apply which returns
+        an integral constant wrapper of type bool. The following code line illustrates
+        how one can make sure that a range function call is possible.
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">::</span><span class="identifier">is_range_generator</span><span class="special">::</span><span class="identifier">apply</span><span class="special">&lt;</span><span class="identifier">YourIteratorClass</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span> <span class="special">==</span> <span class="keyword">true</span>
+</pre>
+<p>
+        Alternatively, one could also employ the following traits class:
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_range_generator</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">,</span> <span class="identifier">YourIteratorClass</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span> <span class="special">==</span> <span class="keyword">true</span>
+</pre>
+<p>
+        The mechanism used here is described in the Boost.Generate documentation
+        and is called a <a href="../../../../../../../generate/libs/generate/doc/html/generate/concepts.html#generate.concepts.range_generator" target="_top">Range
+        Generator</a>. Therefore, these engines can also be used with <a href="../../../../../../../generate/libs/generate/doc/html/index.html" target="_top">Boost.Generate</a>.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../amd___acml_and_intel___mkl_random_number_generators/acml/initialization.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

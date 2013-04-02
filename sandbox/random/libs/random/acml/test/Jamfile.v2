@@ -1,0 +1,20 @@
+
+
+lib acml : : <file>/opt/acml5.2.0/gfortran64_int64/lib/libacml.a ;
+lib gfortran rt dl m ;
+
+
+project /boost/random/acml/test
+	: requirements <include>/opt/acml5.2.0/gfortran64_int64/include <cxxflags>-std=c++0x <library>acml <library>gfortran <library>rt <library>dl <library>m
+	;
+
+
+run test_nag.cpp /boost//unit_test_framework ;
+run test_nag_single.cpp /boost//unit_test_framework ;
+run test_wh.cpp /boost//unit_test_framework ;
+run test_wh_single.cpp /boost//unit_test_framework ;
+run test_mt19937.cpp /boost//unit_test_framework ;
+run test_mt19937_single.cpp /boost//unit_test_framework ;
+run test_mrg32k3a.cpp /boost//unit_test_framework ;
+run test_mrg32k3a_single.cpp /boost//unit_test_framework ;
+

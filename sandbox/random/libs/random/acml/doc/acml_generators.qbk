@@ -1,0 +1,201 @@
+[/
+ / Copyright (c) 2013 Fabian Bösch
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See
+ / accompanying file LICENSE_1_0.txt or copy at
+ / http://www.boost.org/LICENSE_1_0.txt)
+]
+
+
+AMD® provides highly optimized uniform random number generators in the AMD® Core Math Library (ACML).
+The existing C API has been wrapped into C++ classes which meet the 
+requirements of a [prng pseudo-random number generator].
+This library provides class templates hidden in
+`namespace boost::random::acml` (see __acml_engine).
+
+The random number engines accept three template arguments:
+
+	template <long genid=1, bool single=false, long subid=1>
+	class engine;
+
+* [*[^genid]] can be a number in {1,2,3,4}
+* [*[^single]] indicates whether the random number generator internally uses single precision operations
+* [*[^subid]] can be a number between 1 and 273 and is only meaningful if [*[^genid]] is equal to 2
+
+[table generators
+	[[generator] [method] [approx. length of cycle] [comment]]
+	[[[^engine<1>], [^engine<1,true>]] [NAG basic generator: linear congruential generator] [2[sup 57]] [-]]
+	[[[^engine<2>], [^engine<2,true>], [^engine<2,false,2>], [^engine<2,true,2>], ..., [^engine<2,false,237>], [^engine<2,true,273>]] [Whichman-Hill generator: combination of four linear congruential generators] [2[sup 80]] [there are 273 sets of parameters]]
+	[[[^engine<3>], [^engine<3,true>]] [Mersenne Twister generator: twisted generalized feedback shift register generator] [2[sup 19937]-1] [-]]
+	[[[^engine<4>], [^engine<4,true>]] [L’Ecuyer’s combined recursive generator: combination of two multiple recursive generators] [2[sup 191]] [-]]
+]
+
+Most often used random number generators have a typedef in `namespace boost::random::acml`:
+
+[table convenience typedefs
+	[[alias] [type]]
+	[[__acml_nag] [[^engine<1>]]]
+	[[__acml_wh] [[^engine<2>]]]
+	[[__acml_mt19937_] [[^engine<3>]]]
+	[[__acml_mrg32k3a] [[^engine<4>]]]
+]
+
+[note In order for these generators to work one must have installed the AMD® ACML and appropriately linked the library to the executable.]
+
+
+[section Range Function Call]
+
+The AMD® ACML random number generation mechanisms are vectorized and highly optimized. However, the usual boost random number generator interface only provides 
+a unary function call operator to generate a random variate. As this is insufficient in order to make use of the vectorized ACML functions, the ACML engines 
+provide an extended interface with an additional __acml_engine_range_function_call. This example illustrates the usage:
+
+	__acml_mt19937 engine;
+	std::vector<typename boost::random::acml::mt19937::result_type> v;
+	engine(v.begin(), v.end());
+
+Through this interface these wrapper template classes are equally fast as the raw AMD® ACML functions (see this [mkl_timings section]).
+
+[note one must use the [*['range function call]] with iterators which model the [unit_stride_iterator Unit Stride Iterator concept]. Otherwise, the iterators are not suitable for vectorization.]
+
+The ACML functions are vectorized, thus it is not allowed to use the ['range function call] with std::list iterators for example. In order to inquire whether
+your iterator class is suitable for vectorization the engines provide a metafunction class: __acml_engine_is_vectorizable. This metafunction class has a nested
+template class called apply which returns an integral constant wrapper of type bool. The following code line illustrates how
+one can make sure that a range function call is possible.
+
+	boost::random::acml::mt19937::is_range_generator::apply<YourIteratorClass>::type::value == true
+
+Alternatively, one could also employ the following traits class:
+
+	boost::is_range_generator<typename boost::random::acml::mt19937, YourIteratorClass>::type::value == true
+
+The mechanism used here is described in the Boost.Generate documentation and is called a [range_generator Range Generator]. Therefore, these engines can also be used
+with __boost_generate.
+
+[endsect]
+
+
+[section Initialization]
+
+Apart from default construction the engines can be initialized with a seed value.
+Using construction by seed sequence or by an iterator range, multiple seed values can be taken into account. These seed values must be positive and 
+the number of accepted values differs for the different engines. For a detailed description please refer to the AMD® Core Math Library (ACML) documentation
+[footnote [@http://developer.amd.com/tools/cpu-development/amd-core-math-library-acml/user-guide/6-random-number-generators]].
+
+[endsect]
+
+
+
+[section Distributions]
+
+The AMD® Core Math Library (ACML) also provides functions to generate differently distributed random numbers. These functions are as well highly optimized and
+usually perform better than Boost or Standard random distributions. The ACML engines presented here
+are able to make use of these fast functions due to the employment of a __variate_generator.
+
+The __variate_generator class template was specialized for some distrbibutions from Boost.Random and the Standard's nummerics library, as well as for some 
+distributions in the Standard's TR1 extension. In order to inquire whether the distribution you intend to use is able to profit from ACML enhancements, one can
+employ the following traits class: __acml_variate_generator.
+
+Depending on the library of choice for the distribution classes, one can include the following headers:
+
+[table Headers for variate_generator specializations
+	[[Header] [Purpose]]	
+	[[__acml_boost_distributions] [Boost.Random distributions]]
+	[[__acml_0x_distributions] [Standard.Numerics distributions]]
+	[[__acml_tr1_distributions] [Standard.TR1 distributions]]
+]
+
+The specialized variate_generators again meet the requirements of a [range_generator Range Generator]. The random variates should be generated through a ['range function call]
+in order to profit from the vectorized ACML functions. 
+The following example shall illustrate the usage of the variate generator in combination with the ACML engines.
+
+[import ../example/distributions.cpp]
+[acml_distributions_example]
+
+[caution The ACML random number engines will work used directly with Boost/Standard distributions (without a variate_generator). They will however be usually slower, because no
+advantage is taken from the vectorized ACML functions.]
+
+[note Due to a bug in the gcc libstdc++ library which persisted up to version 20120906 some of the Standard.Numerics variate_generator specializations are not available for earlier versions of this library.]
+
+[note Due to a bug in the ACML discrete uniform distributions with a range \[a,b\] such that a > std::numeric_limits<long>::max() - b will not result in vectorized ACML function calls.]
+
+[endsect]
+
+
+[section Timings]
+
+For a detailed benchmark and discussion please refer to [mkl_timings this section].
+[/
+The following figures show the performance of the ACML engines applied to different distributions in comparison to Boost.Random engines/distributions, Standard engines/distributions and plain C function calls
+to the AMD® Core Math Library. The timings were conducted on a linux (Ubuntu 12.04, 64 bit) machine with Intel® Core™ i7-3720QM CPU (2.60GHz) and GCC compiler.
+
+[$../../acml/doc/images/ACML Discrete Uniform Distribution.bmp [width 600px] [height 400px]]
+[$../../acml/doc/images/ACML Continuous Uniform Distribution.bmp [width 600px] [height 400px]]
+
+[$../../acml/doc/images/ACML Normal Distribution.bmp [width 600px] [height 400px]]
+[$../../acml/doc/images/ACML Exponential Distribution.bmp [width 600px] [height 400px]]
+
+The ACML engines (in combination with specialized variate_generators) perform equally fast as the plain C functions provided by the ACML. In general, the ACML engines perform almost an order of magnitude faster. 
+]
+
+[endsect]
+
+[section Multiple Generators]
+
+In parallel codes one usually is in need of several independent random number generators. There exist different ways in order to achieve truly independent random number streams.
+
+[section Different Seeds]
+
+As the statistical properties of the random number generators are only guaranteed within sequences, not between sequences, this method is not satisfactory and should be avoided.
+
+[endsect]
+
+[section Different Parameter Sets]
+
+The Whichmann-Hill engine provides 273 different paramater sets (set the third template argument accordingly). Thus only with this engine a limited number of independent
+random number streams can be produced. Of course, one could also use the three other engines (which have different statistical properties) and thus in total there are 276 independent engines available. 
+
+[endsect]
+
+[section Block-Splitting]
+
+Some of the engines allow for block-splitting, sometimes referred to as "skip-ahead". This method consists of splitting the sequence
+into k non-overlapping blocks, each of length n, where n is larger than the maximum number of variates required from any of the sequences.
+Block-splitting can only be applied to the NAG, the Wichmann-Hill and L’Ecuyer’s Combined Recursive generator as the engines must be able to "fast-forward" a large
+number of places. Wheter an engine possesses the ability to do block-splitting can be inqired by a traits class: __acml_has_block_split.
+
+In order to get indepent engines by block-splitting one can employ the function __acml_block_split. See also the following example:
+
+[import ../example/independent_engines.cpp]
+[acml_independent_engines_example_block_split]
+
+[endsect]
+
+[section Leap-frogging]
+
+Some engines allow for leap-frogging. With this method a set of k engines produce independent sequences by generating every kth element
+of the sequence a single engine would produce. Leap-frogging can only be applied to the NAG and the Wichmann-Hill generator.
+Whether an engine possesses the ability to do leap-frogging can be inqired by a traits class: __acml_has_leap_frog.
+
+In order to get indepent engines by block-splitting one can employ the function __acml_leap_frog. See also the following example:
+
+[acml_independent_engines_example_leap_frog]
+
+[note Due to rounding, a sequence generated using leap-frogging and a sequence
+constructed by taking every kth value from a set of variates generated without leap-frogging
+may differ slightly. These differences should only affect the least significant digit.]
+
+[caution A sequence generated using leap-frogging and a sequence constructed by taking every kth value from a set of variates generated without leap-frogging
+are shifted by n-1 values where n is the number of engines. This is due to the ACML implementation. In order to compare the two sequences one has to discard
+n-1 values from from the sequence generated without leap-frogging.]
+
+[endsect]
+
+
+
+
+[endsect]
+
+
+
+
+

@@ -1,0 +1,10 @@
+
+lib gomp ;
+
+project /boost/generate/example/omp\ stride\ initializer/
+	: requirements <cxxflags>-fopenmp <library>gomp
+	;
+
+
+exe omp_stride_initializer : omp_stride_initializer.cpp ;
+

@@ -1,0 +1,411 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Intel&#174; MKL Generators</title>
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;AMD&#174; ACML and Intel&#174; MKL Random Number Generators">
+<link rel="prev" href="../amd___acml_and_intel___mkl_random_number_generators/acml/multiple_generators.html" title="Multiple Generators">
+<link rel="next" href="../amd___acml_and_intel___mkl_random_number_generators/mkl/initialization.html" title="Initialization">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../amd___acml_and_intel___mkl_random_number_generators/acml/multiple_generators.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../amd___acml_and_intel___mkl_random_number_generators/mkl/initialization.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_random.mkl"></a><a class="link" href="mkl.html" title="Intel&#174; MKL Generators">Intel&#174; MKL Generators</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="mkl.html#amd___acml_and_intel___mkl_random_number_generators.mkl.range_function_call">Range
+      Function Call</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/mkl/initialization.html">Initialization</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/mkl/distributions.html">Distributions</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/mkl/timings.html">Timings</a></span></dt>
+<dt><span class="section"><a href="../amd___acml_and_intel___mkl_random_number_generators/mkl/multiple_generators.html">Multiple
+      Generators</a></span></dt>
+</dl></div>
+<p>
+      Intel&#174; provides highly optimized uniform random number generators in the Intel&#174;
+      Math Kernel Library(MKL). The random number generation mechanisms can be found
+      in the library's component called Vector Statistical Library (VSL). The existing
+      C API has been wrapped into C++ classes which meet the requirements of a <a href="http://www.boost.org/doc/libs/1_53_0/doc/html/boost_random/reference.html#boost_random.reference.concepts.pseudo_random_number_generator" target="_top">pseudo-random
+      number generator</a>. This library provides class templates with a template
+      value parameter, hidden in <code class="computeroutput"><span class="keyword">namespace</span>
+      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span></code> (see <code class="computeroutput"><a class="link" href="../boost/random/mkl/engine.html" title="Class template engine">engine</a></code>).
+    </p>
+<p>
+      The random number engines accept one template argument:
+    </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">brng</span><span class="special">&gt;</span>
+<span class="keyword">class</span> <span class="identifier">engine</span><span class="special">;</span>
+</pre>
+<p>
+      where <code class="literal">brng</code> is a code defined in the MKL library which refers
+      to a specific random number generator.
+    </p>
+<div class="table">
+<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.generators"></a><p class="title"><b>Table&#160;1.4.&#160;generators</b></p>
+<div class="table-contents"><table class="table" summary="generators">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                generator
+              </p>
+            </th>
+<th>
+              <p>
+                method
+              </p>
+            </th>
+<th>
+              <p>
+                approx. length of cycle
+              </p>
+            </th>
+<th>
+              <p>
+                comment
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/mcg31.html" title="Type definition mcg31">mcg31</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                31-bit multiplicative congruential generator.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>31</sup>-2
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/r250.html" title="Type definition r250">r250</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Generalized feedback shift register generator.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>250</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/mrg32k3a.html" title="Type definition mrg32k3a">mrg32k3a</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Combined multiple recursive generator with two components of order
+                3.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>191</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/mcg59.html" title="Type definition mcg59">mcg59</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                59-bit multiplicative congruential generator.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>57</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/wh.html" title="Type definition wh">wh</a></code>, <code class="literal">engine&lt;VSL_BRNG_WH+1&gt;</code>,
+                ... <code class="literal">engine&lt;VSL_BRNG_WH+272</code>
+              </p>
+            </td>
+<td>
+              <p>
+                Set of 273 Wichmann-Hill combined multiplicative congruential generators.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>80</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                273 sets of parameters.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/mt19937.html" title="Type definition mt19937">mt19937</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Mersenne Twister pseudorandom number generator.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>19937</sup>-1
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/sfmt19937.html" title="Type definition sfmt19937">sfmt19937</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                SIMD-oriented Fast Mersenne Twister pseudorandom number generator.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>19937</sup>-1
+              </p>
+            </td>
+<td>
+              <p>
+                -
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/mt2203.html" title="Type definition mt2203">mt2203</a></code>,
+                <code class="literal">engine&lt;VSL_BRNG_MT2203+1&gt;</code>, ... <code class="literal">engine&lt;VSL_BRNG_MT2203+6023&gt;</code>
+              </p>
+            </td>
+<td>
+              <p>
+                Set of 6024 Mersenne-Twister pseudorandom number generators.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>2203</sup>-1
+              </p>
+            </td>
+<td>
+              <p>
+                6024 sets of parameters.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/sobol.html" title="Type definition sobol">sobol</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                32-bit Gray code-based generator producing low-discrepancy sequences
+                for dimensions 1 &#8804; s &#8804; 40.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>32</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                User-defined dimensions are also available.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><a class="link" href="../boost/random/mkl/niederr.html" title="Type definition niederr">niederr</a></code>
+              </p>
+            </td>
+<td>
+              <p>
+                32-bit Gray code-based generator producing low-discrepancy sequences
+                for dimensions 1 &#8804; s &#8804; 318.
+              </p>
+            </td>
+<td>
+              <p>
+                2<sup>32</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                User-defined dimensions are also available.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><p>
+      For further informations about the random number generators please refer to
+      the Intel&#174; MKL documentation <a name="footnote.id"></a><sup>[<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.f0" href="#ftn.amd___acml_and_intel___mkl_random_number_generators.mkl.f0" class="footnote">2</a>]</sup> and the Intel&#174; VSL notes <sup>[<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.f1" href="#ftn.amd___acml_and_intel___mkl_random_number_generators.mkl.f1" class="footnote">3</a>]</sup>
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        In order for these generators to work one must have installed the Intel&#174;
+        MKL and appropriately linked the library to the executable.
+      </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="amd___acml_and_intel___mkl_random_number_generators.mkl.range_function_call"></a><a class="link" href="mkl.html#amd___acml_and_intel___mkl_random_number_generators.mkl.range_function_call" title="Range Function Call">Range
+      Function Call</a>
+</h3></div></div></div>
+<p>
+        The Intel&#174; MKL random number generation mechanisms are vectorized and highly
+        optimized. However, the random number generator interface only provides a
+        unary function call operator to generate a random variate. As this is insufficient
+        in order to make use of the vectorized MKL functions, the MKL engines provide
+        an extended interface with an additional <code class="computeroutput"><a class="link" href="../boost/random/mkl/engine.html#idp6499248-bb">range
+        function call</a></code>. This example illustrates the usage:
+      </p>
+<pre class="programlisting"><code class="computeroutput"><a class="link" href="../boost/random/mkl/mt19937.html" title="Type definition mt19937">boost::random::mkl::mt19937</a></code> <span class="identifier">engine</span><span class="special">;</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">;</span>
+<span class="identifier">engine</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">());</span>
+</pre>
+<p>
+        Through this interface these wrapper template classes are equally fast as
+        the raw Intel&#174; MKL/VSL functions (see this <a class="link" href="../">section</a>).
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          one must use the <span class="bold"><strong><span class="emphasis"><em>range function call</em></span></strong></span>
+          with iterators which model the <a href="../../../../../generate/doc/html/generate/concepts.html#generate.concepts.unit_stride_iterator" target="_top">Unit
+          Stride Iterator concept</a>. Otherwise, the iterators are not suitable
+          for vectorization.
+        </p></td></tr>
+</table></div>
+<p>
+        The MKL/VSL functions are vectorized, thus it is not allowed to use the
+        <span class="emphasis"><em>range function call</em></span> with std::list iterators for example.
+        In order to inquire whether your iterator class is suitable for vectorization
+        the engines provide a metafunction class: <code class="computeroutput"><a class="link" href="../boost/random/mkl/engine.html#boost.random.mkl.engine.is_range_generator">boost::random::mkl::engine::is_range_generator</a></code>.
+        This metafunction class has a nested template class called apply which returns
+        an integral constant wrapper of type bool. Thus, it is similar to a traits
+        class. The following code line illustrates how one can make sure that a range
+        function call is possible.
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">mkl</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">::</span><span class="identifier">is_range_generator</span><span class="special">::</span><span class="identifier">apply</span><span class="special">&lt;</span><span class="identifier">YourIteratorClass</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span> <span class="special">==</span> <span class="keyword">true</span>
+</pre>
+<p>
+        Alternatively, one could also employ the following traits class:
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_range_generator</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">random</span><span class="special">::</span><span class="identifier">acml</span><span class="special">::</span><span class="identifier">mt19937</span><span class="special">,</span> <span class="identifier">YourIteratorClass</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">value</span> <span class="special">==</span> <span class="keyword">true</span>
+</pre>
+<p>
+        The mechanism used here is described in the Boost.Generate documentation
+        and is called a <a href="../../../../../generate/doc/html/generate/concepts.html#generate.concepts.range_generator" target="_top">Range
+        Generator</a>. Therefore, this engines can also be used with <a href="../../../../../generate/doc/html/index.html" target="_top">Boost.Generate</a>.
+      </p>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a name="ftn.amd___acml_and_intel___mkl_random_number_generators.mkl.f0" href="#amd___acml_and_intel___mkl_random_number_generators.mkl.f0" class="para">2</a>] </sup>
+        <a href="http://software.intel.com/sites/products/documentation/doclib/mkl_sa/11/mklman/index.htm" target="_top">http://software.intel.com/sites/products/documentation/doclib/mkl_sa/11/mklman/index.htm</a>
+      </p></div>
+<div class="footnote"><p><sup>[<a name="ftn.amd___acml_and_intel___mkl_random_number_generators.mkl.f1" href="#amd___acml_and_intel___mkl_random_number_generators.mkl.f1" class="para">3</a>] </sup>
+        Intel Math Kernel Library: Vector Statistical Library Notes, Document Number:
+        310713-009US, <a href="http://developer.intel.com/software/products/perflib/index.htm" target="_top">http://developer.intel.com/software/products/perflib/index.htm</a>
+      </p></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2013 Fabian B&#246;sch<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../amd___acml_and_intel___mkl_random_number_generators/acml/multiple_generators.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../amd___acml_and_intel___mkl_random_number_generators/mkl/initialization.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

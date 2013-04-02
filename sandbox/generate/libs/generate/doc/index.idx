@@ -1,0 +1,1 @@
+!scan-path "boost/generate" ".*.hpp" false

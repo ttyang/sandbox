@@ -1,0 +1,10 @@
+
+lib gomp ;
+
+project /boost/generate/example/omp\ fibonacci/
+	: requirements <cxxflags>-fopenmp <library>gomp
+	;
+
+
+exe omp_fibonacci : omp_fibonacci.cpp ;
+

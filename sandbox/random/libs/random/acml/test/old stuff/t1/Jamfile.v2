@@ -1,0 +1,14 @@
+
+# bring in rules for testing
+#import testing ;
+
+lib acml : : <file>/opt/acml5.2.0/gfortran64_int64/lib/libacml.a ;
+lib gfortran rt dl m ;
+
+
+project /boost/random/acml/test/t1
+	: requirements <include>/opt/acml5.2.0/gfortran64_int64/include <library>acml <library>gfortran <library>rt <library>dl <library>m
+	;
+
+
+run main.cpp /boost//unit_test_framework ;
