@@ -6,14 +6,15 @@
 #ifndef BOOST_TREE_NODE_CONTAINER_BINODE_FWD_HPP_INCLUDED
 #define BOOST_TREE_NODE_CONTAINER_BINODE_FWD_HPP_INCLUDED
 
-#include <boost/tree_node/balancer/red_black.hpp>
+#include <boost/tree_node/binary_node.hpp>
+#include <boost/tree_node/balancer/null.hpp>
 
 namespace boost { namespace tree_node {
 
     template <
-        typename NodeGenerator
-      , typename T
-      , typename Balancer = red_black_balancer
+        typename T
+      , typename NodeGenerator = binary_node_default_gen
+      , typename Balancer = null_balancer
     >
     class binode_container;
 }}  // namespace boost::tree_node

@@ -171,11 +171,12 @@ void test()
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
                     (std::tr1::is_same<Selector,boost::slistS>::value) ? (
                         (*itr).emplace(data - 1 - i)
-                    ) :
+                    ) : 
 #endif
                     (*itr).emplace(i)
                 );
                 typename ANode::const_pointer const_child(&*child_itr);
+
                 BOOST_CHECK(
                     (*child_itr).get_parent_ptr() == &*itr
 //                  , "Ctor not linking child to parent."
@@ -1204,7 +1205,13 @@ void test()
         std::advance(a_child_itr, 4);
         a_child_itr = (*a_child_itr).begin();
         *a_child_itr = a_root;
-        test_node<a_node_case>(*a_child_itr, bf_vals, pre_vals, post_vals, df_vals);
+        test_node<a_node_case>(
+            *a_child_itr
+          , bf_vals
+          , pre_vals
+          , post_vals
+          , df_vals
+        );
 
         bf_vals.clear();
         pre_vals.clear();
@@ -1667,7 +1674,6 @@ void test()
             (boost::tree_node::post_order_traversal, 5, 6, 47);
 #endif  // BOOST_TREE_NODE_CAN_USE_FUSION
         test_node<a_node_case>(a_root, bf_vals, pre_vals, post_vals, df_vals);
-
         a_child_itr = (*a_child_itr).begin();
         std::advance(a_child_itr, 2);
 
@@ -2824,8 +2830,8 @@ void test()
 #include <boost/typeof/boost/container/vector.hpp>
 #include <boost/typeof/boost/container/stable_vector.hpp>
 #include <boost/typeof/boost/container/deque.hpp>
-#include <boost/typeof/boost/container/list.hpp>
 #include <boost/typeof/boost/container/slist.hpp>
+#include <boost/typeof/boost/container/list.hpp>
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 #endif  // BOOST_TYPEOF_EMULATION
 
@@ -2836,10 +2842,10 @@ int test_main(int argc, char** argv)
     test<boost::ptr_listS>();
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     test<boost::vector_selector<boost::mpl::true_> >();
-//    test<boost::stable_vecS>();
-//    test<boost::deque_selector<boost::mpl::true_> >();
-    test<boost::list_selector<boost::mpl::true_> >();
+    test<boost::stable_vecS>();
+    test<boost::deque_selector<boost::mpl::true_> >();
     test<boost::slistS>();
+    test<boost::list_selector<boost::mpl::true_> >();
 #endif
 
     return 0;

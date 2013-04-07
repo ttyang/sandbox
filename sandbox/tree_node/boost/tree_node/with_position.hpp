@@ -12,6 +12,7 @@
 #include <boost/mpl/eval_if.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/detail/metafunction/container_iterator.hpp>
+#include <boost/detail/metafunction/is_random_access_iterator.hpp>
 #include <boost/tree_node/preprocessor.hpp>
 #include <boost/tree_node/base.hpp>
 #include <boost/tree_node/with_position_fwd.hpp>
@@ -20,6 +21,7 @@
 #include <boost/tree_node/intrinsic/get_keys.hpp>
 #include <boost/tree_node/intrinsic/at_key.hpp>
 #include <boost/tree_node/iterator/dereference.hpp>
+#include <boost/assert.hpp>
 
 #if !defined BOOST_CONTAINER_PERFECT_FORWARDING
 #include <boost/preprocessor/repetition/repeat.hpp>
@@ -166,7 +168,7 @@ namespace boost { namespace tree_node {
 
         ~with_position_base();
 
-        void on_post_copy_or_move();
+        void on_post_copy_or_move_impl();
 
         void on_post_inserted_impl(iterator position, ::boost::mpl::true_);
 
@@ -196,7 +198,13 @@ namespace boost { namespace tree_node {
         //]
 
      private:
-        static void _set_child_positions(pointer to_parent);
+        static void
+            _set_child_positions(pointer to_parent, ::boost::mpl::true_);
+
+        static void
+            _set_child_positions(pointer to_parent, ::boost::mpl::false_);
+
+        static void _initialize(iterator to_child);
     };
 
     template <
@@ -316,11 +324,20 @@ namespace boost { namespace tree_node {
       , typename T2
     >
     inline void
-        with_position_base<Derived,BaseGenerator,T1,T2>::on_post_copy_or_move()
+        with_position_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+        >::on_post_copy_or_move_impl()
     {
-        super_t::on_post_copy_or_move();
-        this->_set_child_positions(this->get_derived());
-        this->on_post_modify_value(position_key());
+        super_t::on_post_copy_or_move_impl();
+        with_position_base<Derived,BaseGenerator,T1,T2>::_set_child_positions(
+            this->get_derived()
+          , ::boost::detail::metafunction::is_random_access_iterator<
+                iterator
+            >()
+        );
     }
 
     template <
@@ -353,18 +370,12 @@ namespace boost { namespace tree_node {
         )
     {
         super_t::on_post_inserted_impl(position, f);
-        this->_set_child_positions(this->get_parent_ptr());
-
-        iterator itr_end = this->get_parent_ptr()->end();
-
-        for (
-            iterator itr = this->get_parent_ptr()->begin();
-            itr != itr_end;
-            ++itr
-        )
-        {
-            dereference_iterator(itr).on_post_modify_value(position_key());
-        }
+        with_position_base<Derived,BaseGenerator,T1,T2>::_set_child_positions(
+            this->get_parent_ptr()
+          , ::boost::detail::metafunction::is_random_access_iterator<
+                iterator
+            >()
+        );
     }
 
     template <
@@ -386,8 +397,7 @@ namespace boost { namespace tree_node {
             ++itr
         )
         {
-            dereference_iterator(itr)._position = itr;
-            dereference_iterator(itr).on_post_modify_value(position_key());
+            with_position_base<Derived,BaseGenerator,T1,T2>::_initialize(itr);
         }
     }
 
@@ -405,13 +415,12 @@ namespace boost { namespace tree_node {
         )
     {
         super_t::on_post_insert_impl(itr, itr_end, f);
-        itr_end = this->end();
-
-        for (itr = this->begin(); itr != itr_end; ++itr)
-        {
-            dereference_iterator(itr)._position = itr;
-            dereference_iterator(itr).on_post_modify_value(position_key());
-        }
+        with_position_base<Derived,BaseGenerator,T1,T2>::_set_child_positions(
+            this->get_derived()
+          , ::boost::detail::metafunction::is_random_access_iterator<
+                iterator
+            >()
+        );
     }
 
     template <
@@ -456,14 +465,62 @@ namespace boost { namespace tree_node {
     void
         with_position_base<Derived,BaseGenerator,T1,T2>::_set_child_positions(
             pointer to_parent
+          , ::boost::mpl::true_
+        )
+    {
+        size_type const s = to_parent->size();
+
+        for (size_type i = 0; i < s; ++i)
+        {
+            with_position_base<Derived,BaseGenerator,T1,T2>::_initialize(
+                to_parent->begin() + i
+            );
+            BOOST_ASSERT(
+                to_parent == dereference_iterator(
+                    dereference_iterator(to_parent->begin() + i)._position
+                ).get_parent_ptr()
+            );
+        }
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    void
+        with_position_base<Derived,BaseGenerator,T1,T2>::_set_child_positions(
+            pointer to_parent
+          , ::boost::mpl::false_
         )
     {
         iterator itr_end = to_parent->end();
 
         for (iterator itr = to_parent->begin(); itr != itr_end; ++itr)
         {
-            dereference_iterator(itr)._position = itr;
+            with_position_base<Derived,BaseGenerator,T1,T2>::_initialize(itr);
+            BOOST_ASSERT(
+                to_parent == dereference_iterator(
+                    dereference_iterator(itr)._position
+                ).get_parent_ptr()
+            );
         }
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    inline void
+        with_position_base<Derived,BaseGenerator,T1,T2>::_initialize(
+            iterator to_child
+        )
+    {
+        dereference_iterator(to_child)._position = to_child;
+        dereference_iterator(to_child).on_post_modify_value(position_key());
     }
 }}  // namespace boost::tree_node
 

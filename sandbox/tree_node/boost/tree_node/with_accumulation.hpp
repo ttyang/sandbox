@@ -6,15 +6,14 @@
 #ifndef BOOST_TREE_NODE_WITH_ACCUMULATION_HPP_INCLUDED
 #define BOOST_TREE_NODE_WITH_ACCUMULATION_HPP_INCLUDED
 
-#include <boost/tree_node/with_accumulation_fwd.hpp>
 #include <boost/mpl/apply_wrap.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/accumulators/framework/accumulator_set.hpp>
 #include <boost/accumulators/framework/extractor.hpp>
 #include <boost/accumulators/framework/features.hpp>
-#include <boost/utility/value_init.hpp>
 #include <boost/tree_node/preprocessor.hpp>
 #include <boost/tree_node/base.hpp>
+#include <boost/tree_node/with_accumulation_fwd.hpp>
 #include <boost/tree_node/key/accumulation.hpp>
 #include <boost/tree_node/intrinsic/has_key.hpp>
 #include <boost/tree_node/intrinsic/get_keys.hpp>
@@ -192,16 +191,7 @@ namespace boost { namespace tree_node {
 #else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
 #define BOOST_TREE_NODE_WITH_ACCUMULATION_MACRO(z, n, Tuple)                 \
         BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_HEADER(z, n, Tuple)          \
-          , _accumulation(                                                   \
-                IncludesRoot::value                                          \
-              ? ::boost::initialized_value                                   \
-              : ::boost::accumulators::extractor<Tag>()(                     \
-                    ::boost::accumulators::accumulator_set<                  \
-                        AccumulationValue                                    \
-                      , ::boost::accumulators::features<Tag>                 \
-                    >()                                                      \
-                )                                                            \
-            )                                                                \
+          , _accumulation()                                                  \
         {                                                                    \
         }                                                                    \
 //!
@@ -214,16 +204,7 @@ namespace boost { namespace tree_node {
 
 #define BOOST_TREE_NODE_WITH_ACCUMULATION_MACRO(z, n, Tuple)                 \
         BOOST_TREE_NODE_EMPLACEMENT_CTOR_W_ALLOC_INLINE_HEADER(z, n, Tuple)  \
-          , _accumulation(                                                   \
-                IncludesRoot::value                                          \
-              ? ::boost::initialized_value                                   \
-              : ::boost::accumulators::extractor<Tag>()(                     \
-                    ::boost::accumulators::accumulator_set<                  \
-                        AccumulationValue                                    \
-                      , ::boost::accumulators::features<Tag>                 \
-                    >()                                                      \
-                )                                                            \
-            )                                                                \
+          , _accumulation()                                                  \
         {                                                                    \
         }                                                                    \
 //!
@@ -237,17 +218,15 @@ namespace boost { namespace tree_node {
 
         ~with_accumulation_base();
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        void copy_assign(Derived const& copy);
-#else
-        void copy_assign(BOOST_COPY_ASSIGN_REF(Derived) copy);
+        void clone_metadata_impl(Derived const& copy);
 
-        void move_assign(BOOST_RV_REF(Derived) source);
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        void move_metadata_impl(BOOST_RV_REF(Derived) source);
 #endif
 
         void on_post_emplacement_construct();
 
-        void on_post_copy_or_move();
+        void on_post_assign();
 
         template <typename K>
         void on_post_modify_value_impl(K const& key);
@@ -376,17 +355,7 @@ namespace boost { namespace tree_node {
       , Value
     >::with_accumulation_base(Derived const& copy)
       : super_t(copy)
-      , _accumulation(
-            static_cast<self const&>(copy)[
-                accumulation_key<
-                    Key
-                  , Tag
-                  , IncludesAllDescendants
-                  , IncludesRoot
-                  , Value
-                >()
-            ]
-        )
+      , _accumulation(static_cast<self const&>(copy)._accumulation)
     {
     }
 
@@ -415,17 +384,7 @@ namespace boost { namespace tree_node {
         Derived const& copy
       , typename traits::allocator_reference allocator
     ) : super_t(copy, allocator)
-      , _accumulation(
-            static_cast<self const&>(copy)[
-                accumulation_key<
-                    Key
-                  , Tag
-                  , IncludesAllDescendants
-                  , IncludesRoot
-                  , Value
-                >()
-            ]
-        )
+      , _accumulation(static_cast<self const&>(copy)._accumulation)
     {
     }
 
@@ -459,17 +418,7 @@ namespace boost { namespace tree_node {
         Derived&& source
     ) : super_t(static_cast<Derived&&>(source))
 #endif
-      , _accumulation(
-            static_cast<self&&>(source)[
-                accumulation_key<
-                    Key
-                  , Tag
-                  , IncludesAllDescendants
-                  , IncludesRoot
-                  , Value
-                >()
-            ]
-        )
+      , _accumulation(static_cast<self&>(source)._accumulation)
     {
     }
 
@@ -504,17 +453,7 @@ namespace boost { namespace tree_node {
       , typename traits::allocator_reference allocator
     ) : super_t(static_cast<Derived&&>(source), allocator)
 #endif
-      , _accumulation(
-            static_cast<self&&>(source)[
-                accumulation_key<
-                    Key
-                  , Tag
-                  , IncludesAllDescendants
-                  , IncludesRoot
-                  , Value
-                >()
-            ]
-        )
+      , _accumulation(static_cast<self&>(source)._accumulation)
     {
     }
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -543,17 +482,7 @@ namespace boost { namespace tree_node {
       , IncludesRoot
       , Value
     >::with_accumulation_base(Args&& ...args)
-      : super_t(::boost::forward<Args>(args)...)
-      , _accumulation(
-            IncludesRoot::value
-          ? ::boost::initialized_value
-          : ::boost::accumulators::extractor<Tag>()(
-                ::boost::accumulators::accumulator_set<
-                    AccumulationValue
-                  , ::boost::accumulators::features<Tag>
-                >()
-            )
-        )
+      : super_t(::boost::forward<Args>(args)...), _accumulation()
     {
     }
 
@@ -588,16 +517,7 @@ namespace boost { namespace tree_node {
           , allocator
           , ::boost::forward<Args>(args)...
         )
-      , _accumulation(
-            IncludesRoot::value
-          ? ::boost::initialized_value
-          : ::boost::accumulators::extractor<Tag>()(
-                ::boost::accumulators::accumulator_set<
-                    AccumulationValue
-                  , ::boost::accumulators::features<Tag>
-                >()
-            )
-        )
+      , _accumulation()
     {
     }
 #endif  // BOOST_CONTAINER_PERFECT_FORWARDING
@@ -639,18 +559,6 @@ namespace boost { namespace tree_node {
       , typename Value
     >
     inline void
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        with_accumulation_base<
-            Derived
-          , BaseGenerator
-          , T1
-          , T2
-          , Key
-          , Tag
-          , IncludesRoot
-          , Value
-        >::copy_assign(Derived const& copy)
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         with_accumulation_base<
             Derived
           , BaseGenerator
@@ -661,15 +569,13 @@ namespace boost { namespace tree_node {
           , IncludesAllDescendants
           , IncludesRoot
           , Value
-        >::move_assign(BOOST_RV_REF(Derived) source)
+        >::clone_metadata_impl(Derived const& copy)
     {
-#if defined BOOST_NO_RVALUE_REFERENCES
-        super_t::move_assign(source);
-#else
-        super_t::move_assign(static_cast<Derived&&>(source));
-#endif
+        super_t::clone_metadata_impl(copy);
+        this->_accumulation = static_cast<self const&>(copy)._accumulation;
     }
 
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
       , typename BaseGenerator
@@ -692,11 +598,18 @@ namespace boost { namespace tree_node {
           , IncludesAllDescendants
           , IncludesRoot
           , Value
-        >::copy_assign(BOOST_COPY_ASSIGN_REF(Derived) copy)
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        >::move_metadata_impl(BOOST_RV_REF(Derived) source)
     {
-        super_t::copy_assign(copy);
+#if defined BOOST_NO_RVALUE_REFERENCES
+        super_t::move_metadata_impl(source);
+#else
+        super_t::move_metadata_impl(static_cast<Derived&&>(source));
+#endif
+        this->_accumulation = ::boost::move(
+            static_cast<self&>(source)._accumulation
+        );
     }
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
     template <
         typename Derived
@@ -723,11 +636,14 @@ namespace boost { namespace tree_node {
         >::on_post_emplacement_construct()
     {
         super_t::on_post_emplacement_construct();
-
-        if (IncludesRoot::value)
-        {
-            self::_accumulation = get<Key>(*this->get_derived());
-        }
+        self::_accumulation = IncludesRoot::value ? get<Key>(
+            *this->get_derived()
+        ) : ::boost::accumulators::extractor<Tag>()(
+            ::boost::accumulators::accumulator_set<
+                AccumulationValue
+              , ::boost::accumulators::features<Tag>
+            >()
+        );
     }
 
     template <
@@ -752,10 +668,18 @@ namespace boost { namespace tree_node {
           , IncludesAllDescendants
           , IncludesRoot
           , Value
-        >::on_post_copy_or_move()
+        >::on_post_assign()
     {
-        super_t::on_post_copy_or_move();
-        this->_update();
+        super_t::on_post_assign();
+
+        if (IncludesRoot::value)
+        {
+            this->_update();
+        }
+        else if (pointer p = this->get_parent_ptr())
+        {
+            static_cast<self*>(p)->_update();
+        }
     }
 
     template <
@@ -833,7 +757,8 @@ namespace boost { namespace tree_node {
                 >()
             );
         }
-        else if (pointer p = this->get_parent_ptr())
+
+        if (pointer p = this->get_parent_ptr())
         {
             static_cast<self*>(p)->_set_accumulation(
                 accumulation_key<

@@ -12,6 +12,7 @@
 #include <cstddef>
 #endif
 
+#include <algorithm>
 #include <utility>
 #include <boost/tr1/type_traits.hpp>
 #include <boost/mpl/bool.hpp>
@@ -42,11 +43,7 @@
 
 namespace boost { namespace tree_node {
 
-    template <
-        typename NodeGenerator
-      , typename T
-      , typename Balancer
-    >
+    template <typename T, typename NodeGenerator, typename Balancer>
     class binode_container
     {
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -488,30 +485,30 @@ namespace boost { namespace tree_node {
         typename node::pointer _back();
     };
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::const_reference
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_reference
         binode_container<
-            NodeGenerator
-          , T
+            T
+          , NodeGenerator
           , Balancer
         >::transform_function::operator()(node const& n) const
     {
         return get(n, data_key());
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::reference
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::reference
         binode_container<
-            NodeGenerator
-          , T
+            T
+          , NodeGenerator
           , Balancer
         >::transform_function::operator()(node& n) const
     {
         return get(n, data_key());
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    binode_container<NodeGenerator,T,Balancer>::binode_container()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    binode_container<T,NodeGenerator,Balancer>::binode_container()
       : _allocator()
       , _root_ptr(
 #if defined BOOST_NO_CXX11_NULLPTR
@@ -523,8 +520,8 @@ namespace boost { namespace tree_node {
     {
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    binode_container<NodeGenerator,T,Balancer>::binode_container(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    binode_container<T,NodeGenerator,Balancer>::binode_container(
         allocator_type const& allocator
     ) : _allocator(allocator)
       , _root_ptr(
@@ -537,9 +534,9 @@ namespace boost { namespace tree_node {
     {
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(
             ::std::tr1::true_type
           , allocator_type& allocator
           , typename node::pointer p
@@ -568,9 +565,9 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(
             ::std::tr1::false_type
           , allocator_type& allocator
           , typename node::pointer p
@@ -599,8 +596,8 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    binode_container<NodeGenerator,T,Balancer>::binode_container(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    binode_container<T,NodeGenerator,Balancer>::binode_container(
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         binode_container const& copy
 #else
@@ -621,8 +618,8 @@ namespace boost { namespace tree_node {
     {
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    binode_container<NodeGenerator,T,Balancer>::binode_container(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    binode_container<T,NodeGenerator,Balancer>::binode_container(
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         binode_container const& copy
 #else
@@ -645,8 +642,8 @@ namespace boost { namespace tree_node {
     }
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    template <typename NodeGenerator, typename T, typename Balancer>
-    binode_container<NodeGenerator,T,Balancer>::binode_container(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    binode_container<T,NodeGenerator,Balancer>::binode_container(
         BOOST_RV_REF(binode_container) source
     ) : _allocator(::boost::move(source._allocator))
       , _root_ptr(source._root_ptr)
@@ -658,8 +655,8 @@ namespace boost { namespace tree_node {
 #endif
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    binode_container<NodeGenerator,T,Balancer>::binode_container(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    binode_container<T,NodeGenerator,Balancer>::binode_container(
         BOOST_RV_REF(binode_container) source
       , allocator_type const& allocator
     ) : _allocator(allocator), _root_ptr(source._root_ptr)
@@ -671,9 +668,9 @@ namespace boost { namespace tree_node {
 #endif
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline binode_container<NodeGenerator,T,Balancer>&
-        binode_container<NodeGenerator,T,Balancer>::operator=(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline binode_container<T,NodeGenerator,Balancer>&
+        binode_container<T,NodeGenerator,Balancer>::operator=(
             BOOST_RV_REF(binode_container) source
         )
     {
@@ -693,9 +690,9 @@ namespace boost { namespace tree_node {
     }
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline binode_container<NodeGenerator,T,Balancer>&
-        binode_container<NodeGenerator,T,Balancer>::operator=(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline binode_container<T,NodeGenerator,Balancer>&
+        binode_container<T,NodeGenerator,Balancer>::operator=(
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
             binode_container const& copy
 #else
@@ -733,33 +730,33 @@ namespace boost { namespace tree_node {
         return *this;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    binode_container<NodeGenerator,T,Balancer>::~binode_container()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    binode_container<T,NodeGenerator,Balancer>::~binode_container()
     {
         this->clear();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     inline typename binode_container<
-        NodeGenerator
-      , T
+        T
+      , NodeGenerator
       , Balancer
     >::node::const_pointer
-        binode_container<NodeGenerator,T,Balancer>::data() const
+        binode_container<T,NodeGenerator,Balancer>::data() const
     {
         return this->_root_ptr;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::data()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::data()
     {
         return this->_root_ptr;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::const_iterator
-        binode_container<NodeGenerator,T,Balancer>::cbegin() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_iterator
+        binode_container<T,NodeGenerator,Balancer>::cbegin() const
     {
         return this->_root_ptr ? const_iterator(
             make_in_order_iterator(*this->_root_ptr)
@@ -767,9 +764,9 @@ namespace boost { namespace tree_node {
         ) : this->cend();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::const_iterator
-        binode_container<NodeGenerator,T,Balancer>::begin() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_iterator
+        binode_container<T,NodeGenerator,Balancer>::begin() const
     {
         return this->_root_ptr ? const_iterator(
             make_in_order_iterator(*this->_root_ptr)
@@ -777,9 +774,9 @@ namespace boost { namespace tree_node {
         ) : this->end();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::iterator
-        binode_container<NodeGenerator,T,Balancer>::begin()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::iterator
+        binode_container<T,NodeGenerator,Balancer>::begin()
     {
         return this->_root_ptr ? iterator(
             make_in_order_iterator(*this->_root_ptr)
@@ -787,9 +784,9 @@ namespace boost { namespace tree_node {
         ) : this->end();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::const_iterator
-        binode_container<NodeGenerator,T,Balancer>::cend() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_iterator
+        binode_container<T,NodeGenerator,Balancer>::cend() const
     {
         return const_iterator(
             make_in_order_iterator_end(this->_root_ptr)
@@ -797,9 +794,9 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::const_iterator
-        binode_container<NodeGenerator,T,Balancer>::end() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_iterator
+        binode_container<T,NodeGenerator,Balancer>::end() const
     {
         return const_iterator(
             make_in_order_iterator_end(this->_root_ptr)
@@ -807,9 +804,9 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::iterator
-        binode_container<NodeGenerator,T,Balancer>::end()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::iterator
+        binode_container<T,NodeGenerator,Balancer>::end()
     {
         return iterator(
             make_in_order_iterator_end(this->_root_ptr)
@@ -817,13 +814,13 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     inline typename binode_container<
-        NodeGenerator
-      , T
+        T
+      , NodeGenerator
       , Balancer
     >::const_reverse_iterator
-        binode_container<NodeGenerator,T,Balancer>::crbegin() const
+        binode_container<T,NodeGenerator,Balancer>::crbegin() const
     {
         return this->_root_ptr ? const_reverse_iterator(
             make_in_order_reverse_iterator(*this->_root_ptr)
@@ -831,13 +828,13 @@ namespace boost { namespace tree_node {
         ) : this->crend();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     inline typename binode_container<
-        NodeGenerator
-      , T
+        T
+      , NodeGenerator
       , Balancer
     >::const_reverse_iterator
-        binode_container<NodeGenerator,T,Balancer>::rbegin() const
+        binode_container<T,NodeGenerator,Balancer>::rbegin() const
     {
         return this->_root_ptr ? const_reverse_iterator(
             make_in_order_reverse_iterator(*this->_root_ptr)
@@ -845,13 +842,13 @@ namespace boost { namespace tree_node {
         ) : this->rend();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     inline typename binode_container<
-        NodeGenerator
-      , T
+        T
+      , NodeGenerator
       , Balancer
     >::reverse_iterator
-        binode_container<NodeGenerator,T,Balancer>::rbegin()
+        binode_container<T,NodeGenerator,Balancer>::rbegin()
     {
         return this->_root_ptr ? reverse_iterator(
             make_in_order_reverse_iterator(*this->_root_ptr)
@@ -859,13 +856,13 @@ namespace boost { namespace tree_node {
         ) : this->rend();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     inline typename binode_container<
-        NodeGenerator
-      , T
+        T
+      , NodeGenerator
       , Balancer
     >::const_reverse_iterator
-        binode_container<NodeGenerator,T,Balancer>::crend() const
+        binode_container<T,NodeGenerator,Balancer>::crend() const
     {
         return const_reverse_iterator(
             make_in_order_reverse_iterator_end(this->_root_ptr)
@@ -873,13 +870,13 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     inline typename binode_container<
-        NodeGenerator
-      , T
+        T
+      , NodeGenerator
       , Balancer
     >::const_reverse_iterator
-        binode_container<NodeGenerator,T,Balancer>::rend() const
+        binode_container<T,NodeGenerator,Balancer>::rend() const
     {
         return const_reverse_iterator(
             make_in_order_reverse_iterator_end(this->_root_ptr)
@@ -887,13 +884,13 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     inline typename binode_container<
-        NodeGenerator
-      , T
+        T
+      , NodeGenerator
       , Balancer
     >::reverse_iterator
-        binode_container<NodeGenerator,T,Balancer>::rend()
+        binode_container<T,NodeGenerator,Balancer>::rend()
     {
         return reverse_iterator(
             make_in_order_reverse_iterator_end(this->_root_ptr)
@@ -901,43 +898,43 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::const_reference
-        binode_container<NodeGenerator,T,Balancer>::front() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_reference
+        binode_container<T,NodeGenerator,Balancer>::front() const
     {
         return *this->cbegin();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::reference
-        binode_container<NodeGenerator,T,Balancer>::front()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::reference
+        binode_container<T,NodeGenerator,Balancer>::front()
     {
         return *this->begin();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::const_reference
-        binode_container<NodeGenerator,T,Balancer>::back() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_reference
+        binode_container<T,NodeGenerator,Balancer>::back() const
     {
         return *this->crbegin();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::reference
-        binode_container<NodeGenerator,T,Balancer>::back()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::reference
+        binode_container<T,NodeGenerator,Balancer>::back()
     {
         return *this->rbegin();
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    void binode_container<NodeGenerator,T,Balancer>::pop_front()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline void binode_container<T,NodeGenerator,Balancer>::pop_front()
     {
         this->erase(this->cbegin());
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::node::const_pointer
-        binode_container<NodeGenerator,T,Balancer>::_back() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::node::const_pointer
+        binode_container<T,NodeGenerator,Balancer>::_back() const
     {
         typename node::const_pointer result = this->_root_ptr;
 
@@ -952,9 +949,9 @@ namespace boost { namespace tree_node {
         return result;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::_back()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::_back()
     {
         typename node::pointer result = this->_root_ptr;
 
@@ -969,8 +966,8 @@ namespace boost { namespace tree_node {
         return result;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    void binode_container<NodeGenerator,T,Balancer>::pop_back()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline void binode_container<T,NodeGenerator,Balancer>::pop_back()
     {
         this->erase(
             iterator(
@@ -980,9 +977,9 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(
             ::std::tr1::true_type
           , allocator_type& allocator
           , value_type const& value
@@ -1004,9 +1001,9 @@ namespace boost { namespace tree_node {
         return result;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(
             ::std::tr1::false_type
           , allocator_type& allocator
           , value_type const& value
@@ -1037,9 +1034,9 @@ namespace boost { namespace tree_node {
         return result;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     void
-        binode_container<NodeGenerator,T,Balancer>::push_front(
+        binode_container<T,NodeGenerator,Balancer>::push_front(
             const_reference t
         )
     {
@@ -1073,9 +1070,9 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     void
-        binode_container<NodeGenerator,T,Balancer>::push_back(
+        binode_container<T,NodeGenerator,Balancer>::push_back(
             const_reference t
         )
     {
@@ -1109,9 +1106,9 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::iterator
-        binode_container<NodeGenerator,T,Balancer>::insert(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::iterator
+        binode_container<T,NodeGenerator,Balancer>::insert(
             const_iterator itr
           , const_reference t
         )
@@ -1157,10 +1154,10 @@ namespace boost { namespace tree_node {
     }
 
 #if defined BOOST_CONTAINER_PERFECT_FORWARDING
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     template <typename ...Args>
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(
             ::std::tr1::true_type
           , allocator_type& allocator
           , Args&& ...args
@@ -1182,10 +1179,10 @@ namespace boost { namespace tree_node {
         return result;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     template <typename ...Args>
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(
             ::std::tr1::false_type
           , allocator_type& allocator
           , Args&& ...args
@@ -1216,10 +1213,10 @@ namespace boost { namespace tree_node {
         return result;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     template <typename ...Args>
     void
-        binode_container<NodeGenerator,T,Balancer>::emplace_front(
+        binode_container<T,NodeGenerator,Balancer>::emplace_front(
             Args&& ...args
         )
     {
@@ -1255,10 +1252,10 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     template <typename ...Args>
     void
-        binode_container<NodeGenerator,T,Balancer>::emplace_back(
+        binode_container<T,NodeGenerator,Balancer>::emplace_back(
             Args&& ...args
         )
     {
@@ -1294,10 +1291,10 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     template <typename ...Args>
-    typename binode_container<NodeGenerator,T,Balancer>::iterator
-        binode_container<NodeGenerator,T,Balancer>::emplace(
+    typename binode_container<T,NodeGenerator,Balancer>::iterator
+        binode_container<T,NodeGenerator,Balancer>::emplace(
             const_iterator itr
           , Args&& ...args
         )
@@ -1348,12 +1345,12 @@ namespace boost { namespace tree_node {
 #else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 #define BOOST_TREE_NODE_CONTAINER_BINARY_MACRO(z, n, _)                      \
-    template <typename NodeGenerator, typename T, typename Balancer>         \
+    template <typename T, typename NodeGenerator, typename Balancer>         \
     BOOST_PP_EXPR_IF(n, template <)                                          \
         BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                             \
     BOOST_PP_EXPR_IF(n, >)                                                   \
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer       \
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(         \
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer       \
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(         \
             ::std::tr1::true_type                                            \
           , allocator_type& allocator                                        \
             BOOST_PP_CAT(BOOST_PP_ENUM_TRAILING_, z)(                        \
@@ -1383,12 +1380,12 @@ namespace boost { namespace tree_node {
 #undef BOOST_TREE_NODE_CONTAINER_BINARY_MACRO
 
 #define BOOST_TREE_NODE_CONTAINER_BINARY_MACRO(z, n, _)                      \
-    template <typename NodeGenerator, typename T, typename Balancer>         \
+    template <typename T, typename NodeGenerator, typename Balancer>         \
     BOOST_PP_EXPR_IF(n, template <)                                          \
         BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                             \
     BOOST_PP_EXPR_IF(n, >)                                                   \
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer       \
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(         \
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer       \
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(         \
             ::std::tr1::false_type                                           \
           , allocator_type& allocator                                        \
             BOOST_PP_CAT(BOOST_PP_ENUM_TRAILING_, z)(                        \
@@ -1420,12 +1417,12 @@ namespace boost { namespace tree_node {
 #undef BOOST_TREE_NODE_CONTAINER_BINARY_MACRO
 #else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 #define BOOST_TREE_NODE_CONTAINER_BINARY_MACRO(z, n, _)                      \
-    template <typename NodeGenerator, typename T, typename Balancer>         \
+    template <typename T, typename NodeGenerator, typename Balancer>         \
     BOOST_PP_EXPR_IF(n, template <)                                          \
         BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                             \
     BOOST_PP_EXPR_IF(n, >)                                                   \
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer       \
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(         \
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer       \
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(         \
             ::std::tr1::true_type                                            \
           , allocator_type& allocator                                        \
             BOOST_PP_CAT(BOOST_PP_ENUM_TRAILING_, z)(                        \
@@ -1460,12 +1457,12 @@ namespace boost { namespace tree_node {
 #undef BOOST_TREE_NODE_CONTAINER_BINARY_MACRO
 
 #define BOOST_TREE_NODE_CONTAINER_BINARY_MACRO(z, n, _)                      \
-    template <typename NodeGenerator, typename T, typename Balancer>         \
+    template <typename T, typename NodeGenerator, typename Balancer>         \
     BOOST_PP_EXPR_IF(n, template <)                                          \
         BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                             \
     BOOST_PP_EXPR_IF(n, >)                                                   \
-    typename binode_container<NodeGenerator,T,Balancer>::node::pointer       \
-        binode_container<NodeGenerator,T,Balancer>::_construct_from(         \
+    typename binode_container<T,NodeGenerator,Balancer>::node::pointer       \
+        binode_container<T,NodeGenerator,Balancer>::_construct_from(         \
             ::std::tr1::false_type                                           \
           , allocator_type& allocator                                        \
             BOOST_PP_CAT(BOOST_PP_ENUM_TRAILING_, z)(                        \
@@ -1503,12 +1500,12 @@ namespace boost { namespace tree_node {
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 #define BOOST_TREE_NODE_CONTAINER_BINARY_MACRO(z, n, _)                      \
-    template <typename NodeGenerator, typename T, typename Balancer>         \
+    template <typename T, typename NodeGenerator, typename Balancer>         \
     BOOST_PP_EXPR_IF(n, template <)                                          \
         BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                             \
     BOOST_PP_EXPR_IF(n, >)                                                   \
     void                                                                     \
-        binode_container<NodeGenerator,T,Balancer>::emplace_front(           \
+        binode_container<T,NodeGenerator,Balancer>::emplace_front(           \
             BOOST_PP_CAT(BOOST_PP_ENUM_, z)(                                 \
                 n                                                            \
               , BOOST_CONTAINER_PP_PARAM_LIST                                \
@@ -1563,12 +1560,12 @@ namespace boost { namespace tree_node {
 #undef BOOST_TREE_NODE_CONTAINER_BINARY_MACRO
 
 #define BOOST_TREE_NODE_CONTAINER_BINARY_MACRO(z, n, _)                      \
-    template <typename NodeGenerator, typename T, typename Balancer>         \
+    template <typename T, typename NodeGenerator, typename Balancer>         \
     BOOST_PP_EXPR_IF(n, template <)                                          \
         BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                             \
     BOOST_PP_EXPR_IF(n, >)                                                   \
     void                                                                     \
-        binode_container<NodeGenerator,T,Balancer>::emplace_back(            \
+        binode_container<T,NodeGenerator,Balancer>::emplace_back(            \
             BOOST_PP_CAT(BOOST_PP_ENUM_, z)(                                 \
                 n                                                            \
               , BOOST_CONTAINER_PP_PARAM_LIST                                \
@@ -1623,12 +1620,12 @@ namespace boost { namespace tree_node {
 #undef BOOST_TREE_NODE_CONTAINER_BINARY_MACRO
 
 #define BOOST_TREE_NODE_CONTAINER_BINARY_MACRO(z, n, _)                      \
-    template <typename NodeGenerator, typename T, typename Balancer>         \
+    template <typename T, typename NodeGenerator, typename Balancer>         \
     BOOST_PP_EXPR_IF(n, template <)                                          \
         BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                             \
     BOOST_PP_EXPR_IF(n, >)                                                   \
-    typename binode_container<NodeGenerator,T,Balancer>::iterator            \
-        binode_container<NodeGenerator,T,Balancer>::emplace(                 \
+    typename binode_container<T,NodeGenerator,Balancer>::iterator            \
+        binode_container<T,NodeGenerator,Balancer>::emplace(                 \
             const_iterator itr                                               \
             BOOST_PP_CAT(BOOST_PP_ENUM_TRAILING_, z)(                        \
                 n                                                            \
@@ -1700,9 +1697,9 @@ namespace boost { namespace tree_node {
 #undef BOOST_TREE_NODE_CONTAINER_BINARY_MACRO
 #endif  // BOOST_CONTAINER_PERFECT_FORWARDING
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::iterator
-        binode_container<NodeGenerator,T,Balancer>::erase(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    typename binode_container<T,NodeGenerator,Balancer>::iterator
+        binode_container<T,NodeGenerator,Balancer>::erase(
             const_iterator itr
         )
     {
@@ -1925,9 +1922,9 @@ namespace boost { namespace tree_node {
         return must_erase_begin ? this->begin() : ++result;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
+    template <typename T, typename NodeGenerator, typename Balancer>
     void
-        binode_container<NodeGenerator,T,Balancer>::erase(
+        binode_container<T,NodeGenerator,Balancer>::erase(
             const_iterator itr
           , const_iterator itr_end
         )
@@ -1938,14 +1935,14 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline bool binode_container<NodeGenerator,T,Balancer>::empty() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline bool binode_container<T,NodeGenerator,Balancer>::empty() const
     {
         return !this->_root_ptr;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    void binode_container<NodeGenerator,T,Balancer>::clear()
+    template <typename T, typename NodeGenerator, typename Balancer>
+    void binode_container<T,NodeGenerator,Balancer>::clear()
     {
         if (this->_root_ptr)
         {
@@ -1969,41 +1966,34 @@ namespace boost { namespace tree_node {
         }
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::size_type
-        binode_container<NodeGenerator,T,Balancer>::_size(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::size_type
+        binode_container<T,NodeGenerator,Balancer>::_size(
             ::boost::mpl::true_
         ) const
     {
         return this->_root_ptr ? get(*this->_root_ptr, count_key()) : 0;
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::size_type
-        binode_container<NodeGenerator,T,Balancer>::_size(
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::size_type
+        binode_container<T,NodeGenerator,Balancer>::_size(
             ::boost::mpl::false_
         ) const
     {
-        size_type result = ::boost::initialized_value;
-
-        for (const_iterator itr = this->cbegin(); itr; ++itr)
-        {
-            ++result;
-        }
-
-        return result;
+        return ::std::distance(this->cbegin(), this->cend());
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    inline typename binode_container<NodeGenerator,T,Balancer>::size_type
-        binode_container<NodeGenerator,T,Balancer>::size() const
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::size_type
+        binode_container<T,NodeGenerator,Balancer>::size() const
     {
         return this->_size(result_of::has_key<node,count_key>());
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::const_reference
-        binode_container<NodeGenerator,T,Balancer>::operator[](
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::const_reference
+        binode_container<T,NodeGenerator,Balancer>::operator[](
             size_type index
         ) const
     {
@@ -2019,9 +2009,9 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename NodeGenerator, typename T, typename Balancer>
-    typename binode_container<NodeGenerator,T,Balancer>::reference
-        binode_container<NodeGenerator,T,Balancer>::operator[](size_type index)
+    template <typename T, typename NodeGenerator, typename Balancer>
+    inline typename binode_container<T,NodeGenerator,Balancer>::reference
+        binode_container<T,NodeGenerator,Balancer>::operator[](size_type index)
     {
         BOOST_ASSERT_MSG(
             this->_root_ptr && (index < this->size())

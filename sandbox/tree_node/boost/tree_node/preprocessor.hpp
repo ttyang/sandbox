@@ -150,26 +150,26 @@
 #define BOOST_TREE_NODE_COPY_CONSTRUCTIBLE(Derived, Base)                    \
         inline Derived(Derived const& copy) : Base(copy)                     \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::clone_descendants(copy);                                   \
         }                                                                    \
         inline Derived(                                                      \
             Derived const& copy                                              \
           , typename traits::allocator_reference a                           \
         ) : Base(copy, a)                                                    \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::clone_descendants(copy);                                   \
         }                                                                    \
         inline Derived(Derived& copy)                                        \
           : Base(const_cast<Derived const&>(copy))                           \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::clone_descendants(copy);                                   \
         }                                                                    \
         inline Derived(                                                      \
             Derived& copy                                                    \
           , typename traits::allocator_reference a                           \
         ) : Base(const_cast<Derived const&>(copy), a)                        \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::clone_descendants(copy);                                   \
         }                                                                    \
 //]
 
@@ -181,7 +181,7 @@
             if (this != &copy)                                               \
             {                                                                \
                 Base::copy_assign(copy);                                     \
-                Base::on_post_copy_or_move();                                \
+                Base::on_post_assign();                                      \
             }                                                                \
             return *this;                                                    \
         }                                                                    \
@@ -190,7 +190,7 @@
             if (this != &copy)                                               \
             {                                                                \
                 Base::copy_assign(const_cast<Derived const&>(copy));         \
-                Base::on_post_copy_or_move();                                \
+                Base::on_post_assign();                                      \
             }                                                                \
             return *this;                                                    \
         }                                                                    \
@@ -202,14 +202,14 @@
         BOOST_TREE_NODE_COPY_CONSTRUCTIBLE(Derived, Base)                    \
         inline Derived(::boost::rv<Derived>& source) : Base(source)          \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::move_descendants(source);                                  \
         }                                                                    \
         inline Derived(                                                      \
             ::boost::rv<Derived>& source                                     \
           , typename traits::allocator_reference a                           \
         ) : Base(source, a)                                                  \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::move_descendants(source);                                  \
         }                                                                    \
         inline operator ::boost::rv<Derived> const&() const                  \
         {                                                                    \
@@ -225,7 +225,7 @@
             if (this != &copy)                                               \
             {                                                                \
                 Base::copy_assign(copy);                                     \
-                Base::on_post_copy_or_move();                                \
+                Base::on_post_assign();                                      \
             }                                                                \
             return *this;                                                    \
         }                                                                    \
@@ -234,7 +234,7 @@
             if (this != &static_cast<Derived&>(rv_ref))                      \
             {                                                                \
                 Base::move_assign(rv_ref);                                   \
-                Base::on_post_copy_or_move();                                \
+                Base::on_post_assign();                                      \
             }                                                                \
             return *this;                                                    \
         }                                                                    \
@@ -243,7 +243,7 @@
             if (this != &copy)                                               \
             {                                                                \
                 Base::copy_assign(const_cast<Derived const&>(copy));         \
-                Base::on_post_copy_or_move();                                \
+                Base::on_post_assign();                                      \
             }                                                                \
             return *this;                                                    \
         }                                                                    \
@@ -255,21 +255,21 @@
         inline Derived(Derived&& source)                                     \
           : Base(static_cast<Derived&&>(source))                             \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::move_descendants(static_cast<Derived&&>(source));          \
         }                                                                    \
         inline Derived(                                                      \
             Derived&& source                                                 \
           , typename traits::allocator_reference a                           \
         ) : Base(static_cast<Derived&&>(source), a)                          \
         {                                                                    \
-            Base::on_post_copy_or_move();                                    \
+            Base::move_descendants(static_cast<Derived&&>(source));          \
         }                                                                    \
         inline Derived& operator=(Derived const& copy)                       \
         {                                                                    \
             if (this != &copy)                                               \
             {                                                                \
                 Base::copy_assign(copy);                                     \
-                Base::on_post_copy_or_move();                                \
+                Base::on_post_assign();                                      \
             }                                                                \
             return *this;                                                    \
         }                                                                    \
@@ -278,7 +278,7 @@
             if (this != &static_cast<Derived&>(source))                      \
             {                                                                \
                 Base::move_assign(static_cast<Derived&&>(source));           \
-                Base::on_post_copy_or_move();                                \
+                Base::on_post_assign();                                      \
             }                                                                \
             return *this;                                                    \
         }                                                                    \

@@ -242,98 +242,6 @@ namespace boost { namespace detail {
         _container.insert(pos, itr, itr_end);
     }
 
-    struct bdq_insert_range_function
-    {
-        template <typename C>
-        insert_range_function_proxy<bdq_insert_range_function,C>
-            operator[](C& _container) const;
-
-        template <typename C, typename InputRange>
-        ::std::pair<typename C::iterator,typename C::iterator>
-            operator()(
-                C& _container
-              , typename C::iterator pos
-              , InputRange const& r
-            ) const;
-
-        template <typename C, typename Itr>
-        ::std::pair<typename C::iterator,typename C::iterator>
-            operator()(
-                C& _container
-              , typename C::iterator pos
-              , Itr itr
-              , Itr itr_end
-            ) const;
-
-        template <typename C, typename Itr>
-        static void
-            evaluate(
-                C& _container
-              , typename C::iterator pos
-              , Itr itr
-              , Itr itr_end
-            );
-    };
-
-    template <typename C>
-    inline insert_range_function_proxy<bdq_insert_range_function,C>
-        bdq_insert_range_function::operator[](C& _container) const
-    {
-        return insert_range_function_proxy<bdq_insert_range_function,C>(
-            _container
-        );
-    }
-
-    template <typename C, typename InputRange>
-    inline ::std::pair<typename C::iterator,typename C::iterator>
-        bdq_insert_range_function::operator()(
-            C& _container
-          , typename C::iterator pos
-          , InputRange const& r
-        ) const
-    {
-        return this->operator()(
-            _container
-          , pos
-          , ::boost::begin(r)
-          , ::boost::end(r)
-        );
-    }
-
-    template <typename C, typename Itr>
-    inline ::std::pair<typename C::iterator,typename C::iterator>
-        bdq_insert_range_function::operator()(
-            C& _container
-          , typename C::iterator pos
-          , Itr itr
-          , Itr itr_end
-        ) const
-    {
-        typename C::size_type const begin_index = (
-            ::std::distance(_container.begin(), pos)
-        );
-        bdq_insert_range_function::evaluate(_container, pos, itr, itr_end);
-        return ::std::pair<typename C::iterator,typename C::iterator>(
-            _container.begin() + begin_index
-          , _container.begin() + begin_index + ::std::distance(itr, itr_end)
-        );
-    }
-
-    template <typename C, typename Itr>
-    void
-        bdq_insert_range_function::evaluate(
-            C& _container
-          , typename C::iterator pos
-          , Itr itr
-          , Itr itr_end
-        )
-    {
-        for (; itr != itr_end; ++itr)
-        {
-            ++(pos = _container.insert(pos, *itr));
-        }
-    }
-
     struct bis_insert_range_function
     {
         template <typename C>
@@ -951,14 +859,6 @@ namespace boost {
     struct insert_range_function_gen<slist_selector<AllocatorSelector> >
     {
         typedef detail::fis_insert_range_function type;
-    };
-
-    template <typename AllocatorSelector>
-    struct insert_range_function_gen<
-        deque_selector< ::boost::mpl::true_,AllocatorSelector>
-    >
-    {
-        typedef detail::bdq_insert_range_function type;
     };
 }  // namespace boost
 

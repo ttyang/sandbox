@@ -409,6 +409,11 @@ std::cout << "5.2" << std::endl;
         return node_ptr;
     }
     //->
+
+    namespace balancer {
+
+        typedef ::boost::tree_node::red_black_balancer red_black;
+    }  // namespace balancer
 }}  // namespace boost::tree_node
 //]
 

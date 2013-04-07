@@ -3,7 +3,7 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-//#define __BOOST_TEST_TREE_NODE_TEST_SPLICE_ONE_ELEMENT__
+//#define LIBS_TREE_NODE_EXAMPLE_NARY_NODE_SPLICE_ONE_ELEMENT
 
 #include <iterator>
 #include <iostream>
@@ -195,18 +195,16 @@ void example()
     std::cout << "            for (std::size_t i = 0; i < data; ++i)";
     std::cout << std::endl << "            {" << std::endl << (
         "                typename ANode::iterator child_itr("
-    ) << std::endl << (
-        "#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION"
-    ) << std::endl << (
-        "                    (std::tr1::is_same<Selector,boost::slistS>::value"
-    ) << ") ? (" << std::endl;
-    std::cout << "                        (*itr).emplace(data - 1 - i)";
-    std::cout << std::endl << "                    ) :" << std::endl;
-    std::cout << "#endif" << std::endl;
-    std::cout << "                    (*itr).emplace(i)";
-    std::cout << std::endl << "                );" << std::endl << (
-        "                typename ANode::const_pointer const_child(&*child_itr"
-    ) << ");" << std::endl << "                BOOST_CHECK(" << std::endl;
+    ) << std::endl << "#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION";
+    std::cout << std::endl << "                    " << (
+        "(std::tr1::is_same<Selector,boost::slistS>::value) ? ("
+    ) << std::endl << "                        (*itr).emplace(data - 1 - i)";
+    std::cout << std::endl << "                    ) : " << std::endl;
+    std::cout << "#endif" << std::endl << (
+        "                    (*itr).emplace(i)"
+    ) << std::endl << "                );" << std::endl << "            " << (
+        "    typename ANode::const_pointer const_child(&*child_itr);"
+    ) << std::endl << std::endl << "                BOOST_CHECK(" << std::endl;
     std::cout << "                    (*child_itr).get_parent_ptr() == &*itr";
     std::cout << std::endl << (
         "//                  , \"Ctor not linking child to parent.\""
@@ -349,8 +347,12 @@ void example()
         std::cout << "        std::advance(a_child_itr, 4);" << std::endl;
         std::cout << "        a_child_itr = (*a_child_itr).begin();";
         std::cout << std::endl << "        *a_child_itr = a_root;";
-        std::cout << std::endl << "        test_node<a_node_case>";
-        std::cout << "(*a_child_itr, bf_vals, pre_vals, post_vals, df_vals);";
+        std::cout << std::endl << "        test_node<a_node_case>(";
+        std::cout << std::endl << "            *a_child_itr" << std::endl;
+        std::cout << "          , bf_vals" << std::endl;
+        std::cout << "          , pre_vals" << std::endl;
+        std::cout << "          , post_vals" << std::endl;
+        std::cout << "          , df_vals" << std::endl << "        );";
         std::cout << std::endl << std::endl << "        bf_vals.clear();";
         std::cout << std::endl << "        pre_vals.clear();" << std::endl;
         std::cout << "        post_vals.clear();" << std::endl;
@@ -361,7 +363,7 @@ void example()
         out_with_it(d_root);
 #endif
         std::cout << "        test_node<a_node_case>(a_root, bf_vals, pre_";
-        std::cout << "vals, post_vals, df_vals);" << std::endl << std::endl;
+        std::cout << "vals, post_vals, df_vals);" << std::endl;
 
         d_child_itr = (*d_child_itr).begin();
         std::advance(d_child_itr, 2);
@@ -413,39 +415,44 @@ void example()
 #else
         out_with_it(d_root);
 #endif
-
-#if defined __BOOST_TEST_TREE_NODE_TEST_SPLICE_ONE_ELEMENT__
         std::cout << "        test_node<a_node_case>(a_root, bf_vals, pre_";
-        std::cout << "vals, post_vals, df_vals);" << std::endl << std::endl;
+        std::cout << "vals, post_vals, df_vals);" << std::endl;
 
+#if defined LIBS_TREE_NODE_EXAMPLE_NARY_NODE_SPLICE_ONE_ELEMENT
         d_child_itr = d_root.begin();
         std::advance(d_child_itr, 2);
         d_desc_itr = d_child_itr;
         d_src_itr = (*(++d_desc_itr)).begin();
+//        d_end_itr = ++d_src_itr;
         (*d_child_itr).splice(
             ++(*d_child_itr).begin()
           , *d_desc_itr
           , ++d_src_itr
+//          , ++++d_end_itr
         );
 #if defined BOOST_TREE_NODE_CAN_USE_FUSION
         a_child_itr = a_root.begin();
         std::advance(a_child_itr, 2);
         a_desc_itr = a_child_itr;
         a_src_itr = (*(++a_desc_itr)).begin();
+//        a_end_itr = ++a_src_itr;
         (*a_child_itr).splice(
             ++(*a_child_itr).begin()
           , *a_desc_itr
           , ++a_src_itr
+//          , ++++a_end_itr
         );
 #endif
         std::cout << "        a_child_itr = a_root.begin();" << std::endl;
         std::cout << "        std::advance(a_child_itr, 2);" << std::endl;
         std::cout << "        a_desc_itr = a_child_itr;" << std::endl;
         std::cout << "        a_src_itr = (*(++a_desc_itr)).begin();";
+        std::cout << std::endl << "//        a_end_itr = ++a_src_itr;";
         std::cout << std::endl << "        (*a_child_itr).splice(";
         std::cout << std::endl << "            ++(*a_child_itr).begin()";
         std::cout << std::endl << "          , *a_desc_itr" << std::endl;
         std::cout << "          , ++a_src_itr" << std::endl;
+        std::cout << "//          , ++++a_end_itr" << std::endl;
         std::cout << "        );" << std::endl << "        bf_vals.clear();";
         std::cout << std::endl << "        pre_vals.clear();" << std::endl;
         std::cout << "        post_vals.clear();" << std::endl;
@@ -455,10 +462,10 @@ void example()
 #else
         out_with_it(d_root);
 #endif
-#endif  // __BOOST_TEST_TREE_NODE_TEST_SPLICE_ONE_ELEMENT__
-
         std::cout << "        test_node<a_node_case>(a_root, bf_vals, pre_";
         std::cout << "vals, post_vals, df_vals);" << std::endl;
+#endif  // LIBS_TREE_NODE_EXAMPLE_NARY_NODE_SPLICE_ONE_ELEMENT
+
         std::cout << "    }" << std::endl << std::endl;
     }
 
@@ -646,8 +653,8 @@ void example()
         "#include <boost/typeof/boost/container/stable_vector.hpp>"
     ) << std::endl << "#include <boost/typeof/boost/container/deque.hpp>";
     std::cout << std::endl << (
-        "#include <boost/typeof/boost/container/list.hpp>"
-    ) << std::endl << "#include <boost/typeof/boost/container/slist.hpp>";
+        "#include <boost/typeof/boost/container/slist.hpp>"
+    ) << std::endl << "#include <boost/typeof/boost/container/list.hpp>";
     std::cout << std::endl << (
         "#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION"
     ) << std::endl << "#endif  // BOOST_TYPEOF_EMULATION" << std::endl;
@@ -659,22 +666,21 @@ void example()
         "#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION"
     ) << std::endl << (
         "    test<boost::vector_selector<boost::mpl::true_> >();"
-    ) << std::endl << "//    test<boost::stable_vecS>();" << std::endl;
-    std::cout << "//    test<boost::deque_selector<boost::mpl::true_> >();";
-    std::cout << std::endl << (
+    ) << std::endl << "    test<boost::stable_vecS>();" << std::endl << (
+        "    test<boost::deque_selector<boost::mpl::true_> >();"
+    ) << std::endl << "    test<boost::slistS>();" << std::endl << (
         "    test<boost::list_selector<boost::mpl::true_> >();"
-    ) << std::endl << "    test<boost::slistS>();" << std::endl;
-    std::cout << "#endif" << std::endl << std::endl;
+    ) << std::endl << "#endif" << std::endl << std::endl;
     std::cout << "    return 0;" << std::endl << '}' << std::endl << std::endl;
 }
 
 #if defined BOOST_TYPEOF_EMULATION
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 #include <boost/typeof/boost/ptr_container/ptr_vector.hpp>
-#elif defined __BOOST_TEST_TREE_NODE_TEST_CONTAINER_DEQUE__
+#elif defined LIBS_TREE_NODE_EXAMPLE_NARY_NODE_USE_VECTOR
 #include <boost/typeof/boost/mpl/bool.hpp>
-#include <boost/typeof/boost/container/deque.hpp>
-#elif defined __BOOST_TEST_TREE_NODE_TEST_STABLE_VECTOR__
+#include <boost/typeof/boost/container/vector.hpp>
+#elif defined LIBS_TREE_NODE_EXAMPLE_NARY_NODE_USE_STABLE_VECTOR
 #include <boost/typeof/boost/container/stable_vector.hpp>
 #else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 #include <boost/typeof/boost/container/slist.hpp>
@@ -685,9 +691,9 @@ int main()
 {
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     example<boost::ptr_vecS>();
-#elif defined __BOOST_TEST_TREE_NODE_TEST_CONTAINER_DEQUE__
-    example<boost::deque_selector<boost::mpl::true_> >();
-#elif defined __BOOST_TEST_TREE_NODE_TEST_STABLE_VECTOR__
+#elif defined LIBS_TREE_NODE_EXAMPLE_NARY_NODE_USE_VECTOR
+    example<boost::vector_selector<boost::mpl::true_> >();
+#elif defined LIBS_TREE_NODE_EXAMPLE_NARY_NODE_USE_STABLE_VECTOR
     example<boost::stable_vecS>();
 #else
     example<boost::slistS>();

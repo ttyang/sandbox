@@ -11,6 +11,9 @@
 
 #include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
 BOOST_TYPEOF_REGISTER_TYPE(::boost::tree_node::adelson_velskii_landis_balancer)
+BOOST_TYPEOF_REGISTER_TYPE(
+    ::boost::tree_node::balancer::adelson_velskii_landis
+)
 
 #endif  // BOOST_TYPEOF_BOOST_TREE_NODE_BALANCER_ADELSON_VELSKII_LANDIS_HPP
 

@@ -22,7 +22,11 @@ void test_value_insert(ValueSet& values, ValueSet::key_type const& key)
     values.insert(key);
 }
 
-typedef boost::tree_node::binode_set<RedBlackNodeGen,boost::int32_t>
+typedef boost::tree_node::binode_set<
+            boost::int32_t
+          , RedBlackNodeGen
+          , boost::tree_node::red_black_balancer
+        >
         RedBlackTreeSet;
 
 void
@@ -75,9 +79,8 @@ void
 #include "red_black_tree.hpp"
 
 typedef boost::tree_node::binode_set<
-            AVLNodeGen
-          , boost::int32_t
-          , boost::default_ordering_selector
+            boost::int32_t
+          , AVLNodeGen
           , boost::tree_node::adelson_velskii_landis_balancer
         >
         AVLTreeSet;

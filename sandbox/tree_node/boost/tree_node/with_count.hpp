@@ -8,6 +8,7 @@
 
 #include <cstddef>
 #include <boost/tr1/type_traits.hpp>
+#include <boost/mpl/bool.hpp>
 #include <boost/mpl/apply_wrap.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/eval_if.hpp>
@@ -156,7 +157,6 @@ namespace boost { namespace tree_node {
         BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_HEADER(z, n, Tuple)          \
           , _count(::boost::initialized_value)                               \
         {                                                                    \
-            ++this->_count;                                                  \
         }                                                                    \
 //!
         BOOST_PP_REPEAT(
@@ -170,7 +170,6 @@ namespace boost { namespace tree_node {
         BOOST_TREE_NODE_EMPLACEMENT_CTOR_W_ALLOC_INLINE_HEADER(z, n, Tuple)  \
           , _count(::boost::initialized_value)                               \
         {                                                                    \
-            ++this->_count;                                                  \
         }                                                                    \
 //!
         BOOST_PP_REPEAT(
@@ -183,22 +182,19 @@ namespace boost { namespace tree_node {
 
         ~with_count_base();
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        void copy_assign(Derived const& copy);
-#else
-        void copy_assign(BOOST_COPY_ASSIGN_REF(Derived) copy);
+        void clone_metadata_impl(Derived const& copy);
 
-        void move_assign(BOOST_RV_REF(Derived) source);
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        void move_metadata_impl(BOOST_RV_REF(Derived) source);
 #endif
 
-        void on_post_copy_or_move();
+        void on_post_emplacement_construct();
 
-        template <typename BooleanIntegralConstant>
-        void
-            on_post_inserted_impl(
-                iterator position
-              , BooleanIntegralConstant invalidates_sibling_positions
-            );
+        void on_post_assign();
+
+        void on_post_inserted_impl(iterator position, ::boost::mpl::true_ t);
+
+        void on_post_inserted_impl(iterator position, ::boost::mpl::false_ f);
 
         template <typename BooleanIntegralConstant>
         void
@@ -323,7 +319,6 @@ namespace boost { namespace tree_node {
     ) : super_t(::boost::forward<Args>(args)...)
       , _count(::boost::initialized_value)
     {
-        ++this->_count;
     }
 
     template <
@@ -345,7 +340,6 @@ namespace boost { namespace tree_node {
         )
       , _count(::boost::initialized_value)
     {
-        ++this->_count;
     }
 #endif  // BOOST_CONTAINER_PERFECT_FORWARDING
 
@@ -360,7 +354,6 @@ namespace boost { namespace tree_node {
     {
     }
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
       , typename BaseGenerator
@@ -369,10 +362,19 @@ namespace boost { namespace tree_node {
       , typename Count
     >
     inline void
-        with_count_base<Derived,BaseGenerator,T1,T2,Count>::copy_assign(
-            Derived const& copy
-        )
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        with_count_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Count
+        >::clone_metadata_impl(Derived const& copy)
+    {
+        super_t::clone_metadata_impl(copy);
+        this->_count = copy._count;
+    }
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
       , typename BaseGenerator
@@ -381,33 +383,37 @@ namespace boost { namespace tree_node {
       , typename Count
     >
     inline void
-        with_count_base<Derived,BaseGenerator,T1,T2,Count>::move_assign(
+        with_count_base<Derived,BaseGenerator,T1,T2,Count>::move_metadata_impl(
             BOOST_RV_REF(Derived) source
         )
     {
 #if defined BOOST_NO_RVALUE_REFERENCES
-        super_t::move_assign(source);
+        super_t::move_metadata_impl(source);
 #else
-        super_t::move_assign(static_cast<Derived&&>(source));
+        super_t::move_metadata_impl(static_cast<Derived&&>(source));
 #endif
-//        this->_count = source._count;
+        this->_count = ::boost::move(source._count);
     }
-
-    template <
-        typename Derived
-      , typename BaseGenerator
-      , typename T1
-      , typename T2
-      , typename Count
-    >
-    inline void
-        with_count_base<Derived,BaseGenerator,T1,T2,Count>::copy_assign(
-            BOOST_COPY_ASSIGN_REF(Derived) copy
-        )
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    inline void
+        with_count_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Count
+        >::on_post_emplacement_construct()
     {
-        super_t::copy_assign(copy);
-//        this->_count = copy._count;
+        super_t::on_post_emplacement_construct();
+        ++this->_count;
     }
 
     template <
@@ -424,10 +430,14 @@ namespace boost { namespace tree_node {
           , T1
           , T2
           , Count
-        >::on_post_copy_or_move()
+        >::on_post_assign()
     {
-        super_t::on_post_copy_or_move();
-        this->_shallow_update();
+        super_t::on_post_assign();
+
+        if (this->get_parent_ptr())
+        {
+            static_cast<self*>(this->get_parent_ptr())->_shallow_update();
+        }
     }
 
     template <
@@ -437,7 +447,6 @@ namespace boost { namespace tree_node {
       , typename T2
       , typename Count
     >
-    template <typename BooleanIntegralConstant>
     inline void
         with_count_base<
             Derived
@@ -445,17 +454,31 @@ namespace boost { namespace tree_node {
           , T1
           , T2
           , Count
-        >::on_post_inserted_impl(
-            iterator position
-          , BooleanIntegralConstant invalidates_sibling_positions
-        )
+        >::on_post_inserted_impl(iterator position, ::boost::mpl::true_ t)
     {
-        super_t::on_post_inserted_impl(
-            position
-          , invalidates_sibling_positions
-        );
+        super_t::on_post_inserted_impl(position, t);
         self::_update_greater_count(this->get_derived(), this->_count);
         this->on_post_propagate_value(count_key());
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Count
+    >
+    inline void
+        with_count_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Count
+        >::on_post_inserted_impl(iterator position, ::boost::mpl::false_ f)
+    {
+        super_t::on_post_inserted_impl(position, f);
+        static_cast<self*>(this->get_parent_ptr())->_shallow_update();
     }
 
     template <
@@ -639,11 +662,12 @@ namespace boost { namespace tree_node {
       , typename T2
       , typename Count
     >
-    void with_count_base<Derived,BaseGenerator,T1,T2,Count>::_shallow_update()
+    inline void
+        with_count_base<Derived,BaseGenerator,T1,T2,Count>::_shallow_update()
     {
         typename traits::count new_count = self::_get_count(
-            this->begin()
-          , this->end()
+            this->cbegin()
+          , this->cend()
         );
 
         if (++new_count < this->_count)
@@ -690,12 +714,11 @@ namespace boost { namespace tree_node {
     {
         typename traits::count result = ::boost::initialized_value;
 
-        while (c_itr != c_end)
+        for (; c_itr != c_end; ++c_itr)
         {
             result += ::boost::tree_node::dereference_iterator(
                 c_itr
             )._count;
-            ++c_itr;
         }
 
         return result;

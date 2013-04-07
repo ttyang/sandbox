@@ -23,9 +23,10 @@ void test_value_insert(ValueMap& values, ValueMap::key_type const& key)
 }
 
 typedef boost::tree_node::binode_map<
-            RedBlackNodeGen
+            boost::int32_t
           , boost::int32_t
-          , boost::int32_t
+          , RedBlackNodeGen
+          , boost::tree_node::red_black_balancer
         >
         RedBlackTreeMap;
 
@@ -83,10 +84,9 @@ void
 #include "red_black_tree.hpp"
 
 typedef boost::tree_node::binode_map<
-            AVLNodeGen
+            boost::int32_t
           , boost::int32_t
-          , boost::int32_t
-          , boost::default_ordering_selector
+          , AVLNodeGen
           , boost::tree_node::adelson_velskii_landis_balancer
         >
         AVLTreeMap;

@@ -19,6 +19,7 @@
 #include <boost/tree_node/traits/binary_node_fwd.hpp>
 #include <boost/tree_node/intrinsic/has_key.hpp>
 #include <boost/tree_node/intrinsic/get_keys.hpp>
+#include <boost/tree_node/iterator/depth_first_descendant.hpp>
 #include <boost/utility/value_init.hpp>
 #include <boost/assert.hpp>
 
@@ -696,6 +697,8 @@ namespace boost { namespace tree_node {
         template <typename D>
         friend struct binary_node_traits;
 
+        typedef binary_node_base<Derived,T,Size,Allocator> self;
+
      public:
         //[reference__binary_node_base__super_t
         typedef tree_node_base<Derived> super_t;
@@ -741,24 +744,6 @@ namespace boost { namespace tree_node {
                   , ::boost::mpl::true_
                 >
                 const_reverse_iterator;
-
-#if 0
-        //[reference__binary_node_base__iterator
-        typedef implementation_defined iterator;
-        //]
-
-        //[reference__binary_node_base__const_iterator
-        typedef implementation_defined const_iterator;
-        //]
-
-        //[reference__binary_node_base__reverse_iterator
-        typedef implementation_defined reverse_iterator;
-        //]
-
-        //[reference__binary_node_base__const_reverse_iterator
-        typedef implementation_defined const_reverse_iterator;
-        //]
-#endif
 
         //[reference__binary_node_base__size_type
         typedef Size size_type;
@@ -822,19 +807,23 @@ namespace boost { namespace tree_node {
 
         ~binary_node_base();
 
-        //[reference__binary_node_base__on_post_copy_or_move
-        void on_post_copy_or_move();
+        //[reference__binary_node_base__clone_descendants
+        void clone_descendants(Derived const& copy);
         //]
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         //[reference__binary_node_base__copy_assign
         void copy_assign(Derived const& copy);
         //]
-#else
-        void copy_assign(BOOST_COPY_ASSIGN_REF(Derived) copy);
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        void move_descendants(BOOST_RV_REF(Derived) source);
 
         void move_assign(BOOST_RV_REF(Derived) source);
 #endif
+
+        //[reference__binary_node_base__on_post_assign
+        void on_post_assign();
+        //]
 
      public:
         //[reference__binary_node_base__key_value_operator__const
@@ -901,68 +890,6 @@ namespace boost { namespace tree_node {
         pointer get_parent_ptr();
         //]
 
-        //[reference__binary_node_base__insert_left
-        iterator insert_left(Derived const& child);
-        //]
-
-#if defined BOOST_CONTAINER_PERFECT_FORWARDING
-        //[reference__binary_node_base__emplace_left
-        template <typename ...Args>
-        iterator emplace_left(Args&& ...args);
-        //]
-#else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
-#define BOOST_TREE_NODE_BINARY_NODE_MACRO(z, n, _)                           \
-        BOOST_PP_EXPR_IF(n, template <)                                      \
-            BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                         \
-        BOOST_PP_EXPR_IF(n, >)                                               \
-        iterator                                                             \
-            emplace_left(                                                    \
-                BOOST_PP_CAT(BOOST_PP_ENUM_, z)(                             \
-                    n                                                        \
-                  , BOOST_CONTAINER_PP_PARAM_LIST                            \
-                  , _                                                        \
-                )                                                            \
-            );                                                               \
-//!
-        BOOST_PP_REPEAT(
-            BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS
-          , BOOST_TREE_NODE_BINARY_NODE_MACRO
-          , _
-        )
-#undef BOOST_TREE_NODE_BINARY_NODE_MACRO
-#endif  // BOOST_CONTAINER_PERFECT_FORWARDING
-
-        //[reference__binary_node_base__insert_right
-        iterator insert_right(Derived const& child);
-        //]
-
-#if defined BOOST_CONTAINER_PERFECT_FORWARDING
-        //[reference__binary_node_base__emplace_right
-        template <typename ...Args>
-        iterator emplace_right(Args&& ...args);
-        //]
-#else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
-#define BOOST_TREE_NODE_BINARY_NODE_MACRO(z, n, _)                           \
-        BOOST_PP_EXPR_IF(n, template <)                                      \
-            BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                         \
-        BOOST_PP_EXPR_IF(n, >)                                               \
-        iterator                                                             \
-            emplace_right(                                                   \
-                BOOST_PP_CAT(BOOST_PP_ENUM_, z)(                             \
-                    n                                                        \
-                  , BOOST_CONTAINER_PP_PARAM_LIST                            \
-                  , _                                                        \
-                )                                                            \
-            );                                                               \
-//!
-        BOOST_PP_REPEAT(
-            BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS
-          , BOOST_TREE_NODE_BINARY_NODE_MACRO
-          , _
-        )
-#undef BOOST_TREE_NODE_BINARY_NODE_MACRO
-#endif  // BOOST_CONTAINER_PERFECT_FORWARDING
-
         //[reference__binary_node_base__get_left_child_ptr__const
         const_pointer get_left_child_ptr() const;
         //]
@@ -1027,6 +954,68 @@ namespace boost { namespace tree_node {
         void clear();
         //]
 
+        //[reference__binary_node_base__insert_left
+        iterator insert_left(Derived const& child);
+        //]
+
+#if defined BOOST_CONTAINER_PERFECT_FORWARDING
+        //[reference__binary_node_base__emplace_left
+        template <typename ...Args>
+        iterator emplace_left(Args&& ...args);
+        //]
+#else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
+#define BOOST_TREE_NODE_BINARY_NODE_MACRO(z, n, _)                           \
+        BOOST_PP_EXPR_IF(n, template <)                                      \
+            BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                         \
+        BOOST_PP_EXPR_IF(n, >)                                               \
+        iterator                                                             \
+            emplace_left(                                                    \
+                BOOST_PP_CAT(BOOST_PP_ENUM_, z)(                             \
+                    n                                                        \
+                  , BOOST_CONTAINER_PP_PARAM_LIST                            \
+                  , _                                                        \
+                )                                                            \
+            );                                                               \
+//!
+        BOOST_PP_REPEAT(
+            BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS
+          , BOOST_TREE_NODE_BINARY_NODE_MACRO
+          , _
+        )
+#undef BOOST_TREE_NODE_BINARY_NODE_MACRO
+#endif  // BOOST_CONTAINER_PERFECT_FORWARDING
+
+        //[reference__binary_node_base__insert_right
+        iterator insert_right(Derived const& child);
+        //]
+
+#if defined BOOST_CONTAINER_PERFECT_FORWARDING
+        //[reference__binary_node_base__emplace_right
+        template <typename ...Args>
+        iterator emplace_right(Args&& ...args);
+        //]
+#else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
+#define BOOST_TREE_NODE_BINARY_NODE_MACRO(z, n, _)                           \
+        BOOST_PP_EXPR_IF(n, template <)                                      \
+            BOOST_PP_ENUM_PARAMS_Z(z, n, typename P)                         \
+        BOOST_PP_EXPR_IF(n, >)                                               \
+        iterator                                                             \
+            emplace_right(                                                   \
+                BOOST_PP_CAT(BOOST_PP_ENUM_, z)(                             \
+                    n                                                        \
+                  , BOOST_CONTAINER_PP_PARAM_LIST                            \
+                  , _                                                        \
+                )                                                            \
+            );                                                               \
+//!
+        BOOST_PP_REPEAT(
+            BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS
+          , BOOST_TREE_NODE_BINARY_NODE_MACRO
+          , _
+        )
+#undef BOOST_TREE_NODE_BINARY_NODE_MACRO
+#endif  // BOOST_CONTAINER_PERFECT_FORWARDING
+
         //[reference__binary_node_base__rotate_left
         pointer rotate_left();
         //]
@@ -1058,9 +1047,25 @@ namespace boost { namespace tree_node {
             );
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-        iterator _add_child(pointer const& child);
+        static bool
+            _clone_data(
+                pointer& p
+              , const_pointer const& c_p
+              , Allocator& allocator
+            );
 
-        void _link_children_to_parent();
+        static bool
+            _move(pointer& dest_p, pointer& src_p, Allocator& allocator);
+
+        static void _destroy(pointer const& p, Allocator& allocator);
+
+        static bool _erase(pointer& p, Allocator& allocator);
+
+        static iterator _on_post_inserted(pointer const& child);
+
+        void _clone_descendants(Derived const& copy);
+
+        void _move_descendants(Derived& source);
 
         void _on_post_modify_value(data_key const& key);
 
@@ -1120,65 +1125,10 @@ namespace boost { namespace tree_node {
             >::select_on_container_copy_construction(copy._allocator)
 #endif
         )
-      , _left_child(
-            copy._left_child ? (
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-                this->_allocator.allocate(1)
-#else
-                ::boost::container::allocator_traits<
-                    typename traits::allocator
-                >::allocate(this->_allocator, 1)
-#endif
-            ) : ::boost::initialized_value
-        )
-      , _right_child(
-            copy._right_child ? (
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-                this->_allocator.allocate(1)
-#else
-                ::boost::container::allocator_traits<
-                    typename traits::allocator
-                >::allocate(this->_allocator, 1)
-#endif
-            ) : ::boost::initialized_value
-        )
+      , _left_child(::boost::initialized_value)
+      , _right_child(::boost::initialized_value)
       , _parent(::boost::initialized_value)
     {
-        if (this->_left_child)
-        {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.construct(
-                this->_left_child
-              , *copy.get_left_child_ptr()
-            );
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::construct(
-                this->_allocator
-              , this->_left_child
-              , *copy.get_left_child_ptr()
-            );
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        }
-
-        if (this->_right_child)
-        {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.construct(
-                this->_right_child
-              , *copy.get_right_child_ptr()
-            );
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::construct(
-                this->_allocator
-              , this->_right_child
-              , *copy.get_right_child_ptr()
-            );
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        }
     }
 
     template <typename Derived, typename T, typename Size, typename Allocator>
@@ -1196,69 +1146,10 @@ namespace boost { namespace tree_node {
             )
 #endif
         )
-      , _left_child(
-            copy._left_child ? (
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-                this->_allocator.allocate(1)
-#else
-                ::boost::container::allocator_traits<
-                    typename traits::allocator
-                >::allocate(this->_allocator, 1)
-#endif
-            ) : ::boost::initialized_value
-        )
-      , _right_child(
-            copy._right_child ? (
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-                this->_allocator.allocate(1)
-#else
-                ::boost::container::allocator_traits<
-                    typename traits::allocator
-                >::allocate(this->_allocator, 1)
-#endif
-            ) : ::boost::initialized_value
-        )
+      , _left_child(::boost::initialized_value)
+      , _right_child(::boost::initialized_value)
       , _parent(::boost::initialized_value)
     {
-        if (this->_left_child)
-        {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.construct(
-                this->_left_child
-              , *copy.get_left_child_ptr()
-              , allocator
-            );
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::construct(
-                this->_allocator
-              , this->_left_child
-              , *copy.get_left_child_ptr()
-              , allocator
-            );
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        }
-
-        if (this->_right_child)
-        {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.construct(
-                this->_right_child
-              , *copy.get_right_child_ptr()
-              , allocator
-            );
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::construct(
-                this->_allocator
-              , this->_right_child
-              , *copy.get_right_child_ptr()
-              , allocator
-            );
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        }
     }
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -1412,102 +1303,57 @@ namespace boost { namespace tree_node {
     {
         if (this->_left_child)
         {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.destroy(this->_left_child);
-            this->_allocator.deallocate(this->_left_child, 1);
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_left_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_left_child, 1);
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+            self::_destroy(this->_left_child, this->_allocator);
         }
 
         if (this->_right_child)
         {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.destroy(this->_right_child);
-            this->_allocator.deallocate(this->_right_child, 1);
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_right_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_right_child, 1);
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+            self::_destroy(this->_right_child, this->_allocator);
         }
     }
 
     template <typename Derived, typename T, typename Size, typename Allocator>
     inline void
-        binary_node_base<Derived,T,Size,Allocator>::on_post_copy_or_move()
+        binary_node_base<Derived,T,Size,Allocator>::clone_descendants(
+            Derived const& copy
+        )
     {
-        this->_link_children_to_parent();
-        this->on_post_modify_value(data_key());
+        this->_clone_descendants(copy);
     }
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <typename Derived, typename T, typename Size, typename Allocator>
     void
         binary_node_base<Derived,T,Size,Allocator>::copy_assign(
             Derived const& copy
         )
     {
-        Derived twin(copy);
+        Derived twin(copy._data);
 
-        if (this->_left_child)
-        {
-            this->_allocator.destroy(this->_left_child);
-            this->_allocator.deallocate(this->_left_child, 1);
-        }
-
-        if (this->_right_child)
-        {
-            this->_allocator.destroy(this->_right_child);
-            this->_allocator.deallocate(this->_right_child, 1);
-        }
-
+        twin._clone_descendants(copy);
         this->_data = twin._data;
-        this->_left_child = twin._left_child;
-        this->_right_child = twin._right_child;
-        twin._left_child = twin._right_child = ::boost::initialized_value;
+        this->_move_descendants(twin);
+        this->clone_metadata(copy);
     }
+
+#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 #else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <typename Derived, typename T, typename Size, typename Allocator>
-    void
-        binary_node_base<Derived,T,Size,Allocator>::copy_assign(
-            BOOST_COPY_ASSIGN_REF(Derived) copy
+    inline void
+        binary_node_base<Derived,T,Size,Allocator>::move_descendants(
+            BOOST_RV_REF(Derived) source
         )
     {
-        Derived twin(static_cast<Derived const&>(copy));
-
         if (this->_left_child)
         {
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_left_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_left_child, 1);
+            this->_left_child->_parent = this->get_derived();
         }
 
         if (this->_right_child)
         {
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_right_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_right_child, 1);
+            this->_right_child->_parent = this->get_derived();
         }
 
-        this->_data = ::boost::move(twin._data);
-        this->_left_child = twin._left_child;
-        this->_right_child = twin._right_child;
-        twin._left_child = twin._right_child = ::boost::initialized_value;
+        source.on_post_clear();
     }
 
     template <typename Derived, typename T, typename Size, typename Allocator>
@@ -1516,32 +1362,26 @@ namespace boost { namespace tree_node {
             BOOST_RV_REF(Derived) source
         )
     {
-        if (this->_left_child)
-        {
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_left_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_left_child, 1);
-        }
-
-        if (this->_right_child)
-        {
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_right_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_right_child, 1);
-        }
-
         this->_data = ::boost::move(source._data);
-        this->_left_child = source._left_child;
-        this->_right_child = source._right_child;
-        source._left_child = source._right_child = ::boost::initialized_value;
+        this->_move_descendants(static_cast<Derived&>(source));
+#if defined BOOST_NO_RVALUE_REFERENCES
+        this->move_metadata(source);
+#else
+        this->move_metadata(static_cast<Derived&&>(source));
+#endif
+        source.on_post_clear();
     }
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+    template <typename Derived, typename T, typename Size, typename Allocator>
+    inline void
+        binary_node_base<Derived,T,Size,Allocator>::on_post_assign()
+    {
+        if (this->_parent)
+        {
+            this->_parent->on_post_propagate_value(data_key());
+        }
+    }
 
     template <typename Derived, typename T, typename Size, typename Allocator>
     inline typename binary_node_base<
@@ -1641,7 +1481,7 @@ namespace boost { namespace tree_node {
     {
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         pointer p(this->_allocator.allocate(1));
-        this->_allocator.construct(p, child);
+        this->_allocator.construct(p, child._data);
 #else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         pointer p(
             ::boost::container::allocator_traits<
@@ -1650,8 +1490,10 @@ namespace boost { namespace tree_node {
         );
         ::boost::container::allocator_traits<
             typename traits::allocator
-        >::construct(this->_allocator, p, child);
+        >::construct(this->_allocator, p, child._data);
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        p->_clone_descendants(child);
+        p->clone_metadata(child);
 
         pointer c = p->_left_child;
 
@@ -1662,12 +1504,14 @@ namespace boost { namespace tree_node {
                 c = c->_left_child;
             }
 
-            c->_add_child(c->_left_child = this->_left_child);
+            this->_left_child->_parent = c;
+            self::_on_post_inserted(c->_left_child = this->_left_child);
             this->_left_child = ::boost::initialized_value;
             this->on_post_erase();
         }
 
-        return this->_add_child(this->_left_child = p);
+        p->_parent = this->get_derived();
+        return self::_on_post_inserted(this->_left_child = p);
     }
 
 #if defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -1693,10 +1537,12 @@ namespace boost { namespace tree_node {
                 typename traits::allocator
             >::construct(this->_allocator, p, ::boost::forward<Args>(args)...);
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            p->_add_child(p->_left_child = this->_left_child);
+            this->_left_child->_parent = p;
+            self::_on_post_inserted(p->_left_child = this->_left_child);
             this->_left_child = ::boost::initialized_value;
             this->on_post_erase();
-            return this->_add_child(this->_left_child = p);
+            p->_parent = this->get_derived();
+            return self::_on_post_inserted(this->_left_child = p);
         }
         else
         {
@@ -1716,7 +1562,8 @@ namespace boost { namespace tree_node {
               , ::boost::forward<Args>(args)...
             );
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            return this->_add_child(this->_left_child);
+            this->_left_child->_parent = this->get_derived();
+            return self::_on_post_inserted(this->_left_child);
         }
     }
 #else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -1751,10 +1598,12 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            p->_add_child(p->_left_child = this->_left_child);               \
+            this->_left_child->_parent = p;                                  \
+            self::_on_post_inserted(p->_left_child = this->_left_child);     \
             this->_left_child = ::boost::initialized_value;                  \
             this->on_post_erase();                                           \
-            return this->_add_child(this->_left_child = p);                  \
+            p->_parent = this->get_derived();                                \
+            return self::_on_post_inserted(this->_left_child = p);           \
         }                                                                    \
         else                                                                 \
         {                                                                    \
@@ -1766,7 +1615,8 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            return this->_add_child(this->_left_child);                      \
+            this->_left_child->_parent = this->get_derived();                \
+            return self::_on_post_inserted(this->_left_child);               \
         }                                                                    \
     }                                                                        \
 //!
@@ -1808,10 +1658,12 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            p->_add_child(p->_left_child = this->_left_child);               \
+            this->_left_child->_parent = p;                                  \
+            self::_on_post_inserted(p->_left_child = this->_left_child);     \
             this->_left_child = ::boost::initialized_value;                  \
             this->on_post_erase();                                           \
-            return this->_add_child(this->_left_child = p);                  \
+            p->_parent = this->get_derived();                                \
+            return self::_on_post_inserted(this->_left_child = p);           \
         }                                                                    \
         else                                                                 \
         {                                                                    \
@@ -1828,7 +1680,8 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            return this->_add_child(this->_left_child);                      \
+            this->_left_child->_parent = this->get_derived();                \
+            return self::_on_post_inserted(this->_left_child);               \
         }                                                                    \
     }                                                                        \
 //!
@@ -1849,7 +1702,7 @@ namespace boost { namespace tree_node {
     {
 #if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         pointer p(this->_allocator.allocate(1));
-        this->_allocator.construct(p, child);
+        this->_allocator.construct(p, child._data);
 #else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
         pointer p(
             ::boost::container::allocator_traits<
@@ -1858,8 +1711,10 @@ namespace boost { namespace tree_node {
         );
         ::boost::container::allocator_traits<
             typename traits::allocator
-        >::construct(this->_allocator, p, child);
+        >::construct(this->_allocator, p, child._data);
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        p->_clone_descendants(child);
+        p->clone_metadata(child);
 
         pointer c = p->_right_child;
 
@@ -1870,12 +1725,14 @@ namespace boost { namespace tree_node {
                 c = c->_right_child;
             }
 
-            c->_add_child(c->_right_child = this->_right_child);
+            this->_right_child->_parent = c;
+            self::_on_post_inserted(c->_right_child = this->_right_child);
             this->_right_child = ::boost::initialized_value;
             this->on_post_erase();
         }
 
-        return this->_add_child(this->_right_child = p);
+        p->_parent = this->get_derived();
+        return self::_on_post_inserted(this->_right_child = p);
     }
 
 #if defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -1901,10 +1758,12 @@ namespace boost { namespace tree_node {
                 typename traits::allocator
             >::construct(this->_allocator, p, ::boost::forward<Args>(args)...);
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            p->_add_child(p->_right_child = this->_right_child);
+            this->_right_child->_parent = p;
+            self::_on_post_inserted(p->_right_child = this->_right_child);
             this->_right_child = ::boost::initialized_value;
             this->on_post_erase();
-            return this->_add_child(this->_right_child = p);
+            p->_parent = this->get_derived();
+            return self::_on_post_inserted(this->_right_child = p);
         }
         else
         {
@@ -1924,7 +1783,8 @@ namespace boost { namespace tree_node {
               , ::boost::forward<Args>(args)...
             );
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            return this->_add_child(this->_right_child);
+            this->_right_child->_parent = this->get_derived();
+            return self::_on_post_inserted(this->_right_child);
         }
     }
 #else  // !defined BOOST_CONTAINER_PERFECT_FORWARDING
@@ -1959,10 +1819,12 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            p->_add_child(p->_right_child = this->_right_child);             \
+            this->_right_child->_parent = p;                                 \
+            self::_on_post_inserted(p->_right_child = this->_right_child);   \
             this->_right_child = ::boost::initialized_value;                 \
             this->on_post_erase();                                           \
-            return this->_add_child(this->_right_child = p);                 \
+            p->_parent = this->get_derived();                                \
+            return self::_on_post_inserted(this->_right_child = p);          \
         }                                                                    \
         else                                                                 \
         {                                                                    \
@@ -1974,7 +1836,8 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            return this->_add_child(this->_right_child);                     \
+            this->_right_child->_parent = this->get_derived();               \
+            return self::_on_post_inserted(this->_right_child);              \
         }                                                                    \
     }                                                                        \
 //!
@@ -2016,10 +1879,12 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            p->_add_child(p->_right_child = this->_right_child);             \
+            this->_right_child->_parent = p;                                 \
+            self::_on_post_inserted(p->_right_child = this->_right_child);   \
             this->_right_child = ::boost::initialized_value;                 \
             this->on_post_erase();                                           \
-            return this->_add_child(this->_right_child = p);                 \
+            p->_parent = this->get_derived();                                \
+            return self::_on_post_inserted(this->_right_child = p);          \
         }                                                                    \
         else                                                                 \
         {                                                                    \
@@ -2036,7 +1901,8 @@ namespace boost { namespace tree_node {
                   , _                                                        \
                 )                                                            \
             );                                                               \
-            return this->_add_child(this->_right_child);                     \
+            this->_right_child->_parent = this->get_derived();               \
+            return self::_on_post_inserted(this->_right_child);              \
         }                                                                    \
     }                                                                        \
 //!
@@ -2213,32 +2079,12 @@ namespace boost { namespace tree_node {
     {
         if (this->_left_child)
         {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.destroy(this->_left_child);
-            this->_allocator.deallocate(this->_left_child, 1);
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_left_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_left_child, 1);
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+            self::_destroy(this->_left_child, this->_allocator);
         }
 
         if (this->_right_child)
         {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.destroy(this->_right_child);
-            this->_allocator.deallocate(this->_right_child, 1);
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_right_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_right_child, 1);
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+            self::_destroy(this->_right_child, this->_allocator);
         }
 
         this->_left_child = this->_right_child = ::boost::initialized_value;
@@ -2312,20 +2158,8 @@ namespace boost { namespace tree_node {
     template <typename Derived, typename T, typename Size, typename Allocator>
     inline bool binary_node_base<Derived,T,Size,Allocator>::erase_left()
     {
-        if (this->_left_child)
+        if (self::_erase(this->_left_child, this->_allocator))
         {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.destroy(this->_left_child);
-            this->_allocator.deallocate(this->_left_child, 1);
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_left_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_left_child, 1);
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_left_child = ::boost::initialized_value;
             this->on_post_erase();
             return true;
         }
@@ -2338,20 +2172,8 @@ namespace boost { namespace tree_node {
     template <typename Derived, typename T, typename Size, typename Allocator>
     inline bool binary_node_base<Derived,T,Size,Allocator>::erase_right()
     {
-        if (this->_right_child)
+        if (self::_erase(this->_right_child, this->_allocator))
         {
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_allocator.destroy(this->_right_child);
-            this->_allocator.deallocate(this->_right_child, 1);
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::destroy(this->_allocator, this->_right_child);
-            ::boost::container::allocator_traits<
-                typename traits::allocator
-            >::deallocate(this->_allocator, this->_right_child, 1);
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-            this->_right_child = ::boost::initialized_value;
             this->on_post_erase();
             return true;
         }
@@ -2391,29 +2213,262 @@ namespace boost { namespace tree_node {
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
     template <typename Derived, typename T, typename Size, typename Allocator>
-    typename binary_node_base<Derived,T,Size,Allocator>::iterator
-        binary_node_base<Derived,T,Size,Allocator>::_add_child(
+    bool
+        binary_node_base<Derived,T,Size,Allocator>::_clone_data(
+            pointer& p
+          , const_pointer const& c_p
+          , Allocator& allocator
+        )
+    {
+        if (c_p)
+        {
+            if (p)
+            {
+                p->_data = c_p->_data;
+            }
+            else
+            {
+#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+                allocator.construct(p = allocator.allocate(1), c_p->_data);
+#else
+                ::boost::container::allocator_traits<
+                    typename traits::allocator
+                >::construct(
+                    allocator
+                  , p = ::boost::container::allocator_traits<
+                        typename traits::allocator
+                    >::allocate(allocator, 1)
+                  , c_p->_data
+                );
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+            }
+
+            return true;
+        }
+        else
+        {
+            if (p)
+            {
+                self::_destroy(p, allocator);
+                p = ::boost::initialized_value;
+            }
+
+            return false;
+        }
+    }
+
+    template <typename Derived, typename T, typename Size, typename Allocator>
+    inline bool
+        binary_node_base<Derived,T,Size,Allocator>::_move(
+            pointer& dest_p
+          , pointer& src_p
+          , Allocator& allocator
+        )
+    {
+        if (dest_p)
+        {
+            self::_destroy(dest_p, allocator);
+        }
+
+        if ((dest_p = src_p))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    template <typename Derived, typename T, typename Size, typename Allocator>
+    inline void
+        binary_node_base<Derived,T,Size,Allocator>::_destroy(
+            pointer const& p
+          , Allocator& allocator
+        )
+    {
+#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        allocator.destroy(p);
+        allocator.deallocate(p, 1);
+#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        ::boost::container::allocator_traits<
+            typename traits::allocator
+        >::destroy(allocator, p);
+        ::boost::container::allocator_traits<
+            typename traits::allocator
+        >::deallocate(allocator, p, 1);
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+    }
+
+    template <typename Derived, typename T, typename Size, typename Allocator>
+    inline bool
+        binary_node_base<Derived,T,Size,Allocator>::_erase(
+            pointer& p
+          , Allocator& allocator
+        )
+    {
+        if (p)
+        {
+            self::_destroy(p, allocator);
+            p = ::boost::initialized_value;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    template <typename Derived, typename T, typename Size, typename Allocator>
+    inline typename binary_node_base<Derived,T,Size,Allocator>::iterator
+        binary_node_base<Derived,T,Size,Allocator>::_on_post_inserted(
             pointer const& child
         )
     {
-        child->_parent = this->get_derived();
         iterator result(child, true);
         result->on_post_inserted(result, ::boost::mpl::true_());
         return result;
     }
 
     template <typename Derived, typename T, typename Size, typename Allocator>
-    inline void
-        binary_node_base<Derived,T,Size,Allocator>::_link_children_to_parent()
+    void
+        binary_node_base<Derived,T,Size,Allocator>::_clone_descendants(
+            Derived const& copy
+        )
     {
-        if (this->_left_child)
+        bool must_traverse_left_child = true;
+
+        if (
+            self::_clone_data(
+                this->_left_child
+              , copy._left_child
+              , this->_allocator
+            )
+        )
         {
             this->_left_child->_parent = this->get_derived();
         }
+        else
+        {
+            must_traverse_left_child = false;
+        }
 
-        if (this->_right_child)
+        if (
+            self::_clone_data(
+                this->_right_child
+              , copy._right_child
+              , this->_allocator
+            )
+        )
         {
             this->_right_child->_parent = this->get_derived();
+        }
+
+        pointer p = this->get_derived();
+
+        for (
+            depth_first_descendant_iterator<Derived const> itr(copy);
+            itr;
+            ++itr
+        )
+        {
+            BOOST_ASSERT_MSG(p, "Premature past-the-end target.");
+
+            switch (::boost::tree_node::traversal_state(itr))
+            {
+                case ::boost::tree_node::pre_order_traversal:
+                {
+                    if (must_traverse_left_child)
+                    {
+                        p = p->_left_child;
+                    }
+                    else
+                    {
+                        BOOST_ASSERT_MSG(
+                            p->_right_child
+                          , "itr is at wrong traversal_state"
+                        );
+                        p = p->_right_child;
+                    }
+
+                    if (
+                        (
+                            must_traverse_left_child = self::_clone_data(
+                                p->_left_child
+                              , itr->_left_child
+                              , p->_allocator
+                            )
+                        )
+                    )
+                    {
+                        p->_left_child->_parent = p;
+                    }
+
+                    if (
+                        self::_clone_data(
+                            p->_right_child
+                          , itr->_right_child
+                          , p->_allocator
+                        )
+                    )
+                    {
+                        p->_right_child->_parent = p;
+                    }
+
+                    p->clone_metadata(*itr);
+                    break;
+                }
+
+                case ::boost::tree_node::post_order_traversal:
+                {
+                    p->on_post_copy_or_move();
+                    p = p->get_parent_ptr();
+                    must_traverse_left_child = false;
+                    break;
+                }
+
+                default:
+                {
+                    BOOST_ASSERT_MSG(
+                        false
+                      , "traversal_state must be pre- or post-order!"
+                    );
+                }
+            }
+        }
+
+        BOOST_ASSERT_MSG(p == this->get_derived(), "p not at-the-end");
+        p->on_post_copy_or_move();
+    }
+
+    template <typename Derived, typename T, typename Size, typename Allocator>
+    inline void
+        binary_node_base<Derived,T,Size,Allocator>::_move_descendants(
+            Derived& source
+        )
+    {
+        if (
+            self::_move(
+                this->_left_child
+              , source._left_child
+              , source._allocator
+            )
+        )
+        {
+            this->_left_child->_parent = this->get_derived();
+            source._left_child = ::boost::initialized_value;
+        }
+
+        if (
+            self::_move(
+                this->_right_child
+              , source._right_child
+              , source._allocator
+            )
+        )
+        {
+            this->_right_child->_parent = this->get_derived();
+            source._right_child = ::boost::initialized_value;
         }
     }
 

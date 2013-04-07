@@ -6,8 +6,13 @@
 #ifndef BOOST_TREE_NODE_BASE_HPP_INCLUDED
 #define BOOST_TREE_NODE_BASE_HPP_INCLUDED
 
+#include <boost/config.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/detail/base_pointee.hpp>
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#include <boost/move/move.hpp>
+#endif
 
 namespace boost { namespace tree_node {
 
@@ -25,8 +30,40 @@ namespace boost { namespace tree_node {
      protected:
         ~tree_node_base();
 
+        //[reference__tree_node_base__clone_metadata_impl
+        void clone_metadata_impl(Derived const& copy);
+        //]
+
+        //[reference__tree_node_base__clone_metadata
+        void clone_metadata(Derived const& copy);
+        //]
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#if defined BOOST_NO_RVALUE_REFERENCES
+        void move_metadata_impl(::boost::rv<Derived>& source);
+
+        void move_metadata(::boost::rv<Derived>& source);
+#else  // !defined BOOST_NO_RVALUE_REFERENCES
+        //[reference__tree_node_base__move_metadata_impl
+        void move_metadata_impl(Derived&& source);
+        //]
+
+        //[reference__tree_node_base__move_metadata
+        void move_metadata(Derived&& source);
+        //]
+#endif  // BOOST_NO_RVALUE_REFERENCES
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
         //[reference__tree_node_base__on_post_emplacement_construct
         void on_post_emplacement_construct();
+        //]
+
+        //[reference__tree_node_base__on_post_copy_or_move_impl
+        void on_post_copy_or_move_impl();
+        //]
+
+        //[reference__tree_node_base__on_post_copy_or_move
+        void on_post_copy_or_move();
         //]
 
         //[reference__tree_node_base__on_post_modify_value_impl
@@ -147,8 +184,63 @@ namespace boost { namespace tree_node {
     }
 
     template <typename Derived>
+    inline void
+        tree_node_base<Derived>::clone_metadata_impl(Derived const& copy)
+    {
+    }
+
+    template <typename Derived>
+    inline void tree_node_base<Derived>::clone_metadata(Derived const& copy)
+    {
+        this->get_derived()->clone_metadata_impl(copy);
+    }
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#if defined BOOST_NO_RVALUE_REFERENCES
+    template <typename Derived>
+    inline void
+        tree_node_base<Derived>::move_metadata_impl(
+            ::boost::rv<Derived>& source
+        )
+    {
+    }
+
+    template <typename Derived>
+    inline void
+        tree_node_base<Derived>::move_metadata(::boost::rv<Derived>& source)
+    {
+        this->get_derived()->move_metadata_impl(source);
+    }
+#else  // !defined BOOST_NO_RVALUE_REFERENCES
+    template <typename Derived>
+    inline void tree_node_base<Derived>::move_metadata_impl(Derived&& source)
+    {
+    }
+
+    template <typename Derived>
+    inline void tree_node_base<Derived>::move_metadata(Derived&& source)
+    {
+        this->get_derived()->move_metadata_impl(
+            static_cast<Derived&&>(source)
+        );
+    }
+#endif  // BOOST_NO_RVALUE_REFERENCES
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+    template <typename Derived>
     inline void tree_node_base<Derived>::on_post_emplacement_construct()
     {
+    }
+
+    template <typename Derived>
+    inline void tree_node_base<Derived>::on_post_copy_or_move_impl()
+    {
+    }
+
+    template <typename Derived>
+    inline void tree_node_base<Derived>::on_post_copy_or_move()
+    {
+        this->get_derived()->on_post_copy_or_move_impl();
     }
 
     template <typename Derived>

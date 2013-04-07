@@ -17,7 +17,11 @@
 #include "type_definitions.hpp"
 #include "container_functions.hpp"
 
-typedef boost::tree_node::binode_container<RedBlackNodeGen,boost::int32_t>
+typedef boost::tree_node::binode_container<
+            boost::int32_t
+          , RedBlackNodeGen
+          , boost::tree_node::red_black_balancer
+        >
         RedBlackTreeSequence;
 
 void
@@ -117,8 +121,8 @@ void
 }
 
 typedef boost::tree_node::binode_container<
-            AVLNodeGen
-          , boost::int32_t
+            boost::int32_t
+          , AVLNodeGen
           , boost::tree_node::adelson_velskii_landis_balancer
         >
         AVLTreeSequence;

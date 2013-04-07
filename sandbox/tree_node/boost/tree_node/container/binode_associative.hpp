@@ -12,6 +12,7 @@
 #include <cstddef>
 #endif
 
+#include <algorithm>
 #include <utility>
 #include <boost/tr1/type_traits.hpp>
 #include <boost/mpl/bool.hpp>
@@ -327,24 +328,6 @@ namespace boost { namespace tree_node {
             BOOST_COPY_ASSIGN_REF(binode_associative_container) copy
           , allocator_type const& allocator
         );
-#endif
-
-#if 0
-        //[reference__binode_associative_container__move_ctor
-        binode_associative_container(binode_associative_container&& source);
-        //]
-
-        //[reference__binode_associative_container__move_ctor_w_alloc
-        binode_associative_container(
-            binode_associative_container&& source
-          , allocator_type const& allocator
-        );
-        //]
-
-        //[reference__binode_associative_container__move_assign
-        binode_associative_container&
-            operator=(binode_associative_container&& source);
-        //]
 #endif
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
@@ -4387,7 +4370,7 @@ namespace boost { namespace tree_node {
       , typename CompareSelector
       , typename Balancer
     >
-    typename binode_associative_container<
+    inline typename binode_associative_container<
         NodeGenerator
       , T1
       , T2
@@ -4404,14 +4387,7 @@ namespace boost { namespace tree_node {
           , Balancer
         >::_size(::boost::mpl::false_) const
     {
-        size_type result = ::boost::initialized_value;
-
-        for (const_iterator itr = this->cbegin(); itr; ++itr)
-        {
-            ++result;
-        }
-
-        return result;
+        return ::std::distance(this->cbegin(), this->cend());
     }
 
     template <
@@ -4518,10 +4494,10 @@ namespace boost { namespace tree_node {
 namespace boost { namespace tree_node {
 
     template <
-        typename NodeGenerator
-      , typename T
-      , typename CompareSelector
+        typename T
+      , typename NodeGenerator
       , typename Balancer
+      , typename CompareSelector
     >
     class binode_set
       : public
@@ -4554,10 +4530,10 @@ namespace boost { namespace tree_node {
 namespace boost { namespace tree_node {
 
     template <
-        typename NodeGenerator
-      , typename T
-      , typename CompareSelector
+        typename T
+      , typename NodeGenerator
       , typename Balancer
+      , typename CompareSelector
     >
     class binode_multiset
       : public
@@ -4593,11 +4569,11 @@ namespace boost { namespace tree_node {
 namespace boost { namespace tree_node {
 
     template <
-        typename NodeGenerator
-      , typename Key
+        typename Key
       , typename Mapped
-      , typename CompareSelector
+      , typename NodeGenerator
       , typename Balancer
+      , typename CompareSelector
     >
     class binode_map
       : public
@@ -4634,11 +4610,11 @@ namespace boost { namespace tree_node {
 namespace boost { namespace tree_node {
 
     template <
-        typename NodeGenerator
-      , typename Key
+        typename Key
       , typename Mapped
-      , typename CompareSelector
+      , typename NodeGenerator
       , typename Balancer
+      , typename CompareSelector
     >
     class binode_multimap
       : public

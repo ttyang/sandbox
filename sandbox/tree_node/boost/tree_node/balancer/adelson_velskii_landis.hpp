@@ -170,6 +170,12 @@ namespace boost { namespace tree_node {
         return node_ptr;
     }
     //->
+
+    namespace balancer {
+
+        typedef ::boost::tree_node::adelson_velskii_landis_balancer
+                adelson_velskii_landis;
+    }  // namespace balancer
 }}  // namespace boost::tree_node
 //]
 

@@ -7,7 +7,8 @@
 #define BOOST_TREE_NODE_CONTAINER_BINODE_ASSOCIATIVE_FWD_HPP_INCLUDED
 
 #include <boost/container_gen/selectors.hpp>
-#include <boost/tree_node/balancer/red_black.hpp>
+#include <boost/tree_node/binary_node.hpp>
+#include <boost/tree_node/balancer/null.hpp>
 
 namespace boost { namespace tree_node {
 
@@ -22,36 +23,36 @@ namespace boost { namespace tree_node {
     class binode_associative_container;
 
     template <
-        typename NodeGenerator
-      , typename T
+        typename T
+      , typename NodeGenerator = binary_node_default_gen
+      , typename Balancer = null_balancer
       , typename CompareSelector = ::boost::default_ordering_selector
-      , typename Balancer = red_black_balancer
     >
     class binode_set;
 
     template <
-        typename NodeGenerator
-      , typename T
+        typename T
+      , typename NodeGenerator = binary_node_default_gen
+      , typename Balancer = null_balancer
       , typename CompareSelector = ::boost::default_ordering_selector
-      , typename Balancer = red_black_balancer
     >
     class binode_multiset;
 
     template <
-        typename NodeGenerator
-      , typename Key
+        typename Key
       , typename Mapped
+      , typename NodeGenerator = binary_node_default_gen
+      , typename Balancer = null_balancer
       , typename CompareSelector = ::boost::default_ordering_selector
-      , typename Balancer = red_black_balancer
     >
     class binode_map;
 
     template <
-        typename NodeGenerator
-      , typename Key
+        typename Key
       , typename Mapped
+      , typename NodeGenerator = binary_node_default_gen
+      , typename Balancer = null_balancer
       , typename CompareSelector = ::boost::default_ordering_selector
-      , typename Balancer = red_black_balancer
     >
     class binode_multimap;
 }}  // namespace boost::tree_node

@@ -324,8 +324,8 @@ void output_driver()
         );
 #endif
 
-        std::cout << "    {" << std::endl << "        ANode a_copy(a_root);";
-        std::cout << std::endl << (
+        std::cout << std::endl << "    {" << std::endl;
+        std::cout << "        ANode a_copy(a_root);" << std::endl << (
             "        boost::tree_node::breadth_first_iterator<ANode const>"
         ) << std::endl << (
             "            bf_root_itr(a_root), bf_copy_itr(a_copy);"

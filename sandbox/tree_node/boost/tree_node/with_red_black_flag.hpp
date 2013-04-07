@@ -164,15 +164,13 @@ namespace boost { namespace tree_node {
 
         ~with_red_black_flag_base();
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        void copy_assign(Derived const& copy);
-#else
-        void copy_assign(BOOST_COPY_ASSIGN_REF(Derived) copy);
+        void clone_metadata_impl(Derived const& copy);
 
-        void move_assign(BOOST_RV_REF(Derived) source);
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        void move_metadata_impl(BOOST_RV_REF(Derived) source);
 #endif
 
-        void on_post_copy_or_move();
+        void on_post_assign();
 
      public:
         //[reference__with_red_black_flag_base__key_value_operator__red
@@ -335,7 +333,6 @@ namespace boost { namespace tree_node {
     {
     }
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
       , typename BaseGenerator
@@ -343,10 +340,18 @@ namespace boost { namespace tree_node {
       , typename T2
     >
     inline void
-        with_red_black_flag_base<Derived,BaseGenerator,T1,T2>::copy_assign(
-            Derived const& copy
-        )
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        with_red_black_flag_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+        >::clone_metadata_impl(Derived const& copy)
+    {
+        super_t::clone_metadata_impl(copy);
+        this->_is_red = copy._is_red;
+    }
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
       , typename BaseGenerator
@@ -354,33 +359,21 @@ namespace boost { namespace tree_node {
       , typename T2
     >
     inline void
-        with_red_black_flag_base<Derived,BaseGenerator,T1,T2>::move_assign(
-            BOOST_RV_REF(Derived) source
-        )
+        with_red_black_flag_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+        >::move_metadata_impl(BOOST_RV_REF(Derived) source)
     {
 #if defined BOOST_NO_RVALUE_REFERENCES
-        super_t::move_assign(source);
+        super_t::move_metadata_impl(source);
 #else
-        super_t::move_assign(static_cast<Derived&&>(source));
+        super_t::move_metadata_impl(static_cast<Derived&&>(source));
 #endif
         this->_is_red = source._is_red;
     }
-
-    template <
-        typename Derived
-      , typename BaseGenerator
-      , typename T1
-      , typename T2
-    >
-    inline void
-        with_red_black_flag_base<Derived,BaseGenerator,T1,T2>::copy_assign(
-            BOOST_COPY_ASSIGN_REF(Derived) copy
-        )
 #endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    {
-        super_t::copy_assign(copy);
-        this->_is_red = copy._is_red;
-    }
 
     template <
         typename Derived
@@ -394,9 +387,9 @@ namespace boost { namespace tree_node {
           , BaseGenerator
           , T1
           , T2
-        >::on_post_copy_or_move()
+        >::on_post_assign()
     {
-        super_t::on_post_copy_or_move();
+        super_t::on_post_assign();
         this->on_post_modify_value(red_flag_key());
         this->on_post_modify_value(black_flag_key());
     }

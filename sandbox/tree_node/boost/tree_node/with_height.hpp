@@ -191,15 +191,13 @@ namespace boost { namespace tree_node {
 
         ~with_height_base();
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-        void copy_assign(Derived const& copy);
-#else
-        void copy_assign(BOOST_COPY_ASSIGN_REF(Derived) copy);
+        void clone_metadata_impl(Derived const& copy);
 
-        void move_assign(BOOST_RV_REF(Derived) source);
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        void move_metadata_impl(BOOST_RV_REF(Derived) source);
 #endif
 
-        void on_post_copy_or_move();
+        void on_post_assign();
 
         template <typename BooleanIntegralConstant>
         void
@@ -358,7 +356,6 @@ namespace boost { namespace tree_node {
     {
     }
 
-#if defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
       , typename BaseGenerator
@@ -367,30 +364,19 @@ namespace boost { namespace tree_node {
       , typename Height
     >
     inline void
-        with_height_base<Derived,BaseGenerator,T1,T2,Height>::copy_assign(
-            Derived const& copy
-        )
-#else  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-    template <
-        typename Derived
-      , typename BaseGenerator
-      , typename T1
-      , typename T2
-      , typename Height
-    >
-    inline void
-        with_height_base<Derived,BaseGenerator,T1,T2,Height>::move_assign(
-            BOOST_RV_REF(Derived) source
-        )
+        with_height_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Height
+        >::clone_metadata_impl(Derived const& copy)
     {
-#if defined BOOST_NO_RVALUE_REFERENCES
-        super_t::move_assign(source);
-#else
-        super_t::move_assign(static_cast<Derived&&>(source));
-#endif
-//        this->_height = source._height;
+        super_t::clone_metadata_impl(copy);
+        this->_height = copy._height;
     }
 
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
     template <
         typename Derived
       , typename BaseGenerator
@@ -399,14 +385,22 @@ namespace boost { namespace tree_node {
       , typename Height
     >
     inline void
-        with_height_base<Derived,BaseGenerator,T1,T2,Height>::copy_assign(
-            BOOST_COPY_ASSIGN_REF(Derived) copy
-        )
-#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+        with_height_base<
+            Derived
+          , BaseGenerator
+          , T1
+          , T2
+          , Height
+        >::move_metadata_impl(BOOST_RV_REF(Derived) source)
     {
-        super_t::copy_assign(copy);
-//        this->_height = copy._height;
+#if defined BOOST_NO_RVALUE_REFERENCES
+        super_t::move_metadata_impl(source);
+#else
+        super_t::move_metadata_impl(static_cast<Derived&&>(source));
+#endif
+        this->_height = ::boost::move(source._height);
     }
+#endif  // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
     template <
         typename Derived
@@ -422,10 +416,14 @@ namespace boost { namespace tree_node {
           , T1
           , T2
           , Height
-        >::on_post_copy_or_move()
+        >::on_post_assign()
     {
-        super_t::on_post_copy_or_move();
-        this->_shallow_update();
+        super_t::on_post_assign();
+
+        if (this->get_parent_ptr())
+        {
+            this->get_parent_ptr()->_shallow_update();
+        }
     }
 
     template <

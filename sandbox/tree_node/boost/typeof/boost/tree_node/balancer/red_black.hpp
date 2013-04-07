@@ -11,6 +11,7 @@
 
 #include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
 BOOST_TYPEOF_REGISTER_TYPE(::boost::tree_node::red_black_balancer)
+BOOST_TYPEOF_REGISTER_TYPE(::boost::tree_node::balancer::red_black)
 
 #endif  // BOOST_TYPEOF_BOOST_TREE_NODE_BALANCER_RED_BLACK_HPP
 
