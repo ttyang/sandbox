@@ -104,7 +104,7 @@ class pool;
 /* -------------------------------------------------------------------------- */
 
 template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
-class pool : public std::allocator<T>
+class pool
 {
 	private :
 		#include "details/pool.hpp"
@@ -154,29 +154,41 @@ class pool : public std::allocator<T>
 		/** ------------------------------------------------------------------------
 		 * Releases a pool buffer, \b without destroying it's content.
 		 * ---------------------------------------------------------------------- */
-		void release_core(T *);
+		void release_core(T *buffer);
 
 	public :
 		/** ------------------------------------------------------------------------
-		 * Requests a pool buffer, \b without initializing it's content.
-		 * This function is required for pool to be an allocator.
-		 * ----------------------------------------------------------------------- */
-		inline T *allocate(std::allocator<T>::size_type count, const void * = NULL)
-			{ assert(count <= _size); return (count <= _size) ? request_core() : NULL; }
+		 * Allocator class, when the pool serves as an allocator.
+		 * The allocator must be used only for the given type T.
+		 * ---------------------------------------------------------------------- */
+		class allocator_t : public std::allocator<T>
+		{
+			public :
+				allocator_t() : _pool(NULL) {}
+				allocator_t(pool& pool) : _pool(&pool) {}
+				allocator_t(const allocator_t& allocator) : _pool(allocator._pool) {}
+
+				inline std::allocator<T>::pointer allocate(std::allocator<T>::size_type count, const void * = NULL)
+					{ assert(_pool); assert(count <= _pool->_size); return (count <= _pool->_size) ? _pool->request_core() : NULL; }
+
+				inline void deallocate(std::allocator<T>::pointer pointer, std::allocator<T>::size_type count)
+					{ assert(_pool); assert(count <= _pool->_size); if (count <= _pool->_size) _pool->release_core(pointer); }
+
+				inline std::allocator<T>::size_type max_size() const
+					{ assert(_pool); return _pool->_size; }
+
+				template<typename U> struct rebind { /*typedef typename std::allocator<T>::rebind<U>::other other;*/ };
+				template<> struct rebind<T> { typedef allocator_t other; };
+
+			private :
+				pool *_pool;
+		};
 
 		/** ------------------------------------------------------------------------
-		 * Releases a pool buffer, \b without destroying it's content.
-		 * This function is required for pool to ba an allocator.
+		 * Returns an allocator based on this pool.
 		 * ---------------------------------------------------------------------- */
-		inline void deallocate(std::allocator<T>::pointer pointer, std::allocator<T>::size_type count)
-			{ assert(count <= _size); if (count <= _size) release_core(pointer); }
-
-		/** ------------------------------------------------------------------------
-		 * Returns the maximum size that can be allocated in a single call to
-		 * allocate(). This function is required for pool to be an allocator.
-		 * ---------------------------------------------------------------------- */
-		inline std::allocator<T>::size_type max_size() const
-			{ return _size; }
+		allocator_t allocator()
+			{ return allocator_t(*this); }
 
 	public :
 		/** ------------------------------------------------------------------------
@@ -205,7 +217,7 @@ class pool : public std::allocator<T>
 		 * ---------------------------------------------------------------------- */
 		T *request(void);
 
-		/** ------------------------------------------------------------------------
+		/** -- ----------------------------------------------------------------------
 		 * Releases and unitializes a pool buffer.
 		 * This function destroys the objects in the given buffer and releases it
 		 * by adding it to the pool's list of available buffers.
@@ -426,6 +438,28 @@ T *pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::requ
 /* -------------------------------------------------------------------------- */
 
 template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
+void pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::release_core(T *buffer)
+{
+	/* -- Early exit if given pointer is null -- */
+
+	if (!buffer)
+		return;
+
+	/* -- Safety checks -- */
+
+	assert(_requested > 0);
+	assert(!_list.contains(buffer));
+	assert(_chunks.contains(buffer));
+
+	/* -- Push buffer into free list -- */
+
+	_list.push(buffer);
+	_requested -= 1;
+}
+
+/* -------------------------------------------------------------------------- */
+
+template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
 T *pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::request()
 {
 	/* -- Request buffer -- */
@@ -491,26 +525,15 @@ T *pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::requ
 template<typename T, bool ThreadSafe, class Allocator, size_t ExpectedGrowthData, class GrowthDataAllocator>
 void pool<T, ThreadSafe, Allocator, ExpectedGrowthData, GrowthDataAllocator>::release(T *buffer)
 {
-	/* -- Early exit if given pointer is null -- */
-
-	if (!buffer)
-		return;
-
-	/* -- Safety checks -- */
-
-	assert(_requested > 0);
-	assert(!_list.contains(buffer));
-	assert(_chunks.contains(buffer));
-
 	/* -- Destroy buffer content -- */
 
-	for (size_t k = 0; k < _size; k++)
-		buffer[k].~T();
+	if (buffer)
+		for (size_t k = 0; k < _size; k++)
+			buffer[k].~T();
 
-	/* -- Push buffer into free list -- */
+	/* -- Release buffer -- */
 
-	_list.push(buffer);
-	_requested -= 1;
+	release_core(buffer);
 }
 
 /* -------------------------------------------------------------------------- */

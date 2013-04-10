@@ -262,7 +262,7 @@ class _chunks_t
 
 			/* -- Insert new chunk -- */
 
-			(*this)[++_numChunks] = chunk;
+			(*this)[_numChunks++] = chunk;
 
 			/* -- Update sorted state -- */
 
