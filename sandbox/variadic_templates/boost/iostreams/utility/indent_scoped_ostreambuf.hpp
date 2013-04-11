@@ -41,6 +41,11 @@ class indent_scoped_ostreambuf
     {
         my_strm.rdbuf(my_old_buf);
     }
+    
+    int pubsync()
+    {
+        return my_old_buf->pubsync();
+    }
 
     // Class name: push_filt_strmbuf
     // Description: streambuf allowing user to indent
@@ -79,37 +84,41 @@ class indent_scoped_ostreambuf
 
 } } // End namespaces iostreams, boost.
 
-// Function name: indent_buf
+template<class Ch, class Tr>
+inline typename boost::iostreams::indent_scoped_ostreambuf<Ch,Tr>::push_filt_strmbuf*
+indent_filt_buf(std::basic_ostream<Ch, Tr>const& os)
+{
+    typedef boost::iostreams::indent_scoped_ostreambuf<Ch,Tr> filt_scoped_type;
+    typedef typename filt_scoped_type::push_filt_strmbuf filt_strmbuf_type;
+    filt_strmbuf_type*buf_ptr = dynamic_cast<filt_strmbuf_type*>(os.rdbuf());
+    return buf_ptr;
+}
+
+// Function name: indent_buf_in
 // Descrption:: Indents the buffer of ostream argument, if possible.
 //
 template<class Ch, class Tr>
 inline std::basic_ostream<Ch, Tr>&
 indent_buf_in(std::basic_ostream<Ch, Tr>& os)
 {
-    typedef boost::iostreams::indent_scoped_ostreambuf<Ch,Tr> filt_scoped_type;
-    typedef typename filt_scoped_type::push_filt_strmbuf filt_strmbuf_type;
-    filt_strmbuf_type*buf_ptr = dynamic_cast<filt_strmbuf_type*>(os.rdbuf());
+    auto*const buf_ptr=indent_filt_buf(os);
     if (buf_ptr) {
-        typedef typename filt_strmbuf_type::filt_type filt_type;
-        filt_type* filt_ptr=buf_ptr->filt_get();
+        auto* filt_ptr=buf_ptr->filt_get();
         filt_ptr->indent_in(); 
     }
     return os;
 }
 
-// Function name: undent_buf
+// Function name: indent_buf_out
 // Descrption:: Indents outwardly the buffer of ostream argument, if possible.
 //
 template<class Ch, class Tr>
 inline std::basic_ostream<Ch, Tr>&
 indent_buf_out(std::basic_ostream<Ch, Tr>& os)
 {
-    typedef boost::iostreams::indent_scoped_ostreambuf<Ch,Tr> filt_scoped_type;
-    typedef typename filt_scoped_type::push_filt_strmbuf filt_strmbuf_type;
-    filt_strmbuf_type*buf_ptr = dynamic_cast<filt_strmbuf_type*>(os.rdbuf());
+    auto*const buf_ptr=indent_filt_buf(os);
     if (buf_ptr) {
-        typedef typename filt_strmbuf_type::filt_type filt_type;
-        filt_type* filt_ptr=buf_ptr->filt_get();
+        auto* filt_ptr=buf_ptr->filt_get();
         filt_ptr->indent_out(); 
     }
     return os;
