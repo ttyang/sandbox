@@ -463,7 +463,7 @@ for example for serialization,
 because the endianness of the layout of the floating-point types is not specified (but may be determined)
 therefore programs must ensure that they all use the same endianness and the same use of denormals.
 
-The header `stdfloat.h` should also contain all necessary C function macros in the form shown below.
+The header `stdfloat.h` (called by `<cstdfloat>` should also contain all necessary C function macros in the form shown below.
 
   FLOAT{16 32 64 80 128 MAX}_C
 

@@ -1,0 +1,135 @@
+<HTML><HEAD><TITLE>N3626, Proposal for Unbounded-Precision Integer Types</TITLE></HEAD><BODY>
+
+<CENTER>
+<H1><A NAME="N3626, Proposal for floating-point-typedefs Having Specified Widths">Proposal for floating-point-typedefs Having Specified Widths</A></H1>
+</CENTER>
+
+<TABLE ALIGN="RIGHT" CELLSPACING="0" CELLPADDING="0">
+<TR>
+<TD ALIGN="RIGHT"><B><I>Document number:</I></B></TD>
+<TD>&nbsp; N3626</TD>
+</TR>
+<TR>
+<TD ALIGN="RIGHT"><B><I>Date:</I></B></TD>
+<TD>&nbsp; 2013-04-18</TD>
+</TR>
+<TR>
+<TD ALIGN="RIGHT"><B><I>Revises part of:</I></B></TD>
+<TD>&nbsp; N3636</TD>
+</TR>
+<TD ALIGN="RIGHT"><B><I>Also part of:</I></B></TD>
+<TD>&nbsp; N1703</TD>
+</TR>
+
+<TR>
+<TD ALIGN="RIGHT"><B><I>Project:</I></B></TD>
+<TD>&nbsp; Programming Language C++</TD>
+</TR>
+<TR>
+<TD ALIGN="RIGHT"><B><I>Reference:</I></B></TD>
+<TD>&nbsp; ISO/IEC IS 14882:2011(E)</TD>
+</TR>
+<TR>
+<TD ALIGN="RIGHT"><B><I>Reply to:</I></B></TD>
+<TD>&nbsp; Paul A. Bristow</TD>
+</TR>
+<TR>
+<TD></TD>
+<TD>&nbsp; Boost.org.</TD>
+</TR>
+<TR>
+<TD></TD>
+<TD>&nbsp; pbristow@hetp.u-net.com</TD>
+</TR>
+</TABLE>
+<BR CLEAR="ALL">
+
+<HR>
+
+<H2><A NAME="header_stdfloat">Header <code>&lt;stdfloat&gt;</code>
+synopsis</A></H2>
+
+<pre><code>namespace std
+{
+
+    typedef floating-point-type float8_t;   // optional (See note 1).
+    typedef floating-point-type float16_t;   // optional (See note 2).
+    typedef floating-point-type float24_t;   // optional (See note 3.
+    typedef floating-point-type float32_t;   // optional (See note 4).
+    typedef floating-point-type float64_t;   // optional (See note 5).
+    typedef floating-point-type float80_t;   // optional (See note 6).
+    typedef floating-point-type float128_t;  // optional (See note 7).
+    typedef floating-point-type floatmax_t;  // optional (largest floating-point-type available).
+
+    typedef floating-point-type float_least16_t;  // optional.
+    typedef floating-point-type float_least32_t;  // optional.
+    typedef floating-point-type float_least64_t;  // optional.
+    typedef floating-point-type float_least128_t; // optional.
+
+    typedef floating-point-type float_fast16_t;  // optional.
+    typedef floating-point-type float_fast32_t;  // optional.
+    typedef floating-point-type float_fast64_t;  // optional.
+    typedef floating-point-type float_fast80_t;  // optional.
+    typedef floating-point-type float_fast128_t; // optional.
+
+} /* namespace std */
+
+</code></pre>
+
+<p>Notes
+</p>
+
+
+<ol>
+<li>There is no IEEE754/IEC559 specification for a 8-bit floating-point type, so the layout is implementation dependent.
+The type should occupy exactly 8 bits to allow optimisation.</li>
+<li>There is no IEEE754/IEC559 specification for a 24-bit floating-point type, so the layout is implementation dependent.</li>
+<li>IEEE754 Half precision.</li>
+<li>IEEE754 Single precision.</li>
+<li>IEEE754 Double precision.</li>
+<li>IEEE754 Extended precision. This type may be implemented using 128 bits, with padding.
+The size and location of any padding is implementation dependent, so this type is unlikely to be suitable for binary interchange.</li>
+<li>IEEE754 Quadruple precision.</li>
+<li>The use of denormals is implementation dependent, but can be determined for any type T from 
+<code>std::numeric_limits<T>::has_denorm, denorm_min</code> and <code>float_denorm_style.</code></li>
+<li>If cooperating programs wish to try to use binary interchange for IEEE754/IEC559 types of <code>float_N_t</code>,
+for example for serialization,
+because the endianness of the layout of the floating-point types is not specified (but may be determined)
+therefore programs must ensure that they all use the same endianness and the same use of denormals.</li>
+</ol>
+
+<p>The header <code>stdfloat.h</code> should also contain all necessary C function macros in the form shown below.
+<p/>
+<code><pre>
+  FLOAT{16 32 64 80 128 MAX}_C
+</code></pre>
+
+<p>The code below, for example, initializes a constant <code>float128_t</code> value using one of these macros.</p>
+<code><pre>
+  #include stdfloat.h
+
+  constexpr std::float128_t euler = FLOAT128_C(0.57721566490153286060651209008240243104216);
+</code></pre>
+
+<p>The following code initializes a constant <code>float16_t </code> value using another one of these macros.</p>
+<code><pre>
+  const std::float16_t euler = FLOAT16_C(0.577216);
+</code></pre>
+
+<p>In addition, the header <code>stdfloat.h</code> and <code>&lt;cstdfloat&gt; </code>should contain all necessary macros of the form:</p>
+<code><pre>
+  FLOAT_[FAST LEAST]{16 32 64 80 128}_MIN
+  FLOAT_[FAST LEAST]{16 32 64 80 128}_MAX
+  FLOATMAX_MIN
+  FLOATMAX_MAX
+</code></pre>
+
+<p>These macros can be used to query the ranges of the optional floating-point typedefs having specified widths at compile-time. For example, </p>
+<code><pre>
+  #include &lt;limits&gt;
+  #include &lt;cstdfloat&gt;  // or #include stdfloat.h
+
+  static_assert(FLOATMAX_MAX > (std::numeric_limits&lt;float&gt;::max)(),
+              "The iec559 floating-point range is too small.");
+</code></pre>
+</BODY></HTML>
