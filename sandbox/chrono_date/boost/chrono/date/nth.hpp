@@ -10,84 +10,60 @@
 #define BOOST_CHRONO_DATE_NTH_HPP
 
 #include <boost/cstdint.hpp>
-#include <boost/chrono/config.hpp>
-#include <boost/chrono/date/no_check.hpp>
-#include <boost/chrono/date/exceptions.hpp>
-#include <boost/chrono/date/detail/to_string.hpp>
+#include <boost/chrono/date/detail/bounded.hpp>
+
 namespace boost
 {
   namespace chrono
   {
+    /**
+     * nth tag
+     */
+    struct nth_tag {};
 
     /**
      * The class nth is used to specify a small integral value that indicates the nth day of the month (example: last, 1st).
+     * Its range is [1, 6].
      */
-    class nth
+    class nth: public bounded<nth_tag, 1, 6, int_least8_t>
     {
+      typedef bounded<nth_tag, 1, 6, int_least8_t> base_type;
+
     public:
-      typedef int_least8_t rep;
-      static const rep not_applicable=7;
-      //static const rep not_applicable=-32;
-      static const rep last_=31;
-      static const rep first_=-32;
-      //static const rep last_=6;
-      //static const rep first_=1;
-      static const std::size_t size=last_-first_+1; // :3 bits
+      BOOST_STATIC_CONSTEXPR rep not_applicable=7;
+      /**
+       * @Effects: Constructs an object of class @c nth by storing @c s.
+       * Throws: if @c s is outside of the range [1, 6], throws an exception of type bad_date.
+       */
+      BOOST_CONSTEXPR nth(irep s) : base_type(s)
+      {}
+      /**
+       * @Effects: Constructs an object of class @c nth by storing @c s.
+       * @Note This function doesn't check the parameters validity.
+       * It is up to the user to provide a valid ones.
+       */
+      BOOST_CONSTEXPR nth(irep s, no_check_t) BOOST_NOEXCEPT
+          : base_type(s, no_check)
+      {}
 
-      nth(rep s) BOOST_NOEXCEPT
-          : value_(s)
+      BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
       {
-        if (!is_valid())
-        {
-          throw bad_date("day " + boost::chrono::to_string(int(s)) + " is out of range");
-        }
+        return value()==not_applicable;
       }
-      nth(rep s, no_check_t) BOOST_NOEXCEPT
-          : value_(s)
-      {
-      }
-
-      /**
-       * @Return The nth stored component.
-       */
-      operator rep() const BOOST_NOEXCEPT
-      {
-        return value_;
-      }
-      /**
-       * @Return The nth stored component.
-       */
-      rep value() const BOOST_NOEXCEPT
-      {
-        return value_;
-      }
-      /**
-       * @Return if the stored value is a valid one.
-       */
-      bool is_valid() const BOOST_NOEXCEPT
-      {
-        return (first_ <= value_ && value_ <= last_);
-      }
-      bool is_not_applicable() const BOOST_NOEXCEPT
-      {
-        return value_==not_applicable;
-      }
-    private:
-      rep value_; // 3 bits if only valid up to _5th
     };
 
     struct last_t {};
-    const last_t last = {};
+    BOOST_CONSTEXPR_OR_CONST last_t last = {};
     struct _1st_t {};
-    const _1st_t _1st = {};
+    BOOST_CONSTEXPR_OR_CONST _1st_t _1st = {};
     struct _2nd_t {};
-    const _2nd_t _2nd = {};
+    BOOST_CONSTEXPR_OR_CONST _2nd_t _2nd = {};
     struct _3rd_t {};
-    const _3rd_t _3rd = {};
+    BOOST_CONSTEXPR_OR_CONST _3rd_t _3rd = {};
     struct _4th_t {};
-    const _4th_t _4th = {};
+    BOOST_CONSTEXPR_OR_CONST _4th_t _4th = {};
     struct _5th_t {};
-    const _5th_t _5th = {};
+    BOOST_CONSTEXPR_OR_CONST _5th_t _5th = {};
 
 
 

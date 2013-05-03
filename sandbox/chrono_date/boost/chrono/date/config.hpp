@@ -11,12 +11,12 @@
 #include <boost/chrono/config.hpp>
 
 
-// 1 => days +ymd +leap
+// 1 => days + ymd + leap
 // 2 => days
-// 3 => ymd +leap
-// 4 => ydoy +leap
+// 3 => ymd + leap
+// 4 => ydoy + leap
 #ifndef BOOST_CHRONO_DATE_DATE_DESIGN
-#define BOOST_CHRONO_DATE_DATE_DESIGN 4
+#define BOOST_CHRONO_DATE_DATE_DESIGN 2
 #endif
 
 // 1 => days +ymd +leap
@@ -29,7 +29,7 @@
 // 2 => days
 // 3 => ymd +leap
 #ifndef BOOST_CHRONO_DATE_REL_DATE_DESIGN
-#define BOOST_CHRONO_DATE_REL_DATE_DESIGN 2
+#define BOOST_CHRONO_DATE_REL_DATE_DESIGN 3
 #endif
 
 

@@ -54,7 +54,7 @@ namespace boost
     day_of_year_rep month_day_to_day_of_year(bool, month_rep, day_rep)
 BOOST_NOEXCEPT  ;
 
-} // chrono
+  } // chrono
 } // boost
 
 #endif

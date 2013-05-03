@@ -15,6 +15,7 @@
 #include <boost/chrono/date/exceptions.hpp>
 #include <boost/chrono/date/detail/to_string.hpp>
 #include <boost/chrono/date/detail/helpers.hpp>
+#include <boost/throw_exception.hpp>
 
 namespace boost
 {
@@ -34,24 +35,24 @@ namespace boost
        * @Postconditions: get_month() == m && get_nth() == d && is_valid().
        * @Throws: if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
        */
-      month_nth(month m, nth d) BOOST_NOEXCEPT
+      month_nth(month m, nth d)
       : m_(m),
       d_(d)
       {
         if (!(d_<= days_in_month(1,m_)))
         {
-          throw bad_date("nth " + boost::chrono::to_string(int(d)) + "is out of range respect to month" + boost::chrono::to_string(m));
+          throw_exception( bad_date("nth " + boost::chrono::to_string(int(d)) + "is out of range respect to month" + boost::chrono::to_string(m)) );
         }
       }
       /**
        * @Effects: Constructs an object of class @c month_nth by storing @c m and @c d.
        * @Postconditions: get_month() == m && get_nth() == d.
        * @Note This function doesn't check the parameters validity.
-       * It is up to the user to provide a valid ones.
+       * It is up to the user to provide the valid ones.
        */
       month_nth(month::rep m, nth::rep d, no_check_t) BOOST_NOEXCEPT
-      : m_(m),
-      d_(d)
+      : m_(m, no_check),
+      d_(d, no_check)
       {
       }
       /**
@@ -111,8 +112,8 @@ namespace boost
       return month_nth(m, nth(5,no_check));
     }
     /**
-     * @Return a the @c month_nth with the associated parameters.
-     * @Throws if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
+     * @Returns the @c month_nth with the associated parameters.
+     * @Throws if @c d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
      */
     inline month_nth operator/(nth d, month m)
 BOOST_NOEXCEPT  {

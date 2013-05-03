@@ -6,7 +6,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #ifndef BOOST_COMPRESSED_TUPLE_HPP
-#define BOOST_CHRONO_DATE_MONTH_NTH_HPP
+#define BOOST_COMPRESSED_TUPLE_HPP
 
 #include <boost/cstdint.hpp>
 

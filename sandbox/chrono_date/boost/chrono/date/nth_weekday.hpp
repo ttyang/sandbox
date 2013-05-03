@@ -34,9 +34,8 @@ namespace boost
        * @param n the nth week
        * @param dow the day of the year
        * @Effects: Constructs a pair of nth-weekday.
-       * Throws: if nth.value() is outside of the range [1, 5], throws an exception of type bad_date.
        */
-      nth_weekday(nth_week n, weekday dow) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR nth_weekday(nth_week n, weekday dow) BOOST_NOEXCEPT
       :
       n_(n),
       dow_(dow)
@@ -51,31 +50,31 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      nth_weekday(nth_week::rep n, weekday::rep dow, no_check_t) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR nth_weekday(nth_week::rep n, weekday::rep dow, no_check_t) BOOST_NOEXCEPT
       :
-      n_(n),
-      dow_(dow)
+      n_(n, no_check),
+      dow_(dow, no_check)
       {
       }
 
       /**
        * @Return if the stored value is a valid one.
        */
-      bool is_valid() const BOOST_NOEXCEPT
+      BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
       {
         return (n_.is_valid() && dow_.is_valid());
       }
       /**
        * @Return The nth stored component.
        */
-      nth_week get_nth() const BOOST_NOEXCEPT
+      BOOST_CONSTEXPR nth_week get_nth() const BOOST_NOEXCEPT
       {
         return n_;
       }
       /**
        * @Return The weekday stored component.
        */
-      weekday get_weekday() const BOOST_NOEXCEPT
+      BOOST_CONSTEXPR weekday get_weekday() const BOOST_NOEXCEPT
       {
         return dow_;
       }
@@ -87,40 +86,43 @@ namespace boost
      * @param wd the weekday
      * @return a nth_weekday with the given parameters
      */
-    inline nth_weekday operator*(nth_week nw, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR nth_weekday operator*(nth_week nw, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nw, wd);
     }
 
-    inline nth_weekday operator*(last_t, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR nth_weekday operator*(last_t, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nth_week(6,no_check), wd);
     }
-    inline nth_weekday operator*(_1st_t, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR nth_weekday operator*(_1st_t, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nth_week(1,no_check), wd);
     }
-    inline nth_weekday operator*(_2nd_t, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR nth_weekday operator*(_2nd_t, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nth_week(2,no_check), wd);
     }
-    inline nth_weekday operator*(_3rd_t, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR nth_weekday operator*(_3rd_t, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nth_week(3,no_check), wd);
     }
-    inline nth_weekday operator*(_4th_t, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR nth_weekday operator*(_4th_t, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nth_week(4,no_check), wd);
     }
-    inline nth_weekday operator*(_5th_t, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR nth_weekday operator*(_5th_t, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nth_week(5,no_check), wd);
     }
-    inline nth_weekday operator*(unsigned n, weekday wd) BOOST_NOEXCEPT
+    inline nth_weekday operator*(unsigned n, weekday wd)
     {
       return nth_weekday(nth_week(n), wd);
     }
 
+    /**
+     * nth_weekday pseudo-literals.
+     */
     extern const nth_weekday last_sun;
     extern const nth_weekday last_mon;
     extern const nth_weekday last_tue;

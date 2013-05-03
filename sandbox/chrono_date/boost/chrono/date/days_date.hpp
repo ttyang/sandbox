@@ -25,6 +25,7 @@
 #include <boost/chrono/date/conversions.hpp>
 #include <boost/chrono/date/optional_date.hpp>
 #include <boost/chrono/date/is_date.hpp>
+#include <boost/throw_exception.hpp>
 
 namespace boost
 {
@@ -58,15 +59,18 @@ namespace boost
        * Else constructs a @c days_date for which <c>get_year() == y && get_month() == m && get_day() == d</c>.
        * @Throws bad_date if the specified days_date is invalid.
        */
-      days_date(chrono::year y, chrono::month m, chrono::day d);
+      days_date(year y, month m, day d);
+      //days_date(year::rep y, month m, day d);
+      //days_date(year y, month::rep m, day d);
+      //days_date(year y, month m, day::rep d);
+
       /**
        * @Effect Constructs a @c days_date constructor from @c year, @c month, @c day stored in the arguments as follows:
        * Constructs a @c days_date so that <c>get_year() == y && get_month() == m && get_day() == d</c>.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(year::rep y, month::rep m, day::rep d, no_check_t)
-BOOST_NOEXCEPT      ;
+      days_date(year::rep y, month::rep m, day::rep d, no_check_t) BOOST_NOEXCEPT;
       /**
        * @Effect Constructs a @c days_date using the @c year, @c month_day stored in the arguments as follows:
        * If the value stored in @c md is outside the range of valid dates for the year @c y,
@@ -76,14 +80,14 @@ BOOST_NOEXCEPT      ;
        * @Throws @c bad_date if the specified @c days_date is invalid.
        * @Note This constructor can be more efficient as the @c month_day is already valid.
        */
-      days_date(chrono::year y, chrono::month_day md);
+      days_date(year y, month_day md);
       /**
        * @Effect Constructs a @c days_date using the @c year, @c month_day stored in the arguments as follows:
        * Constructs a @c days_date for which <c>get_year() == y && get_month() == md.get_month() && get_day() == md.get_day()</c>.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(chrono::year::rep, chrono::month_day, no_check_t) BOOST_NOEXCEPT;
+      days_date(year::rep, month_day, no_check_t) BOOST_NOEXCEPT;
 
       /**
        * @Effect Constructs a @c days_date using the @c year, @c day_of_year stored in the arguments as follows:
@@ -93,7 +97,7 @@ BOOST_NOEXCEPT      ;
        * @Throws @c bad_date if the specified @c days_date is invalid.
        * @Note This constructor can be more efficient as the check is simpler.
        */
-      days_date(chrono::year y, chrono::day_of_year doy);
+      days_date(year y, day_of_year doy);
       /**
        * @Effect Constructs a days_date using the year, day_of_year stored in the arguments as follows:
        * Constructs a days_date for which days_since_epoch() == y.days_since_epoch()+doy.value()
@@ -107,19 +111,30 @@ BOOST_NOEXCEPT      ;
        * <c>days_since_epoch() == ds.count()</c>.
        * @Throws @bad_date if the days is not in the range [11322,23947853].
        */
-      explicit days_date(chrono::days d)
+      explicit days_date(days d)
       : x_(d.count())
       {
         if (!is_valid())
         {
-          throw bad_date("days " + boost::chrono::to_string(d.count()) + " is out of range");
+          throw_exception( bad_date("days " + to_string(d.count()) + " is out of range") );
         }
       }
 
       /**
        * Unchecked constructor from @c days
-       * @Effect Constructs a @c days_date using the @c days given as parameter so that:
-       * <c>days_since_epoch() == ds.count()</c>.
+       * @Effect Constructs a @c days_date using the @c x.count() days given as parameter so that:
+       * <c>days_since_epoch() == x.count()</c>.
+       * @Note This function doesn't check the parameters validity.
+       * It is up to the user to provide a valid ones.
+       */
+      days_date(days d, no_check_t) BOOST_NOEXCEPT
+      : x_(d.count())
+      {
+      }
+      /**
+       * Unchecked constructor from @c days::rep
+       * @Effect Constructs a @c days_date using the @c x days given as parameter so that:
+       * <c>days_since_epoch() == x.count()</c>.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
@@ -129,16 +144,17 @@ BOOST_NOEXCEPT      ;
       }
       /**
        * @Effect Constructs a @c days_date constructor from @c year, @c month, @c day stored in the arguments as follows:
-       * Constructs a @c days_date so that <c>get_year() == y @@  get_month() = m &&  get_day() == d</c>.
+       * Constructs a @c days_date so that <c>get_year() == y &&  get_month() = m &&  get_day() == d</c>.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(days::rep x, year::rep, month::rep, day::rep, bool, no_check_t) BOOST_NOEXCEPT
-      : x_(x)
-      {
-      }
+//      days_date(days::rep x, year::rep, month::rep, day::rep, bool, no_check_t) BOOST_NOEXCEPT
+//      : x_(x)
+//      {
+//      }
       /**
-       * @Effect Constructs a @c days_date constructor from @c year, @c month, @c day stored in the arguments as follows:
+       * @Effect Constructs a @c days_date constructor from @c year::rep, @c month::rep, @c day::rep and
+       * if the year is leap stored in the arguments as follows:
        * Constructs a @c days_date so that <c>get_year() == y && get_month() = m && get_day() == d</c>.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
@@ -177,17 +193,17 @@ BOOST_NOEXCEPT      ;
        * an exception of type @c bad_date.
        *
        */
-      explicit days_date(boost::chrono::system_clock::time_point tp);
+      explicit days_date(system_clock::time_point tp);
       /**
-       * @Returns: A chrono::system_clock::time_point which represents the @c days_date
+       * @Returns: A system_clock::time_point which represents the @c days_date
        * referred to by *this at 00:00:00 UTC.
        *
        * @Throws: If the conversion to @c tp overflows the range of
-       * boost::chrono::system_clock::time_point, throws an exception of type @c bad_date.
+       * system_clock::time_point, throws an exception of type @c bad_date.
        *
        */
       // explicit
-      operator boost::chrono::system_clock::time_point () const;
+      operator system_clock::time_point () const;
 
 
       // Observers
@@ -208,25 +224,25 @@ BOOST_NOEXCEPT      ;
       }
 
       /**
-       * Returns: <c>chrono::day(d_,no_check)</c>.
+       * Returns: <c>day(d_,no_check)</c>.
        */
-      chrono::day get_day() const BOOST_NOEXCEPT
+      day get_day() const BOOST_NOEXCEPT
       {
-        return chrono::day(day_from_day_number(),no_check);
+        return day(day_from_day_number(),no_check);
       }
       /**
-       * Returns: <c>chrono::month(m_,no_check)</c>.
+       * Returns: <c>month(m_,no_check)</c>.
        */
-      chrono::month get_month() const BOOST_NOEXCEPT
+      month get_month() const BOOST_NOEXCEPT
       {
-        return chrono::month(month_from_day_number(),no_check);
+        return month(month_from_day_number(),no_check);
       }
       /**
-       * Returns: <c>chrono::year(y_,no_check)</c>.
+       * Returns: <c>year(y_,no_check)</c>.
        */
-      chrono::year get_year() const BOOST_NOEXCEPT
+      year get_year() const BOOST_NOEXCEPT
       {
-        return chrono::year(year_from_day_number(),no_check);
+        return year(year_from_day_number(),no_check);
       }
       /**
        * Returns: @c true if @c year() is a leap year, and @c false otherwise.
@@ -252,9 +268,9 @@ BOOST_NOEXCEPT      ;
        * @Returns: A weekday constructed with an int corresponding to *this
        * days_date's day of the week (a value in the range of [0 - 6], 0 is Sunday).
        */
-      chrono::weekday get_weekday() const BOOST_NOEXCEPT
+      weekday get_weekday() const BOOST_NOEXCEPT
       {
-        return chrono::weekday((x_ + 1) % weekday::size, no_check);
+        return weekday((x_ + 1) % weekday::size, no_check);
       }
 
       // Days Based Arithmetic

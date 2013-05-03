@@ -36,13 +36,22 @@ namespace boost
     /**
      * A duration counting weeks.
      */
-    typedef duration<boost::int_least32_t, boost::ratio<7 * 86400> > weeks;
-    typedef duration<boost::int_least32_t, boost::ratio<2629746> >
-        average_months;
-    typedef duration<boost::int_least32_t, boost::ratio<31556952> >
+    typedef duration<boost::int_least32_t, ratio_multiply<days::period, ratio<7> > > weeks;
+    /**
+     * A duration counting eras = 400 years.
+     */
+    typedef duration<boost::int_least32_t, ratio_multiply<days::period, ratio<146097> > >
+        eras;
+    /**
+     * A duration counting average years = eras / 400.
+     */
+    typedef duration<boost::int_least32_t, ratio_divide<eras::period, ratio<400> > >
         average_years;
-    //typedef duration<boost::int_least32_t, boost::ratio<400 * 31556952> >
-    //    _400_years;
+    /**
+     * A duration counting average months = average_years / 12.
+     */
+    typedef duration<boost::int_least32_t, ratio_divide<average_years::period, ratio<12> > >
+        average_months;
 
 
 //    /**
@@ -303,7 +312,14 @@ namespace boost
       };
     }
 
+    /**
+     * A independent duration counting of months.
+     */
     typedef detail::duration_type<int32_t, 1> months;
+
+    /**
+     * A independent duration counting of years.
+     */
     typedef detail::duration_type<int32_t, 2> years;
 
   } // chrono

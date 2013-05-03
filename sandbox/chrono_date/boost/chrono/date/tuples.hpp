@@ -6,8 +6,8 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_CHRONO_DATE_DATE_TUPLES_HPP
-#define BOOST_CHRONO_DATE_DATE_TUPLES_HPP
+#ifndef BOOST_CHRONO_DATE_TUPLES_HPP
+#define BOOST_CHRONO_DATE_TUPLES_HPP
 
 #include <boost/chrono/config.hpp>
 #include <boost/chrono/date/no_check.hpp>
@@ -179,6 +179,9 @@ namespace boost
     }
 
 
+    /**
+     * month_day pseudo-literals.
+     */
     extern const month_day
         jan_01, jan_02, jan_03, jan_04, jan_05, jan_06, jan_07,
         jan_08, jan_09, jan_10, jan_11, jan_12, jan_13, jan_14,

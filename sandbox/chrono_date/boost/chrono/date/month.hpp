@@ -6,14 +6,12 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_CHRONO_DATE_DATE_MONTH_HPP
-#define BOOST_CHRONO_DATE_DATE_MONTH_HPP
+#ifndef BOOST_CHRONO_DATE_MONTH_HPP
+#define BOOST_CHRONO_DATE_MONTH_HPP
 
 #include <boost/cstdint.hpp>
-#include <boost/chrono/config.hpp>
-#include <boost/chrono/date/no_check.hpp>
-#include <boost/chrono/date/exceptions.hpp>
-#include <boost/chrono/date/detail/to_string.hpp>
+#include <boost/chrono/date/detail/bounded.hpp>
+
 
 namespace boost
 {
@@ -21,95 +19,31 @@ namespace boost
   {
 
     /**
-     * The class @c month is used to specify the month of the year when constructing a date.
+     * month tag
      */
-    class month
-    {
-    public:
-      typedef int_least8_t rep;
-      static const rep last_ = 12;
-      static const rep first_ = 1;
-      static const std::size_t size = last_ - first_ + 1; // 4 bits
+    struct month_tag {};
+    /**
+     * The class @c month is used to specify the month of the year when constructing a date.  Its range is [1,12].
+     */
+    typedef bounded<month_tag, 1, 12, int_least8_t> month;
 
-      /**
-       * @Effects: Constructs an object of class @c month by storing @c m.
-       * @Postconditions: <c>value() == m && is_valid()</c>.
-       * @Throws: if @c m is outside of the range [1, 12], throws an exception of type @c bad_date.
-       */
-      explicit month(rep v) :
-        value_(v)
-      {
-        if (!(is_valid()))
-        {
-          throw bad_date("month " + boost::chrono::to_string(int(v))
-              + " is out of range");
-        }
-      }
-      /**
-       * @Effects: Constructs an object of class @c month by storing @c m.
-       * @Postconditions: value() == m.
-       * @Note This function doesn't check the parameters validity.
-       * It is up to the user to provide a valid ones.
-       */
-      BOOST_CONSTEXPR explicit month(rep m, no_check_t) BOOST_NOEXCEPT:
-        value_(m)
-      {
-      }
-
-      /**
-       * @Return if the stored value is a valid one, i.e. on the range [1, 12].
-       */
-      bool is_valid() const BOOST_NOEXCEPT
-      {
-        return (first_ <= value_ && value_ <= last_);
-      }
-
-      /**
-       * @Returns: the value of the stored int.
-       */
-      operator rep() const BOOST_NOEXCEPT
-      {
-        return value_;
-      }
-      /**
-       * @Returns: the value of the stored int.
-       */
-      rep value() const BOOST_NOEXCEPT
-      {
-        return value_;
-      }
-      month next() const BOOST_NOEXCEPT
-      {
-        return month(((value_-first_+1)%size)+first_,no_check);
-      }
-      month prev() BOOST_NOEXCEPT
-      {
-        return month(((value_-first_+size-1)%size)+first_,no_check);
-      }
-      static BOOST_CONSTEXPR month first() BOOST_NOEXCEPT
-      {
-        return month(first_,no_check);
-      }
-      static BOOST_CONSTEXPR month last() BOOST_NOEXCEPT
-      {
-        return month(last_,no_check);
-      }
-      static BOOST_CONSTEXPR month min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
-      {
-        return month(first_,no_check);
-      }
-      static BOOST_CONSTEXPR month max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
-      {
-        return month(last_,no_check);
-      }
-
-      //      friend class date;
-      //      friend class rel_date;
-    private:
-      rep value_;
-
-    };
-
+    /**
+     * month pseudo-literals.
+     */
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+    BOOST_CONSTEXPR_OR_CONST month jan(1, no_check);
+    BOOST_CONSTEXPR_OR_CONST month feb(2, no_check);
+    BOOST_CONSTEXPR_OR_CONST month mar(3, no_check);
+    BOOST_CONSTEXPR_OR_CONST month apr(4, no_check);
+    BOOST_CONSTEXPR_OR_CONST month may(5, no_check);
+    BOOST_CONSTEXPR_OR_CONST month jun(6, no_check);
+    BOOST_CONSTEXPR_OR_CONST month jul(7, no_check);
+    BOOST_CONSTEXPR_OR_CONST month aug(8, no_check);
+    BOOST_CONSTEXPR_OR_CONST month sep(9, no_check);
+    BOOST_CONSTEXPR_OR_CONST month oct(10, no_check);
+    BOOST_CONSTEXPR_OR_CONST month nov(11, no_check);
+    BOOST_CONSTEXPR_OR_CONST month dec(12, no_check);
+#else
     extern const month jan;
     extern const month feb;
     extern const month mar;
@@ -123,6 +57,13 @@ namespace boost
     extern const month nov;
     extern const month dec;
 
+#endif
+
+    /**
+     * Overload for month conversion to string.
+     * @param v the @c month
+     * @return the string representing the month.
+     */
     inline std::string to_string(month v) {
       switch (v) {
       case 1: return "Jan";
@@ -137,7 +78,7 @@ namespace boost
       case 10: return "Oct";
       case 11: return "Nov";
       case 12: return "Dec";
-      default: throw bad_date("month " + boost::chrono::to_string(unsigned(v.value())) + " is out of range");
+      default: throw_exception( bad_date("month " + boost::chrono::to_string(unsigned(v.value())) + " is out of range") );
 
       }
     }

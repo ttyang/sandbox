@@ -250,7 +250,9 @@ namespace boost
       if (ok)
       {
         std::ios_base::iostate err = std::ios_base::goodbit;
-        try
+#ifndef BOOST_NO_EXCEPTIONS
+        try // BOOST_NO_EXCEPTIONS protected
+#endif
         {
           const std::time_get<charT>& tg =
               std::use_facet<std::time_get<charT> >(is.getloc());
@@ -274,10 +276,12 @@ namespace boost
                 = Date(year(t.tm_year + 1900), month(t.tm_mon + 1), day(t.tm_mday));
           }
         }
-        catch (...)
+#ifndef BOOST_NO_EXCEPTIONS
+        catch (...) // BOOST_NO_EXCEPTIONS protected
         {
           err |= std::ios_base::badbit | std::ios_base::failbit;
         }
+#endif
         is.setstate(err);
       }
       return is;
@@ -315,7 +319,9 @@ namespace boost
       if (ok)
       {
         bool failed;
-        try
+#ifndef BOOST_NO_EXCEPTIONS
+        try // BOOST_NO_EXCEPTIONS protected
+#endif
         {
           const std::time_put<charT>& tp =
               std::use_facet<std::time_put<charT> >(os.getloc());
@@ -338,10 +344,12 @@ namespace boost
           }
           failed = tp.put(os, os, os.fill(), &t, pb, pe).failed();
         }
-        catch (...)
+#ifndef BOOST_NO_EXCEPTIONS
+        catch (...) // BOOST_NO_EXCEPTIONS protected
         {
           failed = true;
         }
+#endif
         if (failed)
         {
           os.setstate(std::ios_base::failbit | std::ios_base::badbit);

@@ -6,15 +6,12 @@
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_CHRONO_DATE_DATE_WEEKDAY_HPP
-#define BOOST_CHRONO_DATE_DATE_WEEKDAY_HPP
+#ifndef BOOST_CHRONO_DATE_WEEKDAY_HPP
+#define BOOST_CHRONO_DATE_WEEKDAY_HPP
 
 
 #include <boost/cstdint.hpp>
-#include <boost/chrono/config.hpp>
-#include <boost/chrono/date/no_check.hpp>
-#include <boost/chrono/date/exceptions.hpp>
-#include <boost/chrono/date/detail/to_string.hpp>
+#include <boost/chrono/date/detail/bounded.hpp>
 
 namespace boost
 {
@@ -22,100 +19,43 @@ namespace boost
   {
 
     /**
+     * weekday tag
+     */
+    struct weekday_tag {};
+    /**
      * The class weekday is used to specify a day of the week.
      */
-    class weekday
+    class weekday: public bounded<weekday_tag, 0, 6, int_least8_t>
     {
-    public:
-      typedef int_least8_t rep;
+      typedef bounded<weekday_tag, 0, 6, int_least8_t> base_type;
 
-      static const rep last_=6;
-      static const rep first_=0;
-      static const int_least8_t size=last_-first_+1; //:3 bits
-      static const rep not_applicable=7;
+    public:
+      BOOST_STATIC_CONSTEXPR rep not_applicable=7;
 
       /**
        * @Effects Constructs an object of class weekday by storing v.
-       * @Postconditions static_cast<rep>(*this) == v
+       * @Postconditions static_cast<irep>(*this) == v
        * @Throws if v is outside of the range [0, 6], throws an exception of type bad_date.
        */
-      explicit weekday(rep v)
-      : value_(v)
-      {
-        if (!is_valid())
-        {
-          throw bad_date("week day " + boost::chrono::to_string(int(v)) + " is out of range");
-        }
-      }
+      BOOST_CONSTEXPR weekday(irep s) : base_type(s)
+      {}
       /**
        * @Effects Constructs an object of class weekday by storing v.
-       * @Postconditions static_cast<rep>(*this) == v
+       * @Postconditions static_cast<irep>(*this) == v
        */
-      BOOST_CONSTEXPR explicit weekday(rep wd, no_check_t) BOOST_NOEXCEPT
-      : value_(wd)
-      {
-      };
+      BOOST_CONSTEXPR weekday(irep s, no_check_t) BOOST_NOEXCEPT
+          : base_type(s, no_check)
+      {}
 
-      /**
-       * @Returns: the value of the stored int.
-       */
-      operator rep() const BOOST_NOEXCEPT
+      BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
       {
-        return value_;
+        return value()==not_applicable;
       }
-      /**
-       * @Returns: the value of the stored int.
-       */
-      rep value() const BOOST_NOEXCEPT
-      {
-        return value_;
-      }
-
-      /**
-       * @Return if the stored value is a valid one.
-       */
-      bool is_valid() const BOOST_NOEXCEPT
-      {
-        return (first_ <= value_ && value_ <= last_);
-      }
-
-
-      weekday next() const BOOST_NOEXCEPT
-      {
-        return weekday(((value_+1)%size),no_check);
-      }
-      weekday prev() BOOST_NOEXCEPT
-      {
-        return weekday((value_+size-1)%size,no_check);
-      }
-
-      /**
-       * @Returns: the first day of the week.
-       */
-      static BOOST_CONSTEXPR weekday first() BOOST_NOEXCEPT
-      {
-          return weekday(first_,no_check);
-      }
-      /**
-       * @Returns: the last day of the week.
-       */
-      static BOOST_CONSTEXPR weekday last() BOOST_NOEXCEPT
-      {
-          return weekday(last_,no_check);
-      }
-      static BOOST_CONSTEXPR weekday min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
-      {
-          return weekday(first_,no_check);
-      }
-      static BOOST_CONSTEXPR weekday max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
-      {
-          return weekday(last_,no_check);
-      }
-    private:
-      rep value_;
     };
 
     /**
+     * weekday pseudo-literals.
+     *
      * These const weekday objects are constructed prior to first use with the following values:
      *
      * const weekday sun(0);
@@ -127,6 +67,17 @@ namespace boost
      * const weekday sat(6);
      *
      */
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+    BOOST_CONSTEXPR_OR_CONST weekday
+      sun(0, no_check)
+    , mon(1, no_check)
+    , tue(2, no_check)
+    , wed(3, no_check)
+    , thu(4, no_check)
+    , fri(5, no_check)
+    , sat(6, no_check)
+    ;
+#else
     extern const weekday sun;
     extern const weekday mon;
     extern const weekday tue;
@@ -134,7 +85,12 @@ namespace boost
     extern const weekday thu;
     extern const weekday fri;
     extern const weekday sat;
-
+#endif
+    /**
+     * Overload for string vonversion.
+     * @param v the weekday
+     * @return the string representation.
+     */
     inline std::string to_string(weekday v) {
       switch (v) {
       case 0: return "Sun";
@@ -144,7 +100,7 @@ namespace boost
       case 4: return "Thu";
       case 5: return "Fri";
       case 6: return "Sat";
-      default: throw bad_date("week day " + boost::chrono::to_string(unsigned(v.value())) + " is out of range");
+      default: throw_exception( bad_date("week day " + boost::chrono::to_string(unsigned(v.value())) + " is out of range") );
 
       }
     }
