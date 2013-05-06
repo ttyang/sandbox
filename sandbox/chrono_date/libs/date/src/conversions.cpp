@@ -32,7 +32,7 @@ namespace boost
 //      const bool leap = is_leap(y);
 //      const month::rep m = day_of_year_month(leap,doy);
 //      const day::rep d = day_of_year_day_of_month(leap,doy);
-//      return year_month_day(y, m, d, no_check);
+//      return year_month_day(y, m, d);
 //
 //    }
 //    year_month_day_leap to_ymd_leap2(days dt)  BOOST_NOEXCEPT
@@ -51,7 +51,7 @@ namespace boost
 //      const bool leap = is_leap(y);
 //      const month::rep m = day_of_year_month(leap,doy);
 //      const day::rep d = day_of_year_day_of_month(leap,doy);
-//      return year_month_day_leap(y, m, d, leap, no_check);
+//      return year_month_day_leap(y, m, d, leap);
 //
 //    }
     year_month_day to_ymd(days dt) BOOST_NOEXCEPT
@@ -77,7 +77,7 @@ namespace boost
 //      std::cout <<"m " << int(m) << std::endl;
       const day::rep d = day_of_year_day_of_month(leap,doy+1);
 //      std::cout <<"d " << int(d) << std::endl;
-      return year_month_day(y, m, d, no_check);
+      return year_month_day(year(y), month(m), day(d));
     }
     year_month_day_leap to_ymd_leap(days dt) BOOST_NOEXCEPT
     {
@@ -94,7 +94,7 @@ namespace boost
       const bool leap = is_leap(y);
       const month::rep m = day_of_year_month(leap,doy+1);
       const day::rep d = day_of_year_day_of_month(leap,doy+1);
-      return year_month_day_leap(y, m, d, leap, no_check);
+      return year_month_day_leap(y, m, d, leap);
     }
 
     days to_days(year_month_day dt) BOOST_NOEXCEPT
@@ -115,7 +115,7 @@ namespace boost
     year_month_day to_ymd(year_day_of_year dt) BOOST_NOEXCEPT
     {
       bool leap=dt.get_year().is_leap();
-      return year_month_day(dt.get_year(), day_of_year_month(leap,dt.get_day_of_year()), day_of_year_day_of_month(leap,dt.get_day_of_year()), no_check);
+      return year_month_day(year(dt.get_year()), month(day_of_year_month(leap,dt.get_day_of_year())), day(day_of_year_day_of_month(leap,dt.get_day_of_year())));
     }
 
 
@@ -131,14 +131,14 @@ namespace boost
         doy = x_ - (days_before_year(y));
       }
       y -= 32799;
-      return year_day_of_year(y, doy+1, no_check);
+      return year_day_of_year(year(y), day_of_year(doy+1));
     }
 
 
     year_day_of_year to_ydoy(year_month_day dt) BOOST_NOEXCEPT
     {
       day_of_year::rep doy = month_day_to_day_of_year(dt.get_year().is_leap(),dt.get_month(),dt.get_day());
-      return year_day_of_year(dt.get_year(), doy+1, no_check);
+      return year_day_of_year(year(dt.get_year()), day_of_year(doy+1));
     }
 
 

@@ -12,6 +12,7 @@
 #include <boost/cstdint.hpp>
 #include <boost/chrono/config.hpp>
 #include <boost/chrono/date/nth.hpp>
+#include <boost/chrono/date/no_check.hpp>
 #include <boost/chrono/date/exceptions.hpp>
 #include <boost/chrono/date/detail/to_string.hpp>
 #include <boost/chrono/date/detail/helpers.hpp>
@@ -35,11 +36,11 @@ namespace boost
        * @Postconditions: get_month() == m && get_nth() == d && is_valid().
        * @Throws: if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
        */
-      month_nth(month m, nth d)
+      month_nth(month m, nth d, check_t)
       : m_(m),
       d_(d)
       {
-        if (!(d_<= days_in_month(1,m_)))
+        if (!(is_valid()))
         {
           throw_exception( bad_date("nth " + boost::chrono::to_string(int(d)) + "is out of range respect to month" + boost::chrono::to_string(m)) );
         }
@@ -50,9 +51,9 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide the valid ones.
        */
-      month_nth(month::rep m, nth::rep d, no_check_t) BOOST_NOEXCEPT
-      : m_(m, no_check),
-      d_(d, no_check)
+      month_nth(month m, nth d) BOOST_NOEXCEPT
+      : m_(m),
+      d_(d)
       {
       }
       /**
@@ -89,27 +90,27 @@ namespace boost
     inline month_nth operator/(month m, last_t)
     BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(6,no_check));
+      return month_nth(m, nth(6));
     }
     inline month_nth operator/(month m, _1st_t) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(1,no_check));
+      return month_nth(m, nth(1));
     }
     inline month_nth operator/(month m, _2nd_t) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(2,no_check));
+      return month_nth(m, nth(2));
     }
     inline month_nth operator/(month m, _3rd_t) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(3,no_check));
+      return month_nth(m, nth(3));
     }
     inline month_nth operator/(month m, _4th_t) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(4,no_check));
+      return month_nth(m, nth(4));
     }
     inline month_nth operator/(month m, _5th_t) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(5,no_check));
+      return month_nth(m, nth(5));
     }
     /**
      * @Returns the @c month_nth with the associated parameters.
@@ -121,28 +122,28 @@ BOOST_NOEXCEPT  {
   }
     inline month_nth operator/(last_t, month m)
 BOOST_NOEXCEPT  {
-    return month_nth(m, nth(6,no_check));
+    return month_nth(m, nth(6));
   }
 
     inline month_nth operator/(_1st_t, month m) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(1,no_check));
+      return month_nth(m, nth(1));
     }
     inline month_nth operator/(_2nd_t, month m) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(2,no_check));
+      return month_nth(m, nth(2));
     }
     inline month_nth operator/(_3rd_t, month m) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(3,no_check));
+      return month_nth(m, nth(3));
     }
     inline month_nth operator/(_4th_t, month m) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(4,no_check));
+      return month_nth(m, nth(4));
     }
     inline month_nth operator/(_5th_t, month m) BOOST_NOEXCEPT
     {
-      return month_nth(m, nth(5,no_check));
+      return month_nth(m, nth(5));
     }
 
 

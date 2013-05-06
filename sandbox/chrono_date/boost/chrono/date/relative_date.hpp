@@ -75,20 +75,20 @@ namespace boost
        * of @c rel_date valid construction when the specific value for that @c days_date is unimportant.
        */
       rel_date() BOOST_NOEXCEPT;
-      rel_date(chrono::year, chrono::month, chrono::nth_weekday);
-      rel_date(chrono::year::rep, chrono::month::rep, chrono::nth_weekday, no_check_t)BOOST_NOEXCEPT;
-      rel_date(chrono::year, chrono::month, chrono::nth);
-      rel_date(chrono::year::rep, chrono::month::rep, chrono::nth, no_check_t)BOOST_NOEXCEPT;
+      rel_date(year, month, nth_weekday);
+      rel_date(year, month, nth_weekday, check_t) BOOST_NOEXCEPT;
+      rel_date(year, month, nth);
+      rel_date(year, month, nth, check_t)BOOST_NOEXCEPT;
 #if BOOST_CHRONO_DATE_REL_DATE_IS_A_MODEL_OF_DATE
-      rel_date(chrono::year, chrono::month, chrono::day); // TODO
-      rel_date(chrono::year::rep, chrono::month::rep, chrono::day::rep, no_check_t)BOOST_NOEXCEPT;// TODO
-      rel_date(chrono::year y, chrono::month_day md);// TODO
-      rel_date(chrono::year::rep, chrono::month_day, no_check_t) BOOST_NOEXCEPT;// TODO
+      rel_date(year, month, day); // TODO
+      rel_date(year, month, day, check_t)BOOST_NOEXCEPT;// TODO
+      rel_date(year y, month_day md);// TODO
+      rel_date(year, month_day, check_t) BOOST_NOEXCEPT;// TODO
 
-      explicit rel_date(chrono::days d);// TODO
+      explicit rel_date(days d);// TODO
 
-      rel_date(chrono::year y, chrono::day_of_year doy);// TODO
-      rel_date(year::rep y, day_of_year::rep doy, no_check_t) BOOST_NOEXCEPT;// TODO
+      rel_date(year y, day_of_year doy);// TODO
+      rel_date(year y, day_of_year doy, check_t) BOOST_NOEXCEPT;// TODO
 
       bool set_if_valid_date(year y, month m, day d) BOOST_NOEXCEPT;// TODO
       bool set_if_valid_date(year y, day_of_year doy) BOOST_NOEXCEPT;// TODO
@@ -96,9 +96,9 @@ namespace boost
 
       static rel_date today() BOOST_NOEXCEPT;// TODO
 
-      explicit rel_date(boost::chrono::system_clock::time_point tp);// TODO
+      explicit rel_date(system_clock::time_point tp);// TODO
       // explicit
-      operator boost::chrono::system_clock::time_point () const;// TODO
+      operator system_clock::time_point () const;// TODO
 
 #endif
       // conversions
@@ -113,41 +113,41 @@ namespace boost
       //bool is_valid() const BOOST_NOEXCEPT;
 
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
-      chrono::day get_day() const BOOST_NOEXCEPT
+      day get_day() const BOOST_NOEXCEPT
       {
         std::cout << "KKKKKKKKKKKKK" << std::endl;
         if (d_!=0)
-        return chrono::day(d_,no_check);
+        return day(d_);
         else {
           std::cout << "KKKKKKKKKKKKK" << std::endl;
-          return chrono::day(d_,no_check);
+          return day(d_);
         }
 
       }
-      chrono::month get_month() const BOOST_NOEXCEPT
+      month get_month() const BOOST_NOEXCEPT
       {
-        return chrono::month(m_,no_check);
+        return month(m_);
       }
-      chrono::year get_year() const BOOST_NOEXCEPT
+      year get_year() const BOOST_NOEXCEPT
       {
-        return chrono::year(y_,no_check);
+        return year(y_);
       }
       bool is_leap_year() const BOOST_NOEXCEPT
       {
         return leap_;
       }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      chrono::day get_day() const BOOST_NOEXCEPT
+      day get_day() const BOOST_NOEXCEPT
       {
-        return chrono::day(day_from_day_number(),no_check);
+        return day(day_from_day_number());
       }
-      chrono::month get_month() const BOOST_NOEXCEPT
+      month get_month() const BOOST_NOEXCEPT
       {
-        return chrono::month(month_from_day_number(),no_check);
+        return month(month_from_day_number());
       }
-      chrono::year get_year() const BOOST_NOEXCEPT
+      year get_year() const BOOST_NOEXCEPT
       {
-        return chrono::year(year_from_day_number(),no_check);
+        return year(year_from_day_number());
       }
       bool is_leap_year() const BOOST_NOEXCEPT
       {
@@ -155,14 +155,14 @@ namespace boost
       }
 #endif
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      chrono::weekday get_weekday() const BOOST_NOEXCEPT
+      weekday get_weekday() const BOOST_NOEXCEPT
       {
-        return chrono::weekday((x_+1) % weekday::size,no_check);
+        return weekday((x_+1) % weekday::size);
       }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
-      chrono::weekday get_weekday() const BOOST_NOEXCEPT
+      weekday get_weekday() const BOOST_NOEXCEPT
       {
-        return chrono::weekday((day_number_from_ymd()+1) % weekday::size,no_check);
+        return weekday((day_number_from_ymd()+1) % weekday::size);
       }
 #endif
 

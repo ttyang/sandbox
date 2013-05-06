@@ -45,18 +45,30 @@ project boost/chrono/date
         <toolset>darwin:<cxxflags>-Wextra
         <toolset>darwin:<cxxflags>-pedantic
         <toolset>darwin:<cxxflags>-Wno-long-long
+        <toolset>darwin-4.6.2:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.1:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.2:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.8.0:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.6.2x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.1x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.2x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.8.0x:<cxxflags>-Wno-unused-local-typedefs
+
         #<toolset>pathscale:<cxxflags>-Wextra
         <toolset>pathscale:<cxxflags>-Wno-long-long
         <toolset>pathscale:<cxxflags>-pedantic
+
         <toolset>clang:<cxxflags>-Wextra
         <toolset>clang:<cxxflags>-pedantic
         <toolset>clang:<cxxflags>-Wno-long-long
+
         <toolset>gcc-mingw-4.4.0:<cxxflags>-fdiagnostics-show-option
         <toolset>gcc-mingw-4.5.0:<cxxflags>-fdiagnostics-show-option
         <toolset>gcc-mingw-4.6.0:<cxxflags>-fdiagnostics-show-option
         <toolset>gcc-mingw-4.6.3:<cxxflags>-fdiagnostics-show-option
         <toolset>gcc-mingw-4.7.0:<cxxflags>-fdiagnostics-show-option
         <toolset>gcc-mingw-4.8.0:<cxxflags>-fdiagnostics-show-option
+
 # Note: Some of the remarks from the Intel compiler are disabled
 # remark #304: access control not specified ("public" by default)
 # remark #383: value copied to temporary, reference to temporary used

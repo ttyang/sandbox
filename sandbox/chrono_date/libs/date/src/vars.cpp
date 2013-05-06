@@ -18,6 +18,8 @@ namespace boost
   namespace chrono
   {
 
+#ifdef  BOOST_NO_CXX11_CONSTEXPR
+
     const weekday sun(0);
     const weekday mon(1);
     const weekday tue(2);
@@ -39,6 +41,7 @@ namespace boost
     const month nov(11);
     const month dec(12);
 
+#endif
 //    const nth_week _1st_week(1);
 //    const nth_week _2nd_week(2);
 //    const nth_week _3rd_week(3);
@@ -53,64 +56,64 @@ namespace boost
 //    const nth _5th(5);
 //    const nth last(6);
 
-    const month_nth jan_1st(1, 1, no_check);
+    const month_nth jan_1st(month(1), 1);
 
-    const month_day jan_01(1, 1, no_check);
-    const month_day jan_02(1, 2, no_check);
-    const month_day jan_03(1, 3, no_check);
-    const month_day jan_04(1, 4, no_check);
-    const month_day jan_05(1, 5, no_check);
-    const month_day jan_06(1, 6, no_check);
-    const month_day jan_07(1, 7, no_check);
-    const month_day jan_08(1, 8, no_check);
-    const month_day jan_09(1, 9, no_check);
-    const month_day jan_10(1, 10, no_check);
-    const month_day jan_11(1, 11, no_check);
-    const month_day jan_12(1, 12, no_check);
-    const month_day jan_13(1, 13, no_check);
-    const month_day jan_14(1, 14, no_check);
-    const month_day jan_15(1, 15, no_check);
-    const month_day jan_16(1, 16, no_check);
-    const month_day jan_17(1, 17, no_check);
-    const month_day jan_18(1, 18, no_check);
-    const month_day jan_19(1, 19, no_check);
-    const month_day jan_20(1, 20, no_check);
-    const month_day jan_21(1, 21, no_check);
-    const month_day jan_22(1, 22, no_check);
-    const month_day jan_23(1, 23, no_check);
-    const month_day jan_24(1, 24, no_check);
-    const month_day jan_25(1, 25, no_check);
-    const month_day jan_26(1, 26, no_check);
-    const month_day jan_27(1, 27, no_check);
-    const month_day jan_28(1, 28, no_check);
-    const month_day jan_29(1, 29, no_check);
-    const month_day jan_30(1, 30, no_check);
-    const month_day jan_31(1, 31, no_check);
+    const month_day jan_01(month(1), day( 1));
+    const month_day jan_02(month(1), day( 2));
+    const month_day jan_03(month(1), day( 3));
+    const month_day jan_04(month(1), day( 4));
+    const month_day jan_05(month(1), day( 5));
+    const month_day jan_06(month(1), day( 6));
+    const month_day jan_07(month(1), day( 7));
+    const month_day jan_08(month(1), day( 8));
+    const month_day jan_09(month(1), day( 9));
+    const month_day jan_10(month(1), day( 10));
+    const month_day jan_11(month(1), day( 11));
+    const month_day jan_12(month(1), day( 12));
+    const month_day jan_13(month(1), day( 13));
+    const month_day jan_14(month(1), day( 14));
+    const month_day jan_15(month(1), day( 15));
+    const month_day jan_16(month(1), day( 16));
+    const month_day jan_17(month(1), day( 17));
+    const month_day jan_18(month(1), day( 18));
+    const month_day jan_19(month(1), day( 19));
+    const month_day jan_20(month(1), day( 20));
+    const month_day jan_21(month(1), day( 21));
+    const month_day jan_22(month(1), day( 22));
+    const month_day jan_23(month(1), day( 23));
+    const month_day jan_24(month(1), day( 24));
+    const month_day jan_25(month(1), day( 25));
+    const month_day jan_26(month(1), day( 26));
+    const month_day jan_27(month(1), day( 27));
+    const month_day jan_28(month(1), day( 28));
+    const month_day jan_29(month(1), day( 29));
+    const month_day jan_30(month(1), day( 30));
+    const month_day jan_31(month(1), day( 31));
 
 
-    static const day::rep days_in_month_[2][13] =
+    BOOST_STATIC_CONSTEXPR day::rep days_in_month_[2][13] =
     {
     { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
     { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
     };
 
 
-    days year::days_in(month m) const BOOST_NOEXCEPT
-    {
-      return days(days_in_month_[is_leap()][m]);
-    }
+//    days year::days_in_month(month m) const BOOST_NOEXCEPT
+//    {
+//      return days(days_in_month_[is_leap()][m]);
+//    }
     day::rep days_in_month(bool leap, month::rep m) BOOST_NOEXCEPT
     {
       return days_in_month_[leap][m];
     }
 
 
-    static const day_of_year::rep days_in_year_before_[2][13] =
+    BOOST_STATIC_CONSTEXPR day_of_year::rep days_in_year_before_[2][13] =
     {
     { -1, 30, 58, 89, 119, 150, 180, 211, 242, 272, 303, 333, 364 },
     { -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 } };
 
-    static const month::rep
+    BOOST_STATIC_CONSTEXPR month::rep
         day_of_year_month_[2][366] =
             {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
@@ -119,7 +122,7 @@ namespace boost
 
             } };
 
-    static const day::rep
+    BOOST_STATIC_CONSTEXPR day::rep
         day_of_year_day_of_month_[2][366] =
             {
             { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0 // no leap years have 365 days
@@ -130,7 +133,7 @@ namespace boost
 
             };
 
-    static const day_of_year::rep
+    BOOST_STATIC_CONSTEXPR day_of_year::rep
         month_day_to_day_of_year_[2][12][31] =
             {
             { // no_leap

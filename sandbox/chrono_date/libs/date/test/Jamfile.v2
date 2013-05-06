@@ -47,6 +47,15 @@ project
         <toolset>darwin:<cxxflags>-Wextra
         <toolset>darwin:<cxxflags>-pedantic
         <toolset>darwin:<cxxflags>-Wno-long-long
+        <toolset>darwin-4.6.2:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.1:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.2:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.8.0:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.6.2x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.1x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.2x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.8.0x:<cxxflags>-Wno-unused-local-typedefs
+
         <toolset>gcc:<cxxflags>-Wextra
         <toolset>gcc:<cxxflags>-pedantic
         <toolset>gcc:<cxxflags>-Wno-long-long

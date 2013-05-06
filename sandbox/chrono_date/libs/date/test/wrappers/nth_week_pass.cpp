@@ -15,7 +15,7 @@ int main()
     try
     {
       std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
-      nth_week d(0);
+      nth_week d(0, check);
       std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
       BOOST_TEST(false && "0 is not a valid nth_week");
       std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
@@ -29,7 +29,7 @@ int main()
   {
     try
     {
-      nth_week d(7);
+      nth_week d(7, check);
       BOOST_TEST(false && "7 is not a valid nth_week");
     }
     catch (...)
@@ -38,17 +38,17 @@ int main()
   }
   std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
-    nth_week d(0, no_check);
+    nth_week d(0);
     BOOST_TEST(!d.is_valid() && "0 is not a valid nth_week");
   }
   std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
-    nth_week d(7, no_check);
+    nth_week d(7);
     BOOST_TEST(!d.is_valid() && "7 is not a valid nth_week");
   }
   std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
-    nth_week d(-1, no_check);
+    nth_week d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid nth_week");
   }
   std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;

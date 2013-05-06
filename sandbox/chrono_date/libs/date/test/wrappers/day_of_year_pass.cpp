@@ -13,7 +13,7 @@ int main()
   {
     try
     {
-      day_of_year doy(0);
+      day_of_year doy(0, check);
       BOOST_TEST(false && "0 is not a valid day of year");
     }
     catch (...)
@@ -23,7 +23,7 @@ int main()
   {
     try
     {
-      day_of_year doy(367);
+      day_of_year doy(367, check);
       BOOST_TEST(false && "367 is not a valid day of year");
     }
     catch (...)
@@ -31,15 +31,15 @@ int main()
     }
   }
   {
-    day_of_year doy(0, no_check);
+    day_of_year doy(0);
     BOOST_TEST(!doy.is_valid() && "0 is not a valid day of year");
   }
   {
-    day_of_year doy(367, no_check);
+    day_of_year doy(367);
     BOOST_TEST(!doy.is_valid() && "367 is not a valid day of year");
   }
   {
-    day_of_year doy(-1, no_check);
+    day_of_year doy(-1);
     BOOST_TEST(!doy.is_valid() && "-1 is not a valid day of year");
   }
   {
@@ -53,13 +53,13 @@ int main()
   {
       day_of_year doy(2);
       BOOST_TEST(doy.is_valid() && "2 is a valid day of year");
-      day_of_year::rep i = doy;
+      int i = doy;
       BOOST_TEST(i==2);
   }
   {
       day_of_year doy(3);
       BOOST_TEST(doy.is_valid() && "2 is a valid day of year");
-      day_of_year::rep i = doy.value();
+      int i = doy.value();
       BOOST_TEST(i==3);
   }
   return boost::report_errors();

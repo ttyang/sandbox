@@ -14,9 +14,14 @@ namespace boost
   namespace chrono
   {
 
-    struct no_check_t
+//    struct no_check_t
+//    {};
+//    BOOST_CONSTEXPR_OR_CONST no_check_t no_check =
+//    {};
+
+    struct check_t
     {};
-    BOOST_CONSTEXPR_OR_CONST no_check_t no_check =
+    BOOST_CONSTEXPR_OR_CONST check_t check =
     {};
 
 

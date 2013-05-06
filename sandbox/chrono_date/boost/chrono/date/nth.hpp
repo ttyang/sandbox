@@ -35,15 +35,15 @@ namespace boost
        * @Effects: Constructs an object of class @c nth by storing @c s.
        * Throws: if @c s is outside of the range [1, 6], throws an exception of type bad_date.
        */
-      BOOST_CONSTEXPR nth(irep s) : base_type(s)
+      BOOST_CONSTEXPR nth(int s, check_t) : base_type(s, check)
       {}
       /**
        * @Effects: Constructs an object of class @c nth by storing @c s.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR nth(irep s, no_check_t) BOOST_NOEXCEPT
-          : base_type(s, no_check)
+      BOOST_CONSTEXPR nth(int s) BOOST_NOEXCEPT
+          : base_type(s)
       {}
 
       BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT

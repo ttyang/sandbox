@@ -24,18 +24,18 @@ int main()
     BOOST_TEST(dt.days_since_epoch().count()==11979588);
   }
   { // unchecked construct from bad ymd: 0/0/0 results in valid date
-    ydoy_date dt(0,0,0,no_check);
+    ydoy_date dt(year(0),month(0),day(0));
     std::cout <<"0/0/0 days "<< dt.days_since_epoch().count() << std::endl;
     BOOST_TEST( ! dt.is_valid());
   }
   { // unchecked construct from bad ymd: 0/0/0 results in valid date
-    ydoy_date dt(40000,1,1,no_check);
-    BOOST_TEST( ! year(40000,no_check).is_valid());
+    ydoy_date dt(year(40000),month(1),day(1));
+    BOOST_TEST( ! year(40000).is_valid());
     //BOOST_TEST( ! dt.is_valid());
   }
   { // bad construction from bad days: 0
     try {
-      ydoy_date dt(days(0));
+      ydoy_date dt(days(0), check);
       BOOST_TEST( false );
     } catch (...) {}
   }
@@ -61,35 +61,35 @@ int main()
     BOOST_TEST(dt.get_day()==1);
   }
   { // construct from ymd: 2011/oct/22
-    ydoy_date dt(year(2011),oct,day(22));
+    ydoy_date dt(year(2011),oct,day(22), check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==oct);
     BOOST_TEST(dt.get_day()==22);
   }
   { // no_check construct from bad ymd: 2011/oct/22
-    ydoy_date dt(2011,10,22, no_check);
+    ydoy_date dt(year(2011),oct,day(22));
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==oct);
     BOOST_TEST(dt.get_day()==22);
   }
   { // construct from ymd: 2011/jan_01
-    ydoy_date dt(year(2011),jan_01);
+    ydoy_date dt(year(2011),jan_01, check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==jan);
     BOOST_TEST(dt.get_day()==1);
   }
   { // no_check construct from ymd: 2011/jan_01
-    ydoy_date dt(2011,jan_01, no_check);
+    ydoy_date dt(year(2011),jan_01);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==jan);
     BOOST_TEST(dt.get_day()==1);
   }
   { // construct from ymd: first day: -32768/jan_01
-    ydoy_date dt(year(-32768),jan_01);
+    ydoy_date dt(year(-32768),jan_01, check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==-32768);
     BOOST_TEST(dt.get_month()==jan);
@@ -99,7 +99,7 @@ int main()
     std::cout <<"-32768/jan/01 days "<< dt.days_since_epoch().count() << std::endl;
   }
   { // construct from ymd: last day: 32767/dec/31
-    ydoy_date dt(year(32767),dec,day(31));
+    ydoy_date dt(year(32767),dec,day(31), check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==32767);
     BOOST_TEST(dt.get_month()==dec);
@@ -108,7 +108,7 @@ int main()
     std::cout <<"32767/12/31 days "<< dt.days_since_epoch().count() << std::endl;
   }
   { // construct from days: first day: -32768/jan_01
-    ydoy_date dt(days(11322));
+    ydoy_date dt(days(11322), check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==-32768);
     BOOST_TEST(dt.get_month()==jan);
@@ -116,7 +116,7 @@ int main()
 
   }
   { // construct from days: last day: 32767/dec/31
-    ydoy_date dt(days(23947853));
+    ydoy_date dt(days(23947853), check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==32767);
     BOOST_TEST(dt.get_month()==dec);
@@ -125,7 +125,7 @@ int main()
 
 
   { // construct from year + doy:
-    ydoy_date dt(year(2011), day_of_year(1));
+    ydoy_date dt(year(2011), day_of_year(1), check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==jan);
@@ -133,7 +133,7 @@ int main()
   }
 
   { // construct from year + doy:
-    ydoy_date dt(year(2011), day_of_year(365));
+    ydoy_date dt(year(2011), day_of_year(365), check);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==dec);
@@ -150,7 +150,7 @@ int main()
 
   { // construct from bad (year + doy):
     try {
-    ydoy_date dt(year(2011), day_of_year(366));
+    ydoy_date dt(year(2011), day_of_year(366), check);
     BOOST_TEST(  false );
     } catch (...) {}
   }
@@ -162,49 +162,49 @@ int main()
     BOOST_TEST( dt.is_valid());
   }
   { // conversions to/from system_clock::time_point
-    ydoy_date dt(2011,10,22, no_check);
+    ydoy_date dt(year(2011),oct,day(22));
     boost::chrono::system_clock::time_point tp=boost::chrono::system_clock::time_point(dt);
     ydoy_date dt2(tp);
     BOOST_TEST( dt == dt2);
   }
   // is_leap_year
   {
-    ydoy_date dt(2011,10,22, no_check);
+    ydoy_date dt(year(2011),oct,day(22));
     BOOST_TEST( ! dt.is_leap_year());
   }
   {
-    ydoy_date dt(0,10,22, no_check);
+    ydoy_date dt(year(0),oct,day(22));
     BOOST_TEST( dt.is_leap_year());
   }
   {
-    ydoy_date dt(4,10,22, no_check);
+    ydoy_date dt(year(4),oct,day(22));
     BOOST_TEST( dt.is_leap_year());
   }
   {
-    ydoy_date dt(400,10,22, no_check);
+    ydoy_date dt(year(400),oct,day(22));
     BOOST_TEST( dt.is_leap_year());
   }
   {
-    ydoy_date dt(100,10,22, no_check);
+    ydoy_date dt(year(100),oct,day(22));
     BOOST_TEST( ! dt.is_leap_year());
   }
   {
-    ydoy_date dt(200,10,22, no_check);
+    ydoy_date dt(year(200),oct,day(22));
     BOOST_TEST( ! dt.is_leap_year());
   }
   {
-    ydoy_date dt(300,10,22, no_check);
+    ydoy_date dt(year(300),oct,day(22));
     BOOST_TEST( ! dt.is_leap_year());
   }
   // get_weekday
   {
-    BOOST_TEST( ydoy_date(2011,10,23, no_check).get_weekday()==sun);
-    BOOST_TEST( ydoy_date(2011,10,24, no_check).get_weekday()==mon);
-    BOOST_TEST( ydoy_date(2011,10,25, no_check).get_weekday()==tue);
-    BOOST_TEST( ydoy_date(2011,10,26, no_check).get_weekday()==wed);
-    BOOST_TEST( ydoy_date(2011,10,27, no_check).get_weekday()==thu);
-    BOOST_TEST( ydoy_date(2011,10,28, no_check).get_weekday()==fri);
-    BOOST_TEST( ydoy_date(2011,10,29, no_check).get_weekday()==sat);
+    BOOST_TEST( ydoy_date(year(2011),oct,day(23)).get_weekday()==sun);
+    BOOST_TEST( ydoy_date(year(2011),oct,day(24)).get_weekday()==mon);
+    BOOST_TEST( ydoy_date(year(2011),oct,day(25)).get_weekday()==tue);
+    BOOST_TEST( ydoy_date(year(2011),oct,day(26)).get_weekday()==wed);
+    BOOST_TEST( ydoy_date(year(2011),oct,day(27)).get_weekday()==thu);
+    BOOST_TEST( ydoy_date(year(2011),oct,day(28)).get_weekday()==fri);
+    BOOST_TEST( ydoy_date(year(2011),oct,day(29)).get_weekday()==sat);
   }
   // day based arithmetic
   { //+=
@@ -524,8 +524,8 @@ int main()
 
 #if 0
   std::cout << jan / day(2) / 2011 << '\n'; // 2011-01-02
-  std::cout << month(1, no_check) / day(2) / 2011 << '\n'; // 2011-01-02
-  std::cout << ydoy_date(2011, 1, 2, no_check) << '\n'; // 2011-01-02
+  std::cout << month(1) / day(2) / 2011 << '\n'; // 2011-01-02
+  std::cout << ydoy_date(2011, 1, 2) << '\n'; // 2011-01-02
   std::cout << '\n';
 
   std::cout << jan / day(1) / 2011 << '\n'; // 2011-01-02

@@ -60,12 +60,12 @@ namespace boost
        * Else constructs a ydoy_date for which get_year() == y, get_month() == m, get_day() == d.
        * @Throws bad_date if the specified ydoy_date is invalid.
        */
-      ydoy_date(chrono::year y, chrono::month m, chrono::day d);
+      ydoy_date(year y, month m, day d, check_t);
       /**
        * @Effect Constructs a ydoy_date constructor from year, month, day stored in the arguments as follows:
        * Constructs a ydoy_date so that get_year() == y, get_month() = m=, get_day() == d.
        */
-      ydoy_date(year::rep y, month::rep m, day::rep d, no_check_t)
+      ydoy_date(year y, month m, day d)
 BOOST_NOEXCEPT      ;
       /**
        * @Effect Constructs a ydoy_date using the year, month_day stored in the arguments as follows:
@@ -76,13 +76,13 @@ BOOST_NOEXCEPT      ;
        * @Throws bad_date if the specified ydoy_date is invalid.
        * @Note This constructor can be more efficient as the month_day is already valid.
        */
-      ydoy_date(chrono::year y, chrono::month_day md);
+      ydoy_date(year y, month_day md, check_t);
       /**
        * @Effect Constructs a ydoy_date using the year, month_day stored in the arguments as follows:
        * Constructs a ydoy_date for which get_year() == y, get_month() == md.get_month(), get_day() == md.get_month().
        * @Note This constructor can be more efficient as the month_day is already valid.
        */
-      ydoy_date(chrono::year::rep, chrono::month_day, no_check_t) BOOST_NOEXCEPT;
+      ydoy_date(year, month_day) BOOST_NOEXCEPT;
 
       /**
        * @Effect Constructs a ydoy_date using the year, day_of_year stored in the arguments as follows:
@@ -92,28 +92,28 @@ BOOST_NOEXCEPT      ;
        * @Throws bad_date if the specified ydoy_date is invalid.
        * @Note This constructor can be more efficient as the check is simple.
        */
-      ydoy_date(chrono::year y, chrono::day_of_year doy);
+      ydoy_date(year y, day_of_year doy, check_t);
       /**
        * @Effect Constructs a ydoy_date using the year, day_of_year stored in the arguments as follows:
        * Constructs a ydoy_date for which days_since_epoch() == y.days_since_epoch()+doy.value()
        * @Throws bad_date if the specified ydoy_date is invalid.
        */
-      ydoy_date(year::rep y, day_of_year::rep m, no_check_t) BOOST_NOEXCEPT;
+      ydoy_date(year y, day_of_year m) BOOST_NOEXCEPT;
 
       /**
        * @Effect Constructs a ydoy_date using the days given as parameter so that:
        * days_since_epoch() == ds.count()
        */
-      explicit ydoy_date(chrono::days);
+      explicit ydoy_date(days, check_t);
       /**
        * Unchecked constructor from days.
        */
-      ydoy_date(days::rep m, no_check_t) BOOST_NOEXCEPT;
+      ydoy_date(days m) BOOST_NOEXCEPT;
 
       /**
        * Unchecked constructor from ymd+leap
        */
-      ydoy_date(days::rep, year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT
+      ydoy_date(days::rep, year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       : y_(y),
       doy_(month_day_to_day_of_year(leap,m,d)),
       leap_(leap)
@@ -123,7 +123,7 @@ BOOST_NOEXCEPT      ;
       /**
        * Unchecked constructor from ymd+leap
        */
-      ydoy_date(year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT
+      ydoy_date(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       : y_(y),
       doy_(month_day_to_day_of_year(leap,m,d)),
       leap_(leap)
@@ -149,21 +149,21 @@ BOOST_NOEXCEPT      ;
        * an exception of type bad_date.
        *
        */
-      explicit ydoy_date(boost::chrono::system_clock::time_point tp);
+      explicit ydoy_date(system_clock::time_point tp);
       /**
-       * @Returns: A chrono::system_clock::time_point which represents the ydoy_date
+       * @Returns: A system_clock::time_point which represents the ydoy_date
        * referred to by *this at 00:00:00 UTC.
        *
        * @Throws: If the conversion to tp overflows the range of
-       * boost::chrono::system_clock::time_point, throws an exception of type bad_date.
+       * system_clock::time_point, throws an exception of type bad_date.
        *
        */
       // explicit
-      operator boost::chrono::system_clock::time_point () const;
+      operator system_clock::time_point () const;
 
       bool is_valid() const BOOST_NOEXCEPT
       {
-        return year(y_,no_check).is_valid() && day_of_year(doy_,no_check).is_valid();
+        return year(y_).is_valid() && day_of_year(doy_).is_valid();
       }
 
       /**
@@ -177,47 +177,47 @@ BOOST_NOEXCEPT      ;
       ydoy_date(ymd_date dt);
       operator ymd_date() const
       {
-        return days_date(y_, doy_, no_check);
+        return days_date(year(y_), day_of_year(doy_));
       }
 
       ydoy_date(days_date dt);
       operator days_date() const
       {
-        return days_date(y_, doy_, no_check);
+        return days_date(year(y_), day_of_year(doy_));
       }
 
       /**
-       * @Returns: chrono::day(d_,no_check).
+       * @Returns: day(d_).
        */
-      chrono::day get_day() const BOOST_NOEXCEPT
+      day get_day() const BOOST_NOEXCEPT
       {
-        return chrono::day(day_of_year_day_of_month(leap_,doy_),no_check);
+        return day(day_of_year_day_of_month(leap_,doy_));
       }
       /**
-       * @Returns: chrono::month(m_,no_check).
+       * @Returns: month(m_).
        */
-      chrono::month get_month() const BOOST_NOEXCEPT
+      month get_month() const BOOST_NOEXCEPT
       {
-        return chrono::month(day_of_year_month(leap_,doy_),no_check);
+        return month(day_of_year_month(leap_,doy_));
       }
       /**
-       * @Returns: chrono::year(y_,no_check).
+       * @Returns: year(y_).
        */
-      chrono::year get_year() const BOOST_NOEXCEPT
+      year get_year() const BOOST_NOEXCEPT
       {
-        return chrono::year(y_,no_check);
+        return year(y_);
       }
       month_day get_month_day() const BOOST_NOEXCEPT
       {
-        return month_day(day_of_year_month(leap_,doy_), day_of_year_day_of_month(leap_,doy_), no_check);
+        return month_day(month(day_of_year_month(leap_,doy_)), day(day_of_year_day_of_month(leap_,doy_)));
       }
       year_month get_year_month() const BOOST_NOEXCEPT
       {
-        return year_month(y_,day_of_year_month(leap_,doy_),no_check);
+        return year_month(year(y_),month(day_of_year_month(leap_,doy_)));
       }
       year_month_day get_year_month_day() const BOOST_NOEXCEPT
       {
-        return to_ymd(year_day_of_year(y_,doy_,no_check));
+        return to_ymd(year_day_of_year(year(y_),day_of_year(doy_)));
       }
       /**
        * @Returns: true if year() is a leap year, and otherwise returns false.
@@ -231,9 +231,9 @@ BOOST_NOEXCEPT      ;
        * @Returns: A weekday constructed with an int corresponding to *this
        * ydoy_date's day of the week (a value in the range of [0 - 6], 0 is Sunday).
        */
-      chrono::weekday get_weekday() const BOOST_NOEXCEPT
+      weekday get_weekday() const BOOST_NOEXCEPT
       {
-        return chrono::weekday((days_since_epoch()+days(1)).count() % weekday::size,no_check);
+        return weekday((days_since_epoch()+days(1)).count() % weekday::size);
       }
 
       /**

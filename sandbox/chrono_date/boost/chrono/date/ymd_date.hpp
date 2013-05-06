@@ -74,12 +74,12 @@ namespace boost
        * Else constructs a @c ymd_date for which <c>get_year() == y && get_month() == m && get_day() == d</c>.
        * @Throws @c bad_date if the specified @c ymd_date is invalid.
        */
-      ymd_date(year y, month m, day d);
+      ymd_date(year y, month m, day d, check_t);
       /**
        * @Effect Constructs a @c ymd_date constructor from @c year, @c month, @c day stored in the arguments as follows:
        * Constructs a ymd_date so that <c>get_year() == y && get_month() = m && get_day() == d</c>.
        */
-      ymd_date(year::rep y, month::rep m, day::rep d, no_check_t) BOOST_NOEXCEPT;
+      ymd_date(year y, month m, day d) BOOST_NOEXCEPT;
       /**
        * @Effect Constructs a ymd_date using the year, month_day stored in the arguments as follows:
        * If the value stored in md is outside the range of valid dates for this year y,
@@ -89,13 +89,13 @@ namespace boost
        * @Throws bad_date if the specified ymd_date is invalid.
        * @Note This constructor can be more efficient as the month_day is already valid.
        */
-      ymd_date(year y, month_day md);
+      ymd_date(year y, month_day md, check_t);
       /**
        * @Effect Constructs a ymd_date using the year, month_day stored in the arguments as follows:
        * Constructs a ymd_date for which get_year() == y, get_month() == md.get_month(), get_day() == md.get_month().
        * @Note This constructor can be more efficient as the month_day is already valid.
        */
-      ymd_date(year::rep, month_day, no_check_t) BOOST_NOEXCEPT;
+      ymd_date(year, month_day) BOOST_NOEXCEPT;
 
       /**
        * @Effect Constructs a ymd_date using the year, day_of_year stored in the arguments as follows:
@@ -105,29 +105,29 @@ namespace boost
        * @Throws bad_date if the specified ymd_date is invalid.
        * @Note This constructor can be more efficient as the check is simple.
        */
-      ymd_date(year y, day_of_year doy);
+      ymd_date(year y, day_of_year doy, check_t);
       /**
        * @Effect Constructs a ymd_date using the year, day_of_year stored in the arguments as follows:
        * Constructs a ymd_date for which days_since_epoch() == y.days_since_epoch()+doy.value()
        * @Throws bad_date if the specified ymd_date is invalid.
        */
-      ymd_date(year::rep y, day_of_year::rep m, no_check_t) BOOST_NOEXCEPT;
+      ymd_date(year y, day_of_year m) BOOST_NOEXCEPT;
 
       /**
        * @Effect Constructs a ymd_date using the days given as parameter so that:
        * days_since_epoch() == ds.count()
        */
-      explicit ymd_date(days);
+      explicit ymd_date(days, check_t);
       /**
        * Unchecked constructor from days.
        */
-      ymd_date(days::rep m, no_check_t) BOOST_NOEXCEPT;
+      ymd_date(days m) BOOST_NOEXCEPT;
 
 #if BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 1
       /**
        * Unchecked constructor from days+ymd+leap
        */
-      ymd_date(days::rep x, year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT
+      ymd_date(days::rep x, year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       : x_(x),
       y_(y),
       m_(m),
@@ -138,13 +138,13 @@ namespace boost
       /**
        * Unchecked constructor from ymd+leap
        */
-      ymd_date(year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT;
+      ymd_date(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT;
 
 #elif BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 3
       /**
        * Unchecked constructor from days+ymd+leap
        */
-      ymd_date(days::rep, year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT
+      ymd_date(days::rep, year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       :
       y_(y),
       m_(m),
@@ -155,7 +155,7 @@ namespace boost
       /**
        * Unchecked constructor from ymd+leap
        */
-      ymd_date(year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT
+      ymd_date(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       : y_(y),
       m_(m),
       d_(d),
@@ -241,41 +241,41 @@ namespace boost
       ymd_date(days_date dt);
       operator days_date() const
       {
-        return days_date(days_since_epoch().count(), no_check);
+        return days_date(days_since_epoch());
       }
 
       /**
-       * Returns: day(d_,no_check).
+       * Returns: day(d_).
        */
       day get_day() const BOOST_NOEXCEPT
       {
-        return day(d_,no_check);
+        return day(d_);
       }
       /**
-       * Returns: month(m_,no_check).
+       * Returns: month(m_).
        */
       month get_month() const BOOST_NOEXCEPT
       {
-        return month(m_,no_check);
+        return month(m_);
       }
       /**
-       * Returns: year(y_,no_check).
+       * Returns: year(y_).
        */
       year get_year() const BOOST_NOEXCEPT
       {
-        return year(y_,no_check);
+        return year(y_);
       }
       month_day get_month_day() const BOOST_NOEXCEPT
       {
-        return month_day(m_, d_, no_check);
+        return month_day(month(m_), day(d_));
       }
       year_month get_year_month() const BOOST_NOEXCEPT
       {
-        return year_month(y_,m_,no_check);
+        return year_month(year(y_),month(m_));
       }
       year_month_day get_year_month_day() const BOOST_NOEXCEPT
       {
-        return year_month_day(y_,m_,d_, no_check);
+        return year_month_day(year(y_),month(m_),day(d_));
       }
       /**
        * Returns: true if year() is a leap year, and otherwise returns false.
@@ -292,12 +292,12 @@ namespace boost
        */
       weekday get_weekday() const BOOST_NOEXCEPT
       {
-        return weekday((x_ + 1) % weekday::size, no_check);
+        return weekday((x_ + 1) % weekday::size);
       }
 #elif BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 3
       weekday get_weekday() const BOOST_NOEXCEPT
       {
-        return weekday((day_number_from_ymd()+1) % weekday::size,no_check);
+        return weekday((day_number_from_ymd()+1) % weekday::size);
       }
 #endif
 

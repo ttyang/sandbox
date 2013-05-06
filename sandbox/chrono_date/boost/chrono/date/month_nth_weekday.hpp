@@ -30,23 +30,23 @@ namespace boost
       month m_; // :4
       nth_weekday d_; // :6
     public:
-      /**
-       * @Effects: Constructs an object of class @c month_nth_weekday by storing @c m and @c nwd.
-       * @Postconditions: get_month() == m && get_nth_weekday() == nwd && is_valid().
-       */
-      month_nth_weekday(month m, nth_weekday nwd) BOOST_NOEXCEPT
-      : m_(m),
-      d_(nwd)
-      {
-        // There is no bad combination, so no exception is thrown
-      }
+//      /**
+//       * @Effects: Constructs an object of class @c month_nth_weekday by storing @c m and @c nwd.
+//       * @Postconditions: get_month() == m && get_nth_weekday() == nwd && is_valid().
+//       */
+//      month_nth_weekday(month m, nth_weekday nwd, check_t) BOOST_NOEXCEPT
+//      : m_(m, check),
+//      d_(nwd, check)
+//      {
+//        // There is no bad combination, so no exception is thrown
+//      }
       /**
        * @Effects: Constructs an object of class @c month_nth_weekday by storing @c m and @c nwd.
        * @Postconditions: get_month() == m && get_nth_weekday() == nwd.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      month_nth_weekday(month::rep m, nth_weekday d, no_check_t) BOOST_NOEXCEPT
+      month_nth_weekday(month::rep m, nth_weekday d) BOOST_NOEXCEPT
       : m_(m),
       d_(d)
       {

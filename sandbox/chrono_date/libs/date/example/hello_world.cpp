@@ -23,8 +23,8 @@ int main()
     typedef boost::chrono::duration<double,boost::micro> micros;
 
     std::cout << jan/day(2)/2011 << '\n';  // 2011-01-02
-    std::cout << month(1,no_check)/day(2)/2011 << '\n';  // 2011-01-02
-    std::cout << date(2011, 1, 2, no_check) << '\n';  // 2011-01-02
+    std::cout << month(1)/day(2)/2011 << '\n';  // 2011-01-02
+    std::cout << date(year(2011),jan,day(2)) << '\n';  // 2011-01-02
     std::cout << '\n';
 
     std::cout << jan/day(1)/2011 << '\n';  // 2011-01-02
@@ -69,6 +69,7 @@ int main()
     // ...
     // Create date with the same month and year but on the 5th
     date dt2 = dt.get_year()/dt.get_month()/5;  // aug/5/2011
+    (void)dt2;
     int d = dt.get_day();   // d == 5
     int m = dt.get_month(); // m == 8
     int y = dt.get_year();  // y == 2011
@@ -240,7 +241,7 @@ int main()
     {
       std::cout << __FILE__<<"["<<__LINE__ <<"] "<< "How many days until next 28th?" << '\n';
       // How many days until next 28th?
-      days d=(nth(28)>date::today())- date::today();
+      days d=(nth(5)>date::today())- date::today();
       std::cout << d << '\n';
     }
     {

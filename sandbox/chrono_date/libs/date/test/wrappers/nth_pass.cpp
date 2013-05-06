@@ -14,7 +14,7 @@ int main()
   {
     try
     {
-      nth d(0);
+      nth d(0, check);
       BOOST_TEST(false && "0 is not a valid nth");
     }
     catch (...)
@@ -24,7 +24,7 @@ int main()
   {
     try
     {
-      nth d(7);
+      nth d(7, check);
       BOOST_TEST(false && "7 is not a valid nth");
     }
     catch (...)
@@ -32,15 +32,15 @@ int main()
     }
   }
   {
-    nth d(0, no_check);
+    nth d(0);
     BOOST_TEST(!d.is_valid() && "0 is not a valid nth");
   }
   {
-    nth d(7, no_check);
+    nth d(7);
     BOOST_TEST(!d.is_valid() && "7 is not a valid nth");
   }
   {
-    nth d(-1, no_check);
+    nth d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid nth");
   }
   {

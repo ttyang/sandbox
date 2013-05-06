@@ -41,36 +41,36 @@ namespace boost
       tm now;
       localtime_r(&systime, &now);
       return ymd_date(
-          chrono::year(now.tm_year+1900),
-          chrono::month(now.tm_mon+1),
-          chrono::day(now.tm_mday)
+          year(now.tm_year+1900),
+          month(now.tm_mon+1),
+          day(now.tm_mday)
       );
     }
 
-    ymd_date::ymd_date(boost::chrono::system_clock::time_point tp)
+    ymd_date::ymd_date(system_clock::time_point tp)
     {
-      time_t systime = boost::chrono::system_clock::to_time_t(tp);
+      time_t systime = system_clock::to_time_t(tp);
       tm now;
       gmtime_r(&systime, &now);
       *this
-          = ymd_date(chrono::year(now.tm_year + 1900), chrono::month(now.tm_mon
-              + 1), chrono::day(now.tm_mday));
+          = ymd_date(year(now.tm_year + 1900), month(now.tm_mon
+              + 1), day(now.tm_mday));
     }
 
-    ymd_date::operator boost::chrono::system_clock::time_point() const
+    ymd_date::operator system_clock::time_point() const
     {
       tm now = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
       now.tm_year = get_year() - 1900;
       now.tm_mon = get_month() - 1;
       now.tm_mday = get_day();
       time_t t = timegm(&now);
-      return boost::chrono::system_clock::from_time_t(t);
+      return system_clock::from_time_t(t);
     }
 
     bool ymd_date::is_valid() const
     BOOST_NOEXCEPT
     {
-      if (year(y_,no_check).is_valid() && month(m_,no_check).is_valid() && day(d_, no_check).is_valid()) {
+      if (year(y_).is_valid() && month(m_).is_valid() && day(d_).is_valid()) {
         const day_of_year::rep* year_data = days_in_year_before(leap_);
 
         if (!(1 <= d_ && d_ <= year_data[m_] - year_data[m_ - 1]))
@@ -90,37 +90,37 @@ namespace boost
     bool ymd_date::set_if_valid_date(year y, month m, day d)
     BOOST_NOEXCEPT
     {
-      bool leap = is_leap(y);
+      bool leap = y.is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap);
 
       if (!(d <= year_data[m] - year_data[m - 1]))
       {
         return false;
       }
-      y_ = y.value();
-      m_ = m.value();
-      d_ = d.value();
+      y_ = y;
+      m_ = m;
+      d_ = d;
       leap_ = leap;
 #if BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 1
-      year::rep by = y.value() + 32799;
+      year::rep by = y + 32799;
       x_ = days_before_year(by) + year_data[m - 1] + d;
 #endif
       return true;
     }
 
-    bool ymd_date::set_if_valid_date(chrono::year y, chrono::day_of_year doy)
+    bool ymd_date::set_if_valid_date(year y, day_of_year doy)
     BOOST_NOEXCEPT
     {
-      bool leap = is_leap(y);
+      bool leap = y.is_leap();
       if (!leap && doy == 366)
          return false;
 
-      y_ = y.value();
-      m_ = day_of_year_month(leap,doy);
+      y_ = y;
+      m_ = day_of_year_month(leap, doy);
       d_ = day_of_year_day_of_month(leap,doy);
       leap_ = leap;
 #if BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 1
-      year::rep by = y.value() + 32799;
+      year::rep by = y + 32799;
       x_ = days_before_year(by) + doy -1;
 #endif
       return true;
@@ -146,7 +146,7 @@ namespace boost
 
 
 #if BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 1
-    ymd_date::ymd_date(year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT
+    ymd_date::ymd_date(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
         :
         y_(y),
         m_(m),
@@ -159,7 +159,7 @@ namespace boost
     }
 #endif
 
-    ymd_date::ymd_date(chrono::year y, chrono::month m, chrono::day d)
+    ymd_date::ymd_date(year y, month m, day d, check_t)
     {
       if (set_if_valid_date(y, m, d))
         return;
@@ -167,7 +167,7 @@ namespace boost
           + to_string(y) + '-' + to_string(m));
     }
 
-    ymd_date::ymd_date(chrono::year y, chrono::month_day md)
+    ymd_date::ymd_date(year y, month_day md, check_t)
     {
       if (set_if_valid_date(y, md.get_month(), md.get_day()))
         return;
@@ -175,7 +175,7 @@ namespace boost
           + to_string(y) + '-' + to_string(md.get_month()));
     }
 
-    ymd_date::ymd_date(year::rep y, month::rep m, day::rep d, no_check_t)
+    ymd_date::ymd_date(year y, month m, day d)
     BOOST_NOEXCEPT
     : y_(y), m_(m), d_(d), leap_(is_leap(y_))
     {
@@ -188,7 +188,7 @@ namespace boost
       x_ = days_before_year(by) + year_data[m_ - 1] + d_;
 #endif
     }
-    ymd_date::ymd_date(year::rep y, month_day md, no_check_t)
+    ymd_date::ymd_date(year y, month_day md)
     BOOST_NOEXCEPT
     : y_(y), m_(md.get_month()), d_(md.get_day()), leap_(is_leap(y_))
     {
@@ -200,8 +200,22 @@ namespace boost
 #endif
     }
 
+    ymd_date::ymd_date(year y, day_of_year doy) BOOST_NOEXCEPT
+    {
+      if (set_if_valid_date(y, doy))
+        return;
 
-    ymd_date::ymd_date(chrono::year y, chrono::day_of_year doy)
+        y_ = y;
+        m_ = 0;
+        d_ = 0;
+        leap_ = false;
+#if BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 1
+        x_ = 0;
+#endif
+
+    }
+
+    ymd_date::ymd_date(year y, day_of_year doy, check_t)
     {
       if (set_if_valid_date(y, doy))
         return;
@@ -209,18 +223,19 @@ namespace boost
           + to_string(y) );
     }
 
-    ymd_date::ymd_date(days d)
+    ymd_date::ymd_date(days d, check_t)
     {
       if (set_if_valid_date(d))
         return;
       throw bad_date("days " + to_string(d.count()) + " is out of range");
     }
-    ymd_date::ymd_date(days::rep x, no_check_t) BOOST_NOEXCEPT
+
+    ymd_date::ymd_date(days d) BOOST_NOEXCEPT
 #if BOOST_CHRONO_DATE_YMD_DATE_DESIGN == 1
-        : x_(x)
+        : x_(d)
 #endif
         {
-            year_month_day_leap dt = to_ymd_leap(days(x));
+            year_month_day_leap dt = to_ymd_leap(d);
             y_=dt.get_year();
             m_=dt.get_month();
             d_=dt.get_day();
@@ -288,7 +303,7 @@ namespace boost
         m -= 12 * dy;
       }
       *this
-          = ymd_date(chrono::year(y), chrono::month(m, no_check), chrono::day(d_, no_check));
+          = ymd_date(year(y, check), month(m), day(d_), check);
       return *this;
     }
 
@@ -296,7 +311,7 @@ namespace boost
     ymd_date::operator+=(years yr)
     {
       *this
-          = ymd_date(chrono::year(y_ + yr.count()), chrono::month(m_, no_check), chrono::day(d_, no_check));
+          = ymd_date(year(y_ + yr.count(), check), month(m_, check), day(d_, check), check);
       return *this;
     }
 

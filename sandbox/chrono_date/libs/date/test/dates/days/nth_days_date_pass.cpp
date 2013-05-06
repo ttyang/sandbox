@@ -70,7 +70,7 @@ int main()
   }
   std::cout <<"***********"<< std::endl;
   { // no_check construct from bad ymd: 2011/oct/22
-    rel_date dt(2011,10,22, no_check);
+    rel_date dt(2011,10,22);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==oct);
@@ -85,7 +85,7 @@ int main()
     BOOST_TEST(dt.get_day()==1);
   }
   { // no_check construct from ymd: 2011/jan_01
-    rel_date dt(2011,jan_01, no_check);
+    rel_date dt(2011,jan_01);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.get_year()==2011);
     BOOST_TEST(dt.get_month()==jan);
@@ -166,49 +166,49 @@ int main()
     BOOST_TEST( dt.is_valid());
   }
   { // conversions to/from system_clock::time_point
-    rel_date dt(2011,10,22, no_check);
+    rel_date dt(2011,10,22);
     boost::chrono::system_clock::time_point tp=boost::chrono::system_clock::time_point(dt);
     rel_date dt2(tp);
     BOOST_TEST( dt == dt2);
   }
   // is_leap_year
   {
-    rel_date dt(2011,10,22, no_check);
+    rel_date dt(2011,10,22);
     BOOST_TEST( ! dt.is_leap_year());
   }
   {
-    rel_date dt(0,10,22, no_check);
+    rel_date dt(0,10,22);
     BOOST_TEST( dt.is_leap_year());
   }
   {
-    rel_date dt(4,10,22, no_check);
+    rel_date dt(4,10,22);
     BOOST_TEST( dt.is_leap_year());
   }
   {
-    rel_date dt(400,10,22, no_check);
+    rel_date dt(400,10,22);
     BOOST_TEST( dt.is_leap_year());
   }
   {
-    rel_date dt(100,10,22, no_check);
+    rel_date dt(100,10,22);
     BOOST_TEST( ! dt.is_leap_year());
   }
   {
-    rel_date dt(200,10,22, no_check);
+    rel_date dt(200,10,22);
     BOOST_TEST( ! dt.is_leap_year());
   }
   {
-    rel_date dt(300,10,22, no_check);
+    rel_date dt(300,10,22);
     BOOST_TEST( ! dt.is_leap_year());
   }
   // get_weekday
   {
-    BOOST_TEST( rel_date(2011,10,23, no_check).get_weekday()==sun);
-    BOOST_TEST( rel_date(2011,10,24, no_check).get_weekday()==mon);
-    BOOST_TEST( rel_date(2011,10,25, no_check).get_weekday()==tue);
-    BOOST_TEST( rel_date(2011,10,26, no_check).get_weekday()==wed);
-    BOOST_TEST( rel_date(2011,10,27, no_check).get_weekday()==thu);
-    BOOST_TEST( rel_date(2011,10,28, no_check).get_weekday()==fri);
-    BOOST_TEST( rel_date(2011,10,29, no_check).get_weekday()==sat);
+    BOOST_TEST( rel_date(2011,10,23).get_weekday()==sun);
+    BOOST_TEST( rel_date(2011,10,24).get_weekday()==mon);
+    BOOST_TEST( rel_date(2011,10,25).get_weekday()==tue);
+    BOOST_TEST( rel_date(2011,10,26).get_weekday()==wed);
+    BOOST_TEST( rel_date(2011,10,27).get_weekday()==thu);
+    BOOST_TEST( rel_date(2011,10,28).get_weekday()==fri);
+    BOOST_TEST( rel_date(2011,10,29).get_weekday()==sat);
   }
   // day based arithmetic
   { //+=

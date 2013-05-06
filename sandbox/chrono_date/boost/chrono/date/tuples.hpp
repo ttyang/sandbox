@@ -40,9 +40,9 @@ namespace boost
       m_(m)
       {
       }
-      year_month(year::rep y, month::rep m, no_check_t) BOOST_NOEXCEPT
-      : y_(y, no_check),
-      m_(m, no_check)
+      year_month(year::rep y, month::rep m, check_t) BOOST_NOEXCEPT
+      : y_(y, check),
+      m_(m, check)
       {
       }
       /**
@@ -66,7 +66,7 @@ namespace boost
        */
       days days_in() const BOOST_NOEXCEPT
       {
-        return y_.days_in(m_);
+        return y_.days_in_month(m_);
       }
     };
 
@@ -94,9 +94,9 @@ namespace boost
       w_(w)
       {
       }
-      year_week(year::rep y, week::rep w, no_check_t) BOOST_NOEXCEPT
-      : y_(y, no_check),
-      w_(w, no_check)
+      year_week(year y, week w, check_t) BOOST_NOEXCEPT
+      : y_(y, check),
+      w_(w, check)
       {
       }
 
@@ -146,9 +146,9 @@ namespace boost
       {
         // check validity of day relative to month.
       }
-      month_day(month::rep m, day::rep d, no_check_t)BOOST_NOEXCEPT
-      : m_(m,no_check),
-      d_(d,no_check)
+      month_day(month::rep m, day::rep d, check_t)BOOST_NOEXCEPT
+      : m_(m,check),
+      d_(d,check)
       {
       }
       /**
@@ -251,9 +251,9 @@ namespace boost
       {
       }
 
-      week_weekday(week::rep w, weekday::rep wd, no_check_t)BOOST_NOEXCEPT
-      : w_(w, no_check),
-      wd_(wd, no_check)
+      week_weekday(week::rep w, weekday::rep wd, check_t)BOOST_NOEXCEPT
+      : w_(w, check),
+      wd_(wd, check)
       {
       }
       week get_week() const BOOST_NOEXCEPT
@@ -295,10 +295,10 @@ namespace boost
       {
       }
 
-      year_month_day(year::rep y, month::rep m, day::rep d, no_check_t)BOOST_NOEXCEPT
-      : y_(y, no_check),
-      m_(m, no_check),
-      d_(d, no_check)
+      year_month_day(year::rep y, month::rep m, day::rep d, check_t)BOOST_NOEXCEPT
+      : y_(y, check),
+      m_(m, check),
+      d_(d, check)
       {
       }
       year get_year() const BOOST_NOEXCEPT
@@ -336,10 +336,10 @@ namespace boost
       {
       }
 
-      year_month_day_leap(year::rep y, month::rep m, day::rep d, bool leap, no_check_t)BOOST_NOEXCEPT
-      : y_(y, no_check),
-      m_(m, no_check),
-      d_(d, no_check),
+      year_month_day_leap(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
+      : y_(y),
+      m_(m),
+      d_(d),
       leap_(leap)
       {
       }
@@ -376,9 +376,9 @@ namespace boost
       d_(d)
       {
       }
-      year_day_of_year(year::rep y, day_of_year::rep d, no_check_t) BOOST_NOEXCEPT
-      : y_(y, no_check),
-      d_(d, no_check)
+      year_day_of_year(year::rep y, day_of_year::rep d, check_t) BOOST_NOEXCEPT
+      : y_(y, check),
+      d_(d, check)
       {
       }
       year get_year() const BOOST_NOEXCEPT
@@ -411,10 +411,10 @@ namespace boost
       {
       }
 
-      year_week_weekday(year::rep y, week::rep w, weekday::rep wd, no_check_t)BOOST_NOEXCEPT
-      : y_(y, no_check),
-      w_(w, no_check),
-      wd_(wd, no_check)
+      year_week_weekday(year::rep y, week::rep w, weekday::rep wd, check_t)BOOST_NOEXCEPT
+      : y_(y, check),
+      w_(w, check),
+      wd_(wd, check)
       {
       }
       year get_year() const BOOST_NOEXCEPT

@@ -32,21 +32,21 @@ namespace boost
 
     public:
       BOOST_STATIC_CONSTEXPR rep not_applicable=7;
-      nth_week() : base_type(not_applicable) {}
+      BOOST_CONSTEXPR nth_week() : base_type(not_applicable) {}
 
       /**
        * @Effects: Constructs an object of class @c nth_week by storing @c s.
        * Throws: if @c s is outside of the range [1, 6], throws an exception of type bad_date.
        */
-      nth_week(irep s) : base_type(s)
+      BOOST_CONSTEXPR nth_week(int s, check_t) : base_type(s, check)
       {}
       /**
        * @Effects: Constructs an object of class @c nth_week by storing @c s.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR nth_week(irep s, no_check_t) BOOST_NOEXCEPT
-          : base_type(s, no_check)
+      BOOST_CONSTEXPR nth_week(int s) BOOST_NOEXCEPT
+          : base_type(s)
       {}
 
       BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT

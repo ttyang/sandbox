@@ -94,7 +94,7 @@ namespace boost
       Date res;
       if (res.set_if_valid_date(d.get_year(),md.get_month(),md.get_day()) &&  res > d ) return res;
       if (res.set_if_valid_date(year(d.get_year()+1),md.get_month(),md.get_day()) &&  res > d ) return res;
-      res=Date(d.get_year()+2,md.get_month(),md.get_day(),no_check);
+      res=Date(year(d.get_year()+2),md.get_month(),md.get_day());
       return res;
     }
     template <typename Date>
@@ -104,7 +104,7 @@ namespace boost
       Date res;
       if (res.set_if_valid_date(d.get_year(),md.get_month(),md.get_day()) && res >= d) return  res;
       if (res.set_if_valid_date(year(d.get_year()+1),md.get_month(),md.get_day()) && res >= d) return  res;
-      res=Date(d.get_year()+2,md.get_month(),md.get_day(),no_check);
+      res=Date(year(d.get_year()+2),md.get_month(),md.get_day());
       return res;
     }
 
@@ -116,25 +116,25 @@ namespace boost
       Date res;
       if (d.get_month()==dec)
       {  // dec and jan have 31 days
-        res = Date(d.get_year(),d.get_month(),n.value(),no_check);
+        res = Date(d.get_year(),d.get_month(),n.value());
         std::cout << __FILE__<<"["<<__LINE__ <<"] "<< res << '\n';
 
         if (res > d) return res;
-        return Date(d.get_year(),jan,n.value(),no_check);
+        return Date(d.get_year(),jan,n.value());
       }
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
         if (res.set_if_valid_date(d.get_year(),d.get_month(),day(n.value())) && res > d) return res;
         if (res.set_if_valid_date(d.get_year(),month(d.get_month()+1),day(n.value())) && res > d) return res;
-        return Date(d.get_year(),d.get_month()+2,n.value(),no_check) ;
+        return Date(d.get_year(),month(d.get_month()+2),day(n.value())) ;
       }
       // nth <= 28 is always valid, so the next is either in this month or the next one
-      res = Date(d.get_year(),d.get_month(),n.value(),no_check);
+      res = Date(d.get_year(),d.get_month(),n.value());
       std::cout << __FILE__<<"["<<__LINE__ <<"] "<< res << '\n';
       if (res > d) return res;
       std::cout << __FILE__<<"["<<__LINE__ <<"] "<< int(d.get_month()+1) << '\n';
-      return Date(d.get_year(),d.get_month()+1,n.value(),no_check);
+      return Date(d.get_year(),month(d.get_month()+1),day(n.value()));
     }
     template <typename Date>
     inline Date
@@ -143,21 +143,21 @@ namespace boost
       Date res;
       if (d.get_month()==dec)
       {  // dec and jan have 31 days
-        res = Date(d.get_year(),d.get_month(),n.value(),no_check);
+        res = Date(d.get_year(),d.get_month(),n.value());
         if (res >= d) return res;
-        return Date(d.get_year(),jan,n.value(),no_check);
+        return Date(d.get_year(),jan,n.value());
       }
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
         if (res.set_if_valid_date(d.get_year(),d.get_month(),day(n.value())) && res >= d) return res;
         if (res.set_if_valid_date(d.get_year(),month(d.get_month()+1),day(n.value())) && res >= d) return res;
-        return Date(d.get_year(),d.get_month()+2,n.value(),no_check) ;
+        return Date(d.get_year(),d.get_month()+2,n.value()) ;
       }
       // nth <= 28 is always valid, so the next is either in this month or the next one
-      res = Date(d.get_year(),d.get_month(),n.value(),no_check);
+      res = Date(d.get_year(),d.get_month(),n.value());
       if (res >= d) return res;
-      return Date(d.get_year(),month(d.get_month()+1,no_check),n.value(),no_check);
+      return Date(d.get_year(),month(d.get_month()+1),n.value());
     }
 
 

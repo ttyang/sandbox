@@ -11,6 +11,8 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
+#include <boost/chrono/date/detail/helpers.hpp>
+#include <boost/chrono/date/date_durations.hpp>
 
 
 namespace boost
@@ -25,24 +27,53 @@ namespace boost
     /**
      * The class @c month is used to specify the month of the year when constructing a date.  Its range is [1,12].
      */
-    typedef bounded<month_tag, 1, 12, int_least8_t> month;
+    class month: public bounded<month_tag, 1, 12, int_least8_t>
+    {
+      typedef bounded<month_tag, 1, 12, int_least8_t> base_type;
+    public:
+      /**
+       * @Effects: Constructs an object of class month by storing m.
+       * @Postconditions: static_cast<int>(*this) == m.
+       */
+      BOOST_CONSTEXPR explicit month(int m) :
+        base_type(m)
+      {
+      }
+
+      /**
+       * @Effects: Constructs an object of class month by storing m.
+       * @Postconditions: static_cast<int>(*this) == m.
+       * @Throws: if m is outside of the supported range, throws an exception of type bad_date.
+       */
+      BOOST_CONSTEXPR month(int m, check_t) BOOST_NOEXCEPT
+      : base_type(m, check)
+      {}
+
+      /**
+       * @Return the number of days of the month depending on the @c is_leap_year parameter.
+       */
+      days days_in(bool is_leap_year) const BOOST_NOEXCEPT
+      {
+        return days(days_in_month(is_leap_year, value()));
+      }
+    };
 
     /**
      * month pseudo-literals.
      */
 #ifndef  BOOST_NO_CXX11_CONSTEXPR
-    BOOST_CONSTEXPR_OR_CONST month jan(1, no_check);
-    BOOST_CONSTEXPR_OR_CONST month feb(2, no_check);
-    BOOST_CONSTEXPR_OR_CONST month mar(3, no_check);
-    BOOST_CONSTEXPR_OR_CONST month apr(4, no_check);
-    BOOST_CONSTEXPR_OR_CONST month may(5, no_check);
-    BOOST_CONSTEXPR_OR_CONST month jun(6, no_check);
-    BOOST_CONSTEXPR_OR_CONST month jul(7, no_check);
-    BOOST_CONSTEXPR_OR_CONST month aug(8, no_check);
-    BOOST_CONSTEXPR_OR_CONST month sep(9, no_check);
-    BOOST_CONSTEXPR_OR_CONST month oct(10, no_check);
-    BOOST_CONSTEXPR_OR_CONST month nov(11, no_check);
-    BOOST_CONSTEXPR_OR_CONST month dec(12, no_check);
+    BOOST_CONSTEXPR_OR_CONST month jan(1);
+    BOOST_CONSTEXPR_OR_CONST month feb(2);
+    BOOST_CONSTEXPR_OR_CONST month mar(3);
+    BOOST_CONSTEXPR_OR_CONST month apr(4);
+    BOOST_CONSTEXPR_OR_CONST month may(5);
+    BOOST_CONSTEXPR_OR_CONST month jun(6);
+    BOOST_CONSTEXPR_OR_CONST month jul(7);
+    BOOST_CONSTEXPR_OR_CONST month aug(8);
+    BOOST_CONSTEXPR_OR_CONST month sep(9);
+    BOOST_CONSTEXPR_OR_CONST month oct(10);
+    BOOST_CONSTEXPR_OR_CONST month nov(11);
+    BOOST_CONSTEXPR_OR_CONST month dec(12);
 #else
     extern const month jan;
     extern const month feb;

@@ -13,7 +13,7 @@ int main()
   {
     try
     {
-      weekday d(-1);
+      weekday d(-1, check);
       BOOST_TEST(false && "-1 is not a valid weekday");
     }
     catch (...)
@@ -23,7 +23,7 @@ int main()
   {
     try
     {
-      weekday d(7);
+      weekday d(7, check);
       BOOST_TEST(false && "7 is not a valid weekday");
     }
     catch (...)
@@ -31,11 +31,11 @@ int main()
     }
   }
   {
-    weekday d(-1, no_check);
+    weekday d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid weekday");
   }
   {
-    weekday d(7, no_check);
+    weekday d(7);
     BOOST_TEST(!d.is_valid() && "7 is not a valid weekday");
   }
   {

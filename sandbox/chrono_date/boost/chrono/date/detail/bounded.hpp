@@ -25,16 +25,15 @@ namespace boost
     /**
      * The class @c bounded is used to specify an opaque wrapper around integral type.
      */
-    template <typename Tag, int first_, int last_, typename T=int, typename IT=int>
+    template <typename Tag, int first_, int last_, typename T=int>
     class bounded
     {
     public:
       typedef T rep;
-      typedef IT irep;
       BOOST_STATIC_CONSTEXPR std::size_t size=last_-first_+1; // :5 bits
 
     private:
-      static BOOST_CONSTEXPR bool is_valid_(irep v) BOOST_NOEXCEPT
+      static BOOST_CONSTEXPR bool is_valid_(int v) BOOST_NOEXCEPT
       {
         return (first_ <= v && v <= last_);
       }
@@ -47,7 +46,7 @@ namespace boost
        */
 
 #ifndef  BOOST_NO_CXX11_CONSTEXPR
-      BOOST_CONSTEXPR explicit bounded(irep d)
+      BOOST_CONSTEXPR explicit bounded(int d, check_t)
       : value_(
           is_valid_(d)
           ? d
@@ -55,7 +54,7 @@ namespace boost
         )
       {}
 #else
-      BOOST_CONSTEXPR explicit bounded(irep d)
+      BOOST_CONSTEXPR explicit bounded(int d, check_t)
       : value_(d)
       {
         if (!is_valid_(d))
@@ -68,9 +67,10 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR bounded(irep d,no_check_t) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR bounded(int d) BOOST_NOEXCEPT
       : value_(d)
       {}
+
       /**
        * @Return if the stored value is a valid one.
        */
@@ -82,7 +82,7 @@ namespace boost
        * @Requires @c is_valid()
        * @Returns the underlying value of that bounded.
        */
-      BOOST_CONSTEXPR operator irep() const BOOST_NOEXCEPT
+      BOOST_CONSTEXPR operator int() const BOOST_NOEXCEPT
       {
         return value_;
       }
@@ -90,7 +90,7 @@ namespace boost
        * @Requires @c is_valid()
        * @Returns: the underlying value of that bounded.
        */
-      BOOST_CONSTEXPR irep value() const BOOST_NOEXCEPT
+      BOOST_CONSTEXPR int value() const BOOST_NOEXCEPT
       {
         return value_;
       }
@@ -99,28 +99,28 @@ namespace boost
        */
       static BOOST_CONSTEXPR bounded min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
-          return bounded(first_,no_check);
+          return bounded(first_);
       }
       /**
        * @Returns: the max valid value for a bounded of a month.
        */
       static BOOST_CONSTEXPR bounded max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
-          return bounded(last_,no_check);
+          return bounded(last_);
       }
       /**
        * @Returns: the first bounded.
        */
       static BOOST_CONSTEXPR bounded first() BOOST_NOEXCEPT
       {
-          return bounded(first_,no_check);
+          return bounded(first_);
       }
       /**
        * @Returns: the first bounded.
        */
       static BOOST_CONSTEXPR bounded last() BOOST_NOEXCEPT
       {
-          return bounded(last_,no_check);
+          return bounded(last_);
       }
     private:
       rep value_;

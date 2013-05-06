@@ -22,7 +22,9 @@ namespace boost
     /**
      * year tag
      */
-    struct year_tag {};
+    struct year_tag
+    {
+    };
 
     /**
      * The class year is used to specify the year when constructing a date.
@@ -31,26 +33,31 @@ namespace boost
      *
      * That range shall be at least [year(-32767)/jan/1 thru year(32767)/dec/31]. Its range is [-32768, 32767].
      */
-    class year : public bounded<year_tag, -32768, 32767, int_least32_t>
+    class year: public bounded<year_tag, -32768, 32767, int_least32_t>
     {
       typedef bounded<year_tag, -32768, 32767, int_least32_t> base_type;
     public:
       /**
        * @Effects: Constructs an object of class year by storing y.
        * @Postconditions: static_cast<int>(*this) == y.
-       * @Throws: if y is outside of the supported range, throws an exception of type bad_date.
        */
-      BOOST_CONSTEXPR explicit year(irep v)
-      : base_type(v)
-      {}
+      BOOST_CONSTEXPR explicit year(int v) :
+        base_type(v),
+        is_leap_(false),
+        is_leap_initialized_(false)
+      {
+      }
 
       /**
        * @Effects: Constructs an object of class year by storing y.
        * @Postconditions: static_cast<int>(*this) == y.
+       * @Throws: if y is outside of the supported range, throws an exception of type bad_date.
        */
-      BOOST_CONSTEXPR year(irep y, no_check_t) BOOST_NOEXCEPT
-      : base_type(y, no_check)
-        {}
+      BOOST_CONSTEXPR year(int y, check_t) BOOST_NOEXCEPT
+      : base_type(y, check),
+        is_leap_(false),
+        is_leap_initialized_(false)
+      {}
 
       /**
        * @Return the number of days of this year.
@@ -63,7 +70,10 @@ namespace boost
       /**
        * @Return the number of days of the month parameter in this year.
        */
-      days days_in(month m) const BOOST_NOEXCEPT;
+      days days_in_month(month m) const BOOST_NOEXCEPT
+      {
+        return m.days_in(is_leap());
+      }
 
       /**
        * @Return the number of days since the epoch until the fist day of this year.
@@ -78,14 +88,22 @@ namespace boost
        */
       bool is_leap() const BOOST_NOEXCEPT
       {
-        int32_t y = value();
-        return y % 4 == 0 && (y % 100 != 0 || y % 400 == 0);
+        if ( ! is_leap_initialized_)
+        {
+          int32_t y = value();
+          is_leap_ = y % 4 == 0 && (y % 100 != 0 || y % 400 == 0);
+          is_leap_initialized_ = true;
+        }
+        return is_leap_;
       }
 
       static BOOST_CONSTEXPR year zero() BOOST_NOEXCEPT
       {
-        return year(0, no_check);
+        return year(0);
       }
+    private:
+      mutable bool is_leap_;
+      mutable bool is_leap_initialized_;
     };
 
   } // chrono

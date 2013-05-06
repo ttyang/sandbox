@@ -35,30 +35,30 @@ namespace boost
       tm now;
       localtime_r(&systime, &now);
       return ydoy_date(
-          chrono::year(now.tm_year+1900),
-          chrono::month(now.tm_mon+1),
-          chrono::day(now.tm_mday)
+          year(now.tm_year+1900),
+          month(now.tm_mon+1),
+          day(now.tm_mday)
       );
     }
 
-    ydoy_date::ydoy_date(boost::chrono::system_clock::time_point tp)
+    ydoy_date::ydoy_date(system_clock::time_point tp)
     {
-      time_t systime = boost::chrono::system_clock::to_time_t(tp);
+      time_t systime = system_clock::to_time_t(tp);
       tm now;
       gmtime_r(&systime, &now);
       *this
-          = ydoy_date(chrono::year(now.tm_year + 1900), chrono::month(now.tm_mon
-              + 1), chrono::day(now.tm_mday));
+          = ydoy_date(year(now.tm_year + 1900), month(now.tm_mon
+              + 1), day(now.tm_mday));
     }
 
-    ydoy_date::operator boost::chrono::system_clock::time_point() const
+    ydoy_date::operator system_clock::time_point() const
     {
       tm now = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
       now.tm_year = get_year() - 1900;
       now.tm_mon = get_month() - 1;
       now.tm_mday = get_day();
       time_t t = timegm(&now);
-      return boost::chrono::system_clock::from_time_t(t);
+      return system_clock::from_time_t(t);
     }
 
     bool ydoy_date::set_if_valid_date(year y, month m, day d)
@@ -77,7 +77,7 @@ namespace boost
       return true;
     }
 
-//    ydoy_date::ydoy_date(year::rep y, month::rep m, day::rep d, bool leap, no_check_t) BOOST_NOEXCEPT
+//    ydoy_date::ydoy_date(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
 //        :
 //        y_(y),
 //        doy_(month_day_to_day_of_year(leap,m,d)),
@@ -94,7 +94,7 @@ namespace boost
 //
 //    }
 
-    ydoy_date::ydoy_date(chrono::year y, chrono::month m, chrono::day d)
+    ydoy_date::ydoy_date(year y, month m, day d, check_t)
     {
       if (set_if_valid_date(y, m, d))
         return;
@@ -102,7 +102,7 @@ namespace boost
           + to_string(y) + '-' + to_string(m));
     }
 
-    ydoy_date::ydoy_date(chrono::year y, chrono::month_day md)
+    ydoy_date::ydoy_date(year y, month_day md, check_t)
     {
       if (set_if_valid_date(y, md.get_month(), md.get_day()))
         return;
@@ -110,7 +110,7 @@ namespace boost
           + to_string(y) + '-' + to_string(md.get_month()));
     }
 
-    ydoy_date::ydoy_date(year::rep y, month::rep m, day::rep d, no_check_t)
+    ydoy_date::ydoy_date(year y, month m, day d)
     BOOST_NOEXCEPT
     :
     y_(y),
@@ -119,7 +119,7 @@ namespace boost
     {
     }
 
-    ydoy_date::ydoy_date(year::rep y, month_day md, no_check_t)
+    ydoy_date::ydoy_date(year y, month_day md)
     BOOST_NOEXCEPT
     :
     y_(y),
@@ -155,7 +155,7 @@ namespace boost
       doy_ = doy;
     }
 
-    ydoy_date::ydoy_date(days d)
+    ydoy_date::ydoy_date(days d, check_t)
     {
       days::rep x = d.count();
       if (!(11322 <= x && x <= 23947853))
@@ -183,8 +183,9 @@ namespace boost
       doy_ = doy;
     }
 
-    ydoy_date::ydoy_date(days::rep x, no_check_t) BOOST_NOEXCEPT
+    ydoy_date::ydoy_date(days d) BOOST_NOEXCEPT
     {
+      days::rep x = d.count();
       year::rep y = to_average_year(x);
       int doy = x - (days_before_year(y));
       if (doy < 0)
@@ -199,7 +200,7 @@ namespace boost
       doy_ = doy;
     }
 
-    ydoy_date::ydoy_date(chrono::year y, chrono::day_of_year doy)
+    ydoy_date::ydoy_date(year y, day_of_year doy, check_t)
     : y_(y),
       doy_(doy),
       leap_(is_leap(y_))
@@ -208,7 +209,7 @@ namespace boost
         throw bad_date("non leap years have no 366 days");
     }
 
-    ydoy_date::ydoy_date(chrono::year::rep y, chrono::day_of_year::rep doy, no_check_t) BOOST_NOEXCEPT
+    ydoy_date::ydoy_date(year y, day_of_year doy) BOOST_NOEXCEPT
     : y_(y),
       doy_(doy),
       leap_(is_leap(y_))
@@ -258,14 +259,14 @@ namespace boost
         m -= 12 * dy;
       }
       std::cout << __LINE__ <<": "<<m<<  std::endl;
-      *this = ydoy_date(chrono::year(y), month(m,no_check), get_day());
+      *this = ydoy_date(year(y, check), month(m), get_day(), check);
       return *this;
     }
 
     ydoy_date&
     ydoy_date::operator+=(years yr)
     {
-      *this = ydoy_date(chrono::year(y_ + yr.count()), get_month(), get_day());
+      *this = ydoy_date(year(y_ + yr.count(), check), get_month(), get_day(), check);
       return *this;
     }
 

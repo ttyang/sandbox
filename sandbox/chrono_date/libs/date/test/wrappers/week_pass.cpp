@@ -13,7 +13,7 @@ int main()
   {
     try
     {
-      week d(0);
+      week d(0, check);
       BOOST_TEST(false && "0 is not a valid week");
     }
     catch (...)
@@ -23,7 +23,7 @@ int main()
   {
     try
     {
-      week d(54);
+      week d(54, check);
       BOOST_TEST(false && "54 is not a valid week");
     }
     catch (...)
@@ -31,15 +31,15 @@ int main()
     }
   }
   {
-    week d(0, no_check);
+    week d(0);
     BOOST_TEST(!d.is_valid() && "0 is not a valid week");
   }
   {
-    week d(54, no_check);
+    week d(54);
     BOOST_TEST(!d.is_valid() && "54 is not a valid week");
   }
   {
-    week d(-1, no_check);
+    week d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid week");
   }
   {

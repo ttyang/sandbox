@@ -13,7 +13,7 @@ int main()
   {
     try
     {
-      day d(0);
+      day d(0, check);
       BOOST_TEST(false && "0 is not a valid day");
     }
     catch (...)
@@ -23,7 +23,7 @@ int main()
   {
     try
     {
-      day d(32);
+      day d(32, check);
       BOOST_TEST(false && "32 is not a valid day");
     }
     catch (...)
@@ -31,35 +31,37 @@ int main()
     }
   }
   {
-    day d(0, no_check);
+    day d(0);
     BOOST_TEST(!d.is_valid() && "0 is not a valid day");
   }
   {
-    day d(32, no_check);
+    day d(32);
     BOOST_TEST(!d.is_valid() && "32 is not a valid day");
   }
   {
-    day d(-1, no_check);
+    day d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid day");
   }
   {
       day d(1);
-      BOOST_TEST(d.is_valid() && "1 is a valid day");
+      BOOST_TEST(d.is_valid());
+      BOOST_TEST(d==1);
   }
   {
       day d(31);
-      BOOST_TEST(d.is_valid() );
+      BOOST_TEST(d.is_valid());
+      BOOST_TEST(d==31);
   }
   {
       day d(2);
-      BOOST_TEST(d.is_valid() && "2 is a valid day");
-      day::rep i = d;
+      BOOST_TEST(d.is_valid());
+      day::rep i = d; // implicit conversion
       BOOST_TEST(i==2);
   }
   {
       day d(3);
-      BOOST_TEST(d.is_valid() && "2 is a valid day");
-      day::rep i = d.value();
+      BOOST_TEST(d.is_valid());
+      day::rep i = d.value(); // explicit conversion
       BOOST_TEST(i==3);
   }
   return boost::report_errors();

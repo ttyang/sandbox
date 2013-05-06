@@ -59,7 +59,7 @@ namespace boost
        * Else constructs a @c days_date for which <c>get_year() == y && get_month() == m && get_day() == d</c>.
        * @Throws bad_date if the specified days_date is invalid.
        */
-      days_date(year y, month m, day d);
+      days_date(year y, month m, day d, check_t);
       //days_date(year::rep y, month m, day d);
       //days_date(year y, month::rep m, day d);
       //days_date(year y, month m, day::rep d);
@@ -70,7 +70,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(year::rep y, month::rep m, day::rep d, no_check_t) BOOST_NOEXCEPT;
+      days_date(year y, month m, day d) BOOST_NOEXCEPT;
       /**
        * @Effect Constructs a @c days_date using the @c year, @c month_day stored in the arguments as follows:
        * If the value stored in @c md is outside the range of valid dates for the year @c y,
@@ -80,14 +80,14 @@ namespace boost
        * @Throws @c bad_date if the specified @c days_date is invalid.
        * @Note This constructor can be more efficient as the @c month_day is already valid.
        */
-      days_date(year y, month_day md);
+      days_date(year y, month_day md, check_t);
       /**
        * @Effect Constructs a @c days_date using the @c year, @c month_day stored in the arguments as follows:
        * Constructs a @c days_date for which <c>get_year() == y && get_month() == md.get_month() && get_day() == md.get_day()</c>.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(year::rep, month_day, no_check_t) BOOST_NOEXCEPT;
+      days_date(year, month_day) BOOST_NOEXCEPT;
 
       /**
        * @Effect Constructs a @c days_date using the @c year, @c day_of_year stored in the arguments as follows:
@@ -97,21 +97,21 @@ namespace boost
        * @Throws @c bad_date if the specified @c days_date is invalid.
        * @Note This constructor can be more efficient as the check is simpler.
        */
-      days_date(year y, day_of_year doy);
+      days_date(year y, day_of_year doy, check_t);
       /**
        * @Effect Constructs a days_date using the year, day_of_year stored in the arguments as follows:
        * Constructs a days_date for which days_since_epoch() == y.days_since_epoch()+doy.value()
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(year::rep y, day_of_year::rep doy, no_check_t) BOOST_NOEXCEPT;
+      days_date(year y, day_of_year doy) BOOST_NOEXCEPT;
 
       /**
        * @Effect Constructs a @c days_date using the @c days given as parameter so that:
        * <c>days_since_epoch() == ds.count()</c>.
        * @Throws @bad_date if the days is not in the range [11322,23947853].
        */
-      explicit days_date(days d)
+      explicit days_date(days d, check_t)
       : x_(d.count())
       {
         if (!is_valid())
@@ -127,27 +127,27 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(days d, no_check_t) BOOST_NOEXCEPT
+      days_date(days d) BOOST_NOEXCEPT
       : x_(d.count())
       {
       }
-      /**
-       * Unchecked constructor from @c days::rep
-       * @Effect Constructs a @c days_date using the @c x days given as parameter so that:
-       * <c>days_since_epoch() == x.count()</c>.
-       * @Note This function doesn't check the parameters validity.
-       * It is up to the user to provide a valid ones.
-       */
-      days_date(days::rep x, no_check_t) BOOST_NOEXCEPT
-      : x_(x)
-      {
-      }
-      /**
-       * @Effect Constructs a @c days_date constructor from @c year, @c month, @c day stored in the arguments as follows:
-       * Constructs a @c days_date so that <c>get_year() == y &&  get_month() = m &&  get_day() == d</c>.
-       * @Note This function doesn't check the parameters validity.
-       * It is up to the user to provide a valid ones.
-       */
+//      /**
+//       * Unchecked constructor from @c days::rep
+//       * @Effect Constructs a @c days_date using the @c x days given as parameter so that:
+//       * <c>days_since_epoch() == x.count()</c>.
+//       * @Note This function doesn't check the parameters validity.
+//       * It is up to the user to provide a valid ones.
+//       */
+//      days_date(days::rep x, no_check_t) BOOST_NOEXCEPT
+//      : x_(x)
+//      {
+//      }
+//      /**
+//       * @Effect Constructs a @c days_date constructor from @c year, @c month, @c day stored in the arguments as follows:
+//       * Constructs a @c days_date so that <c>get_year() == y &&  get_month() = m &&  get_day() == d</c>.
+//       * @Note This function doesn't check the parameters validity.
+//       * It is up to the user to provide a valid ones.
+//       */
 //      days_date(days::rep x, year::rep, month::rep, day::rep, bool, no_check_t) BOOST_NOEXCEPT
 //      : x_(x)
 //      {
@@ -159,7 +159,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      days_date(year::rep, month::rep, day::rep, bool, no_check_t) BOOST_NOEXCEPT;
+      days_date(year::rep, month::rep, day::rep, bool) BOOST_NOEXCEPT;
 
       // setters
       /**
@@ -224,25 +224,25 @@ namespace boost
       }
 
       /**
-       * Returns: <c>day(d_,no_check)</c>.
+       * Returns: <c>day(d_)</c>.
        */
       day get_day() const BOOST_NOEXCEPT
       {
-        return day(day_from_day_number(),no_check);
+        return day(day_from_day_number());
       }
       /**
-       * Returns: <c>month(m_,no_check)</c>.
+       * Returns: <c>month(m_)</c>.
        */
       month get_month() const BOOST_NOEXCEPT
       {
-        return month(month_from_day_number(),no_check);
+        return month(month_from_day_number());
       }
       /**
-       * Returns: <c>year(y_,no_check)</c>.
+       * Returns: <c>year(y_)</c>.
        */
       year get_year() const BOOST_NOEXCEPT
       {
-        return year(year_from_day_number(),no_check);
+        return year(year_from_day_number());
       }
       /**
        * Returns: @c true if @c year() is a leap year, and @c false otherwise.
@@ -270,7 +270,7 @@ namespace boost
        */
       weekday get_weekday() const BOOST_NOEXCEPT
       {
-        return weekday((x_ + 1) % weekday::size, no_check);
+        return weekday((x_ + 1) % weekday::size);
       }
 
       // Days Based Arithmetic

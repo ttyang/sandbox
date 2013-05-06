@@ -1,0 +1,924 @@
+[/
+ / Copyright (c) 2012 Vicente J. Botet Escriba
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[article Toward Boost.Chrono.Date
+    [quickbook 1.5]
+    [version 0.2.0]
+    [authors [Botet Escriba, Vicente J.]]
+    [copyright 2012-2013 Vicente J. Botet Escriba]
+    [id boost.date]
+    [/dirname date]
+    [/purpose Date facilities]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Boost_Date__  *Boost.Chrono.Date*]
+
+[/
+[def __explicit_convert_to [funcref boost::date::explicit_convert_to explicit_convert_to]]
+
+[def __convertible_to [classref boost::date::convertible_to convertible_to]]
+
+[import ../../../boost/chrono/date/xx.hpp]
+]
+
+[/
+[section Preface]
+
+[:[".]]
+[:[*['-- ]]]
+
+[endsect]
+/]
+
+[warning Date is not a part of the Boost libraries.]
+
+[/========================]
+[section Overview]
+[/========================]
+
+[/====================================]
+[heading How to Use This Documentation]
+[/====================================]
+
+This documentation makes use of the following naming and formatting conventions.
+
+* Code is in `fixed width font` and is syntax-highlighted.
+* Replaceable text that you will need to supply is in [~italics].
+* If a name refers to a free function, it is specified like this:
+  `free_function()`; that is, it is in code font and its name is followed by `()`   to indicate that it is a free function.
+* If a name refers to a class template, it is specified like this:   `class_template<>`; that is, it is in code font and its name is followed by `<>`   to indicate that it is a class template.
+* If a name refers to a function-like macro, it is specified like this: `MACRO()`;
+  that is, it is uppercase in code font and its name is followed by `()` to   indicate that it is a function-like macro. Object-like macros appear without the   trailing `()`.
+* Names that refer to /concepts/ in the generic programming sense are   specified in CamelCase.
+
+[note In addition, notes such as this one specify non-essential information that provides additional background or rationale.]
+
+Finally, you can mentally add the following to any code fragments in this document:
+
+    // Include all of the core Date files
+    #include <boost/chrono/date.hpp>
+
+    using namespace boost::chrono;
+    using namespace boost::chrono::date;
+
+[/==================]
+[section Scope]
+[/==================]
+
+This library provides some date utilities which has been strongly influenced by Std Date proposal by  Howard Hinnant which was influenced by Boost.DateTime, but is not proposing exactly what is currently Boost.DateTime. What is proposed herein is a relatively small library. 
+
+The implementation is currently composed of 3 different performance designs, all conforming to the same Date concept The API proposed herein is correspondingly small, and yet powerful enough to enable the client to express everything needed in this area.  
+[endsect]
+
+
+[section Motivation]
+
+[heading Boost.Chrono.Date versus Boost.DateTime]
+
+The boost::date API is considerably larger. Additionally the boost::date API allows for a few situations which can be visually ambiguous. For example, here is an example using boost with the intent of forming January 2, 2011:
+
+    #include "boost/date_time/gregorian/gregorian.hpp"
+    #include <iostream>
+
+    int main()
+    {
+        using namespace boost::gregorian;
+        // I'm from the US and am used to month/day/year
+        std::cout << date(1, 2, 2011) << '\n';
+    }
+
+The above results in a run time error because the boost::date constructor expects the order of arguments to be year, month, day. This proposal allows the entry of day, month and year to vary. Additionally the first two entries must be a type that unambiguously gives the units (day, month or year). For example:
+
+    std::cout << month(1)/day(2)/2011 << '\n';  // 2011-01-02
+
+If you prefer the year/month/day order, that is just as easily accomplished:
+
+    std::cout << year(2011)/month(1)/2 << '\n';  // 2011-01-02
+
+This library is placed in namespace boost::chrono. This is just another time-keeping library, but it counts sunrises instead of seconds. And it interoperates with the existing Chrono library. 
+
+[heading Primary Objective]
+
+
+[heading Secondary Objectives]
+
+
+[heading Related Work]
+
+
+[endsect]
+
+
+[/==================]
+[section Description]
+[/==================]
+
+
+[*Boost.Chrono.Date] provides:
+
+* A general purpose date framework. 
+
+[endsect]
+
+
+[endsect]
+
+[/==============================]
+[section:users_guide Users' Guide]
+[/==============================]
+
+[/======================================]
+[section:getting_started Getting Started]
+[/======================================]
+
+[/======================================]
+[section:install Installing Date]
+[/======================================]
+
+[/=================================]
+[heading Getting Boost.Date]
+[/=================================]
+
+You can get the last stable release of Boost.Date by downloading [^date.zip] from the
+
+You can also access the latest (unstable?) state from the [@https://svn.boost.org/svn/boost/sandbox/chrono_date Boost Sandbox].
+
+[/=================================]
+[heading Building Boost.Date]
+[/=================================]
+
+Boost.Date is not a header only library and you need to compile it and build the library before use, for example using:
+
+    bjam libs/chrono_date/build
+
+[/=========================]
+[heading Requirements]
+[/=========================]
+
+[*Boost.Date] depends on *Boost.Config*, *Boost.MPL*, *Boost.TypeTraits*, *Boost.Assert*, *Boost.Utility/EnableIf*, *Boost.Chrono*.
+
+[/=========================================================]
+[heading Building an Executable that Uses Boost.Chrono.Date ]
+[/=========================================================]
+
+In addition to link with the __Boost_Date__ library you need also to link with the [*Boost.Chrono] and [*Boost.System] libraries.
+
+[/========================]
+[heading Exceptions safety]
+[/========================]
+
+All functions in the library are exception-neutral and provide strong guarantee of exception safety as long as the underlying parameters provide it.
+
+[/====================]
+[heading Thread safety]
+[/====================]
+
+All functions in the library are thread-unsafe except when noted explicitly.
+
+[/=======================]
+[heading Tested compilers]
+[/=======================]
+
+[*Boost.Date] is known to work on the following platforms/compilers (lack of some C++/C++0X language support disables some functionality). The needed C++/C++0X language support is:
+
+* SFINAE on expressions
+
+Currently, [*Boost.Date] has been tested on the following compilers/platforms using the trunk (Boost 1.50):
+
+Windows with
+
+* MSVC 10.0
+
+MinGW with
+
+* GCC 4.5.0
+* GCC 4.5.0 -std=c++0x
+* GCC 4.5.2
+* GCC 4.5.2 -std=c++0x
+* GCC 4.6.0
+* GCC 4.6.0 -std=c++0x
+* GCC 4.6.3
+* GCC 4.6.3 -std=c++0x
+* GCC 4.7.0
+* GCC 4.7.0 -std=c++0x
+
+[/
+Cygwin 1.7 with
+
+* GCC 4.3.4
+
+Ubuntu 10.10
+
+* GCC 4.4.5
+* GCC 4.4.5 -std=c++0x
+* GCC 4.5.1
+* GCC 4.5.1 -std=c++0x
+* clang 2.8
+]
+
+MacOs X 10.6.8
+
+* GCC 4.1.2 
+* clang 2.9
+* clang 2.9 -std=c++0x
+* clang 3.0
+* clang 3.0 -std=c++0x
+* darwin 4.6.2 
+* darwin 4.6.2 -std=c++0x
+* darwin 4.7.0 
+* darwin 4.7.0 -std=c++0x
+
+
+[note Please let us know how this works on other platforms/compilers.]
+
+[note Please send any questions, comments and bug reports to boost <at> lists <dot> boost <dot> org.]
+
+[endsect]
+
+[/=============================]
+[section Hello World! ]
+[/=============================]
+
+
+Here's a very quick illustration of how the class can be used.
+
+ 
+  #include <boost/date.hpp>
+
+  using namesapce boost::date; 
+  void test() 
+  {
+  }
+
+
+[endsect]
+
+[endsect]
+
+[/====================================]
+[section Tutorial]
+[/====================================]
+
+[section Absolute Date Construction]
+
+Significant effort has been put into designing a library that makes it easy to correctly construct a date, and unlikely to construct an invalid or unexpected date.
+
+In all a `chrono::date` can be entered with three variations of the order of years, months and days. The first two units must be specified, and disambiguates which order you are using. Use of explicit units for the third unit is optional. These three orders were chosen out of the six possible orders because these are the only orders that people actually use worldwide.
+
+    int m, d, y;
+    // give values to m, d and y ...
+    date d1 = year(y)  / month(m) / day(d);   // ymd ok
+    date d2 = month(m) / day(d)   / year(y);  // mdy ok
+    date d3 = day(d)   / month(m) / year(y);  // dmy ok
+
+The other three orderings of year, month, and day are rejected at compile time.
+
+    int m, d, y;
+    // give values to m, d and y ...
+    date d1 = year(y)  / day(d)  / month(m);  // error: use of overloaded operator '/' is ambiguous
+    date d2 = month(m) / year(y) / day(d);  // error: invalid operands to operator '/'
+    date d3 = day(d)   / year(y) / month(m);  // error: invalid operands to operator '/'
+
+The rationale for this is that there exists no country on the planet which uses any other ordering. This is in contradiction to [locale.time.get] which specifies the above three orderings plus a ydm ordering. There is no inconsistency in not offering a year/day/month ordering. No current code will be invalidated. This is simply a lack of support for the ydm ordering.
+
+Furthermore, there exists const objects of type month named jan, feb, ... dec. These can be used exactly as month(m) is used:
+
+    date d1 = jan/day(2)/2011;   // jan/2/2011
+    date d2 = year(2011)/jan/2;  // jan/2/2011
+    date d3 = day(2)/jan/2011;   // jan/2/2011
+
+This makes creating date literals very easy, not prone to error due to ordering issues, and unambiguous to read. Also in this proposal it is not possible to create an invalid date. As dates are constructed or modified by date arithmetic, range checking is done, and an exception (bad_date) is thrown if any field of the date goes out of range. 
+
+The user can also avoid the validity of the arguments and the date itself when she know them are valid. In order to tel to the library that no check must be done a tag no_check is used
+
+    date d1 = date(year(2011,no_check),jan,day(2,no_check),no_check);   // jan/2/2011
+    date d2 = date(2011,1,2,no_check);   // jan/2/2011
+
+The preceding examples will construct the date January 2nd 2011 without any check.
+
+
+[endsect]
+
+[section Relative Date Construction]
+
+Additionally there are const objects with the following names that can be used to specify the nth day of the month:
+
+    _1st
+    _2nd
+    _3rd
+    _4th
+    _5th
+    last
+
+Now you can write (for example):
+
+    date d1 =  jan/_2nd/2011;          // jan/2/2011
+    date d2 =  year(2011)/jan/_2nd;    // jan/2/2011
+    date d3 =  _2nd/jan/2011;          // jan/2/2011
+
+Note the constant last. This provides a very easy way to specify the last day of the month:
+
+    date d1 = last/jan/2011;  // jan/31/2011
+
+Sometimes you don't know exactly which day of the month you want, but instead know what weekday of the month you want. For example Mother's Day is celebrated on the second Sunday in May in the US:
+
+    date MothersDay = _2nd*sun/may/2011;  // may/8/2011
+
+If you ask for a non-existent date (e.g. the fifth Friday of May in 2011) a bad_date exception will be thrown. If what you really want is the fifth Friday in May only if it exists, else the fourth Friday, you can use last.
+
+    date d1 = last*fri/may/2011;  // may/27/2011
+
+If you want to find out how many Fridays there are in May 2011, it is easy to code with:
+
+    int num_fri_in_may = (last*fri/may/2011).day() > 28 ? 5 : 4;  // 4
+
+If you don't know which day of the week you're looking for until run time, you can use weekday in the exact same way you use the const objects sun through sat:
+
+    int wd = ...
+    date d1 = _1st*weekday(wd)/may/2011;
+
+Creating dates is safe, easy, intuitive, and efficient. 
+
+[endsect]
+
+
+[section date Arithmetic]
+
+Date arithmetic is supported for the units of days, months and years. In the chrono calendar, the length of months and years is not a constant number of days. This complicates the meaning of arithmetic with months and years. This library takes a pragmatic approach to this problem which gives clients choices on how they want to perform the arithmetic. 
+
+[section Year-oriented Arithmetic]
+
+For every day of the year but one, adding a year to the date has a straight forward meaning: it modifies the year of the date, but not the day of the month or month of the year. For example oct/day(15)/2011 + years(1) == oct/day(15)/2012. But what about Feb. 29?
+
+The boost library addresses this issue by "snapping to the end of the month." That is Feb. 29, 2012 + 1 year is Feb. 28, 2013. And Feb. 28, 2011 + 1 year is Feb. 29, 2012. But consider this example: John's birthday is Feb. 28. And he wants to print out his birthday for the decade. Using boost this looks like:
+
+    // Print Feb. 28 for each year in the decade
+    for (date d(2010, Feb, 28), e(2020, Feb, 28); d <= e; d += years(1))
+        std::cout << d << '\n';
+
+    2010-Feb-28
+    2011-Feb-28
+    2012-Feb-29
+    2013-Feb-28
+    2014-Feb-28
+    2015-Feb-28
+    2016-Feb-29
+    2017-Feb-28
+    2018-Feb-28
+    2019-Feb-28
+
+Using the boost design, every leap year the output prints out Feb. 29 instead of Feb. 28. But John wasn't born on Feb. 29! That isn't the behavior he wants. He finds this behavior surprising.
+
+This library prints out Feb. 28 for each year using the syntax below.
+
+    // Print Feb. 28 for each year in the decade
+    for (date d = feb/day(28)/2010, e = feb/day(28)/2020; d != e; d += years(1))
+        std::cout << d << '\n';
+
+    2010-02-28
+    2011-02-28
+    2012-02-28
+    2013-02-28
+    2014-02-28
+    2015-02-28
+    2016-02-28
+    2017-02-28
+    2018-02-28
+    2019-02-28
+
+And if you add 1 year to feb/day(29)/2012, a bad_date exception is thrown because there is no feb/day(29)/2013. You get exactly the same result as if you had attempted to construct feb/day(29)/2013 directly.
+
+But now Sue comes along, and she happens to have been born on Feb. 29. And she doesn't want to have to wait 4 years to celebrate her birthday. She decides that she wants to celebrate her birthday on the last day of Feb. every year. She can print out her birthdays just as easily as John did:
+
+    // Print the last day in  Feb. for each year in the decade
+    for (date d = feb/last/2010, e = feb/last/2020; d != e; d += years(1))
+        std::cout << d << '\n';
+
+    2010-02-28
+    2011-02-28
+    2012-02-29
+    2013-02-28
+    2014-02-28
+    2015-02-28
+    2016-02-29
+    2017-02-28
+    2018-02-28
+    2019-02-28
+
+When year-oriented arithmetic is applied to a date that has been constructed with last, the library knows that although feb/last/2011 == feb/day(28)/2011, feb/last/2011 + years(1) == feb/day(29)/2012. And the result of this computation behaves as if it had been constructed with feb/last/2012, not feb/day(29)/2012. Thus throughout the for-loop above, the variable d always represents the last day of Feb., no matter what the year is.
+
+So this library enables both desired behaviors (do not "snap-to" and "snap-to"), and also delivers results that are not surprising to the casual reader of the code. And the arithmetic is reversible. If you add a year to a date (and this results in a valid date), and then subtract a year from that result, then you always get back your original date. This is not true of the boost date library.
+
+    void test(date d)
+    {
+        // This should never assert!
+        assert(d + years(1) - years(1) == d);
+    }
+
+For example, using boost, test(date(2012, Feb, 28)) asserts. Indeed boost will fail this test for Feb. 28 of every leap year. But using this proposal, the above test never asserts. It will however throw a bad_date for test(feb/day(29)/2012) (because feb/day(29)/2013 doesn't exist). But it passes for test(feb/last/2012)
+
+To complete the birthday example, Sam, like Sue, was born on Feb. 29. But unlike Sue, he wants to always celebrate his birthday on the day after Feb. 28. This is also easy to accomplish:
+
+    // Print the day after Feb. 28 for each year in the decade
+    for (date d = feb/day(28)/2010, e = feb/day(28)/2020; d != e; d += years(1))
+        std::cout << d + days(1) << '\n';
+
+    2010-03-01
+    2011-03-01
+    2012-02-29
+    2013-03-01
+    2014-03-01
+    2015-03-01
+    2016-02-29
+    2017-03-01
+    2018-03-01
+    2019-03-01
+
+The implementation cost of this behavior is very inexpensive. It need not impact the sizeof(date) at all, no matter what strategy the vendor is using to store the date. The run time cost is minimal, involving simply checking a few bits of the representation to choose the exact arithmetic algorithm. These assertions are backed by an example implementation for each of the three obvious storage strategies:
+
+    Store year, month, day, and a count of days since the epoch. (Storage space is 64 bits)
+    Store year, month, and day. (Storage space is 32 bits)
+    Store a count of days since the epoch. (Storage space is 32 bits)
+
+In each example implementation above, 6 bits of storage are used to store information such as: this date represents the last day of February. These 6 bits do not participate in the date comparison operations. The remaining bits (58 or 26) are more than sufficient to store the indicated data.
+
+Each of the above example implementations support a range of year(numeric_limits<short>::min())/jan/1 through year(numeric_limits<short>::max())/dec/31 inclusive (range governed by representing the year by a short). Thus this is a proleptic Gregorian calendar. The year preceding year 1 is year 0, and year 0 is a leap year. This is consistent with the definition of an expanded calendar given in ISO 8601:2004: Data elements and interchange formats — Information interchange — Representation of dates and times.
+
+[endsect]
+
+[section Month-oriented Arithmetic]
+
+One can add and subtract months to a date with the same ease and semantics as is done with years. For example you can add a month to jul/day(31)/2011 which results in aug/day(31)/2011. But if you add a month to aug/day(31)/2011 a bad_date is thrown since sep/day(31)/2011 does not exist. However you can always add a month to the _1st day of the month, or to any day of the month <= 28, or to the last day of the month. For example:
+
+    // Print last day of every month in 2011
+    for (date d = jan/last/2011, e = dec/last/2011; d <= e; d += months(1))
+        std::cout << d << '\n';
+
+    2011-01-31
+    2011-02-28
+    2011-03-31
+    2011-04-30
+    2011-05-31
+    2011-06-30
+    2011-07-31
+    2011-08-31
+    2011-09-30
+    2011-10-31
+    2011-11-30
+    2011-12-31
+
+    // Print the 28th of every month in 2011
+    for (date d = jan/day(28)/2011, e = dec/day(28)/2011; d <= e; d += months(1))
+        std::cout << d << '\n';
+
+    2011-01-28
+    2011-02-28
+    2011-03-28
+    2011-04-28
+    2011-05-28
+    2011-06-28
+    2011-07-28
+    2011-08-28
+    2011-09-28
+    2011-10-28
+    2011-11-28
+    2011-12-28
+
+It is also easy to print out the 29th of every month. However one needs to explicitly decide what you want to do for months with less than 29 days. One obvious choice is to simply skip such months:
+
+    // Print the 29th of every month in 2011
+    for (date d = last/jan/2011, e = last/dec/2011; d <= e; d += months(1))
+        if (d.day() >= 29)
+            std::cout << d.year()/d.month()/29 << '\n';
+
+    2011-01-29
+    2011-03-29
+    2011-04-29
+    2011-05-29
+    2011-06-29
+    2011-07-29
+    2011-08-29
+    2011-09-29
+    2011-10-29
+    2011-11-29
+    2011-12-29
+
+Year and month-oriented arithmetic also respects nth-day-of-the-week dates. For example if you want to print out the 2nd Tuesday of every odd month that is easily done with:
+
+    // Print the 2nd Tuesday of every odd month in 2011
+    for (date d = tue[2]/jan/2011, e = dec/day(31)/2011; d <= e; d += months(2))
+        std::cout << d << '\n';
+
+    2011-01-11
+    2011-03-08
+    2011-05-10
+    2011-07-12
+    2011-09-13
+    2011-11-08
+
+This final example should be emphasized. Imagine you've just met an extended family at a restaurant, one whom you have not met before. They're celebrating. There's children, parents and grandparents present. They enjoy your company so much they invite you back for the same celebration, same place, "next year." You check the current date and it is May 8, 2011.
+
+On what date should you plan to attend? If they were celebrating a birthday, then you should come back on May 8, 2012. But if they were celebrating Mother's Day then you should come back on May 13, 2012 (the second Sunday of May in 2012) — five whole days later!
+
+    Adding a year (or a month) to a date is intrinsically context sensitive. 
+
+The expressions d + years(1) and d + months(1) are only unambiguous when you know the context within which d was constructed. This library stores that context as part of d's state. 
+
+[endsect]
+
+[section Day-oriented Arithmetic]
+
+Day-oriented arithmetic is intrinsically less complicated than month and year-oriented arithmetic. The chrono calendar is nothing but a count of sunrises, and a distinct name for each sunrise. You can add any number of days to any date and the result is always a valid date (unless one exceeds the valid range for years). For example:
+
+    // Print out every monday between jan/1/2011 and mar/1/2011;
+    for (date d = _1st*mon/jan/2011, e = mar/_1st/2011; d <= e; d += days(7))
+        std::cout << d << '\n';
+
+    2011-01-03
+    2011-01-10
+    2011-01-17
+    2011-01-24
+    2011-01-31
+    2011-02-07
+    2011-02-14
+    2011-02-21
+    2011-02-28
+
+In the above example, the first Monday of the year is found, and then to get each Monday after that, one simply adds 7 days. There is always another Monday coming up!
+
+Additionally, if you subtract two dates, the result is a chrono::duration with the name days.
+
+    // How many days between may/1/2011 and jan/1/2011?
+    int x = (may/_1st/2011 - jan/_1st/2011).count();  // x == 120
+
+Question: So what happens when you subtract a day from aug/last/2011 and then add a day back? The resultant day will be equal to aug/day(31)/2011. But will it still represent the last day of the month as far as month and year arithmetic is concerned?
+
+Answer: No. dates tagged with "last" information become untagged with that information as soon as they have days added to or subtracted from them. So while aug/last/2011 + months(1) is equal to sep/day(30)/2011, aug/last/2011 - days(1) + days(1) + months(1) results in a bad_date exception because sep/day(31)/2011 does not exist. This is the same behavior you would get if you added months(1) to aug/day(31)/2011. 
+
+[endsect]
+[endsect]
+[section Date Observers]
+
+Given a date d you can ask for its day(), month() and year(). These each return a day, month and year respectively. Note that these returned types are not the durations days, months and years. Rather they are the unit-specifiers used to specify a day, month and year which you used to construct the date. Each unit-specifier is implicitly convertible to an int. Example uses:
+
+    date dt = aug/day(16)/2011;
+    int d = dt.day();   // d == 16
+    int m = dt.month(); // m == 8
+    int y = dt.year();  // y == 2011
+
+And:
+
+    date dt = aug/day(16)/2011;
+    // ...
+    // Create date with the same month and year but on the 5th
+    date dt2 = dt.year()/dt.month()/5;  // aug/5/2011
+
+Note that in the latter example if year() returned a simple int instead of a year then the construction of dt2 would start with an int instead of a year and thus not be a well-formed date.
+
+To get the weekday (day of the week) of a date use the weekday() member function. This returns a weekday type which is implicitly convertible to int. One can use this to print out an int which represents the day of the week:
+
+    date dt = aug/day(16)/2011;
+    // What day of the week is this?
+    int wd = dt.weekday();  // 2 (Tuesday)
+
+Or one can find the first same weekday of the month of the following year:
+
+    date dt = aug/day(16)/2011;
+    // ...
+    // Get the date that is the first occurrence of the same day of the week
+    //   in the same month of the next year
+    date dt2 = _1st*dt.weekday()/dt.month()/(dt.year() + 1);  // aug/7/2012, first Tuesday of Aug 2012
+
+This syntax has power. There are nearly infinitely many applications for a date class which we can not imagine. This library creates a small, simple, efficient and consistent language of dates and date arithmetic which is widely applicable to all of the date applications which we have yet to imagine. And because the API for this library is small, it is easy to teach, and easy to learn. 
+
+[endsect]
+
+[section Finding the next or previous weekday]
+
+
+Sometimes, given a date, one needs to find the previous Monday, or the following Sunday. For example the ISO week-based year starts on the Monday that falls on or before Jan 4 of each year. With this library you can code that date for year y as:
+
+    date ISO_week_start = mon <= jan/day(4)/y;
+
+That is, the expression wd <= x returns the date y such that y is the first date equal to or prior to x such that y.weekday() == wd. There are four such operations summarized here. Let wd be a weekday expression and d be a date expression:
+
+    wd < d 	Returns the first date prior to d that has wd as its weekday.
+    wd <= d 	Returns the first date on or prior to d that has wd as its weekday.
+    wd > d 	Returns the first date after d that has wd as its weekday.
+    wd >= d 	Returns the first date on or after d that has wd as its weekday.
+
+[endsect]
+[section date I/O]
+
+dates are obviously streamable. The default formatting is consistent with ISO 8601: yyyy-mm-dd, as has been alluded to in previous examples. Additionally there is a datepunct facet and a date_fmt manipulator. These are basically C++ wrappers around C's strftime. And they also serve as wrappers around the non-standard-but-popular strptime for parsing dates from an istream.
+
+To demonstrate the ease with which dates can be formatted, I'm taking a real-world example from my wife: She once set up a recurring meeting for the odd Fridays of every month. That is, they met on the first, third, and if it existed, the fifth Friday of every month. When I asked her why, she said: "Every week was too often, and every other week wasn't often enough." <shrug>
+
+Here is how you print out the odd Fridays of every month in 2011, using date_fmt to format the date however you want:
+
+    std::cout << date_fmt("%a %b %e, %Y");
+    // Print the odd fridays of every month in 2011
+    for (date d = _1st *fri/jan/2011, e = dec/last/2011; d <= e; d += months(1))
+    {
+        std::cout << d << '\n';             // first Friday of the month
+        std::cout << d + days(14) << '\n';  // third Friday of the month
+        date last_fri = last*fri/d.month()/d.year();
+        if (last_fri.day() >= 29)
+            std::cout << last_fri << '\n';  // fifth Friday of the month if it exists
+    }
+
+    Fri Jan  7, 2011
+    Fri Jan 21, 2011
+    Fri Feb  4, 2011
+    Fri Feb 18, 2011
+    Fri Mar  4, 2011
+    Fri Mar 18, 2011
+    Fri Apr  1, 2011
+    Fri Apr 15, 2011
+    Fri Apr 29, 2011
+    Fri May  6, 2011
+    Fri May 20, 2011
+    Fri Jun  3, 2011
+    Fri Jun 17, 2011
+    Fri Jul  1, 2011
+    Fri Jul 15, 2011
+    Fri Jul 29, 2011
+    Fri Aug  5, 2011
+    Fri Aug 19, 2011
+    Fri Sep  2, 2011
+    Fri Sep 16, 2011
+    Fri Sep 30, 2011
+    Fri Oct  7, 2011
+    Fri Oct 21, 2011
+    Fri Nov  4, 2011
+    Fri Nov 18, 2011
+    Fri Dec  2, 2011
+    Fri Dec 16, 2011
+    Fri Dec 30, 2011
+
+[endsect]
+[section Interoperability with other calendar systems]
+
+
+There are other calendar systems besides the chrono (Gregorian) calendar. For example just to name a few:
+
+    Islamic calendar
+    Hebrew calendar
+    Hindu calendar
+    Chinese calendar
+    Buddhist calendar
+    Julian calendar
+
+This paper proposes only the Gregorian calendar because this represents existing practice for C, C++, POSIX, and ISO 8601. However one has to wonder: shouldn't we design a framework which can support any of the world's calendars?
+
+I claim that such a general framework is unnecessary, and we would likely get it wrong. The reason it is unnecessary is that clients can easily write their own calendars which convert to and from the chrono calendar using only the public API proposed herein. Their calendar may or may not use an API similar to the chrono API. Aside from the Julian calendar, the I/O facets time_get, time_put, and datepunct are not reusable by these other calendars. Indeed, there is very little opportunity for code reuse by making a "calendar framework".
+
+To demonstrate, I coded a Julian calendar which converts to and from the chrono calendar (using no knowledge whatsoever of the implementation of chrono). This calendar is not proposed but shown here only for demonstration purposes.
+
+    julian.h
+    julian.cpp
+
+And here is example use showing how the two calendars can be converted to one another:
+
+    #include <iostream>
+    #include "date"
+    #include "julian.h"
+
+    int main()
+    {
+        std::cout << std::chrono::date_fmt("%a %b %e, %Y");
+        std::chrono::date cd = std::chrono::date::today();
+        julian::date jd(cd);
+        std::cout << "Today is:\n"
+                  << cd << " in the std::chrono calendar and\n"
+                  << jd << " in the Julian calendar\n";
+        jd -= julian::years(1800);
+        cd = std::chrono::date(jd);
+        std::cout << "1800 years ago the two calendars were aligned:\n"
+                  << cd << " in the std::chrono calendar and\n"
+                  << jd << " in the Julian calendar\n";
+    }
+
+    Today is:
+    Fri May  6, 2011 in the std::chrono calendar and
+    Fri Apr 23, 2011 in the Julian calendar
+    1800 years ago the two calendars were aligned:
+    Tue Apr 23, 0211 in the std::chrono calendar and
+    Tue Apr 23, 0211 in the Julian calendar
+
+I firmly believe that any other calendar can be converted to and from the chrono calendar using the techniques shown here for the Julian calendar, and that we need to do nothing to enable clients to do so. Furthermore actually providing these other calendars is far outside of our scope. 
+
+[endsect]
+
+[endsect]
+
+[/====================================]
+[section Examples]
+[/====================================]
+
+[section A non-trivial example]
+
+There's nothing like real-world use to test an interface. This is when you find out if using a given API is like flying with the wind, or wading through waist-deep water. In this spirit we would like to present two user-written functions drawn from real-world usage. These two functions are not proposed, though they certainly could be.
+
+    std::tuple<int, std::chrono::weekday, std::chrono::year>
+        date_to_week(std::chrono::date d)
+    std::chrono::date
+        week_to_date(int weeknum, std::chrono::weekday wd, std::chrono::year y);
+
+These functions convert a std::chrono::date to and from the ISO 8601 week-based year format. The rules for this format are:
+
+    The week starts with Monday, and ends with Sunday.
+    The first day of the year is the Monday that occurs on or before Jan. 4.
+    A date is specified by the week number [1 - 53], day of the week [Mon - Sun] and year number.
+    The year number is the same as the Gregorian year number for the Thursday that follows the start of the week-based year.
+        This makes it possible for a day in the week-based year to have a different year number than in the Gregorian calendar for that day.
+
+ISO 8601 gives two examples:
+
+    Sunday Jan. 1, 1995 is the Sunday of week 52 of the year 1994. (Week 1 of 1995 starts on Monday Jan. 2, 1995)
+    Tuesday Dec. 31, 1996 is the Tuesday of week 1 of the year 1997. (The first day of the week-based year 1997 begins on Monday Dec. 30, which is the first Monday on or before Jan. 4, 1997, a Saturday)
+
+These rules seem complex. And yet the code using std::chrono::date to convert to and from the week-based year is remarkably compact and self-explanatory. First we present date_to_week, which returns a triple: week number, day of the week, and week-based year number:
+
+    std::tuple<int, std::chrono::weekday, std::chrono::year>
+    date_to_week(std::chrono::date d)
+    {
+        using namespace std::chrono;
+        month_day jan4 = jan/_4th;
+        date start = mon <= jan4/d.year();
+        if (d < start)
+            start = mon <= jan4/(d.year()-1);
+        else
+        {
+            date next_start = mon <= jan4/(start.year()+1);
+            if (d >= next_start)
+                start = next_start;
+        }
+        return std::tuple<int, weekday, year>((d - start).count()/7 + 1,
+                                              d.weekday(),
+                                              (thu > start).year());
+    }
+
+The first line of code creates a "shortcut" for Jan. 4. This isn't necessary. It is used here to demonstrate the use of the month_day object. We could just have easily written jan/_4th/d.year() instead of jan4/d.year() (for example). Use of jan4 is purely a stylistic issue and has negligible performance impact.
+
+The start of the ISO year is stored in start and is found by identifying the Monday on or before Jan. 4. If d falls before the start of the year we just computed, then d must be in the previous ISO year, and so start is recomputed. Else we need to make sure that d does not lie beyond the current ISO year. We compute the start of the next ISO year to check for that, and if necessary, set start to the next ISO year.
+
+Now we have the start of the ISO year which contains d. It is now a simple process to compute the week number and year number for d which are returned in a tuple. Care is taken for the fact that weeks are numbered starting from 1, not 0. And the year number is that of the Thursday following the start of the ISO year. The day of the week remains unchanged from d's.
+
+The reverse conversion, week_to_date is even simpler:
+
+    std::chrono::date
+    week_to_date(int weeknum, std::chrono::weekday wd, std::chrono::year y)
+    {
+        using namespace std::chrono;
+        return (mon <= jan/_4th/y) + days((weeknum - 1)*7 + (wd == 0 ? 6 : wd - 1));
+    }
+
+    Compute the start of the week-based year y.
+    Add to the start date 7 days for each full week, taking into account that the week numbers start at 1, not 0.
+    Add to that the number of days wd is past Monday. Note that Sunday is 6 days past Monday, not one day before it.
+
+These functions can now be used as:
+
+    date d = /* ... */
+    int weeknum;
+    weekday wd(0);
+    year y(0);
+    std::tie(weeknum, wd, y) = date_to_week(d);
+
+and
+
+    d = week_to_date(weeknum, wd, y);
+
+Notes:
+
+    This code is readable.
+    The syntax for finding the Monday on or before a previous date is succinct.
+    The syntax for finding the Thursday after a date is succinct. In this example start + days(3) could have been used in place of thu > start. But the ISO rules are worded in terms of Thursday, and this library provides a natural translation from English to C++.
+
+
+    The implicit conversion from the unit specifiers year and weekday to int is helpful, 
+intuitive and safe in this example code. These conversions are so natural that they are not even noticed unless 
+you're looking for them.
+    The arguments to the functions are type-safe. If the client gets the order of the arguments wrong, a compile-time error will result. This is easily achievable by the author of these functions because the same type-safety exists in the <date> library.
+    The reasons for not proposing these functions include:
+        They are easy to write using the public API of this proposal.
+        The best precise syntax for these functions is unclear: Should date_to_week return a tuple? Should week_to_date take a tuple? Are these the best names for these functions? etc.
+        Should this functionality exist instead as a separate calendar system (like the julian example?)
+
+[endsect]
+[endsect]
+
+
+[/====================================]
+[section:ext_references External Resources]
+[/====================================]
+[variablelist
+[
+    [[@https://svn.boost.org/svn/boost/sandbox/chrono_date/libs/date/doc/date.html [*Dxxxx - chrono::date]]]
+    [Howard Hinnat]
+    [[@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3344.pdf [*N3344 - Toward a Standard C++ 'Date' Class]]]
+    [Stefano Pacifico, Alisdair Meredith, John Lakos]
+]
+
+]
+
+[endsect]
+
+[endsect]
+[section Reference]
+
+[heading Notation]
+
+In order to simplify the reference documentation, some shortcuts have been used:
+
+* RT stands for the return type of an operation.
+* CT stands for the common_type of the parameter's type of an operation.
+* CT(A,B) stands for common_type<A,B>::type with typename if needed.
+
+[xinclude config.xml]
+[xinclude exceptions.xml]
+[xinclude no_check.xml]
+[xinclude durations.xml]
+[xinclude wrappers.xml]
+[xinclude tuples.xml]
+[xinclude dates.xml]
+[xinclude generators.xml]
+[xinclude io.xml]
+
+[endsect]
+
+
+[/=================]
+[section Appendices]
+[/=================]
+
+[/====================================]
+[section:history Appendix: History]
+[/====================================]
+[section [*Version 0.1.0, June 30, 2012] ]
+
+['Announcement of Dates]
+
+[*Features:]
+
+* generic date numbers.
+
+[endsect]
+[endsect]
+
+
+[/====================================]
+[section:rationale Appendix: Design Rationale]
+[/====================================]
+
+[heading Why]
+
+
+
+[endsect]
+
+[section:implementation Appendix: Implementation Notes]
+
+[heading Why?]
+
+
+[endsect]
+[/====================================]
+[section:acknowledgements Appendix: Acknowledgements]
+[/====================================]
+
+Thanks to 
+
+
+[endsect]
+
+[/=====================================]
+[section:todo  Appendix : Future plans]
+[/=====================================]
+
+[heading Tasks to do before review]
+
+* Do the the doc.
+
+[heading Tasks to do if the library is accepted]
+
+* Split the tests.
+* Add .
+
+[heading For later releases]
+
+* Analyze
+
+[endsect]
+[endsect]
+
