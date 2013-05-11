@@ -3,7 +3,6 @@
 //  See http://www.boost.org/LICENSE_1_0.txt
 
 #include <boost/chrono/date/day.hpp>
-
 #include <boost/detail/lightweight_test.hpp>
 
 int main()

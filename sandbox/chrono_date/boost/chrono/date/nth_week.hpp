@@ -12,6 +12,7 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
+#include <boost/chrono/date/nth.hpp>
 
 namespace boost
 {
@@ -47,6 +48,9 @@ namespace boost
        */
       BOOST_CONSTEXPR nth_week(int s) BOOST_NOEXCEPT
           : base_type(s)
+      {}
+      BOOST_CONSTEXPR nth_week(nth_tag s) BOOST_NOEXCEPT
+          : base_type(s.value_)
       {}
 
       BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT

@@ -68,6 +68,7 @@
 #include <boost/chrono/date/year.hpp>
 #include <boost/chrono/date/month.hpp>
 #include <boost/chrono/date/day.hpp>
+#include <boost/chrono/date/days_date.hpp>
 #include <boost/chrono/date/is_date.hpp>
 #include <boost/utility/enable_if.hpp>
 
@@ -247,7 +248,7 @@ namespace boost
         charT, traits>& is, Date& item)
     {
       typename std::basic_istream<charT, traits>::sentry ok(is);
-      if (ok)
+      if (bool(ok))
       {
         std::ios_base::iostate err = std::ios_base::goodbit;
 #ifndef BOOST_NO_EXCEPTIONS
@@ -273,7 +274,7 @@ namespace boost
           if (!(err & std::ios_base::failbit))
           {
             item
-                = Date(year(t.tm_year + 1900), month(t.tm_mon + 1), day(t.tm_mday));
+                = Date(year(t.tm_year + 1900), chrono::month(t.tm_mon + 1), day(t.tm_mday));
           }
         }
 #ifndef BOOST_NO_EXCEPTIONS
@@ -316,7 +317,7 @@ namespace boost
         charT, traits>& os, const Date& item)
     {
       typename std::basic_ostream<charT, traits>::sentry ok(os);
-      if (ok)
+      if (bool(ok))
       {
         bool failed;
 #ifndef BOOST_NO_EXCEPTIONS
@@ -326,10 +327,10 @@ namespace boost
           const std::time_put<charT>& tp =
               std::use_facet<std::time_put<charT> >(os.getloc());
           std::tm t;
-          t.tm_mday = item.get_day();
-          t.tm_mon = item.get_month() - 1;
-          t.tm_year = item.get_year() - 1900;
-          t.tm_wday = item.get_weekday();
+          t.tm_mday = item.to_day();
+          t.tm_mon = item.to_month() - 1;
+          t.tm_year = item.to_year() - 1900;
+          t.tm_wday = days_date(item).to_weekday();
           charT pattern[] =
           { '%', 'F' };
           const charT* pb = pattern;

@@ -11,6 +11,7 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
+#include <boost/chrono/date/detail/helpers.hpp>
 
 namespace boost
 {
@@ -23,7 +24,7 @@ namespace boost
     /**
      * The class @c day is used to specify the day of the month when constructing dates. Its range is [1,31].
      */
-    typedef bounded<day_tag, 1, 31, int_least8_t> day;
+    typedef bounded<day_tag, 1, 31, day_rep> day;
 
     /**
      * synonym of day.

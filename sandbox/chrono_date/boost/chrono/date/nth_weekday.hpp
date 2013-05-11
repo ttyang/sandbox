@@ -14,6 +14,7 @@
 #include <boost/chrono/config.hpp>
 #include <boost/chrono/date/nth.hpp>
 #include <boost/chrono/date/nth_week.hpp>
+#include <boost/chrono/date/weekday.hpp>
 #include <boost/chrono/date/no_check.hpp>
 
 namespace boost
@@ -67,14 +68,16 @@ namespace boost
       /**
        * @Return The nth stored component.
        */
-      BOOST_CONSTEXPR nth_week get_nth() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR nth_week nth_week() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::nth_week() const BOOST_NOEXCEPT
       {
         return n_;
       }
       /**
        * @Return The weekday stored component.
        */
-      BOOST_CONSTEXPR weekday get_weekday() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR weekday weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return dow_;
       }
@@ -89,35 +92,6 @@ namespace boost
     inline BOOST_CONSTEXPR nth_weekday operator*(nth_week nw, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nw, wd);
-    }
-
-    inline BOOST_CONSTEXPR nth_weekday operator*(last_t, weekday wd) BOOST_NOEXCEPT
-    {
-      return nth_weekday(nth_week(6), wd);
-    }
-    inline BOOST_CONSTEXPR nth_weekday operator*(_1st_t, weekday wd) BOOST_NOEXCEPT
-    {
-      return nth_weekday(nth_week(1), wd);
-    }
-    inline BOOST_CONSTEXPR nth_weekday operator*(_2nd_t, weekday wd) BOOST_NOEXCEPT
-    {
-      return nth_weekday(nth_week(2), wd);
-    }
-    inline BOOST_CONSTEXPR nth_weekday operator*(_3rd_t, weekday wd) BOOST_NOEXCEPT
-    {
-      return nth_weekday(nth_week(3), wd);
-    }
-    inline BOOST_CONSTEXPR nth_weekday operator*(_4th_t, weekday wd) BOOST_NOEXCEPT
-    {
-      return nth_weekday(nth_week(4), wd);
-    }
-    inline BOOST_CONSTEXPR nth_weekday operator*(_5th_t, weekday wd) BOOST_NOEXCEPT
-    {
-      return nth_weekday(nth_week(5), wd);
-    }
-    inline nth_weekday operator*(unsigned n, weekday wd)
-    {
-      return nth_weekday(nth_week(n), wd);
     }
 
     /**

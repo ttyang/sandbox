@@ -9,45 +9,40 @@
 #ifndef BOOST_CHRONO_EXAMPLE_DATE_WEEK_BASED_YEAR_HPP
 #define BOOST_CHRONO_EXAMPLE_DATE_WEEK_BASED_YEAR_HPP
 
-#include <boost/chrono/date/ymd_date.hpp>
 #include <boost/chrono/date/date_generators.hpp>
 #include <boost/chrono/date/date_io.hpp>
 #include <boost/chrono/date/relative_date.hpp>
+#include <boost/chrono/date/days_date.hpp>
 #include <boost/tuple/tuple.hpp>
 
 inline boost::tuple<int, boost::chrono::weekday, boost::chrono::year>
-date_to_week(boost::chrono::date d)
+date_to_week(boost::chrono::days_date d)
 {
-  std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< std::endl;
   using namespace boost::chrono;
-  month_day jan4 = jan / day(4);
-  date start = mon <= jan4 / d.get_year();
-  std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< start << std::endl;
+  const month_day jan4 = jan / day(4);
+  days_date start = mon <= jan4 / d.to_year();
   if (d < start)
   {
-    start = mon <= jan4 / (d.get_year() - 1);
-    std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< start << std::endl;
+    start = mon <= (jan4 / (d.to_year() - 1));
   } else
   {
-    date next_start = mon <= jan4 / (start.get_year() + 1);
-    std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< next_start << std::endl;
+    days_date next_start = mon <= (jan4 / (start.to_year() + 1));
     if (d >= next_start) {
       start = next_start;
-      std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< start << std::endl;
     }
   }
   return boost::tuple<int, weekday, year>(
       (d - start).count() / 7 + 1,
-      d.get_weekday(),
-      (thu > start).get_year()
+      weekday(d),
+      (thu > start).to_year()
     );
 }
 
-inline boost::chrono::date
+inline boost::chrono::days_date
 week_to_date(int weeknum, boost::chrono::weekday wd, boost::chrono::year y)
 {
   using namespace boost::chrono;
-  return (mon <= jan / day(4) / y) + days((weeknum - 1) * 7 + (wd == 0 ? 6 : wd - 1));
+  return (mon <= (jan/day(4)/y)) + days((weeknum - 1) * 7 + (wd == 0 ? 6 : wd - 1));
 }
 
 #endif  // header

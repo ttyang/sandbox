@@ -160,9 +160,9 @@ namespace boost
     {
       tm now =
       { 0 };
-      now.tm_year = get_year() - 1900;
-      now.tm_mon = get_month() - 1;
-      now.tm_mday = get_day();
+      now.tm_year = year() - 1900;
+      now.tm_mon = month() - 1;
+      now.tm_mday = day();
       time_t t = timegm(&now);
       return system_clock::from_time_t(t);
     }
@@ -256,9 +256,9 @@ namespace boost
     }
     date::date(year y, month_day md, check_t)
     {
-      if (set_if_valid_date(y,md.get_month(), md.get_day())) return;
-      throw bad_date("day " + to_string(md.get_day()) + " is out of range for "
-          + to_string(y) + '-' + to_string(md.get_month()));
+      if (set_if_valid_date(y,month(md), day(md))) return;
+      throw bad_date("day " + to_string(day(md)) + " is out of range for "
+          + to_string(y) + '-' + to_string(month(md)));
     }
 
 #if BOOST_CHRONO_DATE_DATE_DESIGN == 1
@@ -465,9 +465,9 @@ namespace boost
   date::day_from_day_number() const BOOST_NOEXCEPT
   {
     year_day_of_year ydoy = to_ydoy(days(x_));
-    return day_of_year_day_of_month(is_leap(ydoy.get_year()),ydoy.get_day_of_year());
-//    int m = std::lower_bound(year_data, year_data+13, ydoy.get_day_of_year()) - year_data;
-//    return static_cast<uint16_t>(ydoy.get_day_of_year() - year_data[m-1]);
+    return day_of_year_day_of_month(is_leap(year(ydoy)),ydoy.day_of_year());
+//    int m = std::lower_bound(year_data, year_data+13, ydoy.day_of_year()) - year_data;
+//    return static_cast<uint16_t>(ydoy.day_of_year() - year_data[m-1]);
 
 //    int y = to_average_year(x_);
 //    int doy = x_ - (days_before_year(y));
@@ -486,7 +486,7 @@ namespace boost
   date::month_from_day_number() const BOOST_NOEXCEPT
   {
     year_day_of_year ydoy = to_ydoy(days(x_));
-    return day_of_year_month(is_leap(ydoy.get_year()),ydoy.get_day_of_year());
+    return day_of_year_month(is_leap(year(ydoy)),ydoy.day_of_year());
 
 //    int y = to_average_year(x_);
 //    int doy = x_ - (days_before_year(y));

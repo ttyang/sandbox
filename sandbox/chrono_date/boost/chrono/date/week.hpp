@@ -25,7 +25,7 @@ namespace boost
     /**
      * The class week is used to specify the week of the year. Its range is [1,53].
      */
-    typedef bounded<week_tag, 1, 53, int_least8_t> week;
+    typedef bounded<week_tag, 1, 53> week;
 
     /**
      * week pseudo-literals.

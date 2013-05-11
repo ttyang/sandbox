@@ -8,7 +8,6 @@
 #ifndef BOOST_CHRONO_DATE_INCLUDE_HPP
 #define BOOST_CHRONO_DATE_INCLUDE_HPP
 
-#include <boost/chrono/date/no_check.hpp>
 #include <boost/chrono/date/exceptions.hpp>
 
 #include <boost/chrono/date/date_durations.hpp>
@@ -34,6 +33,7 @@
 #include <boost/chrono/date/date_generators.hpp>
 
 #include <boost/chrono/date/relative_date.hpp>
+#include <boost/chrono/date/no_check.hpp>
 
 
 /*
@@ -55,10 +55,10 @@
  explicit operator boost::chrono::system_clock::time_point () const;
 
  // obervers
- day get_day() const noexcept;
- month get_month() const noexcept;
- year get_year() const noexcept;
- weekday get_weekday() const noexcept;
+ day day() const noexcept;
+ month month() const noexcept;
+ year year() const noexcept;
+ weekday weekday() const noexcept;
  bool is_leap_year() const noexcept;
 
  // day arithmetic

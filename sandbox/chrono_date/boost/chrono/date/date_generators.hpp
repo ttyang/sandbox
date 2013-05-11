@@ -32,15 +32,15 @@ namespace boost
      * @tparam Date any model of a Date (is_date<Date> is true_type).
      * @param wd the constraint applied to the date @c x parameter.
      * @param x the reference date.
-     * @return Let @c a be @c wd converted to an @c int, and @c b be @c x.weekday()
+     * @return Let @c a be @c wd converted to an @c int, and @c b be @c weekday(x)
      * converted to an @c int. If <c>a < b</c>, returns <c>x - days(b-a)</c>, else returns <c>x - days(7 - (a-b))</c>.
      */
-    template <typename Date>
-    inline Date
-    operator<(weekday wd, Date x)
+    //template <typename Date>
+    inline days_date
+    operator<(weekday wd, days_date x)
     {
-      const week::rep a = static_cast<week::rep>(wd);
-      const week::rep b = static_cast<week::rep>(x.get_weekday());
+      const weekday::rep a = wd;
+      const weekday::rep b = weekday(x);
       if (a < b)
       {
         return x - days(b-a);
@@ -48,12 +48,12 @@ namespace boost
       return x - days(weekday::size - (a-b));
     }
 
-    template <typename Date>
-    inline Date
-    operator<=(weekday wd, Date x)
+    //template <typename Date>
+    inline days_date
+    operator<=(weekday wd, days_date x)
     {
-      const week::rep a = static_cast<week::rep>(wd);
-      const week::rep b = static_cast<week::rep>(x.get_weekday());
+      const weekday::rep a = wd;
+      const weekday::rep b = weekday(x);
       if (a <= b)
       {
         return x - days(b-a);
@@ -61,12 +61,13 @@ namespace boost
       return x - days(weekday::size - (a-b));
     }
 
-    template <typename Date>
-    inline Date
-    operator>(weekday wd, Date x)
+    //template <typename Date>
+    inline days_date
+    operator>(weekday wd, days_date x)
     {
-      const week::rep a = static_cast<week::rep>(x.get_weekday());
-      const week::rep b = static_cast<week::rep>(wd);
+      const weekday::rep b = wd;
+      const weekday::rep a = weekday(x);
+
       if (a < b)
       {
         return x + days(b-a);
@@ -74,12 +75,12 @@ namespace boost
       return x + days(weekday::size - (a-b));
     }
 
-    template <typename Date>
-    inline Date
-    operator>=(weekday wd, Date x)
+    //template <typename Date>
+    inline days_date
+    operator>=(weekday wd, days_date x)
     {
-      const week::rep a = static_cast<week::rep>(x.get_weekday());
-      const week::rep b = static_cast<week::rep>(wd);
+      const weekday::rep b = wd;
+      const weekday::rep a = weekday(x);
       if (a <= b)
       {
         return x + days(b-a);
@@ -92,9 +93,9 @@ namespace boost
     operator >(month_day md, Date d)
     {
       Date res;
-      if (res.set_if_valid_date(d.get_year(),md.get_month(),md.get_day()) &&  res > d ) return res;
-      if (res.set_if_valid_date(year(d.get_year()+1),md.get_month(),md.get_day()) &&  res > d ) return res;
-      res=Date(year(d.get_year()+2),md.get_month(),md.get_day());
+      if (res.set_if_valid_date(year(d),month(md),day(md)) &&  res > d ) return res;
+      if (res.set_if_valid_date(year(year(d)+1),month(md),day(md)) &&  res > d ) return res;
+      res=Date(year(year(d)+2),month(md),day(md));
       return res;
     }
     template <typename Date>
@@ -102,9 +103,9 @@ namespace boost
     operator >=(month_day md, Date d)
     {
       Date res;
-      if (res.set_if_valid_date(d.get_year(),md.get_month(),md.get_day()) && res >= d) return  res;
-      if (res.set_if_valid_date(year(d.get_year()+1),md.get_month(),md.get_day()) && res >= d) return  res;
-      res=Date(year(d.get_year()+2),md.get_month(),md.get_day());
+      if (res.set_if_valid_date(year(d),month(md),day(md)) && res >= d) return  res;
+      if (res.set_if_valid_date(year(year(d)+1),month(md),day(md)) && res >= d) return  res;
+      res=Date(year(year(d)+2),month(md),day(md));
       return res;
     }
 
@@ -114,50 +115,50 @@ namespace boost
     {
       std::cout << __FILE__<<"["<<__LINE__ <<"] "<< d << '\n';
       Date res;
-      if (d.get_month()==dec)
+      if (month(d)==dec)
       {  // dec and jan have 31 days
-        res = Date(d.get_year(),d.get_month(),n.value());
+        res = Date(year(d),month(d),n.value());
         std::cout << __FILE__<<"["<<__LINE__ <<"] "<< res << '\n';
 
         if (res > d) return res;
-        return Date(d.get_year(),jan,n.value());
+        return Date(year(d),jan,n.value());
       }
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
-        if (res.set_if_valid_date(d.get_year(),d.get_month(),day(n.value())) && res > d) return res;
-        if (res.set_if_valid_date(d.get_year(),month(d.get_month()+1),day(n.value())) && res > d) return res;
-        return Date(d.get_year(),month(d.get_month()+2),day(n.value())) ;
+        if (res.set_if_valid_date(year(d),month(d),day(n.value())) && res > d) return res;
+        if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value())) && res > d) return res;
+        return Date(year(d),month(month(d)+2),day(n.value())) ;
       }
       // nth <= 28 is always valid, so the next is either in this month or the next one
-      res = Date(d.get_year(),d.get_month(),n.value());
+      res = Date(year(d),month(d),n.value());
       std::cout << __FILE__<<"["<<__LINE__ <<"] "<< res << '\n';
       if (res > d) return res;
-      std::cout << __FILE__<<"["<<__LINE__ <<"] "<< int(d.get_month()+1) << '\n';
-      return Date(d.get_year(),month(d.get_month()+1),day(n.value()));
+      std::cout << __FILE__<<"["<<__LINE__ <<"] "<< int(month(d)+1) << '\n';
+      return Date(year(d),month(month(d)+1),day(n.value()));
     }
     template <typename Date>
     inline Date
     operator >=(nth n, Date d)
     {
       Date res;
-      if (d.get_month()==dec)
+      if (month(d)==dec)
       {  // dec and jan have 31 days
-        res = Date(d.get_year(),d.get_month(),n.value());
+        res = Date(year(d),month(d),n.value());
         if (res >= d) return res;
-        return Date(d.get_year(),jan,n.value());
+        return Date(year(d),jan,n.value());
       }
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
-        if (res.set_if_valid_date(d.get_year(),d.get_month(),day(n.value())) && res >= d) return res;
-        if (res.set_if_valid_date(d.get_year(),month(d.get_month()+1),day(n.value())) && res >= d) return res;
-        return Date(d.get_year(),d.get_month()+2,n.value()) ;
+        if (res.set_if_valid_date(year(d),month(d),day(n.value())) && res >= d) return res;
+        if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value())) && res >= d) return res;
+        return Date(year(d),month(d)+2,n.value()) ;
       }
       // nth <= 28 is always valid, so the next is either in this month or the next one
-      res = Date(d.get_year(),d.get_month(),n.value());
+      res = Date(year(d),month(d),n.value());
       if (res >= d) return res;
-      return Date(d.get_year(),month(d.get_month()+1),n.value());
+      return Date(year(d),month(month(d)+1),n.value());
     }
 
 

@@ -8,9 +8,9 @@
 #ifndef BOOST_CHRONO_DATE_DATE_DAY_OF_YEAR_HPP
 #define BOOST_CHRONO_DATE_DATE_DAY_OF_YEAR_HPP
 
-
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
+#include <boost/chrono/date/detail/helpers.hpp>
 
 namespace boost
 {
@@ -20,15 +20,18 @@ namespace boost
     /**
      * day_of_year tag
      */
-    struct day_of_year_tag {};
+    struct day_of_year_tag
+    {
+    };
 
     /**
      * The class day_of_year is used to specify the day of the year when constructing a date. Its range is [1,366].
      */
-    typedef bounded<day_of_year_tag, 1, 366, int_least16_t> day_of_year;
+    typedef bounded<day_of_year_tag, 1, 366, day_of_year_rep> day_of_year;
 
   } // chrono
 
 } // boost
 
 #endif  // header
+

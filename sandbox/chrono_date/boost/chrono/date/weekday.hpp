@@ -12,6 +12,7 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
+#include <boost/chrono/date/config.hpp>
 
 namespace boost
 {
@@ -25,9 +26,9 @@ namespace boost
     /**
      * The class weekday is used to specify a day of the week.
      */
-    class weekday: public bounded<weekday_tag, 0, 6, int_least8_t>
+    class weekday: public bounded<weekday_tag, 0, 6>
     {
-      typedef bounded<weekday_tag, 0, 6, int_least8_t> base_type;
+      typedef bounded<weekday_tag, 0, 6> base_type;
 
     public:
       BOOST_STATIC_CONSTEXPR rep not_applicable=7;
@@ -67,25 +68,16 @@ namespace boost
      * const weekday sat(6);
      *
      */
-#ifndef  BOOST_NO_CXX11_CONSTEXPR
-    BOOST_CONSTEXPR_OR_CONST weekday
-      sun(0)
-    , mon(1)
-    , tue(2)
-    , wed(3)
-    , thu(4)
-    , fri(5)
-    , sat(6)
-    ;
-#else
-    extern const weekday sun;
-    extern const weekday mon;
-    extern const weekday tue;
-    extern const weekday wed;
-    extern const weekday thu;
-    extern const weekday fri;
-    extern const weekday sat;
-#endif
+
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(weekday, sun, 0);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(weekday, mon, 1);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(weekday, tue, 2);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(weekday, wed, 3);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(weekday, thu, 4);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(weekday, fri, 5);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(weekday, sat, 6);
+
+
     /**
      * Overload for string vonversion.
      * @param v the weekday

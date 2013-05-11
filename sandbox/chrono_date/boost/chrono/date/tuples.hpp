@@ -9,7 +9,7 @@
 #ifndef BOOST_CHRONO_DATE_TUPLES_HPP
 #define BOOST_CHRONO_DATE_TUPLES_HPP
 
-#include <boost/chrono/config.hpp>
+#include <boost/chrono/date/config.hpp>
 #include <boost/chrono/date/no_check.hpp>
 #include <boost/chrono/date/year.hpp>
 #include <boost/chrono/date/month.hpp>
@@ -29,13 +29,15 @@ namespace boost
      * Class year_month is a tuple-like class of year-month.
      *
      * It is CopyConstructible, CopyAssignable, and Destructible.
+     *
+     * In addition to construction and getters it provides the number of days in this year/month.
      */
     class year_month
     {
       year y_;
       month m_;
     public:
-      year_month(year y, month m) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR year_month(year y, month m) BOOST_NOEXCEPT
       : y_(y),
       m_(m)
       {
@@ -48,7 +50,8 @@ namespace boost
       /**
        * @Return the year stored component.
        */
-      year get_year() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return y_;
       }
@@ -56,25 +59,27 @@ namespace boost
       /**
        * @Return the month stored component.
        */
-      month get_month() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::month month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
 
+      // @todo make it possible to have BOOST_CONSTEXPR days_in
       /**
        * @Return the number of days of this month in this year.
        */
-      days days_in() const BOOST_NOEXCEPT
+      chrono::days days_in() const BOOST_NOEXCEPT
       {
         return y_.days_in_month(m_);
       }
     };
 
-    inline year_month operator/(year y, month m) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR year_month operator/(year y, month m) BOOST_NOEXCEPT
     {
       return year_month(y, m);
     }
-    inline year_month operator/(month m, year y) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR year_month operator/(month m, year y) BOOST_NOEXCEPT
     {
       return year_month(y, m);
     }
@@ -89,7 +94,7 @@ namespace boost
       year y_;
       week w_;
     public:
-      year_week(year y, week w) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR year_week(year y, week w) BOOST_NOEXCEPT
       : y_(y),
       w_(w)
       {
@@ -103,26 +108,28 @@ namespace boost
       /**
        * @Return the year stored component.
        */
-      year get_year() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return y_;
       }
       /**
        * @Return the week stored component.
        */
-      week get_week() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::week week() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::week() const BOOST_NOEXCEPT
       {
         return w_;
       }
 
     };
 
-    inline year_week operator/(year y, week w) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR year_week operator/(year y, week w) BOOST_NOEXCEPT
     {
       return year_week(y, w);
     }
 
-    inline year_week operator/(week w, year y) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR year_week operator/(week w, year y) BOOST_NOEXCEPT
     {
       return year_week(y, w);
     }
@@ -140,7 +147,7 @@ namespace boost
       month m_;
       day d_;
     public:
-      month_day(month m, day d)BOOST_NOEXCEPT
+      BOOST_CONSTEXPR month_day(month m, day d)BOOST_NOEXCEPT
       : m_(m),
       d_(d)
       {
@@ -154,26 +161,28 @@ namespace boost
       /**
        * @Return the month stored component.
        */
-      month get_month() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::month month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
       /**
        * @Return the day stored component.
        */
-      day get_day() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::day day() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::day() const BOOST_NOEXCEPT
       {
         return d_;
       }
     };
 
-    inline month_day operator/(month m, day d) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR month_day operator/(month m, day d) BOOST_NOEXCEPT
     {
       return month_day(m, d);
     }
 
 
-    inline month_day operator/(day d, month m) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR month_day operator/(day d, month m) BOOST_NOEXCEPT
     {
       return month_day(m, d);
     }
@@ -245,34 +254,36 @@ namespace boost
       week w_;
       weekday wd_;
     public:
-      week_weekday(week w, weekday wd)BOOST_NOEXCEPT
+      BOOST_CONSTEXPR week_weekday(week w, weekday wd)BOOST_NOEXCEPT
       : w_(w),
       wd_(wd)
       {
       }
 
-      week_weekday(week::rep w, weekday::rep wd, check_t)BOOST_NOEXCEPT
+      week_weekday(week::rep w, weekday::rep wd, check_t)
       : w_(w, check),
       wd_(wd, check)
       {
       }
-      week get_week() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::week week() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::week() const BOOST_NOEXCEPT
       {
         return w_;
       }
-      weekday get_weekday() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::weekday weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return wd_;
       }
 
     };
 
-    inline week_weekday operator/(week w, weekday wd) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR week_weekday operator/(week w, weekday wd) BOOST_NOEXCEPT
     {
       return week_weekday(w, wd);
     }
 
-    inline week_weekday operator/(weekday wd, week w) BOOST_NOEXCEPT
+    inline BOOST_CONSTEXPR week_weekday operator/(weekday wd, week w) BOOST_NOEXCEPT
     {
       return week_weekday(w, wd);
     }
@@ -281,6 +292,7 @@ namespace boost
      * Class year_month_day is a tuple-like class of year-month-day.
      *
      * It is CopyConstructible, CopyAssignable, and Destructible.
+     * In addition to construction and getters it provides validation of the year-month-day tuple.
      */
     class year_month_day
     {
@@ -288,38 +300,46 @@ namespace boost
       month m_;
       day d_;
     public:
-      year_month_day(year y, month m, day d)BOOST_NOEXCEPT
+      BOOST_CONSTEXPR year_month_day(year y, month m, day d)BOOST_NOEXCEPT
       : y_(y),
       m_(m),
       d_(d)
       {
       }
 
-      year_month_day(year::rep y, month::rep m, day::rep d, check_t)BOOST_NOEXCEPT
+      year_month_day(year::rep y, month::rep m, day::rep d, check_t)
       : y_(y, check),
       m_(m, check),
       d_(d, check)
       {
       }
-      year get_year() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return y_;
       }
-      month get_month() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::month month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
-      day get_day() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::day day() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::day() const BOOST_NOEXCEPT
       {
         return d_;
       }
-
+      BOOST_CONSTEXPR bool is_valid()
+      {
+        // @todo implement this function
+        return true;
+      }
     };
 
     /**
-     * Class year_month_day is a tuple-like class of year-month-day.
+     * Class year_month_day is a tuple-like class of year-month-day-bool.
      *
      * It is CopyConstructible, CopyAssignable, and Destructible.
+     * In addition to construction and getters it provides validation of the year-month-day-bool tuple.
      */
     class year_month_day_leap
     {
@@ -328,7 +348,7 @@ namespace boost
       day d_;
       bool leap_;
     public:
-      year_month_day_leap(year y, month m, day d, bool leap)BOOST_NOEXCEPT
+      BOOST_CONSTEXPR year_month_day_leap(year y, month m, day d, bool leap)BOOST_NOEXCEPT
       : y_(y),
       m_(m),
       d_(d),
@@ -336,60 +356,75 @@ namespace boost
       {
       }
 
-      year_month_day_leap(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
+      // @todo remove this overload
+      BOOST_CONSTEXPR year_month_day_leap(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       : y_(y),
       m_(m),
       d_(d),
       leap_(leap)
       {
       }
-      year get_year() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return y_;
       }
-      month get_month() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::month month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
-      day get_day() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::day day() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::day() const BOOST_NOEXCEPT
       {
         return d_;
       }
-      bool is_leap_year() const BOOST_NOEXCEPT
+      BOOST_CONSTEXPR bool is_leap_year() const BOOST_NOEXCEPT
       {
         return leap_;
       }
-
+      BOOST_CONSTEXPR bool is_valid()
+      {
+        // @todo implement this function
+        return true;
+      }
     };
     /**
      * Class year_day_of_year is a tuple-like class of year-day_of_year.
      *
      * It is CopyConstructible, CopyAssignable, and Destructible.
+     * In addition to construction and getters it provides validation of the year-day_of_year tuple.
      */
     class year_day_of_year
     {
       year y_;
       day_of_year d_;
     public:
-      year_day_of_year(year y, day_of_year d)BOOST_NOEXCEPT
+      BOOST_CONSTEXPR year_day_of_year(year y, day_of_year d)BOOST_NOEXCEPT
       : y_(y),
       d_(d)
       {
       }
-      year_day_of_year(year::rep y, day_of_year::rep d, check_t) BOOST_NOEXCEPT
+      year_day_of_year(year::rep y, day_of_year::rep d, check_t)
       : y_(y, check),
       d_(d, check)
       {
       }
-      year get_year() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return y_;
       }
-      day_of_year get_day_of_year() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::day_of_year day_of_year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::day_of_year() const BOOST_NOEXCEPT
       {
         return d_;
       }
-
+      BOOST_CONSTEXPR bool is_valid()
+      {
+        // @todo implement this function
+        return true;
+      }
     };
 
 
@@ -397,6 +432,8 @@ namespace boost
      * Class year_week_weekday is a tuple-like class of year-week-weekday.
      *
      * It is CopyConstructible, CopyAssignable, and Destructible.
+     * In addition to construction and getters it provides validation of the year-week-weekday tuple.
+     *
      */
     class year_week_weekday
     {
@@ -404,41 +441,40 @@ namespace boost
       week w_;
       weekday wd_;
     public:
-      year_week_weekday(year y, week w, weekday wd)BOOST_NOEXCEPT
+      BOOST_CONSTEXPR year_week_weekday(year y, week w, weekday wd)BOOST_NOEXCEPT
       : y_(y),
       w_(w),
       wd_(wd)
       {
       }
 
-      year_week_weekday(year::rep y, week::rep w, weekday::rep wd, check_t)BOOST_NOEXCEPT
+      year_week_weekday(year::rep y, week::rep w, weekday::rep wd, check_t)
       : y_(y, check),
       w_(w, check),
       wd_(wd, check)
       {
       }
-      year get_year() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return y_;
       }
-      week get_week() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::week week() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::week() const BOOST_NOEXCEPT
       {
         return w_;
       }
-      weekday get_weekday() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR chrono::weekday weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return wd_;
       }
-
+      BOOST_CONSTEXPR bool is_valid()
+      {
+        // @todo implement this function
+        return true;
+      }
     };
-
-
-
-
-
-
-
-
 
 
   } // chrono

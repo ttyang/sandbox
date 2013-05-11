@@ -52,6 +52,7 @@ if --enable-index in  [ modules.peek : ARGV ]
                                    \"BOOST_STATIC_CONSTANT(x,y)=static x const y\" \\
                                    \"BOOST_STATIC_ASSERT(cnd)=\" \\
                                    \"BOOST_CHRONO_DATE_REQUIRES(CND) \" \\
+                                   \"BOOST_CHRONO_INLINE \" \\
                                    \"BOOST_CONSTEXPR_OR_CONST=constexpr\" \\
                                    \"BOOST_CONSTEXPR=constexpr\"" \\
 
@@ -120,6 +121,7 @@ else
                                    \"BOOST_STATIC_CONSTANT(x,y)=static x const y\" \\
                                    \"BOOST_STATIC_ASSERT(cnd)=\" \\
                                    \"BOOST_CHRONO_DATE_REQUIRES(CND) \" \\
+                                   \"BOOST_CHRONO_INLINE \" \\
                                    \"BOOST_CONSTEXPR_OR_CONST=constexpr\" \\
                                    \"BOOST_CONSTEXPR=constexpr\""
 
@@ -189,7 +191,7 @@ doxygen wrappers
       [ glob ../../../boost/chrono/date/weekday.hpp ]
       [ glob ../../../boost/chrono/date/year.hpp ]
    :
-        <xsl:param>"boost.doxygen.reftitle=Date Constrained Yypes"
+        <xsl:param>"boost.doxygen.reftitle=Unit Specifiers"
    ;
 
 doxygen tuples
@@ -200,7 +202,7 @@ doxygen tuples
       [ glob ../../../boost/chrono/date/nth_weekday.hpp ]
       [ glob ../../../boost/chrono/date/nth_weekday.hpp ]
    :
-        <xsl:param>"boost.doxygen.reftitle=Tuples"
+        <xsl:param>"boost.doxygen.reftitle=Composite Unit Specifiers"
    ;
 
 doxygen dates
@@ -208,32 +210,38 @@ doxygen dates
       [ glob ../../../boost/chrono/date/days_date.hpp ]
       [ glob ../../../boost/chrono/date/ymd_date.hpp ]
       [ glob ../../../boost/chrono/date/ydoy_date.hpp ]
-      [ glob ../../../boost/chrono/date/relative_date.hpp ]
-      [ glob ../../../boost/chrono/date/date.hpp ]
    :
         <xsl:param>"boost.doxygen.reftitle=Dates"
+   ;
+
+doxygen contextual_dates
+   :
+      [ glob ../../../boost/chrono/date/relative_date.hpp ]
+   :
+        <xsl:param>"boost.doxygen.reftitle=Contextual Dates"
    ;
 
 
 doxygen durations
    :
       [ glob ../../../boost/chrono/date/date_durations.hpp ]
+      [ glob ../../../boost/chrono/date/proleptic_gregorian.hpp ]
    :
-        <xsl:param>"boost.doxygen.reftitle=Durations"
+        <xsl:param>"boost.doxygen.reftitle=Date Units"
    ;
 
 doxygen generators
    :
       [ glob ../../../boost/chrono/date/date_generators.hpp ]
    :
-        <xsl:param>"boost.doxygen.reftitle=Genarators"
+        <xsl:param>"boost.doxygen.reftitle=Date Genarators"
    ;
 
 doxygen io
    :
       [ glob ../../../boost/chrono/date/date_io.hpp ]
    :
-        <xsl:param>"boost.doxygen.reftitle=I/O"
+        <xsl:param>"boost.doxygen.reftitle=Date I/O"
    ;
 
 
@@ -319,6 +327,7 @@ boostbook standalone
         <dependency>config
         <dependency>exceptions
         <dependency>no_check
+        <dependency>contextual_dates
    ;
 
 path-constant boost-root : [ modules.peek : BOOST ] ;

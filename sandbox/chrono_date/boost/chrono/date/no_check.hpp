@@ -8,6 +8,7 @@
 #ifndef BOOST_CHRONO_DATE_NO_CHECK_HPP
 #define BOOST_CHRONO_DATE_NO_CHECK_HPP
 
+#include <boost/chrono/date/config.hpp>
 
 namespace boost
 {

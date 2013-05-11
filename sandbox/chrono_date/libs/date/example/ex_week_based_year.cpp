@@ -14,17 +14,17 @@ int main()
 {
   using namespace boost::chrono;
 
-  date d = oct / day(12) / 2011;
-  std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< d << '\n';
+  days_date d(oct / day(12) / 2011);
+  std::cout << "date "<< d << '\n';
   int weeknum;
   weekday wd(0);
   year y(0);
   boost::tie(weeknum, wd, y) = date_to_week(d);
 
-  std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< weeknum << " " << wd << " " << y << '\n';
+  std::cout << weeknum << " " << wd << " " << y << '\n';
 
   d = week_to_date(weeknum, wd, y);
-  std::cout << __FILE__ <<"["<< __LINE__ <<"]"<< d << '\n';
+  std::cout << "date "<< d << '\n';
 
   return 0;
 }

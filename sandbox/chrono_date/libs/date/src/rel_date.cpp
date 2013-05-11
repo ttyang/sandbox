@@ -12,6 +12,7 @@
 #include <boost/chrono/date/date_generators.hpp>
 #include <boost/chrono/date/conversions.hpp>
 #include <boost/chrono/date/date.hpp>
+#include <boost/chrono/date/days_date.hpp>
 #include <boost/chrono/date/relative_date.hpp>
 #include <boost/chrono/date/detail/to_string.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -63,7 +64,7 @@ namespace boost
 
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    rel_date::rel_date(year y, month m, day d)
+    rel_date::rel_date(chrono::year y, chrono::month m, day d)
     :
     y_(y),
     m_(m),
@@ -83,7 +84,7 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    rel_date::rel_date(year y, month m, day d)
+    rel_date::rel_date(chrono::year y, chrono::month m, day d)
     {
       bool leap = is_leap(y);
       const day_of_year::rep* year_data = days_in_year_before(leap);
@@ -96,7 +97,7 @@ namespace boost
     }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
-    rel_date::rel_date(year y, month m, day d)
+    rel_date::rel_date(chrono::year y, chrono::month m, day d)
     :
     y_(y),
     m_(m),
@@ -115,7 +116,7 @@ namespace boost
 #endif
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    rel_date::rel_date(year y, month m, day d) BOOST_NOEXCEPT
+    rel_date::rel_date(year y, chrono::month m, day d) BOOST_NOEXCEPT
     :
     y_(y),
     m_(m),
@@ -131,7 +132,7 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    rel_date::rel_date(year y, month m, day d)BOOST_NOEXCEPT
+    rel_date::rel_date(chrono::year y, chrono::month m, day d)BOOST_NOEXCEPT
     {
       bool leap = is_leap(y);
       const day_of_year::rep* year_data = days_in_year_before(leap);
@@ -140,7 +141,7 @@ namespace boost
     }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
-    rel_date::rel_date(year y, month m, day d)BOOST_NOEXCEPT
+    rel_date::rel_date(chrono::year y, chrono::month m, day d)BOOST_NOEXCEPT
     :
     y_(y),
     m_(m),
@@ -154,46 +155,46 @@ namespace boost
 
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    rel_date::rel_date(year y, month_day md, check_t)
+    rel_date::rel_date(chrono::year y, chrono::month_day md, check_t)
     :
     y_(y),
-    m_(md.get_month()),
+    m_(month(md)),
     leap_(is_leap(y)),
     dow_(weekday::not_applicable),
-    d_(md.get_day()),
+    d_(day(md)),
     n_(nth_week::not_applicable)
     {
       const day_of_year::rep* year_data = days_in_year_before(leap_);
-      if (!(md.get_day() <= year_data[md.get_month()] - year_data[md.get_month() - 1]))
+      if (!(day(md) <= year_data[month(md)] - year_data[month(md) - 1]))
       {
         return throw bad_date("");
       }
       year::rep by = y.value() + 32799;
-      x_ = days_before_year(by) + year_data[md.get_month() - 1] + md.get_day();
+      x_ = days_before_year(by) + year_data[month(md) - 1] + day(md);
     }
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    rel_date::rel_date(year y, month_day md, check_t)
+    rel_date::rel_date(chrono::year y, chrono::month_day md, check_t)
     {
       bool leap = is_leap(y);
       const day_of_year::rep* year_data = days_in_year_before(leap);
-      if (!(md.get_day() <= year_data[md.get_month()] - year_data[md.get_month() - 1]))
+      if (!(day(md) <= year_data[month(md)] - year_data[month(md) - 1]))
       {
         return throw bad_date("");
       }
       year::rep by = y + 32799;
-      x_ = days_before_year(by) + year_data[md.get_month() - 1] + md.get_day();
+      x_ = days_before_year(by) + year_data[month(md) - 1] + day(md);
     }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
-    rel_date::rel_date(year y, month_day md, check_t)
+    rel_date::rel_date(chrono::year y, chrono::month_day md, check_t)
     :
     y_(y),
-    m_(md.get_month()),
+    m_(month(md)),
     leap_(is_leap(y)),
     dow_(weekday::not_applicable),
-    d_(md.get_day()),
+    d_(day(md)),
     n_(nth_week::not_applicable)
     {
       const day_of_year::rep* year_data = days_in_year_before(leap_);
@@ -207,38 +208,38 @@ namespace boost
 
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    rel_date::rel_date(year::rep y, month_day md)
+    rel_date::rel_date(year::rep y, chrono::month_day md)
     BOOST_NOEXCEPT    :
     y_(y),
-    m_(md.get_month()),
+    m_(month(md)),
     leap_(is_leap(y)),
     dow_(weekday::not_applicable),
-    d_(md.get_day()),
+    d_(day(md)),
     n_(nth_week::not_applicable)
     {
       const day_of_year::rep* year_data = days_in_year_before(leap_);
       year::rep by = y + 32799;
-      x_ = days_before_year(by) + year_data[md.get_month() - 1] + md.get_day();
+      x_ = days_before_year(by) + year_data[month(md) - 1] + day(md);
     }
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    rel_date::rel_date(year::rep y, month_day md)
+    rel_date::rel_date(year::rep y, chrono::month_day md)
     BOOST_NOEXCEPT    {
       bool leap = is_leap(y);
       const day_of_year::rep* year_data = days_in_year_before(leap);
       year::rep by = y + 32799;
-      x_ = days_before_year(by) + year_data[md.get_month() - 1] + md.get_day();
+      x_ = days_before_year(by) + year_data[month(md) - 1] + day(md);
     }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
-    rel_date::rel_date(year::rep y, month_day md)
+    rel_date::rel_date(year::rep y, chrono::month_day md)
     BOOST_NOEXCEPT    :
     y_(y),
-    m_(md.get_month()),
+    m_(month(md)),
     leap_(is_leap(y)),
     dow_(weekday::not_applicable),
-    d_(md.get_day()),
+    d_(day(md)),
     n_(nth_week::not_applicable)
     {
     }
@@ -252,7 +253,7 @@ namespace boost
     }
 
 
-    rel_date::rel_date(year y, day_of_year doy)
+    rel_date::rel_date(chrono::year y, day_of_year doy)
     {
       if (set_if_valid_date(y, doy))
         return;
@@ -292,7 +293,7 @@ namespace boost
 
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    bool rel_date::set_if_valid_date(year y, month m, day d) BOOST_NOEXCEPT
+    bool rel_date::set_if_valid_date(chrono::year y, chrono::month m, day d) BOOST_NOEXCEPT
     {
       bool leap = is_leap(y);
       const day_of_year::rep* year_data = days_in_year_before(leap);
@@ -315,7 +316,7 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    bool rel_date::set_if_valid_date(year y, month m, day d) BOOST_NOEXCEPT
+    bool rel_date::set_if_valid_date(chrono::year y, chrono::month m, day d) BOOST_NOEXCEPT
     {
       bool leap = is_leap(y.value());
       const day_of_year::rep* year_data = days_in_year_before(leap);
@@ -333,7 +334,7 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
-    bool rel_date::set_if_valid_date(year y, month m, day d) BOOST_NOEXCEPT
+    bool rel_date::set_if_valid_date(chrono::year y, chrono::month m, day d) BOOST_NOEXCEPT
     {
       bool leap = is_leap(y);
       const day_of_year::rep* year_data = days_in_year_before(leap);
@@ -355,7 +356,7 @@ namespace boost
 
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    bool rel_date::set_if_valid_date(year y, day_of_year doy) BOOST_NOEXCEPT
+    bool rel_date::set_if_valid_date(chrono::year y, day_of_year doy) BOOST_NOEXCEPT
 
     {
       bool leap = is_leap(y);
@@ -376,7 +377,7 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    bool rel_date::set_if_valid_date(year y, day_of_year doy) BOOST_NOEXCEPT// TODO
+    bool rel_date::set_if_valid_date(chrono::year y, day_of_year doy) BOOST_NOEXCEPT// TODO
     {
       dow_=weekday::not_applicable;
       n_=nth_week::not_applicable;
@@ -411,9 +412,9 @@ namespace boost
         return false;
       }
       year_month_day_leap dt = to_ymd_leap(x);
-      y_=dt.get_year();
-      m_=dt.get_month();
-      d_=dt.get_day();
+      y_=year(dt);
+      m_=month(dt);
+      d_=day(dt);
       leap_=dt.is_leap_year();
       x_=x.count();
       dow_=weekday::not_applicable;
@@ -441,9 +442,9 @@ namespace boost
         return false;
       }
       year_month_day_leap dt = to_ymd_leap(x);
-      y_=dt.get_year();
-      m_=dt.get_month();
-      d_=dt.get_day();
+      y_=year(dt);
+      m_=month(dt);
+      d_=day(dt);
       leap_=dt.is_leap_year();
       dow_=weekday::not_applicable;
       n_=nth_week::not_applicable;
@@ -475,7 +476,7 @@ namespace boost
 
     bool rel_date::is_valid() const BOOST_NOEXCEPT
     {
-      if (year(y_).is_valid() && month(m_).is_valid())
+      if (chrono::year(y_).is_valid() && chrono::month(m_).is_valid())
       {
         if (d_!=0 && day(d_).is_valid()) {
         const day_of_year::rep* year_data = days_in_year_before(leap_);
@@ -503,9 +504,9 @@ namespace boost
       time(&systime);
       tm now;
       localtime_r(&systime, &now);
-      return rel_date(year(now.tm_year+1900),
-          month(now.tm_mon+1),
-          day(now.tm_mday));
+      return rel_date(chrono::year(now.tm_year+1900),
+          chrono::month(now.tm_mon+1),
+          chrono::day(now.tm_mday));
     }
 
     rel_date::rel_date(system_clock::time_point tp)
@@ -514,17 +515,17 @@ namespace boost
       tm now;
       gmtime_r(&systime, &now);
       *this
-          = rel_date(year(now.tm_year + 1900), month(now.tm_mon
-              + 1), day(now.tm_mday));
+          = rel_date(chrono::year(now.tm_year + 1900), chrono::month(now.tm_mon
+              + 1), chrono::day(now.tm_mday));
     }
 
     rel_date::operator system_clock::time_point() const
     {
       tm now =
       { 0 };
-      now.tm_year = get_year() - 1900;
-      now.tm_mon = get_month() - 1;
-      now.tm_mday = get_day();
+      now.tm_year = year() - 1900;
+      now.tm_mon = month() - 1;
+      now.tm_mday = day();
       time_t t = timegm(&now);
       return system_clock::from_time_t(t);
     }
@@ -534,18 +535,18 @@ namespace boost
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 //    rel_date::rel_date(ymd_date dt) :
 //    x_(dt.days_since_epoch().count()),
-//    y_(dt.get_year().value()),
-//    m_(dt.get_month().value()),
+//    y_(year(dt).value()),
+//    m_(month(dt).value()),
 //    leap_(dt.is_leap_year()),
 //    dow_(weekday::not_applicable),
-//    d_(dt.get_day().value()),
+//    d_(day(dt).value()),
 //    n_(nth_week::not_applicable)
 //    {
 //
 //    }
     rel_date::operator ymd_date() const
     {
-      return date(x_, y_, m_, d_, leap_);
+      return ymd_date(x_, y_, m_, d_, leap_);
     }
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
@@ -557,24 +558,24 @@ namespace boost
 //    }
     rel_date::operator ymd_date() const
     {
-      return date(x_);
+      return days_date(x_);
 
     }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
 //    rel_date::rel_date(ymd_date dt) :
-//    y_(dt.get_year().value()),
-//    m_(dt.get_month().value()),
+//    y_(year(dt).value()),
+//    m_(month(dt).value()),
 //    leap_(dt.is_leap_year()),
 //    dow_(weekday::not_applicable),
-//    d_(dt.get_day().value()),
+//    d_(day(dt).value()),
 //    n_(nth_week::not_applicable)
 //    {
 //
 //    }
     rel_date::operator ymd_date() const
     {
-      return date(y_,m_,d_,leap_);
+      return ymd_date(y_,m_,d_,leap_);
 
     }
 #endif
@@ -583,18 +584,18 @@ namespace boost
 
 //    rel_date::rel_date(days_date dt) :
 //    x_(dt.days_since_epoch().count()),
-//    y_(dt.get_year().value()),
-//    m_(dt.get_month().value()),
+//    y_(year(dt).value()),
+//    m_(month(dt).value()),
 //    leap_(dt.is_leap_year()),
 //    dow_(weekday::not_applicable),
-//    d_(dt.get_day().value()),
+//    d_(day(dt).value()),
 //    n_(nth_week::not_applicable)
 //    {
 //
 //    }
     rel_date::operator days_date() const
     {
-      return date(x_);
+      return days_date(x_);
     }
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
@@ -606,24 +607,25 @@ namespace boost
 //    }
     rel_date::operator days_date() const
     {
-      return date(x_);
+      return days_date(x_);
 
     }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
 //    rel_date::rel_date(days_date dt) :
-//    y_(dt.get_year().value()),
-//    m_(dt.get_month().value()),
+//    y_(year(dt).value()),
+//    m_(month(dt).value()),
 //    leap_(dt.is_leap_year()),
 //    dow_(weekday::not_applicable),
-//    d_(dt.get_day().value()),
+//    d_(day(dt).value()),
 //    n_(nth_week::not_applicable)
 //    {
 //
 //    }
     rel_date::operator days_date() const
     {
-      return date(y_,m_,d_,leap_);
+      // @todo improve this
+      return days_date(ymd_date(y_,m_,d_,leap_));
 
     }
 #endif
@@ -632,11 +634,11 @@ namespace boost
 
 //    rel_date::rel_date(ydoy_date dt) :
 //    x_(dt.days_since_epoch().count()),
-//    y_(dt.get_year().value()),
-//    m_(dt.get_month().value()),
+//    y_(year(dt).value()),
+//    m_(month(dt).value()),
 //    leap_(dt.is_leap_year()),
 //    dow_(weekday::not_applicable),
-//    d_(dt.get_day().value()),
+//    d_(day(dt).value()),
 //    n_(nth_week::not_applicable)
 //    {
 //
@@ -661,31 +663,32 @@ namespace boost
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
 //    rel_date::rel_date(ydoy_date dt) :
-//    y_(dt.get_year().value()),
-//    m_(dt.get_month().value()),
+//    y_(year(dt).value()),
+//    m_(month(dt).value()),
 //    leap_(dt.is_leap_year()),
 //    dow_(weekday::not_applicable),
-//    d_(dt.get_day().value()),
+//    d_(day(dt).value()),
 //    n_(nth_week::not_applicable)
 //    {
 //
 //    }
     rel_date::operator ydoy_date() const
     {
-      return date(y_,m_,d_,leap_);
+      // @todo improve this
+      return ydoy_date(ymd_date(y_,m_,d_,leap_));
 
     }
 #endif
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    rel_date::rel_date(year y, month m, nth_weekday d) :
+    rel_date::rel_date(chrono::year y, chrono::month m, nth_weekday d) :
     y_(y.value()),
     m_(m.value()),
-    dow_(d.get_weekday()),
+    dow_(weekday(d)),
     d_(0),
-    n_(d.get_nth())
+    n_(d.nth_weekday())
     {
-      leap_ = year(y_).is_leap();
+      leap_ = chrono::year(y_).is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap_);
       if (n_ != nth_week::not_applicable) // if a nth is involved
 
@@ -693,7 +696,7 @@ namespace boost
         if (dow_ == weekday::not_applicable) // if we want nth day of month
 
         {
-          if (n_ == 6) // want last day of month
+          if (n_ == last.value_) // want last day of month
 
           {
             d_ = year_data[m_] - year_data[m_ - 1];
@@ -712,7 +715,7 @@ namespace boost
           int32_t fy = by * 365 + by / 4 - by / 100 + by / 400;
           int n_days_in_month = year_data[m_] - year_data[m_ - 1];
           int d;
-          if (n_ == 6)
+          if (n_ == last.value_)
           {
             int ldow = (fy + year_data[m_] + 1) % weekday::size;
             d = n_days_in_month;
@@ -759,8 +762,8 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    rel_date::rel_date(year y, month m, nth_weekday nwd) :
-      n_(nwd.get_nth()), dow_(nwd.get_weekday())
+    rel_date::rel_date(year y, chrono::month m, nth_weekday nwd) :
+      n_(nwd.nth_weekday()), dow_(weekday(nwd))
     {
       bool leap = y.is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap);
@@ -771,7 +774,7 @@ namespace boost
 
         {
           int d;
-          if (n_ == 6) // want last day of month
+          if (n_ == last.value_) // want last day of month
 
           {
             d = year_data[m.value()] - year_data[m.value() - 1];
@@ -799,7 +802,7 @@ namespace boost
           int32_t fy = by * 365 + by / 4 - by / 100 + by / 400;
           int n_days_in_month = year_data[m.value()] - year_data[m.value() - 1];
           int d;
-          if (n_ == 6)
+          if (n_ == last.value_)
           {
             int ldow = (fy + year_data[m.value()] + 1) % weekday::size;
             d = n_days_in_month;
@@ -846,18 +849,18 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
-    rel_date::rel_date(year y, month m, nth_weekday rd)
+    rel_date::rel_date(chrono::year y, chrono::month m, nth_weekday rd)
     : y_(y.value()),
     m_(m.value()),
     leap_(0),
-    dow_(rd.get_weekday()),
+    dow_(weekday(rd)),
     //d_(rd.d_),
     d_(0),
-    n_(rd.get_nth())
+    n_(nth_week(rd))
     {
       std::cout <<" =========== d= "<< int(d_) << std::endl;
 
-      leap_ = year(y).is_leap();
+      leap_ = chrono::year(y).is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap_);
       if (n_ != nth_week::not_applicable) // if a nth is involved
 
@@ -865,7 +868,7 @@ namespace boost
         if (dow_ == weekday::not_applicable) // if we want nth day of month
 
         {
-          if (n_ == 6) // want last day of month
+          if (n_ == last.value_) // want last day of month
 
           {
             d_ = year_data[m_] - year_data[m_-1];
@@ -880,13 +883,13 @@ namespace boost
         else // we want nth weekday of month
 
         {
-          // dow_ = [0 - 6]
-          // n_ = [1 - 6] 6 means last
+          // dow_ = [0 - 5] 0 means last
+          // n_ = [0 - 5] 0 means last
           int32_t by = y.value() + 32799;
           int32_t fy = by*365 + by/4 - by/100 + by/400;
           int n_days_in_month = year_data[m_] - year_data[m_-1];
           int d;
-          if (n_ == 6)
+          if (n_ == last.value_)
           {
             int ldow = (fy + year_data[m_] + 1) % weekday::size;
             d = n_days_in_month;
@@ -935,14 +938,14 @@ namespace boost
 
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
 
-    rel_date::rel_date(year y, month m, nth n) :
+    rel_date::rel_date(chrono::year y, chrono::month m, nth n) :
     y_(y.value()),
     m_(m.value()),
     dow_(weekday::not_applicable),
     d_(0),
     n_(n.value())
     {
-      leap_ = year(y_).is_leap();
+      leap_ = chrono::year(y_).is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap_);
       if (n_ != nth_week::not_applicable) // if a nth is involved
 
@@ -950,7 +953,7 @@ namespace boost
         if (dow_ == weekday::not_applicable) // if we want nth day of month
 
         {
-          if (n_ == 6) // want last day of month
+          if (n_ == last.value_) // want last day of month
 
           {
             d_ = year_data[m_] - year_data[m_ - 1];
@@ -969,7 +972,7 @@ namespace boost
           int32_t fy = by * 365 + by / 4 - by / 100 + by / 400;
           int n_days_in_month = year_data[m_] - year_data[m_ - 1];
           int d;
-          if (n_ == 6)
+          if (n_ == last.value_)
           {
             int ldow = (fy + year_data[m_] + 1) % weekday::size;
             d = n_days_in_month;
@@ -1016,7 +1019,7 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
-    rel_date::rel_date(year y, month m, nth n) :
+    rel_date::rel_date(chrono::year y, chrono::month m, nth n) :
       n_(n.value()), dow_(weekday::not_applicable)
     {
       bool leap = y.is_leap();
@@ -1028,7 +1031,7 @@ namespace boost
 
         {
           int d;
-          if (n_ == 6) // want last day of month
+          if (n_ == last.value_) // want last day of month
 
           {
             d = year_data[m.value()] - year_data[m.value() - 1];
@@ -1056,7 +1059,7 @@ namespace boost
           int32_t fy = by * 365 + by / 4 - by / 100 + by / 400;
           int n_days_in_month = year_data[m.value()] - year_data[m.value() - 1];
           int d;
-          if (n_ == 6)
+          if (n_ == last.value_)
           {
             int ldow = (fy + year_data[m.value()] + 1) % weekday::size;
             d = n_days_in_month;
@@ -1103,7 +1106,7 @@ namespace boost
 
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
 
-    rel_date::rel_date(year y, month m, nth n)
+    rel_date::rel_date(chrono::year y, chrono::month m, nth n)
     : y_(y.value()),
     m_(m.value()),
     leap_(0),
@@ -1112,7 +1115,7 @@ namespace boost
     d_(0),
     n_(n.value())
     {
-      leap_ = year(y).is_leap();
+      leap_ = y.is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap_);
       if (n_ != nth_week::not_applicable) // if a nth is involved
 
@@ -1120,7 +1123,7 @@ namespace boost
         if (dow_ == weekday::not_applicable) // if we want nth day of month
 
         {
-          if (n_ == 6) // want last day of month
+          if (n_ == last.value_) // want last day of month
 
           {
             d_ = year_data[m_] - year_data[m_-1];
@@ -1139,7 +1142,7 @@ namespace boost
           int32_t fy = by*365 + by/4 - by/100 + by/400;
           int n_days_in_month = year_data[m_] - year_data[m_-1];
           int d;
-          if (n_ == 6)
+          if (n_ == last.value_)
           {
             int ldow = (fy + year_data[m_] + 1) % weekday::size;
             d = n_days_in_month;
@@ -1281,9 +1284,9 @@ namespace boost
         m -= 12 * dy;
       }
       //if (d_==0)
-        *this = nth_weekday(nth_week(n_), weekday(dow_)) / month(m) / y;
+        *this = nth_weekday(nth_week(n_), chrono::weekday(dow_)) / chrono::month(m) / y;
       //else
-        //*this = rel_date(year(y), month(m), day(d_));
+        //*this = rel_date(year(y), chrono::month(m), day(d_));
       return *this;
     }
 
@@ -1291,9 +1294,9 @@ namespace boost
     rel_date::operator+=(years yr)
     {
       //if (d_==0)
-        *this = nth_weekday(nth_week(n_), weekday(dow_)) / month(m_) / (y_ + yr.count());
+        *this = nth_weekday(nth_week(n_), chrono::weekday(dow_)) / chrono::month(m_) / (y_ + yr.count());
       //else
-        //*this = rel_date(year(y_+ yr.count()), month(m_), day(d_));
+        //*this = rel_date(year(y_+ yr.count()), chrono::month(m_), day(d_));
       return *this;
 
     }
@@ -1327,8 +1330,8 @@ namespace boost
         y += dy;
         m -= 12 * dy;
       }
-      *this = nth_weekday(nth_week(n_), weekday(dow_))
-          / month(m) / y;
+      *this = nth_weekday(nth_week(n_), chrono::weekday(dow_))
+          / chrono::month(m) / y;
       return *this;
     }
 
@@ -1346,8 +1349,8 @@ namespace boost
       bool leap = year(y).is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap);
       int m = std::lower_bound(year_data, year_data + 13, doy) - year_data;
-      *this = nth_weekday(nth_week(n_), weekday(dow_))
-          / month(m) / (y + yr.count());
+      *this = nth_weekday(nth_week(n_), chrono::weekday(dow_))
+          / chrono::month(m) / (y + yr.count());
       return *this;
     }
 
@@ -1367,7 +1370,7 @@ namespace boost
         doy = x_ - (y*365 + y/4 - y/100 + y/400);
       }
       y -= 32799;
-      const day_of_year::rep* year_data = days_in_year_before(year(y).is_leap());
+      const day_of_year::rep* year_data = days_in_year_before(chrono::year(y).is_leap());
       int m = std::lower_bound(year_data, year_data+13, doy) - year_data;
       return static_cast<uint16_t>(doy - year_data[m-1]);
     }
@@ -1384,7 +1387,7 @@ namespace boost
         doy = x_ - (y*365 + y/4 - y/100 + y/400);
       }
       y -= 32799;
-      const day_of_year::rep* year_data = days_in_year_before(year(y).is_leap());
+      const day_of_year::rep* year_data = days_in_year_before(chrono::year(y).is_leap());
       return std::lower_bound(year_data, year_data+13, doy) - year_data;
     }
 
@@ -1415,7 +1418,7 @@ namespace boost
         doy = x_ - (y*365 + y/4 - y/100 + y/400);
       }
       y -= 32799;
-      return year(y).is_leap();
+      return chrono::year(y).is_leap();
     }
 
 #endif
@@ -1435,8 +1438,13 @@ namespace boost
     year_month_day to_ymd(year_week_weekday p)
     BOOST_NOEXCEPT
     {
-      date dt = (mon <= jan / day(4) / p.get_year()) + days((p.get_week().value() - 1) * weekday::size + (p.get_weekday().value() == 0 ? weekday::size-1 : p.get_weekday().value() - 1));
-      return year_month_day(dt.get_year(), dt.get_month(), dt.get_day());
+      return to_ymd(
+          (  (mon <= jan / day(4) / year(p))
+           + days(
+                  (week(p) - 1) * weekday::size + (weekday(p) == 0 ? weekday::size-1 : weekday(p) - 1)
+             )
+          ).days_since_epoch()
+      );
     }
 
     year_day_of_year to_ydoy(year_week_weekday dt)
@@ -1454,23 +1462,28 @@ namespace boost
     year_week_weekday to_ywwd(year_month_day ymd)
     BOOST_NOEXCEPT
     {
-      date dt(ymd.get_year(), ymd.get_month(), ymd.get_day());
-      month_day jan4 = jan / day(4);
-      date start = mon <= jan4 / ymd.get_year();
+      days_date dt(month(ymd)/day(ymd)/year(ymd));
+      chrono::month_day jan4 = jan / day(4);
+      days_date jan4_y(jan4 / year(ymd));
+      days_date jan4_y_m_1(jan4 / (year(ymd)-1));
+      days_date jan4_y_p_1(jan4 / (year(ymd)+1));
+      // @todo improve the jan4 / year(ymd) conversion
+      days_date start = mon <= jan4_y;
       if (dt < start)
       {
-        start = mon <= jan4 / (ymd.get_year() - 1);
+        // @todo improve the jan4 / year(ymd) conversion
+        start = mon <= jan4_y_m_1;
       }
       else
       {
-        date next_start = mon <= jan4 / (start.get_year() + 1);
+        days_date next_start = mon <= jan4_y_p_1;
         if (dt >= next_start)
         start = next_start;
       }
       return year_week_weekday(
-          (thu > start).get_year(),
+          (thu > start).to_year(),
           (dt - start).count() / weekday::size + 1,
-          dt.get_weekday()
+          weekday(dt)
       );
     }
 

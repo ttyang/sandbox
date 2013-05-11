@@ -117,10 +117,10 @@ namespace julian
 
   date::date(boost::chrono::date d)
   {
-    uint32_t by = d.get_year() + 32799;
+    uint32_t by = boost::chrono::year(d) + 32799;
     int* year_data = db[is_civil_leap(by)];
-    x_ = by * 365 + by / 4 - by / 100 + by / 400 + 248 + year_data[d.get_month()
-        - 1] + d.get_day();
+    x_ = by * 365 + by / 4 - by / 100 + by / 400 + 248 + year_data[boost::chrono::month(d)
+        - 1] + boost::chrono::day(d);
     int y = static_cast<int> (static_cast<int64_t> (x_ + 1) * 4 / 1461);
     int doy = x_ - (y * 365 + y / 4);
     if (doy < 0)

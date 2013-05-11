@@ -42,6 +42,13 @@ project boost/chrono/date
         <toolset>gcc:<cxxflags>-Wextra
         <toolset>gcc:<cxxflags>-pedantic
         <toolset>gcc:<cxxflags>-Wno-long-long
+
+        <toolset>gcc-4.4.6:<cxxflags>-fpermissive
+        <toolset>gcc-4.4.6.0x:<cxxflags>-fpermissive
+
+        <toolset>gcc-4.6.1:<cxxflags>-fpermissive
+        <toolset>gcc-4.6.1.0x:<cxxflags>-fpermissive
+
         <toolset>darwin:<cxxflags>-Wextra
         <toolset>darwin:<cxxflags>-pedantic
         <toolset>darwin:<cxxflags>-Wno-long-long
@@ -53,6 +60,17 @@ project boost/chrono/date
         <toolset>darwin-4.7.1x:<cxxflags>-Wno-unused-local-typedefs
         <toolset>darwin-4.7.2x:<cxxflags>-Wno-unused-local-typedefs
         <toolset>darwin-4.8.0x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.2.1:<cxxflags>-fpermissive
+        <toolset>darwin-4.6.2:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.1:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.0:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.2:<cxxflags>-fpermissive
+        <toolset>darwin-4.8.0:<cxxflags>-fpermissive
+        <toolset>darwin-4.6.2x:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.0x:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.1x:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.2x:<cxxflags>-fpermissive
+        <toolset>darwin-4.8.0x:<cxxflags>-fpermissive
 
         #<toolset>pathscale:<cxxflags>-Wextra
         <toolset>pathscale:<cxxflags>-Wno-long-long

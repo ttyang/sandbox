@@ -42,7 +42,7 @@ namespace boost
       /**
        * @Effects: Constructs an object of class @c bounded by storing @c d.
        * @Postconditions: <c>value() == d && is_valid()</c>.
-       * @Throws: if @c d is outside of the range [first, last], throws an exception of type @c std::logic_error.
+       * @Throws: if @c d is outside of the range [first, last], throws an exception of type @c std::out_of_range.
        */
 
 #ifndef  BOOST_NO_CXX11_CONSTEXPR
@@ -50,7 +50,7 @@ namespace boost
       : value_(
           is_valid_(d)
           ? d
-          : throw std::logic_error("bounded " + boost::chrono::to_string(int(d)) + " is out of range")
+          : throw std::out_of_range("bounded " + boost::chrono::to_string(int(d)) + " is out of range")
         )
       {}
 #else
@@ -58,7 +58,7 @@ namespace boost
       : value_(d)
       {
         if (!is_valid_(d))
-          throw std::logic_error("bounded " + boost::chrono::to_string(int(d)) + " is out of range");
+          throw std::out_of_range("bounded " + boost::chrono::to_string(int(d)) + " is out of range");
       }
 #endif
       /**

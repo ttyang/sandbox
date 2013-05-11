@@ -18,43 +18,34 @@ namespace boost
   namespace chrono
   {
 
-#ifdef  BOOST_NO_CXX11_CONSTEXPR
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, last, 0)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _1st, 1)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _2nd, 2)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _3rd, 3)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _4th, 4)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _5th, 5)
 
-    const weekday sun(0);
-    const weekday mon(1);
-    const weekday tue(2);
-    const weekday wed(3);
-    const weekday thu(4);
-    const weekday fri(5);
-    const weekday sat(6);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, jan, 1)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, feb, 2)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, mar, 3)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, apr, 4)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, may, 5)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, jun, 6)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, jul, 7)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, aug, 8)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, sep, 9)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, oct, 10)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, nov, 11)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, dec, 12)
 
-    const month jan(1);
-    const month feb(2);
-    const month mar(3);
-    const month apr(4);
-    const month may(5);
-    const month jun(6);
-    const month jul(7);
-    const month aug(8);
-    const month sep(9);
-    const month oct(10);
-    const month nov(11);
-    const month dec(12);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, sun, 0)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, mon, 1)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, tue, 2)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, wed, 3)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, thu, 4)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, fri, 5)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, sat, 6)
 
-#endif
-//    const nth_week _1st_week(1);
-//    const nth_week _2nd_week(2);
-//    const nth_week _3rd_week(3);
-//    const nth_week _4th_week(4);
-//    const nth_week _5th_week(5);
-//    const nth_week last_week(6);
-//
-//    const nth _1st(1);
-//    const nth _2nd(2);
-//    const nth _3rd(3);
-//    const nth _4th(4);
-//    const nth _5th(5);
-//    const nth last(6);
 
     const month_nth jan_1st(month(1), 1);
 
@@ -102,13 +93,15 @@ namespace boost
 //    {
 //      return days(days_in_month_[is_leap()][m]);
 //    }
+    //BOOST_CONSTEXPR
     day::rep days_in_month(bool leap, month::rep m) BOOST_NOEXCEPT
     {
       return days_in_month_[leap][m];
     }
 
 
-    BOOST_STATIC_CONSTEXPR day_of_year::rep days_in_year_before_[2][13] =
+    //BOOST_STATIC_CONSTEXPR
+    day_of_year::rep days_in_year_before_[2][13] =
     {
     { -1, 30, 58, 89, 119, 150, 180, 211, 242, 272, 303, 333, 364 },
     { -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 } };
@@ -165,24 +158,29 @@ namespace boost
 
 
 
+    //BOOST_CONSTEXPR
     day_of_year::rep days_in_year_before(bool b, month::rep m) BOOST_NOEXCEPT
     {
       return days_in_year_before_[b][m];
     }
+    //BOOST_CONSTEXPR
     const day_of_year::rep* days_in_year_before(bool b) BOOST_NOEXCEPT
     {
       return days_in_year_before_[b];
     }
 
+    //BOOST_CONSTEXPR
     month::rep day_of_year_month(bool b, day_of_year::rep d) BOOST_NOEXCEPT
     {
       return day_of_year_month_[b][d-1];
     }
 
+    //BOOST_CONSTEXPR
     day::rep day_of_year_day_of_month(bool b, day_of_year::rep d) BOOST_NOEXCEPT
     {
       return day_of_year_day_of_month_[b][d-1];
     }
+    //BOOST_CONSTEXPR
     day_of_year::rep month_day_to_day_of_year(bool b, month::rep m, day::rep d) BOOST_NOEXCEPT
     {
       return month_day_to_day_of_year_[b][m-1][d-1];

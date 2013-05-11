@@ -10,6 +10,7 @@
 #define BOOST_CHRONO_DATE_NTH_HPP
 
 #include <boost/cstdint.hpp>
+#include <boost/chrono/date/config.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
 
 namespace boost
@@ -19,15 +20,28 @@ namespace boost
     /**
      * nth tag
      */
-    struct nth_tag {};
+    struct nth_tag
+    {
+      const int value_;
+      BOOST_CONSTEXPR nth_tag(int v) BOOST_NOEXCEPT
+      : value_(v)
+      {}
+    };
+
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(nth_tag, last, 0);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(nth_tag, _1st, 1);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(nth_tag, _2nd, 2);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(nth_tag, _3rd, 3);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(nth_tag, _4th, 4);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(nth_tag, _5th, 5);
 
     /**
      * The class nth is used to specify a small integral value that indicates the nth day of the month (example: last, 1st).
      * Its range is [1, 6].
      */
-    class nth: public bounded<nth_tag, 1, 6, int_least8_t>
+    class nth: public bounded<nth_tag, 1, 6>
     {
-      typedef bounded<nth_tag, 1, 6, int_least8_t> base_type;
+      typedef bounded<nth_tag, 1, 6> base_type;
 
     public:
       BOOST_STATIC_CONSTEXPR rep not_applicable=7;
@@ -46,24 +60,15 @@ namespace boost
           : base_type(s)
       {}
 
+      BOOST_CONSTEXPR nth(nth_tag s) BOOST_NOEXCEPT
+          : base_type(s.value_)
+      {}
+
       BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
       {
         return value()==not_applicable;
       }
     };
-
-    struct last_t {};
-    BOOST_CONSTEXPR_OR_CONST last_t last = {};
-    struct _1st_t {};
-    BOOST_CONSTEXPR_OR_CONST _1st_t _1st = {};
-    struct _2nd_t {};
-    BOOST_CONSTEXPR_OR_CONST _2nd_t _2nd = {};
-    struct _3rd_t {};
-    BOOST_CONSTEXPR_OR_CONST _3rd_t _3rd = {};
-    struct _4th_t {};
-    BOOST_CONSTEXPR_OR_CONST _4th_t _4th = {};
-    struct _5th_t {};
-    BOOST_CONSTEXPR_OR_CONST _5th_t _5th = {};
 
 
 

@@ -20,6 +20,8 @@ namespace boost
   namespace chrono
   {
 
+
+
     /**
      * days to ymd conversion.
      * @param d the days to convert.
@@ -34,6 +36,14 @@ namespace boost
     year_day_of_year to_ydoy(days) BOOST_NOEXCEPT;
     year_day_of_year to_ydoy(year_month_day) BOOST_NOEXCEPT;
     year_day_of_year to_ydoy(year_week_weekday) BOOST_NOEXCEPT;
+
+    days::rep to_days(int y, int m, int d) BOOST_NOEXCEPT;
+    days::rep to_days(int_least32_t y, int_least16_t m, int_least16_t d) BOOST_NOEXCEPT;
+    days::rep to_days(int_least32_t y, int_least16_t m, int_least16_t d, bool) BOOST_NOEXCEPT;
+    void to_ymd(days::rep dt, int& y, int& m, int& d) BOOST_NOEXCEPT;
+    void to_ymd(days::rep dt, int_least32_t& y, int_least16_t& m, int_least16_t& d) BOOST_NOEXCEPT;
+    void to_ymdl(days::rep dt, int_least32_t& y, int_least16_t& m, int_least16_t& d, bool& leap) BOOST_NOEXCEPT;
+    //int_least16_t to_ymdl(days::rep dt, int_least32_t y, int_least16_t& m, int_least16_t& d, bool& leap) BOOST_NOEXCEPT;
 
     days to_days(year_month_day) BOOST_NOEXCEPT;
     days to_days(year_day_of_year) BOOST_NOEXCEPT;

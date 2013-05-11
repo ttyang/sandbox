@@ -44,10 +44,18 @@ project
         <toolset>clang:<cxxflags>-Wextra
         <toolset>clang:<cxxflags>-pedantic
         <toolset>clang:<cxxflags>-Wno-long-long
+
+        <toolset>gcc-4.4.6:<cxxflags>-fpermissive
+        <toolset>gcc-4.4.6.0x:<cxxflags>-fpermissive
+
+        <toolset>gcc-4.6.1:<cxxflags>-fpermissive
+        <toolset>gcc-4.6.1.0x:<cxxflags>-fpermissive
+
         <toolset>darwin:<cxxflags>-Wextra
         <toolset>darwin:<cxxflags>-pedantic
         <toolset>darwin:<cxxflags>-Wno-long-long
         <toolset>darwin-4.6.2:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.7.0:<cxxflags>-Wno-unused-local-typedefs
         <toolset>darwin-4.7.1:<cxxflags>-Wno-unused-local-typedefs
         <toolset>darwin-4.7.2:<cxxflags>-Wno-unused-local-typedefs
         <toolset>darwin-4.8.0:<cxxflags>-Wno-unused-local-typedefs
@@ -55,6 +63,17 @@ project
         <toolset>darwin-4.7.1x:<cxxflags>-Wno-unused-local-typedefs
         <toolset>darwin-4.7.2x:<cxxflags>-Wno-unused-local-typedefs
         <toolset>darwin-4.8.0x:<cxxflags>-Wno-unused-local-typedefs
+        <toolset>darwin-4.2.1:<cxxflags>-fpermissive
+        <toolset>darwin-4.6.2:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.0:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.1:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.2:<cxxflags>-fpermissive
+        <toolset>darwin-4.8.0:<cxxflags>-fpermissive
+        <toolset>darwin-4.6.2x:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.0x:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.1x:<cxxflags>-fpermissive
+        <toolset>darwin-4.7.2x:<cxxflags>-fpermissive
+        <toolset>darwin-4.8.0x:<cxxflags>-fpermissive
 
         <toolset>gcc:<cxxflags>-Wextra
         <toolset>gcc:<cxxflags>-pedantic
@@ -122,5 +141,11 @@ rule date-run-2 ( sources + : name )
         [ date-run ../example/hello_world.cpp ]
         [ date-run ../example/ex_week_based_year.cpp ]
         [ date-run-2 ../example/ex_julian.cpp ../example/julian.cpp : ex_julian ]
+        ;
+
+    explicit "perf" ;
+    test-suite "perf"
+        :
+        [ date-run ../perf/serial_calendar_conversions.cpp  ]
         ;
 

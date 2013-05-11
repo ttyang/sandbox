@@ -10,7 +10,7 @@
 #define BOOST_CHRONO_DATE_MONTH_NTH_HPP
 
 #include <boost/cstdint.hpp>
-#include <boost/chrono/config.hpp>
+#include <boost/chrono/date/config.hpp>
 #include <boost/chrono/date/nth.hpp>
 #include <boost/chrono/date/no_check.hpp>
 #include <boost/chrono/date/exceptions.hpp>
@@ -33,7 +33,7 @@ namespace boost
     public:
       /**
        * @Effects: Constructs an object of class @c month_nth by storing @c m and @c d.
-       * @Postconditions: get_month() == m && get_nth() == d && is_valid().
+       * @Postconditions: month() == m && nth() == d && is_valid().
        * @Throws: if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
        */
       month_nth(month m, nth d, check_t)
@@ -47,11 +47,11 @@ namespace boost
       }
       /**
        * @Effects: Constructs an object of class @c month_nth by storing @c m and @c d.
-       * @Postconditions: get_month() == m && get_nth() == d.
+       * @Postconditions: month() == m && nth() == d.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide the valid ones.
        */
-      month_nth(month m, nth d) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR month_nth(month m, nth d) BOOST_NOEXCEPT
       : m_(m),
       d_(d)
       {
@@ -59,14 +59,16 @@ namespace boost
       /**
        * @Return the @c month component.
        */
-      month get_month() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR month month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
       /**
        * @Return the @c nth component.
        */
-      nth get_nth() const BOOST_NOEXCEPT
+      //BOOST_CONSTEXPR nth nth() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::nth() const BOOST_NOEXCEPT
       {
         return d_;
       }
@@ -82,69 +84,20 @@ namespace boost
      * @Return a the @c month_nth with the associated parameters.
      * @Throws if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
      */
-    inline month_nth operator/(month m, nth d)
+    inline BOOST_CONSTEXPR month_nth operator/(chrono::month m, nth d)
     BOOST_NOEXCEPT
     {
       return month_nth(m, d);
     }
-    inline month_nth operator/(month m, last_t)
-    BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(6));
-    }
-    inline month_nth operator/(month m, _1st_t) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(1));
-    }
-    inline month_nth operator/(month m, _2nd_t) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(2));
-    }
-    inline month_nth operator/(month m, _3rd_t) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(3));
-    }
-    inline month_nth operator/(month m, _4th_t) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(4));
-    }
-    inline month_nth operator/(month m, _5th_t) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(5));
-    }
+
     /**
      * @Returns the @c month_nth with the associated parameters.
      * @Throws if @c d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
      */
-    inline month_nth operator/(nth d, month m)
+    inline BOOST_CONSTEXPR month_nth operator/(nth d, chrono::month m)
 BOOST_NOEXCEPT  {
     return month_nth(m, d);
   }
-    inline month_nth operator/(last_t, month m)
-BOOST_NOEXCEPT  {
-    return month_nth(m, nth(6));
-  }
-
-    inline month_nth operator/(_1st_t, month m) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(1));
-    }
-    inline month_nth operator/(_2nd_t, month m) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(2));
-    }
-    inline month_nth operator/(_3rd_t, month m) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(3));
-    }
-    inline month_nth operator/(_4th_t, month m) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(4));
-    }
-    inline month_nth operator/(_5th_t, month m) BOOST_NOEXCEPT
-    {
-      return month_nth(m, nth(5));
-    }
 
 
 } // chrono

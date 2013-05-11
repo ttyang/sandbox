@@ -9,18 +9,10 @@
 #ifndef BOOST_CHRONO_DATE_TMP_DATE_HPP
 #define BOOST_CHRONO_DATE_TMP_DATE_HPP
 
-
 #include <boost/chrono/date/config.hpp>
 #include <boost/chrono/date/ymd_date.hpp>
-#if BOOST_CHRONO_DATE_DATE_DESIGN == 1 | BOOST_CHRONO_DATE_DATE_DESIGN == 3
-#elif BOOST_CHRONO_DATE_DATE_DESIGN == 2
 #include <boost/chrono/date/days_date.hpp>
-#if defined BOOST_CHRONO_DATE_DATE_DESIGN_BUG
-#include <boost/chrono/date/tmp/date.hpp>
-#endif
-#elif BOOST_CHRONO_DATE_DATE_DESIGN == 4
 #include <boost/chrono/date/ydoy_date.hpp>
-#endif
 
 namespace boost
 {

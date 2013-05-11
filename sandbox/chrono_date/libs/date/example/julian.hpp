@@ -668,15 +668,18 @@ namespace julian
     //    explicit
     operator boost::chrono::date() const;
 
-    julian::day get_day() const
+    operator julian::day() const
     { return julian::day(d_);}
-    julian::month get_month() const
+    //julian::month month() const
+    operator julian::month() const
     { return julian::month(m_);}
-    julian::year get_year() const
+    //julian::year year() const
+    operator julian::year() const
     { return julian::year(y_);}
     bool is_leap_year() const
     { return leap_;}
-    julian::weekday get_weekday() const
+    //julian::weekday weekday() const
+    operator julian::weekday() const
     { return julian::weekday((x_+5) % 7);}
 
     date& operator+=(days d);
@@ -750,7 +753,7 @@ namespace julian
   operator >>(std::basic_istream<charT,traits>& is, date& item)
   {
     typename std::basic_istream<charT,traits>::sentry ok(is);
-    if (ok)
+    if (bool(ok))
     {
       std::ios_base::iostate err = std::ios_base::goodbit;
       try
@@ -788,7 +791,7 @@ namespace julian
   operator <<(std::basic_ostream<charT, traits>& os, const date& item)
   {
     typename std::basic_ostream<charT, traits>::sentry ok(os);
-    if (ok)
+    if (bool(ok))
     {
       bool failed;
       try
@@ -796,10 +799,10 @@ namespace julian
         const std::time_put<charT>& tp = std::use_facet<std::time_put<charT> >
         (os.getloc());
         std::tm t;
-        t.tm_mday = item.get_day();
-        t.tm_mon = item.get_month() - 1;
-        t.tm_year = item.get_year() - 1900;
-        t.tm_wday = item.get_weekday();
+        t.tm_mday = day(item);
+        t.tm_mon = month(item) - 1;
+        t.tm_year = year(item) - 1900;
+        t.tm_wday = weekday(item);
         charT pattern[] =
         { '%', 'F'};
         const charT* pb = pattern;

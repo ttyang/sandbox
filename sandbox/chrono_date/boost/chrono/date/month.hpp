@@ -10,6 +10,7 @@
 #define BOOST_CHRONO_DATE_MONTH_HPP
 
 #include <boost/cstdint.hpp>
+#include <boost/chrono/date/detail/helpers.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
 #include <boost/chrono/date/detail/helpers.hpp>
 #include <boost/chrono/date/date_durations.hpp>
@@ -27,9 +28,9 @@ namespace boost
     /**
      * The class @c month is used to specify the month of the year when constructing a date.  Its range is [1,12].
      */
-    class month: public bounded<month_tag, 1, 12, int_least8_t>
+    class month: public bounded<month_tag, 1, 12, month_rep>
     {
-      typedef bounded<month_tag, 1, 12, int_least8_t> base_type;
+      typedef bounded<month_tag, 1, 12, month_rep> base_type;
     public:
       /**
        * @Effects: Constructs an object of class month by storing m.
@@ -61,34 +62,19 @@ namespace boost
     /**
      * month pseudo-literals.
      */
-#ifndef  BOOST_NO_CXX11_CONSTEXPR
-    BOOST_CONSTEXPR_OR_CONST month jan(1);
-    BOOST_CONSTEXPR_OR_CONST month feb(2);
-    BOOST_CONSTEXPR_OR_CONST month mar(3);
-    BOOST_CONSTEXPR_OR_CONST month apr(4);
-    BOOST_CONSTEXPR_OR_CONST month may(5);
-    BOOST_CONSTEXPR_OR_CONST month jun(6);
-    BOOST_CONSTEXPR_OR_CONST month jul(7);
-    BOOST_CONSTEXPR_OR_CONST month aug(8);
-    BOOST_CONSTEXPR_OR_CONST month sep(9);
-    BOOST_CONSTEXPR_OR_CONST month oct(10);
-    BOOST_CONSTEXPR_OR_CONST month nov(11);
-    BOOST_CONSTEXPR_OR_CONST month dec(12);
-#else
-    extern const month jan;
-    extern const month feb;
-    extern const month mar;
-    extern const month apr;
-    extern const month may;
-    extern const month jun;
-    extern const month jul;
-    extern const month aug;
-    extern const month sep;
-    extern const month oct;
-    extern const month nov;
-    extern const month dec;
 
-#endif
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, jan, 1);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, feb, 2);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, mar, 3);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, apr, 4);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, may, 5);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, jun, 6);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, jul, 7);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, aug, 8);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, sep, 9);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, oct, 10);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, nov, 11);
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DCL(month, dec, 12);
 
     /**
      * Overload for month conversion to string.

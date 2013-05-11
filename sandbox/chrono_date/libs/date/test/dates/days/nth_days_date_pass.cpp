@@ -48,55 +48,55 @@ int main()
     rel_date dt(days(11979588));
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.days_since_epoch().count()==11979588);
-    BOOST_TEST(dt.get_year()==0);
-    BOOST_TEST(dt.get_month()==1);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==0);
+    BOOST_TEST(dt.month()==1);
+    BOOST_TEST(dt.day()==1);
   }
   std::cout <<"***********"<< std::endl;
   { // default constructor
     rel_date dt;
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==0);
-    BOOST_TEST(dt.get_month()==1);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==0);
+    BOOST_TEST(dt.month()==1);
+    BOOST_TEST(dt.day()==1);
   }
   std::cout <<"***********"<< std::endl;
   { // construct from ymd: 2011/oct/22
     rel_date dt(year(2011),oct,day(22));
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==oct);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==oct);
+    BOOST_TEST(dt.day()==22);
   }
   std::cout <<"***********"<< std::endl;
   { // no_check construct from bad ymd: 2011/oct/22
     rel_date dt(2011,10,22);
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==oct);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==oct);
+    BOOST_TEST(dt.day()==22);
   }
 
   { // construct from ymd: 2011/jan_01
     rel_date dt(year(2011),jan_01);
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==jan);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==jan);
+    BOOST_TEST(dt.day()==1);
   }
   { // no_check construct from ymd: 2011/jan_01
     rel_date dt(2011,jan_01);
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==jan);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==jan);
+    BOOST_TEST(dt.day()==1);
   }
   { // construct from ymd: first day: -32768/jan_01
     rel_date dt(year(-32768),jan_01);
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==-32768);
-    BOOST_TEST(dt.get_month()==jan);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==-32768);
+    BOOST_TEST(dt.month()==jan);
+    BOOST_TEST(dt.day()==1);
     BOOST_TEST(dt.days_since_epoch().count()==11322);
 
     std::cout <<"-32768/jan/01 days "<< dt.days_since_epoch().count() << std::endl;
@@ -104,26 +104,26 @@ int main()
   { // construct from ymd: last day: 32767/dec/31
     rel_date dt(year(32767),dec,day(31));
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==32767);
-    BOOST_TEST(dt.get_month()==dec);
-    BOOST_TEST(dt.get_day()==31);
+    BOOST_TEST(dt.year()==32767);
+    BOOST_TEST(dt.month()==dec);
+    BOOST_TEST(dt.day()==31);
     BOOST_TEST(dt.days_since_epoch().count()==23947853);
     std::cout <<"32767/12/31 days "<< dt.days_since_epoch().count() << std::endl;
   }
   { // construct from days: first day: -32768/jan_01
     rel_date dt(days(11322));
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==-32768);
-    BOOST_TEST(dt.get_month()==jan);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==-32768);
+    BOOST_TEST(dt.month()==jan);
+    BOOST_TEST(dt.day()==1);
 
   }
   { // construct from days: last day: 32767/dec/31
     rel_date dt(days(23947853));
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==32767);
-    BOOST_TEST(dt.get_month()==dec);
-    BOOST_TEST(dt.get_day()==31);
+    BOOST_TEST(dt.year()==32767);
+    BOOST_TEST(dt.month()==dec);
+    BOOST_TEST(dt.day()==31);
   }
 
 
@@ -131,25 +131,25 @@ int main()
     rel_date dt(year(2011), day_of_year(1));
     std::cout << dt << '\n';
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==jan);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==jan);
+    BOOST_TEST(dt.day()==1);
   }
 
   { // construct from year + doy:
     rel_date dt(year(2011), day_of_year(365));
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==dec);
-    BOOST_TEST(dt.get_day()==31);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==dec);
+    BOOST_TEST(dt.day()==31);
   }
   { // construct from year + doy:
     BOOST_TEST( year(2012).is_leap());
     rel_date dt(year(2012), day_of_year(366));
     BOOST_TEST( dt.is_valid());
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==dec);
-    BOOST_TEST(dt.get_day()==31);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==dec);
+    BOOST_TEST(dt.day()==31);
   }
 
   { // construct from bad (year + doy):
@@ -200,15 +200,15 @@ int main()
     rel_date dt(300,10,22);
     BOOST_TEST( ! dt.is_leap_year());
   }
-  // get_weekday
+  // weekday
   {
-    BOOST_TEST( rel_date(2011,10,23).get_weekday()==sun);
-    BOOST_TEST( rel_date(2011,10,24).get_weekday()==mon);
-    BOOST_TEST( rel_date(2011,10,25).get_weekday()==tue);
-    BOOST_TEST( rel_date(2011,10,26).get_weekday()==wed);
-    BOOST_TEST( rel_date(2011,10,27).get_weekday()==thu);
-    BOOST_TEST( rel_date(2011,10,28).get_weekday()==fri);
-    BOOST_TEST( rel_date(2011,10,29).get_weekday()==sat);
+    BOOST_TEST( rel_date(2011,10,23).weekday()==sun);
+    BOOST_TEST( rel_date(2011,10,24).weekday()==mon);
+    BOOST_TEST( rel_date(2011,10,25).weekday()==tue);
+    BOOST_TEST( rel_date(2011,10,26).weekday()==wed);
+    BOOST_TEST( rel_date(2011,10,27).weekday()==thu);
+    BOOST_TEST( rel_date(2011,10,28).weekday()==fri);
+    BOOST_TEST( rel_date(2011,10,29).weekday()==sat);
   }
   // day based arithmetic
   { //+=
@@ -219,37 +219,37 @@ int main()
   { // += feb/28 no leap
     rel_date dt(year(2011),feb,day(28));
     dt+=days(1);
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==mar);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==mar);
+    BOOST_TEST(dt.day()==1);
   }
   { // += feb/28 leap
     rel_date dt(year(2012),feb,day(28));
     dt+=days(1);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==feb);
-    BOOST_TEST(dt.get_day()==29);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==feb);
+    BOOST_TEST(dt.day()==29);
   }
   { // += feb/29 leap
     rel_date dt(year(2012),feb,day(29));
     dt+=days(1);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==mar);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==mar);
+    BOOST_TEST(dt.day()==1);
   }
   { // += month change
     rel_date dt(year(2011),oct,day(22));
     dt+=days(10);
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==nov);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==nov);
+    BOOST_TEST(dt.day()==1);
   }
   { // += month+year change
     rel_date dt(year(2011),dec,day(22));
     dt+=days(10);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==jan);
-    BOOST_TEST(dt.get_day()==1);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==jan);
+    BOOST_TEST(dt.day()==1);
   }
   { // dt++
     rel_date dt(days(1000000));
@@ -284,31 +284,31 @@ int main()
   { // -= month + year change
     rel_date dt(year(2011),jan,day(10));
     dt-=days(10);
-    BOOST_TEST(dt.get_year()==2010);
-    BOOST_TEST(dt.get_month()==dec);
-    BOOST_TEST(dt.get_day()==31);
+    BOOST_TEST(dt.year()==2010);
+    BOOST_TEST(dt.month()==dec);
+    BOOST_TEST(dt.day()==31);
   }
 
   { // -= month change
     rel_date dt(year(2011),oct,day(10));
     dt-=days(10);
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==sep);
-    BOOST_TEST(dt.get_day()==30);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==sep);
+    BOOST_TEST(dt.day()==30);
   }
   {
     rel_date dt(year(2011),mar,day(1));
     dt-=days(1);
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==feb);
-    BOOST_TEST(dt.get_day()==28);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==feb);
+    BOOST_TEST(dt.day()==28);
   }
   {
     rel_date dt(year(2012),mar,day(1));
     dt-=days(1);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==feb);
-    BOOST_TEST(dt.get_day()==29);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==feb);
+    BOOST_TEST(dt.day()==29);
   }
 
   {
@@ -345,34 +345,34 @@ int main()
     dt+=months(1);
     std::cout <<dt<< std::endl;
 
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==nov);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==nov);
+    BOOST_TEST(dt.day()==22);
   }
   std::cout <<"==========="<< std::endl;
   {
     rel_date dt(year(2011),oct,day(22));
     dt = dt + months(1);
 
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==nov);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==nov);
+    BOOST_TEST(dt.day()==22);
   }
   std::cout <<"==========="<< std::endl;
   {
     rel_date dt(year(2011),oct,day(22));
     dt = months(1) + dt;
 
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==nov);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==nov);
+    BOOST_TEST(dt.day()==22);
   }
   {
     rel_date dt(year(2011),oct,day(22));
     dt+=months(3);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==jan);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==jan);
+    BOOST_TEST(dt.day()==22);
   }
   std::cout <<"/////////"<< std::endl;
   {
@@ -385,9 +385,9 @@ int main()
   {
     rel_date dt(year(2012),jan,day(29));
     dt+=months(1);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()=feb);
-    BOOST_TEST(dt.get_day()==29);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()=feb);
+    BOOST_TEST(dt.day()==29);
   }
   std::cout <<"/////////"<< std::endl;
 
@@ -395,40 +395,40 @@ int main()
     rel_date dt(year(2011),oct,day(22));
     dt-=months(1);
 
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==sep);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==sep);
+    BOOST_TEST(dt.day()==22);
   }
   {
     rel_date dt(year(2012),mar,day(22));
     dt-=months(3);
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==dec);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==dec);
+    BOOST_TEST(dt.day()==22);
   }
   {
     rel_date dt(year(2011),oct,day(22));
     dt= dt-months(1);
 
-    BOOST_TEST(dt.get_year()==2011);
-    BOOST_TEST(dt.get_month()==sep);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2011);
+    BOOST_TEST(dt.month()==sep);
+    BOOST_TEST(dt.day()==22);
   }
 
   // year based arithmetic
   {
     rel_date dt(year(2011),oct,day(22));
     dt+=years(1);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==oct);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==oct);
+    BOOST_TEST(dt.day()==22);
   }
   {
     rel_date dt(year(2012),feb,day(29));
     dt+=years(4);
-    BOOST_TEST(dt.get_year()==2016);
-    BOOST_TEST(dt.get_month()==feb);
-    BOOST_TEST(dt.get_day()==29);
+    BOOST_TEST(dt.year()==2016);
+    BOOST_TEST(dt.month()==feb);
+    BOOST_TEST(dt.day()==29);
   }
   {
     rel_date dt(year(2012),feb,day(29));
@@ -440,32 +440,32 @@ int main()
   {
     rel_date dt(year(2011),oct,day(22));
     dt = dt + years(1);
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==oct);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==oct);
+    BOOST_TEST(dt.day()==22);
   }
   {
     rel_date dt(year(2011),oct,day(22));
     dt = years(1) + dt;
-    BOOST_TEST(dt.get_year()==2012);
-    BOOST_TEST(dt.get_month()==oct);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2012);
+    BOOST_TEST(dt.month()==oct);
+    BOOST_TEST(dt.day()==22);
   }
   {
     rel_date dt(year(2011),oct,day(22));
     dt-=years(1);
-    BOOST_TEST(dt.get_year()==2010);
-    BOOST_TEST(dt.get_month()==oct);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2010);
+    BOOST_TEST(dt.month()==oct);
+    BOOST_TEST(dt.day()==22);
   }
   std::cout <<"/////////"<< std::endl;
 
   {
     rel_date dt(year(2012),feb,day(29));
     dt-=years(4);
-    BOOST_TEST(dt.get_year()==2008);
-    BOOST_TEST(dt.get_month()==feb);
-    BOOST_TEST(dt.get_day()==29);
+    BOOST_TEST(dt.year()==2008);
+    BOOST_TEST(dt.month()==feb);
+    BOOST_TEST(dt.day()==29);
   }
   {
     rel_date dt(year(2012),feb,day(29));
@@ -477,9 +477,9 @@ int main()
   {
     rel_date dt(year(2011),oct,day(22));
     dt = dt - years(1);
-    BOOST_TEST(dt.get_year()==2010);
-    BOOST_TEST(dt.get_month()==oct);
-    BOOST_TEST(dt.get_day()==22);
+    BOOST_TEST(dt.year()==2010);
+    BOOST_TEST(dt.month()==oct);
+    BOOST_TEST(dt.day()==22);
   }
   // TODO add exceptional cases bad result year
 

@@ -32,33 +32,36 @@ int main()
     std::cout << feb/day(1)/2011 << '\n';  // 2011-01-02
 
     // Print Feb. 28 for each year in the decade
-    for (date d = feb/day(28)/2010, e = feb/day(28)/2020; d <= e; d += years(1))
+    for (ymd_date d = feb/day(28)/2010, e = feb/day(28)/2020; d <= e; d += years(1))
         std::cout << d << '\n';
     std::cout << '\n';
 
 
     // Print the day after Feb. 28 for each year in the decade
-    for (date d = feb/day(28)/2010, e = feb/day(28)/2020; d <= e; d += years(1))
+    for (ymd_date d = feb/day(28)/2010, e = feb/day(28)/2020; d <= e; d += years(1))
+        std::cout << days_date(d) + days(1) << '\n';
+    std::cout << '\n';
+    for (days_date d = feb/day(28)/2010, e = feb/day(28)/2020; d <= e; d = ymd_date(d)+years(1))
         std::cout << d + days(1) << '\n';
     std::cout << '\n';
 
     // Print the 28th of every month in 2011
-    for (date d = jan/day(28)/2011, e = dec/day(28)/2011; d <= e; d += months(1))
+    for (ymd_date d = jan/day(28)/2011, e = dec/day(28)/2011; d <= e; d += months(1))
         std::cout << d << '\n';
     std::cout << '\n';
 
     {
     // How many days between may/1/2011 and jan/1/2011?
-    std::cout <<"How many days between may/1/2011 and jan/1/2011? "<<  (may/day(01)/2011 - jan/day(01)/2011) << '\n';  // x == 120
+    std::cout <<"How many days between may/1/2011 and jan/1/2011? "<<  days_date(may/day(01)/2011) - jan/day(01)/2011 << '\n';  // x == 120
 
     std::cout << '\n';
     }
 
     {
     date dt = aug/day(16)/2011;
-    int d = dt.get_day();   // d == 16
-    int m = dt.get_month(); // m == 8
-    int y = dt.get_year();  // y == 2011
+    int d = day(dt);   // d == 16
+    int m = month(dt); // m == 8
+    int y = year(dt);  // y == 2011
     std::cout <<  dt << '\n';
     std::cout <<  y << " "  << m << " " << d << '\n';
     std::cout << '\n';
@@ -68,20 +71,20 @@ int main()
     date dt = aug/day(16)/2011;
     // ...
     // Create date with the same month and year but on the 5th
-    date dt2 = dt.get_year()/dt.get_month()/5;  // aug/5/2011
+    date dt2 = year(dt)/month(dt)/5;  // aug/5/2011
     (void)dt2;
-    int d = dt.get_day();   // d == 5
-    int m = dt.get_month(); // m == 8
-    int y = dt.get_year();  // y == 2011
+    int d = day(dt);   // d == 5
+    int m = month(dt); // m == 8
+    int y = year(dt);  // y == 2011
     std::cout <<  dt << '\n';
     std::cout <<  y << " "  << m << " " << d << '\n';
     std::cout << '\n';
     }
 
     {
-      date dt = aug/day(16)/2011;
+      days_date dt = aug/day(16)/2011;
       // What day of the week is this?
-      int wd = dt.get_weekday();  // 2 (Tuesday)
+      int wd = weekday(dt);  // 2 (Tuesday)
       std::cout <<  dt << '\n';
       std::cout <<  wd <<  '\n';
     }
@@ -89,14 +92,14 @@ int main()
     {
       std::cout << date_fmt("%a %b %e, %Y");
       // Print the odd fridays of every month in 2011
-      for (date d = jan/day(28)/2011, e = dec/day(28)/2011; d <= e; d += months(1))
+      for (ymd_date d = jan/day(28)/2011, e = dec/day(28)/2011; d <= e; d += months(1))
       {
           std::cout << d << '\n';             // first Friday of the month
       }
     }
     {
       Clock::time_point t0 = Clock::now();
-      for (date d = feb/day(28)/2010, e = feb/day(28)/2020; d != e; d += years(1))
+      for (ymd_date d = feb/day(28)/2010, e = feb/day(28)/2020; d != e; d += years(1))
         ;
       Clock::time_point t1 = Clock::now();
       std::cout << "   iterate: " << micros(t1 - t0)  << "\n";
@@ -130,8 +133,8 @@ int main()
     }
 
     {
-//      int num_fri_in_may = (_fri[last]/may/2011).get_day() > 28 ? 5 : 4;  // 4
-      int num_fri_in_may = (last*fri/may/2011).get_day() > 28 ? 5 : 4;  // 4
+//      int num_fri_in_may = (_fri[last]/may/2011).day() > 28 ? 5 : 4;  // 4
+      int num_fri_in_may = day(last*fri/may/2011) > 28 ? 5 : 4;  // 4
       std::cout <<"Number of fridays in May"<< num_fri_in_may << '\n';
 
 //      date d1 = rel_weekday(5)[_1st]/may/2011;
@@ -145,7 +148,7 @@ int main()
 
     {
       // Print the last day in  Feb. for each year in the decade
-      for (date d = feb/last/2010, e = feb/last/2020; d <= e; d += years(1))
+      for (ymd_date d = feb/last/2010, e = feb/last/2020; d <= e; d += years(1))
           std::cout << d << '\n';
       std::cout << feb/last/2020 << '\n';
     }
@@ -183,8 +186,8 @@ int main()
       // Print the 29th of every month in 2011
       for (rel_date d = last/jan/2011, e = last/dec/2011; d <= e; d += months(1))
       {
-          if (d.get_day() >= 29)
-              std::cout << d.get_year()/d.get_month()/29 << '\n';
+          if (day(d) >= 29)
+              std::cout << year(d)/month(d)/29 << '\n';
       }
     }
     {
@@ -196,7 +199,7 @@ int main()
     {
       // Print out every monday between jan/1/2011 and mar/1/2011;
       //for (date d = _mon[_1st]/jan/2011, e = mar/_1st/2011; d <= e; d += days(7))
-      for (date d = _1st*mon/jan/2011, e = mar/_1st/2011; d <= e; d += days(7))
+      for (days_date d = _1st*mon/jan/2011, e = mar/_1st/2011; d <= e; d += days(7))
           std::cout << d << '\n';
     }
     {
@@ -208,40 +211,40 @@ int main()
       }
     }
     {
-      date dt = aug/day(16)/2011;
+      ymd_date dt(aug/day(16)/2011);
       // ...
       // Get the date that is the first occurrence of the same day of the week
       //   in the same month of the next year
-      //rel_date dt2 = dt.get_weekday()[_1st]/dt.get_month()/(dt.get_year() + 1);  // aug/7/2012, first Tuesday of Aug 2012
-      rel_date dt2 = _1st*dt.get_weekday()/dt.get_month()/(dt.get_year() + 1);  // aug/7/2012, first Tuesday of Aug 2012
+      //rel_date dt2 = weekday(dt)[_1st]/month(dt)/(year(dt) + 1);  // aug/7/2012, first Tuesday of Aug 2012
+      rel_date dt2 = _1st*weekday(days_date(dt))/month(dt)/(year(dt) + 1);  // aug/7/2012, first Tuesday of Aug 2012
       std::cout << dt << '\n';
       std::cout << dt2 << '\n';
     }
     {
-      date ISO_week_start = mon <= jan/day(4)/2012;
+      ymd_date ISO_week_start(mon <= jan/day(4)/2012);
       std::cout << "ISO_week_start " << ISO_week_start << '\n';
     }
 
     {
       // How many weeks until Christmas?
-      date dt = dec/day(25)/2011;
+      days_date dt = dec/day(25)/2011;
       days d=dt- date::today();
       std::cout << duration_cast<weeks>(d)<< '\n';
     }
     {
       // How many average months until Christmas?
-      days d = (dec/day(25)/2011) - date::today();
+      days d = days_date(dec/day(25)/2011) - date::today();
       std::cout << duration_cast<average_months>(d)<< '\n';
     }
     {
       // How many weeks until Christmas?
-      days d=(dec/day(25)>date::today())- date::today();
+      days d=days_date(dec/day(25) > date::today()) - date::today();
       std::cout << duration_cast<weeks>(d)<< '\n';
     }
     {
       std::cout << __FILE__<<"["<<__LINE__ <<"] "<< "How many days until next 28th?" << '\n';
       // How many days until next 28th?
-      days d=(nth(5)>date::today())- date::today();
+      days d=days_date(nth(5)>date::today()) - date::today();
       std::cout << d << '\n';
     }
     {
