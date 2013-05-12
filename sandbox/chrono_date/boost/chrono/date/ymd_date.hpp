@@ -96,43 +96,78 @@ namespace boost
 
     public:
 #if ! defined  BOOST_CHRONO_DATE_DOXYGEN_INVOKED
+    private:
+
+      /**
+       * Check the validity between the parameters not that the parameters are them self valid.
+       */
+      BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
+      bool is_valid_(year y, month m, day d)
+      {
+          return (m != 2)
+              ? ( d <= chrono_detail::max_days_in_month(m)
+                  ? true
+                  : false
+                )
+              : ( y.is_leap()
+                ? ( d <= 29
+                    ? true
+                    : false
+                )
+                : ( d <= 28
+                    ? true
+                    : false
+                  )
+                );
+      }
+      BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
+      bool is_valid_(year y, month_day md)
+      {
+          return month(md) != 2 || day(md) <= 28 || y.is_leap()
+              ? true
+              : false;
+      }
 
 #ifndef  BOOST_NO_CXX11_CONSTEXPR
       BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
       day check_invariants(year y, month m, day d)
       {
-          return (m != 2)
-              ? ( d <= chrono_detail::max_days_in_month(m)
+          return is_valid_(y,m,d)
                   ? d
                   : throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m))
-                )
-              : ( y.is_leap()
-                ? ( d <= 29
-                    ? d
-                    : throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m))
-                )
-                : ( d <= 28
-                    ? d
-                    : throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m))
-                  )
-                );
+                ;
       }
+
+      BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
+      day check_invariants(year y, month_day md)
+      {
+          return is_valid_(y,md)
+                  ? day(md)
+                  : throw bad_date("day " + to_string(day(md)) + " is out of range for " + to_string(y) + '/' + to_string(month(md)))
+                ;
+      }
+
 #else
       BOOST_FORCEINLINE static
       day check_invariants(year y, month m, day d)
       {
-          if ( m != 2 )
-              if ( d <= chrono_detail::max_days_in_month(m) ) return d;
-              else throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m));
-          else
-            if (y.is_leap())
-                if ( d <= 29 ) return d;
-                else throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m));
-            else
-                if (d <= 28) return d;
-                else throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m));
+          if ( is_valid_(y,m,d) )
+              return d;
+          else throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m));
+      }
+
+      BOOST_FORCEINLINE static
+      day check_invariants(year y, month_day md)
+      {
+          if ( is_valid_(y,md) )
+              return day(md);
+          else throw bad_date("day " + to_string(day(md)) + " is out of range for " + to_string(y) + '/' + to_string(month(md)));
       }
 #endif
+
+
+
+
 
 #endif
       /**
@@ -152,7 +187,7 @@ namespace boost
 #endif
       {
       }
-      ymd_date(int y, chrono::month m, chrono::day d, check_t):
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(int y, chrono::month m, chrono::day d, check_t):
         y_(y),
         m_(m),
         d_(check_invariants(year(y), m, d))
@@ -161,7 +196,7 @@ namespace boost
   #endif
         {
         }
-      ymd_date(chrono::year y, int m, chrono::day d, check_t):
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, int m, chrono::day d, check_t):
         y_(y),
         m_(m),
         d_(check_invariants(y, month(m), d))
@@ -304,13 +339,29 @@ namespace boost
        * @Throws bad_date if the specified ymd_date is invalid.
        * @Note This constructor can be more efficient as the month_day is already valid.
        */
-      ymd_date(chrono::year y, month_day md, check_t);
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, month_day md, check_t):
+      y_(y),
+      m_(month(md)),
+      d_(check_invariants(y, md))
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+      , leap_(y.is_leap())
+#endif
+      {
+      }
       /**
        * @Effect Constructs a ymd_date using the year, month_day stored in the arguments as follows:
        * Constructs a ymd_date for which year() == y, month() == month(md), day() == month(md).
        * @Note This constructor can be more efficient as the month_day is already valid.
        */
-      ymd_date(chrono::year, month_day) BOOST_NOEXCEPT;
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, month_day md) BOOST_NOEXCEPT:
+      y_(y),
+      m_(month(md)),
+      d_(day(md))
+      #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+      , leap_(y.is_leap())
+      #endif
+          {
+          }
 
 //      /**
 //       * @Effect Constructs a ymd_date using the year, day_of_year stored in the arguments as follows:
@@ -434,7 +485,10 @@ namespace boost
        * @Returns whether the year()/month()/day() is a valid proleptic Gregorian date.
        */
       // @todo BOOST_CONSTEXPR
-      bool is_valid() const BOOST_NOEXCEPT;
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      {
+        return month(m_).is_valid() && day(d_).is_valid() && is_valid_(year(y_), month(m_), day(d_));
+      }
 
 //#if ! defined  BOOST_CHRONO_DATE_DOXYGEN_INVOKED
 //    private:
@@ -537,7 +591,7 @@ namespace boost
       BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_leap_year() const BOOST_NOEXCEPT
       {
 #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
-            return leap_;
+        return leap_;
 #else
         return is_leap(y_);
 #endif

@@ -46,24 +46,24 @@ namespace boost
       return system_clock::from_time_t(t);
     }
 
-    bool ymd_date::is_valid() const BOOST_NOEXCEPT
-    {
-      //if (chrono::year(y_).is_valid() && chrono::month(m_).is_valid() && chrono::day(d_).is_valid())
-      {
-        const day_of_year::rep* year_data = days_in_year_before(is_leap_year());
-
-        if (! (1 <= d_ && d_ <= year_data[m_] - year_data[m_ - 1]))
-        {
-          return false;
-        }
-        else
-        {
-          return true;
-        }
-      }
-      return false;
-
-    }
+//    bool ymd_date::is_valid() const BOOST_NOEXCEPT
+//    {
+//      //if (chrono::year(y_).is_valid() && chrono::month(m_).is_valid() && chrono::day(d_).is_valid())
+//      {
+//        const day_of_year::rep* year_data = days_in_year_before(is_leap_year());
+//
+//        if (! (1 <= d_ && d_ <= year_data[m_] - year_data[m_ - 1]))
+//        {
+//          return false;
+//        }
+//        else
+//        {
+//          return true;
+//        }
+//      }
+//      return false;
+//
+//    }
 
     bool ymd_date::set_if_valid_date(chrono::year y, chrono::month m, chrono::day d) BOOST_NOEXCEPT
     {
@@ -109,20 +109,6 @@ namespace boost
 //      return true;
 //    }
 
-    ymd_date::ymd_date(chrono::year y, chrono::month_day md, check_t)
-    {
-      if (set_if_valid_date(y, month(md), day(md))) return;
-      throw bad_date(
-          "day " + to_string(day(md)) + " is out of range for " + to_string(y) + '-' + to_string(month(md)));
-    }
-
-    ymd_date::ymd_date(chrono::year y, chrono::month_day md)BOOST_NOEXCEPT
-    : y_(y), m_(month(md)), d_(day(md))
-#if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
-      , leap_(is_leap(y_))
-#endif
-    {
-    }
 
 //    ymd_date::ymd_date(chrono::year y, day_of_year doy) BOOST_NOEXCEPT
 //    {
@@ -163,14 +149,14 @@ namespace boost
     {
 #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
 //#if ! defined __clang__
-#if 1
+#if 0
       year_month_day_leap ymdl = to_ymd_leap(dt.days_since_epoch());
       y_=year(ymdl);
       m_=month(ymdl);
       d_=day(ymdl);
       leap_=ymdl.is_leap_year();
 #else
-      to_ymdl(dt.days_since_epoch().count(), y_,m_,d_,leap_);
+      to_ymd_leap(dt.days_since_epoch().count(), y_,m_,d_,leap_);
 #endif
 #else
       to_ymd(dt.days_since_epoch().count(), y_,m_,d_);
@@ -181,14 +167,14 @@ namespace boost
     {
 #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
 //#if ! defined __clang__
-#if 1
+#if 0
       year_month_day_leap ymdl = to_ymd_leap(d);
       leap_=ymdl.is_leap_year();
       y_=year(ymdl);
       m_=month(ymdl);
       d_=day(ymdl);
 #else
-      to_ymdl(d.count(), y_,m_,d_,leap_);
+      to_ymd_leap(d.count(), y_,m_,d_,leap_);
 #endif
 
 #else
