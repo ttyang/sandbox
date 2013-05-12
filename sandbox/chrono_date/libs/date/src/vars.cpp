@@ -194,6 +194,41 @@ namespace boost
     {
       return month_day_to_day_of_year_[b][m-1][d-1];
     }
+
+    // year_month
+
+    year_month&
+    year_month::operator+=(months mn) BOOST_NOEXCEPT
+    {
+      year::rep y = y_;
+      month::rep m = m_;
+      m += mn.count();
+      if (m < 1)
+      {
+        int dy = (12 - m) / 12;
+        y -= dy;
+        m += 12 * dy;
+      }
+      else if (m > 12)
+      {
+        int dy = (m - 1) / 12;
+        y += dy;
+        m -= 12 * dy;
+      }
+      y_ = chrono::year(y);
+      m_ = chrono::month(m);
+      return *this;
+    }
+
+    months operator-(year_month x, year_month y) BOOST_NOEXCEPT
+    {
+      year::rep y1 = x.y_;
+      month::rep m1 = x.m_;
+      year::rep y2 = y.y_;
+      month::rep m2 = y.m_;
+      return months(y1 * 12 + m1 - (y2 * 12 + m2));
+    }
+
 } // boost
   } // chrono
 

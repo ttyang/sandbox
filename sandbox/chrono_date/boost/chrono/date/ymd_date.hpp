@@ -780,7 +780,7 @@ namespace boost
        * @Returns: *this += -y.
        *
        */
-      ymd_date& operator-=(years y)
+      BOOST_FORCEINLINE ymd_date& operator-=(years y)
       {
         return *this += years(-y.count());
       }
@@ -948,6 +948,24 @@ namespace boost
     BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(int y,month m, day d)
     {
       return ymd_date(year(y), m, d);
+    }
+
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year_month ym, day d)
+    {
+      return ymd_date(year(ym), month(ym), d);
+    }
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year_month ym, int d)
+    {
+      return ymd_date(year(ym), month(ym), day(d));
+    }
+
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year y, month_day md)
+    {
+      return ymd_date(y, md);
+    }
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(int y, month_day md)
+    {
+      return ymd_date(year(y), md);
     }
 
   } // chrono

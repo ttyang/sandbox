@@ -166,7 +166,6 @@ namespace boost
     ymd_date::ymd_date(days d)
     {
 #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
-//#if ! defined __clang__
 #if 0
       year_month_day_leap ymdl = to_ymd_leap(d);
       leap_=ymdl.is_leap_year();
