@@ -34,6 +34,21 @@ namespace boost
   namespace chrono
   {
 
+    namespace chrono_detail
+    {
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+      BOOST_STATIC_CONSTEXPR day::rep max_days_in_month_[13] =
+          { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+      BOOST_FORCEINLINE static BOOST_CONSTEXPR
+      day::rep max_days_in_month(int d) { return max_days_in_month_[d]; }
+#else
+      extern  day::rep max_days_in_month_[];
+      BOOST_FORCEINLINE static
+      day::rep max_days_in_month(int d) { return max_days_in_month_[d]; }
+
+#endif
+
+    }
     /**
      * The class @c ymd_date is a model of Date storing
      * - the @c year,
@@ -81,9 +96,44 @@ namespace boost
 
     public:
 #if ! defined  BOOST_CHRONO_DATE_DOXYGEN_INVOKED
-    private:
-      // emulates forwarding constructors
-      void ymd_date_c(chrono::year::rep y, chrono::month::rep m, chrono::day::rep d, check_t);
+
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+      BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
+      day check_invariants(year y, month m, day d)
+      {
+          return (m != 2)
+              ? ( d <= chrono_detail::max_days_in_month(m)
+                  ? d
+                  : throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m))
+                )
+              : ( y.is_leap()
+                ? ( d <= 29
+                    ? d
+                    : throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m))
+                )
+                : ( d <= 28
+                    ? d
+                    : throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m))
+                  )
+                );
+      }
+#else
+      BOOST_FORCEINLINE static
+      day check_invariants(year y, month m, day d)
+      {
+          if ( m != 2 )
+              if ( d <= chrono_detail::max_days_in_month(m) ) return d;
+              else throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m));
+          else
+            if (y.is_leap())
+                if ( d <= 29 ) return d;
+                else throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m));
+            else
+                if (d <= 28) return d;
+                else throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '/' + to_string(m));
+      }
+#endif
+
 #endif
       /**
        * @Effect Constructs a @c ymd_date using the @c year, @c month, @c day stored in the arguments as follows:
@@ -93,35 +143,50 @@ namespace boost
        * @Throws @c bad_date if the specified @c ymd_date is invalid.
        */
     public:
-      ymd_date(chrono::year y, chrono::month m, chrono::day d, check_t)
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, chrono::month m, chrono::day d, check_t):
+      y_(y),
+      m_(m),
+      d_(check_invariants(y, m, d))
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+      , leap_(boost::chrono::is_leap(y_))
+#endif
       {
-        ymd_date_c(y,m,d, check);
       }
-      ymd_date(int y, chrono::month m, chrono::day d, check_t)
+      ymd_date(int y, chrono::month m, chrono::day d, check_t):
+        y_(y),
+        m_(m),
+        d_(check_invariants(year(y), m, d))
+  #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+        , leap_(boost::chrono::is_leap(y_))
+  #endif
+        {
+        }
+      ymd_date(chrono::year y, int m, chrono::day d, check_t):
+        y_(y),
+        m_(m),
+        d_(check_invariants(y, month(m), d))
+  #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+        , leap_(boost::chrono::is_leap(y_))
+  #endif
+        {
+        }
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, chrono::month m, int d, check_t):
+      y_(y),
+      m_(m),
+      d_(check_invariants(y, m, day(d)))
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+      , leap_(boost::chrono::is_leap(y_))
+#endif
       {
-        ymd_date_c(y,m,d, check);
-      }
-      ymd_date(chrono::year y, int m, chrono::day d, check_t)
-      {
-        ymd_date_c(y,m,d, check);
-      }
-      ymd_date(chrono::year y, chrono::month m, int d, check_t)
-      {
-        ymd_date_c(y,m,d, check);
       }
 
-#if ! defined  BOOST_CHRONO_DATE_DOXYGEN_INVOKED
-    private:
-      // emulates forwarding constructors
-      void ymd_date_c(chrono::year::rep y, chrono::month::rep m, chrono::day::rep d) BOOST_NOEXCEPT;
-#endif
       /**
        * @Effect Constructs a @c ymd_date constructor from @c year, @c month, @c day stored in the arguments as follows:
        * Constructs a ymd_date so that <c>year() == y && month() = m && day() == d</c>.
        */
     public:
 
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, chrono::month m, chrono::day d) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, chrono::month m, chrono::day d) BOOST_NOEXCEPT :
         y_(y),
         m_(m),
         d_(d)
@@ -130,7 +195,7 @@ namespace boost
 #endif
       {
       }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(int y, chrono::month m, chrono::day d) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(int y, chrono::month m, chrono::day d) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -139,7 +204,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, int m, chrono::day d) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, int m, chrono::day d) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -148,7 +213,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, chrono::month m, int d) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::year y, chrono::month m, int d) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -158,7 +223,7 @@ namespace boost
     {
     }
 
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::month m, chrono::day d, chrono::year y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::month m, chrono::day d, chrono::year y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -167,7 +232,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::month m, chrono::day d, int y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::month m, chrono::day d, int y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -176,7 +241,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::month m, int d, chrono::year y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::month m, int d, chrono::year y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -185,7 +250,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(int m, chrono::day d, chrono::year y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(int m, chrono::day d, chrono::year y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -194,7 +259,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::day d, chrono::month m, chrono::year y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::day d, chrono::month m, chrono::year y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -203,7 +268,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::day d, chrono::month m, int y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::day d, chrono::month m, int y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -212,7 +277,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::day d, int m, chrono::year y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(chrono::day d, int m, chrono::year y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -221,7 +286,7 @@ namespace boost
 #endif
     {
     }
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(int d, chrono::month m, chrono::year y) BOOST_NOEXCEPT :
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(int d, chrono::month m, chrono::year y) BOOST_NOEXCEPT :
       y_(y),
       m_(m),
       d_(d)
@@ -276,7 +341,7 @@ namespace boost
       /**
        * Unchecked constructor from days+ymd+leap
        */
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(days::rep, year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(days::rep, year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       :
       y_(y),
       m_(m),
@@ -289,7 +354,7 @@ namespace boost
       /**
        * Unchecked constructor from ymd+leap
        */
-      BOOST_CHRONO_DATE_CONSTEXPR ymd_date(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date(year::rep y, month::rep m, day::rep d, bool leap) BOOST_NOEXCEPT
       : y_(y),
       m_(m),
       d_(d)
@@ -326,7 +391,7 @@ namespace boost
        * Note: the purpose of this constructor is to have a very efficient means
        * of ymd_date construction when the specific value for that ymd_date is unimportant.
        */
-      BOOST_CONSTEXPR ymd_date() BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR ymd_date() BOOST_NOEXCEPT
       :
       y_(0),
       m_(1),
@@ -404,7 +469,7 @@ namespace boost
        * Conversion to @c days_date
        */
       //BOOST_CHRONO_EXPLICT
-      operator days_date() const
+      BOOST_FORCEINLINE operator days_date() const BOOST_NOEXCEPT
       {
         return days_date(days(day_number_from_ymd()));
       }
@@ -412,7 +477,7 @@ namespace boost
       /**
        * Returns: chrono::day(d_).
        */
-      BOOST_CONSTEXPR chrono::day to_day() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::day to_day() const BOOST_NOEXCEPT
       {
         return chrono::day(d_);
       }
@@ -420,14 +485,14 @@ namespace boost
        * Returns: chrono::day(d_).
        */
       //BOOST_CONSTEXPR chrono::day day() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::day() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::day() const BOOST_NOEXCEPT
       {
         return chrono::day(d_);
       }
       /**
        * Returns: chrono::month(m_).
        */
-      BOOST_CONSTEXPR chrono::month to_month() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::month to_month() const BOOST_NOEXCEPT
       {
         return chrono::month(m_);
       }
@@ -435,14 +500,14 @@ namespace boost
        * Returns: chrono::month(m_).
        */
       //BOOST_CONSTEXPR chrono::month month() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return chrono::month(m_);
       }
       /**
        * Returns: chrono::year(y_).
        */
-      BOOST_CONSTEXPR chrono::year to_year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::year to_year() const BOOST_NOEXCEPT
       {
         return chrono::year(y_);
       }
@@ -450,26 +515,26 @@ namespace boost
        * Returns: chrono::year(y_).
        */
       //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return chrono::year(y_);
       }
-      chrono::month_day get_month_day() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::month_day get_month_day() const BOOST_NOEXCEPT
       {
         return chrono::month_day(chrono::month(m_), chrono::day(d_));
       }
-      chrono::year_month get_year_month() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::year_month get_year_month() const BOOST_NOEXCEPT
       {
         return chrono::year_month(chrono::year(y_),chrono::month(m_));
       }
-      chrono::year_month_day get_year_month_day() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::year_month_day get_year_month_day() const BOOST_NOEXCEPT
       {
         return chrono::year_month_day(chrono::year(y_),chrono::month(m_),chrono::day(d_));
       }
       /**
        * Returns: whether year() is a leap year.
        */
-      BOOST_CONSTEXPR bool is_leap_year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_leap_year() const BOOST_NOEXCEPT
       {
 #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
             return leap_;
@@ -485,7 +550,7 @@ namespace boost
        * @Notes this function needs a conversion to @c days_date, so maybe you would do better to not use it.
        *
        */
-      chrono::weekday to_weekday() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::weekday to_weekday() const BOOST_NOEXCEPT
       {
         return chrono::weekday((day_number_from_ymd()+1) % chrono::weekday::size);
       }
@@ -618,7 +683,7 @@ namespace boost
        * @Returns: dt += m.
        *
        */
-      friend ymd_date operator+(ymd_date dt, months m)
+      friend BOOST_FORCEINLINE ymd_date operator+(ymd_date dt, months m)
       {
         dt += m;
         return dt;
@@ -627,7 +692,7 @@ namespace boost
        * @Returns: dt += m.
        *
        */
-      friend ymd_date operator+(months m, ymd_date dt)
+      friend BOOST_FORCEINLINE ymd_date operator+(months m, ymd_date dt)
       {
         dt += m;
         return dt;
@@ -636,7 +701,7 @@ namespace boost
        * @Returns: dt += -m.
        *
        */
-      friend ymd_date operator-(ymd_date dt, months m)
+      friend BOOST_FORCEINLINE ymd_date operator-(ymd_date dt, months m)
       {
         dt -= m;
         return dt;
@@ -670,7 +735,7 @@ namespace boost
        * @Returns: dt += y.
        *
        */
-      friend ymd_date operator+(ymd_date dt, years y)
+      friend BOOST_FORCEINLINE ymd_date operator+(ymd_date dt, years y)
       {
         dt += y;
         return dt;
@@ -679,7 +744,7 @@ namespace boost
        * @Returns: dt += y.
        *
        */
-      friend ymd_date operator+(years y, ymd_date dt)
+      friend BOOST_FORCEINLINE ymd_date operator+(years y, ymd_date dt)
       {
         dt += y;
         return dt;
@@ -688,7 +753,7 @@ namespace boost
        * @Returns: dt -= y.
        *
        */
-      friend ymd_date operator-(ymd_date dt, years y)
+      friend BOOST_FORCEINLINE ymd_date operator-(ymd_date dt, years y)
       {
         dt -= y;
         return dt;
@@ -697,14 +762,14 @@ namespace boost
       /**
        * Returns: x.year() == y.year() && x.month() == y.month() && x.day() == y.day()
        */
-      friend BOOST_CONSTEXPR bool operator==(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
       {
         return x.y_ == y.y_ && x.m_ == y.m_ && x.d_ == y.d_;
       }
       /**
        * Returns: x.year_month_day() < y.year_month_day() in lexicographic order.
        */
-      friend BOOST_CONSTEXPR bool operator< (const ymd_date& x, const ymd_date& y)
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (const ymd_date& x, const ymd_date& y)
       {
         return x.y_ < y.y_ ||
         (!(y.y_ < x.y_) && (x.m_ < y.m_ ||
@@ -714,28 +779,28 @@ namespace boost
       /**
        * @Returns: !(x == y).
        */
-      friend BOOST_CONSTEXPR bool operator!=(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator!=(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
       {
         return !(x == y);
       }
       /**
        * @Returns: y < x.
        */
-      friend BOOST_CONSTEXPR bool operator> (const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator> (const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
       {
         return y < x;
       }
       /**
        * @Returns: !(y < x).
        */
-      friend BOOST_CONSTEXPR bool operator<=(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator<=(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
       {
         return !(y < x);
       }
       /**
        * @Returns: !(x < y).
        */
-      friend bool operator>=(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator>=(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT
       {
         return !(x < y);
       }
@@ -777,7 +842,7 @@ namespace boost
      * @c ymd_date factory.
      * @Returns @c ymd_date(year(ym),month(ym),d)
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(year_month ym, day d)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(year_month ym, day d)
     {
       return ymd_date(year(ym), month(ym), d);
     }
@@ -785,7 +850,7 @@ namespace boost
      * @c ymd_date factory.
      * @Returns @c ym/day(d)
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(year_month ym, int d)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(year_month ym, int d)
     {
       return ym / day(d);
     }
@@ -793,7 +858,7 @@ namespace boost
      * @c ymd_date factory.
      * @Returns @c ymd_date(y,month(md),day(md))
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(month_day md, year y)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(month_day md, year y)
     {
       return ymd_date(y, month(md), day(md));
     }
@@ -801,7 +866,7 @@ namespace boost
      * @c ymd_date factory.
      * @Returns @c ymd_date(y,month(md),day(md))
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(year y, month_day md)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(year y, month_day md)
     {
       return ymd_date(y, month(md), day(md));
     }
@@ -809,24 +874,24 @@ namespace boost
      * @c ymd_date factory.
      * @Returns @c md/year(y)
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(month_day md, int y)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date operator/(month_day md, int y)
     {
       return md / year(y);
     }
 
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year y,month m, day d)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year y,month m, day d)
     {
       return ymd_date(y, m, d);
     }
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year y,month m, int d)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year y,month m, int d)
     {
       return ymd_date(y, m, day(d));
     }
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year y,int m, day d)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(year y,int m, day d)
     {
       return ymd_date(y, month(m), d);
     }
-    inline BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(int y,month m, day d)
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ymd_date make_date(int y,month m, day d)
     {
       return ymd_date(year(y), m, d);
     }

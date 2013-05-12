@@ -109,27 +109,11 @@ namespace boost
 //      return true;
 //    }
 
-    void ymd_date::ymd_date_c(chrono::year::rep y, chrono::month::rep m, chrono::day::rep d, check_t)
-    {
-      if (set_if_valid_date(chrono::year(y), chrono::month(m), chrono::day(d))) return;
-      throw bad_date("day " + to_string(d) + " is out of range for " + to_string(y) + '-' + to_string(m));
-    }
-
     ymd_date::ymd_date(chrono::year y, chrono::month_day md, check_t)
     {
       if (set_if_valid_date(y, month(md), day(md))) return;
       throw bad_date(
           "day " + to_string(day(md)) + " is out of range for " + to_string(y) + '-' + to_string(month(md)));
-    }
-
-    void ymd_date::ymd_date_c(chrono::year::rep y, chrono::month::rep m, chrono::day::rep d) BOOST_NOEXCEPT
-    {
-      y_ = y;
-      m_ = m;
-      d_ = d;
-#if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
-      leap_ = is_leap(y_);
-#endif
     }
 
     ymd_date::ymd_date(chrono::year y, chrono::month_day md)BOOST_NOEXCEPT

@@ -43,7 +43,7 @@ namespace boost
       // Store x. Total 32 bits
       boost::uint_least32_t x_;
 
-      static BOOST_CONSTEXPR bool is_valid_(boost::uint_least32_t x) BOOST_NOEXCEPT
+      static BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid_(boost::uint_least32_t x) BOOST_NOEXCEPT
       {
         return x >= 11322 && x <= 23947853;
       }
@@ -53,7 +53,7 @@ namespace boost
        * Note: the purpose of this constructor is to have a very efficient means
        * of @c days_date valid construction when the specific value for that @c days_date is unimportant.
        */
-      BOOST_CONSTEXPR days_date() BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR days_date() BOOST_NOEXCEPT
       : x_(11979588)
       {
       }
@@ -120,7 +120,7 @@ namespace boost
        * @Throws @bad_date if the days is not in the range [11322,23947853].
        */
 #ifndef  BOOST_NO_CXX11_CONSTEXPR
-      BOOST_CONSTEXPR explicit days_date(days d, check_t)
+      BOOST_FORCEINLINE BOOST_CONSTEXPR explicit days_date(days d, check_t)
       : x_(
           is_valid_(d.count())
           ? d.count()
@@ -128,12 +128,12 @@ namespace boost
         )
       {}
 #else
-      explicit days_date(days d, check_t)
+      BOOST_FORCEINLINE explicit days_date(days d, check_t)
       : x_(d.count())
       {
         if (!is_valid())
         {
-          throw_exception( bad_date("days " + to_string(d.count()) + " is out of range") );
+          throw bad_date("days " + to_string(d.count()) + " is out of range") ;
         }
       }
 #endif
@@ -144,7 +144,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR explicit days_date(days d) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR explicit days_date(days d) BOOST_NOEXCEPT
       : x_(d.count())
       {
       }
@@ -227,7 +227,7 @@ namespace boost
       /**
        * @return @c true if the stored days are in the range [11322,23947853].
        */
-      BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
       {
         return is_valid_(x_);
       }
@@ -235,7 +235,7 @@ namespace boost
       /**
        * @Returns: the number of days since an undefined epoch.
        */
-      BOOST_CONSTEXPR days days_since_epoch() BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR days days_since_epoch() BOOST_NOEXCEPT
       {
         return days(x_);
       }
@@ -245,7 +245,7 @@ namespace boost
        *
        * @Notes this function needs a conversion to @c ymd_date, so maybe you would do better to not use it.
        */
-      chrono::day to_day() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::day to_day() const BOOST_NOEXCEPT
       {
         return chrono::day(day_from_day_number());
       }
@@ -261,7 +261,7 @@ namespace boost
        *
        * @Notes this function needs a conversion to @c ymd_date, so maybe you would do better to not use it.
        */
-      chrono::month to_month() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::month to_month() const BOOST_NOEXCEPT
       {
         return chrono::month(month_from_day_number());
       }
@@ -277,7 +277,7 @@ namespace boost
        *
        * @Notes this function needs a conversion to @c ymd_date, so maybe you would do better to not use it.
        */
-      chrono::year to_year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::year to_year() const BOOST_NOEXCEPT
       {
         return chrono::year(year_from_day_number());
       }
@@ -293,7 +293,7 @@ namespace boost
        *
        * @Notes this function needs a conversion to @c ymd_date, so maybe you would do better to not use it.
        */
-      bool to_is_leap_year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE bool to_is_leap_year() const BOOST_NOEXCEPT
       {
         return leap_from_day_number();
       }
@@ -321,7 +321,7 @@ namespace boost
        * @Returns: A weekday constructed with an int corresponding to *this
        * days_date's day of the week (a value in the range of [0 - 6], 0 is Sunday).
        */
-      BOOST_CONSTEXPR chrono::weekday to_weekday() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::weekday to_weekday() const BOOST_NOEXCEPT
       {
         return chrono::weekday((x_ + 1) % weekday::size);
       }
@@ -331,7 +331,7 @@ namespace boost
        * days_date's day of the week (a value in the range of [0 - 6], 0 is Sunday).
        */
       //BOOST_CONSTEXPR chrono::weekday weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return to_weekday();
       }
@@ -350,7 +350,7 @@ namespace boost
        * @Effects: <c>*this += days(1)</c>.
        * @Returns: <c>*this</c>.
        */
-      days_date& operator++()
+      BOOST_FORCEINLINE days_date& operator++()
       {
         return *this += days(1);
       }
@@ -358,7 +358,7 @@ namespace boost
        * @Effects: <c>*this += days(1)</c>.
        * @Returns: A copy of @c *this prior to the increment.
        */
-      days_date operator++(int)
+      BOOST_FORCEINLINE days_date operator++(int)
       {
         days_date tmp(*this);
         ++(*this);
@@ -368,7 +368,7 @@ namespace boost
        * @Effects: <c>*this += -d</c>.
        * @Returns: <c>*this</c>.
        */
-      days_date& operator-=(days d)
+      BOOST_FORCEINLINE days_date& operator-=(days d)
       {
         return *this += -d;
       }
@@ -376,7 +376,7 @@ namespace boost
        * @Effects: <c>*this -= days(1)</c>.
        * @Returns: <c>*this</c>.
        */
-      days_date& operator--()
+      BOOST_FORCEINLINE days_date& operator--()
       {
         return *this -= days(1);
       }
@@ -384,7 +384,7 @@ namespace boost
        * @Effects: <c>*this -= days(1)</c>.
        * @Returns: A copy of @c *this prior to the increment.
        */
-      days_date operator--(int)
+      BOOST_FORCEINLINE days_date operator--(int)
       {
         days_date tmp(*this); --(*this); return tmp;
       }
@@ -393,7 +393,7 @@ namespace boost
        * @Returns: <c>dt += d</c>.
        *
        */
-      friend BOOST_CONSTEXPR days_date operator+(days_date dt, days d)
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR days_date operator+(days_date dt, days d)
       {
         return days_date(dt.days_since_epoch()+d);
       }
@@ -401,7 +401,7 @@ namespace boost
        * @Returns: <c>dt += d</c>.
        *
        */
-      friend BOOST_CONSTEXPR days_date operator+(days d, days_date dt)
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR days_date operator+(days d, days_date dt)
       {
         return days_date(dt.days_since_epoch()+d);
       }
@@ -409,7 +409,7 @@ namespace boost
        * @Returns: <c>dt -= d</c>.
        *
        */
-      friend BOOST_CONSTEXPR days_date operator-(days_date dt, days d)
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR days_date operator-(days_date dt, days d)
       {
         return days_date(dt.days_since_epoch()-d);
       }
@@ -417,7 +417,7 @@ namespace boost
        * @Returns: Computes the number of days @c x is ahead of @c y in the calendar,
        * and returns that signed integral number @c n as days(n).
        */
-      friend BOOST_CONSTEXPR days operator-(days_date x, days_date y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR days operator-(days_date x, days_date y) BOOST_NOEXCEPT
       {
         return x.days_since_epoch() - y.days_since_epoch();
       }
@@ -531,42 +531,42 @@ namespace boost
       /**
        * Returns: <c>x.days_since_epoch() == y.days_since_epoch()</c>.
        */
-      friend BOOST_CONSTEXPR bool operator==(const days_date& x, const days_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(const days_date& x, const days_date& y) BOOST_NOEXCEPT
       {
         return x.x_ == y.x_;
       }
       /**
        * Returns: <c>x.days_since_epoch() < y.days_since_epoch()</c>.
        */
-      friend BOOST_CONSTEXPR bool operator< (const days_date& x, const days_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (const days_date& x, const days_date& y) BOOST_NOEXCEPT
       {
         return x.x_ < y.x_;
       }
       /**
        * @Returns: <c>!(x == y)</c>.
        */
-      friend BOOST_CONSTEXPR bool operator!=(const days_date& x, const days_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator!=(const days_date& x, const days_date& y) BOOST_NOEXCEPT
       {
         return !(x == y);
       }
       /**
        * @Returns: <c>y < x</c>.
        */
-      friend BOOST_CONSTEXPR bool operator> (const days_date& x, const days_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator> (const days_date& x, const days_date& y) BOOST_NOEXCEPT
       {
         return y < x;
       }
       /**
        * @Returns: <c>!(y < x)</c>.
        */
-      friend BOOST_CONSTEXPR bool operator<=(const days_date& x, const days_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator<=(const days_date& x, const days_date& y) BOOST_NOEXCEPT
       {
         return !(y < x);
       }
       /**
        * @Returns: <c>!(x < y)</c>.
        */
-      friend BOOST_CONSTEXPR bool operator>=(const days_date& x, const days_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator>=(const days_date& x, const days_date& y) BOOST_NOEXCEPT
       {
         return !(x < y);
       }

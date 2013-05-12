@@ -8,6 +8,8 @@
 #ifndef BOOST_CHRONO_DATE_CONFIG_HPP
 #define BOOST_CHRONO_DATE_CONFIG_HPP
 
+//#define BOOST_FORCEINLINE inline __attribute__ ((always_inline))
+
 #include <boost/chrono/config.hpp>
 
 // 1 => days + ymd + leap
@@ -37,6 +39,7 @@
 #if ! defined BOOST_NO_CXX11_CONSTEXPR && defined __clang__
 #define BOOST_CHRONO_DATE_CONSTEXPR BOOST_CONSTEXPR
 #else
+#define BOOST_CHRONO_DATE_NO_CXX11_CONSTEXPR
 #define BOOST_CHRONO_DATE_CONSTEXPR
 #endif
 

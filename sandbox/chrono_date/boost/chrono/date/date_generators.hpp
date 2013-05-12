@@ -26,7 +26,37 @@ namespace boost
 {
   namespace chrono
   {
-
+    namespace detail
+    {
+      BOOST_FORCEINLINE days_date
+      generate_lt(weekday::rep a, weekday::rep b, days_date x)
+      {
+        return (a < b)
+            ? (x - days(b-a))
+            : (x - days(weekday::size - (a-b)));
+      }
+      BOOST_FORCEINLINE days_date
+      generate_le(weekday::rep a, weekday::rep b, days_date x)
+      {
+        return (a <= b)
+            ? (x - days(b-a))
+            : (x - days(weekday::size - (a-b)));
+      }
+      BOOST_FORCEINLINE days_date
+      generate_gt(weekday::rep a, weekday::rep b, days_date x)
+      {
+        return (a < b)
+            ? (x + days(b-a))
+            : (x + days(weekday::size - (a-b)));
+      }
+      BOOST_FORCEINLINE days_date
+      generate_ge(weekday::rep a, weekday::rep b, days_date x)
+      {
+        return (a <= b)
+            ? (x + days(b-a))
+            : (x + days(weekday::size - (a-b)));
+      }
+    }
     /**
      * Generates a date satisfying the constraint parameter gt the Date parameter.
      * @tparam Date any model of a Date (is_date<Date> is true_type).
@@ -36,60 +66,35 @@ namespace boost
      * converted to an @c int. If <c>a < b</c>, returns <c>x - days(b-a)</c>, else returns <c>x - days(7 - (a-b))</c>.
      */
     //template <typename Date>
-    inline days_date
+    BOOST_FORCEINLINE days_date
     operator<(weekday wd, days_date x)
     {
-      const weekday::rep a = wd;
-      const weekday::rep b = weekday(x);
-      if (a < b)
-      {
-        return x - days(b-a);
-      }
-      return x - days(weekday::size - (a-b));
+      return detail::generate_lt(wd, weekday(x), x);
     }
 
     //template <typename Date>
-    inline days_date
+    BOOST_FORCEINLINE days_date
     operator<=(weekday wd, days_date x)
     {
-      const weekday::rep a = wd;
-      const weekday::rep b = weekday(x);
-      if (a <= b)
-      {
-        return x - days(b-a);
-      }
-      return x - days(weekday::size - (a-b));
+      return detail::generate_le(wd, weekday(x), x);
     }
 
     //template <typename Date>
-    inline days_date
+    BOOST_FORCEINLINE days_date
     operator>(weekday wd, days_date x)
     {
-      const weekday::rep b = wd;
-      const weekday::rep a = weekday(x);
-
-      if (a < b)
-      {
-        return x + days(b-a);
-      }
-      return x + days(weekday::size - (a-b));
+      return detail::generate_gt(wd, weekday(x), x);
     }
 
     //template <typename Date>
-    inline days_date
+    BOOST_FORCEINLINE days_date
     operator>=(weekday wd, days_date x)
     {
-      const weekday::rep b = wd;
-      const weekday::rep a = weekday(x);
-      if (a <= b)
-      {
-        return x + days(b-a);
-      }
-      return x + days(weekday::size - (a-b));
+      return detail::generate_ge(wd, weekday(x), x);
     }
 
     template <typename Date>
-    inline Date
+    BOOST_FORCEINLINE Date
     operator >(month_day md, Date d)
     {
       Date res;
@@ -99,7 +104,7 @@ namespace boost
       return res;
     }
     template <typename Date>
-    inline Date
+    BOOST_FORCEINLINE Date
     operator >=(month_day md, Date d)
     {
       Date res;
@@ -110,15 +115,13 @@ namespace boost
     }
 
     template <typename Date>
-    inline Date
+    BOOST_FORCEINLINE Date
     operator >(nth n, Date d)
     {
-      std::cout << __FILE__<<"["<<__LINE__ <<"] "<< d << '\n';
       Date res;
       if (month(d)==dec)
       {  // dec and jan have 31 days
         res = Date(year(d),month(d),n.value());
-        std::cout << __FILE__<<"["<<__LINE__ <<"] "<< res << '\n';
 
         if (res > d) return res;
         return Date(year(d),jan,n.value());
@@ -132,13 +135,11 @@ namespace boost
       }
       // nth <= 28 is always valid, so the next is either in this month or the next one
       res = Date(year(d),month(d),n.value());
-      std::cout << __FILE__<<"["<<__LINE__ <<"] "<< res << '\n';
       if (res > d) return res;
-      std::cout << __FILE__<<"["<<__LINE__ <<"] "<< int(month(d)+1) << '\n';
       return Date(year(d),month(month(d)+1),day(n.value()));
     }
     template <typename Date>
-    inline Date
+    BOOST_FORCEINLINE Date
     operator >=(nth n, Date d)
     {
       Date res;
@@ -168,12 +169,12 @@ namespace boost
     private:
       Constraint constraint_;
     public:
-      explicit forward_generator(Constraint constraint)
+      explicit BOOST_FORCEINLINE forward_generator(Constraint constraint)
       : constraint_(constraint)
       {
       }
       template <typename Date>
-      Date operator()(Date d)
+      BOOST_FORCEINLINE Date operator()(Date d)
       {
         return constraint_ > d;
       }
@@ -185,12 +186,12 @@ namespace boost
       Constraint constraint_;
       Date dt_;
     public:
-      explicit forward_range(Constraint constraint, Date dt)
+      BOOST_FORCEINLINE explicit forward_range(Constraint constraint, Date dt)
       : constraint_(constraint),
         dt_(dt)
       {
       }
-      Date operator()()
+      BOOST_FORCEINLINE Date operator()()
       {
         dt_ = constraint_ > dt_;
         return dt_;

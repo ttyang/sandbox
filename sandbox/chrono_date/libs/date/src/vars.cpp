@@ -88,6 +88,15 @@ namespace boost
     { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
     };
 
+    namespace chrono_detail
+    {
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+#else
+    day::rep max_days_in_month_[13] =
+        { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+#endif
+    }
+
 
 //    days year::days_in_month(month m) const BOOST_NOEXCEPT
 //    {

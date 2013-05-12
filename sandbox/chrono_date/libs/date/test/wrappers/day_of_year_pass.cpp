@@ -10,6 +10,7 @@ int main()
 {
   using namespace boost::chrono;
 
+#if defined BOOST_NO_CXX11_CONSTEXPR
   {
     try
     {
@@ -30,6 +31,7 @@ int main()
     {
     }
   }
+#endif //BOOST_NO_CXX11_CONSTEXPR
   {
     day_of_year doy(0);
     BOOST_TEST(!doy.is_valid() && "0 is not a valid day of year");

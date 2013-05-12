@@ -173,30 +173,30 @@ namespace boost
       private:
         rep x_;
       public:
-        explicit duration_type(rep x = rep()) BOOST_NOEXCEPT : x_(x)
+        explicit BOOST_FORCEINLINE BOOST_CONSTEXPR duration_type(rep x = rep()) BOOST_NOEXCEPT : x_(x)
         {
         }
 
-        rep count() const BOOST_NOEXCEPT
+        BOOST_FORCEINLINE BOOST_CONSTEXPR rep count() const BOOST_NOEXCEPT
         {
           return x_;
         }
 
-        duration_type operator+() const BOOST_NOEXCEPT
+        BOOST_FORCEINLINE BOOST_CONSTEXPR duration_type operator+() const BOOST_NOEXCEPT
         {
           return *this;
         }
-        duration_type operator-() const BOOST_NOEXCEPT
+        BOOST_FORCEINLINE BOOST_CONSTEXPR duration_type operator-() const BOOST_NOEXCEPT
         {
           return duration_type(-x_);
         }
 
-        duration_type& operator++() BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type& operator++() BOOST_NOEXCEPT
         {
           ++x_;
           return *this;
         }
-        duration_type operator++(int) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type operator++(int) BOOST_NOEXCEPT
         {
           return duration_type(x_++);
         }
@@ -205,105 +205,105 @@ namespace boost
           --x_;
           return *this;
         }
-        duration_type operator--(int) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type operator--(int) BOOST_NOEXCEPT
         {
           return duration_type(x_--);
         }
 
-        duration_type& operator+=(const duration_type& rhs) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type& operator+=(const duration_type& rhs) BOOST_NOEXCEPT
         {
           x_ += rhs.x_;
           return *this;
         }
-        duration_type& operator-=(const duration_type& rhs) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type& operator-=(const duration_type& rhs) BOOST_NOEXCEPT
         {
           x_ -= rhs.x_;
           return *this;
         }
 
-        friend duration_type operator+(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE duration_type operator+(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           x += y;
           return x;
         }
-        friend duration_type operator-(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE duration_type operator-(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           x -= y;
           return x;
         }
 
-        duration_type& operator*=(const rep& rhs) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type& operator*=(const rep& rhs) BOOST_NOEXCEPT
         {
           x_ *= rhs;
           return *this;
         }
-        duration_type& operator/=(const rep& rhs) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type& operator/=(const rep& rhs) BOOST_NOEXCEPT
         {
           x_ /= rhs;
           return *this;
         }
-        duration_type& operator%=(const rep& rhs) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type& operator%=(const rep& rhs) BOOST_NOEXCEPT
         {
           x_ %= rhs;
           return *this;
         }
-        duration_type& operator%=(const duration_type& rhs) BOOST_NOEXCEPT
+        BOOST_FORCEINLINE duration_type& operator%=(const duration_type& rhs) BOOST_NOEXCEPT
         {
           x_ %= rhs.x_;
           return *this;
         }
 
-        friend duration_type operator*(duration_type x, rep y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE duration_type operator*(duration_type x, rep y) BOOST_NOEXCEPT
         {
           x *= y;
           return x;
         }
-        friend duration_type operator*(rep x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE duration_type operator*(rep x, duration_type y) BOOST_NOEXCEPT
         {
           y *= x;
           return y;
         }
-        friend duration_type operator/(duration_type x, rep y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE duration_type operator/(duration_type x, rep y) BOOST_NOEXCEPT
         {
           x /= y;
           return x;
         }
-        friend rep operator/(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE rep operator/(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           return x.x_ / y.x_;
         }
-        friend duration_type operator%(duration_type x, rep y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE duration_type operator%(duration_type x, rep y) BOOST_NOEXCEPT
         {
           x %= y;
           return x;
         }
-        friend duration_type operator%(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE duration_type operator%(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           x %= y.x_;
           return x;
         }
 
-        friend bool operator==(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           return x.x_ == y.x_;
         }
-        friend bool operator!=(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator!=(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           return !(x == y);
         }
-        friend bool operator< (duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           return x.x_ < y.x_;
         }
-        friend bool operator> (duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator> (duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           return y < x;
         }
-        friend bool operator<=(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator<=(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           return !(y < x);
         }
-        friend bool operator>=(duration_type x, duration_type y) BOOST_NOEXCEPT
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator>=(duration_type x, duration_type y) BOOST_NOEXCEPT
         {
           return !(x < y);
         }

@@ -23,7 +23,7 @@ namespace boost
     struct nth_tag
     {
       const int value_;
-      BOOST_CONSTEXPR nth_tag(int v) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR nth_tag(int v) BOOST_NOEXCEPT
       : value_(v)
       {}
     };
@@ -49,22 +49,22 @@ namespace boost
        * @Effects: Constructs an object of class @c nth by storing @c s.
        * Throws: if @c s is outside of the range [1, 6], throws an exception of type bad_date.
        */
-      BOOST_CONSTEXPR nth(int s, check_t) : base_type(s, check)
+      BOOST_FORCEINLINE BOOST_CONSTEXPR nth(int s, check_t) : base_type(s, check)
       {}
       /**
        * @Effects: Constructs an object of class @c nth by storing @c s.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR nth(int s) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR nth(int s) BOOST_NOEXCEPT
           : base_type(s)
       {}
 
-      BOOST_CONSTEXPR nth(nth_tag s) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR nth(nth_tag s) BOOST_NOEXCEPT
           : base_type(s.value_)
       {}
 
-      BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
       {
         return value()==not_applicable;
       }

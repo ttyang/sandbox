@@ -166,25 +166,20 @@ namespace boost
     }
     days::rep to_days(int_least32_t y, int_least16_t m, int_least16_t d) BOOST_NOEXCEPT
     {
-      bool leap = is_leap(y);
-      int_least32_t by = y - 32799;
-      return days_before_year(by) +
-          days_in_year_before(leap,m-1) +
+      return days_before_year(y - 32799) +
+          days_in_year_before(is_leap(y),m-1) +
           d;
     }
     days::rep to_days(int_least32_t y, int_least16_t m, int_least16_t d, bool leap) BOOST_NOEXCEPT
     {
-      int_least32_t by = y - 32799;
-      return days_before_year(by) +
+      return days_before_year(y - 32799) +
           days_in_year_before(leap,m-1) +
           d;
     }
     days::rep to_days(int y, int m, int d) BOOST_NOEXCEPT
     {
-      bool leap = is_leap(y);
-      year::rep by = y - 32799;
-      return days_before_year(by) +
-          days_in_year_before(leap,m-1) +
+      return days_before_year(static_cast<int_least32_t>(y - 32799)) +
+          days_in_year_before(is_leap(y),m-1) +
           d;
     }
 

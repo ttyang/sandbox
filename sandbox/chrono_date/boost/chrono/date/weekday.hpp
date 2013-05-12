@@ -38,17 +38,17 @@ namespace boost
        * @Postconditions static_cast<int>(*this) == v
        * @Throws if v is outside of the range [0, 6], throws an exception of type bad_date.
        */
-      BOOST_CONSTEXPR weekday(int s, check_t) : base_type(s, check)
+      BOOST_FORCEINLINE BOOST_CONSTEXPR weekday(int s, check_t) : base_type(s, check)
       {}
       /**
        * @Effects Constructs an object of class weekday by storing v.
        * @Postconditions static_cast<int>(*this) == v
        */
-      BOOST_CONSTEXPR weekday(int s) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR weekday(int s) BOOST_NOEXCEPT
           : base_type(s)
       {}
 
-      BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
       {
         return value()==not_applicable;
       }

@@ -36,7 +36,7 @@ namespace boost
        * @Effects: Constructs an object of class month by storing m.
        * @Postconditions: static_cast<int>(*this) == m.
        */
-      BOOST_CONSTEXPR explicit month(int m) :
+      BOOST_FORCEINLINE BOOST_CONSTEXPR explicit month(int m) :
         base_type(m)
       {
       }
@@ -46,14 +46,14 @@ namespace boost
        * @Postconditions: static_cast<int>(*this) == m.
        * @Throws: if m is outside of the supported range, throws an exception of type bad_date.
        */
-      BOOST_CONSTEXPR month(int m, check_t) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR month(int m, check_t) BOOST_NOEXCEPT
       : base_type(m, check)
       {}
 
       /**
        * @Return the number of days of the month depending on the @c is_leap_year parameter.
        */
-      days days_in(bool is_leap_year) const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE days days_in(bool is_leap_year) const BOOST_NOEXCEPT
       {
         return days(days_in_month(is_leap_year, value()));
       }

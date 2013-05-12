@@ -33,10 +33,29 @@ namespace boost
       BOOST_STATIC_CONSTEXPR std::size_t size=last_-first_+1; // :5 bits
 
     private:
-      static BOOST_CONSTEXPR bool is_valid_(int v) BOOST_NOEXCEPT
+      static BOOST_CONSTEXPR BOOST_FORCEINLINE bool is_valid_(int v) BOOST_NOEXCEPT
       {
         return (first_ <= v && v <= last_);
       }
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+      static BOOST_CONSTEXPR BOOST_FORCEINLINE int check_invariants(int v)
+      {
+        return is_valid_(v)
+            ? v
+            : throw std::out_of_range("bounded " + chrono::to_string(int(v)) + " is out of range " +
+                  chrono::to_string(first_) + ".." + chrono::to_string(last_)
+                )
+              ;
+      }
+#else
+      static BOOST_CONSTEXPR BOOST_FORCEINLINE int check_invariants(int v) BOOST_NOEXCEPT
+      {
+        if (is_valid_(v))
+            return v;
+        else
+            throw std::out_of_range("bounded " + boost::chrono::to_string(int(v)) + " is out of range");
+      }
+#endif
     public:
 
       /**
@@ -45,36 +64,23 @@ namespace boost
        * @Throws: if @c d is outside of the range [first, last], throws an exception of type @c std::out_of_range.
        */
 
-#ifndef  BOOST_NO_CXX11_CONSTEXPR
-      BOOST_CONSTEXPR explicit bounded(int d, check_t)
-      : value_(
-          is_valid_(d)
-          ? d
-          : throw std::out_of_range("bounded " + boost::chrono::to_string(int(d)) + " is out of range")
-        )
+      BOOST_FORCEINLINE BOOST_CONSTEXPR explicit bounded(int d, check_t)
+      : value_(check_invariants(d))
       {}
-#else
-      BOOST_CONSTEXPR explicit bounded(int d, check_t)
-      : value_(d)
-      {
-        if (!is_valid_(d))
-          throw std::out_of_range("bounded " + boost::chrono::to_string(int(d)) + " is out of range");
-      }
-#endif
       /**
        * @Effects: Constructs an object of class @c bounded by storing @c d.
        * @Postconditions: <c>value() == d</c>.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR bounded(int d) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bounded(int d) BOOST_NOEXCEPT
       : value_(d)
       {}
 
       /**
        * @Return if the stored value is a valid one.
        */
-      BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
       {
         return is_valid_(value_);
       }
@@ -82,7 +88,7 @@ namespace boost
        * @Requires @c is_valid()
        * @Returns the underlying value of that bounded.
        */
-      BOOST_CONSTEXPR operator int() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR operator int() const BOOST_NOEXCEPT
       {
         return value_;
       }
@@ -90,35 +96,35 @@ namespace boost
        * @Requires @c is_valid()
        * @Returns: the underlying value of that bounded.
        */
-      BOOST_CONSTEXPR int value() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR int value() const BOOST_NOEXCEPT
       {
         return value_;
       }
       /**
        * @Returns: the min valid value for a bounded of a month.
        */
-      static BOOST_CONSTEXPR bounded min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
+      static BOOST_FORCEINLINE BOOST_CONSTEXPR bounded min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
           return bounded(first_);
       }
       /**
        * @Returns: the max valid value for a bounded of a month.
        */
-      static BOOST_CONSTEXPR bounded max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
+      static BOOST_FORCEINLINE BOOST_CONSTEXPR bounded max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
           return bounded(last_);
       }
       /**
        * @Returns: the first bounded.
        */
-      static BOOST_CONSTEXPR bounded first() BOOST_NOEXCEPT
+      static BOOST_FORCEINLINE BOOST_CONSTEXPR bounded first() BOOST_NOEXCEPT
       {
           return bounded(first_);
       }
       /**
        * @Returns: the first bounded.
        */
-      static BOOST_CONSTEXPR bounded last() BOOST_NOEXCEPT
+      static BOOST_FORCEINLINE BOOST_CONSTEXPR bounded last() BOOST_NOEXCEPT
       {
           return bounded(last_);
       }

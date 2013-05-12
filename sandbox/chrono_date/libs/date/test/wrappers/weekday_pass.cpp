@@ -10,6 +10,7 @@ int main()
 {
   using namespace boost::chrono;
 
+#if defined BOOST_NO_CXX11_CONSTEXPR
   {
     try
     {
@@ -30,6 +31,7 @@ int main()
     {
     }
   }
+#endif
   {
     weekday d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid weekday");

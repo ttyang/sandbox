@@ -98,7 +98,7 @@ namespace boost
        * Constructs a ydoy_date for which days_since_epoch() == y.days_since_epoch()+doy
        * @Throws bad_date if the specified ydoy_date is invalid.
        */
-      BOOST_CHRONO_DATE_CONSTEXPR ydoy_date(chrono::year y, day_of_year doy) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR ydoy_date(chrono::year y, day_of_year doy) BOOST_NOEXCEPT
           : y_(y),
             doy_(doy),
             leap_(is_leap(y_))
@@ -144,7 +144,7 @@ namespace boost
        * Note: the purpose of this constructor is to have a very efficient means
        * of ydoy_date construction when the specific value for that ydoy_date is unimportant.
        */
-      BOOST_CONSTEXPR ydoy_date() BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR ydoy_date() BOOST_NOEXCEPT
           :
           y_(0),
           doy_(1),
@@ -172,7 +172,7 @@ namespace boost
 //      // explicit
 //      operator system_clock::time_point () const;
 
-      BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
       {
         // @todo add check on valid day_of_year and leap year.
         return chrono::year(y_).is_valid() && day_of_year(doy_).is_valid();
@@ -181,14 +181,14 @@ namespace boost
       /**
        * @Returns: the number of days since an undefined epoch.
        */
-      days to_days_since_epoch() const
+      BOOST_FORCEINLINE days to_days_since_epoch() const
       {
         return days(days_before_year(y_+32799)+doy_-1);
       }
       /**
        * @Returns: the number of days since an undefined epoch.
        */
-      days days_since_epoch() const
+      BOOST_FORCEINLINE days days_since_epoch() const
       {
         return days(days_before_year(y_+32799)+doy_-1);
       }
@@ -198,7 +198,7 @@ namespace boost
        *
        * @Effects stores a year and days_of_year that represents the same date as the @c dt @c days_date parameter.
        */
-      explicit ydoy_date(days_date dt);
+      explicit BOOST_FORCEINLINE ydoy_date(days_date dt);
 //#if ! defined(BOOST_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS)
       /**
        * Explicit conversion to @c days_date.
@@ -206,7 +206,7 @@ namespace boost
        * @Returns a @c days_date representing the same date.
        */
       //BOOST_CHRONO_EXPLICT
-      operator days_date() const
+      BOOST_FORCEINLINE operator days_date() const
       {
         year::rep by = y_ + 32799;
         return days_date(days(days_before_year(by) + doy_ - 1));
@@ -218,7 +218,7 @@ namespace boost
        *
        * @Returns a @c days_date representing the same date.
        */
-      friend days_date to_days_date(ydoy_date ydoy)
+      friend BOOST_FORCEINLINE days_date to_days_date(ydoy_date ydoy)
       {
         year::rep by = ydoy.y_ + 32799;
         return days_date(days(days_before_year(by) + ydoy.doy_ - 1));
@@ -237,7 +237,7 @@ namespace boost
        *
        * @Returns a @c ymd_date representing the same date.
        */
-      BOOST_CHRONO_EXPLICT operator ymd_date() const
+      BOOST_CHRONO_EXPLICT BOOST_FORCEINLINE operator ymd_date() const
       {
         //return days_date(chrono::year(y_), day_of_year(doy_));
         return ymd_date(to_days_date(*this));
@@ -248,7 +248,7 @@ namespace boost
        *
        * @Returns a @c ymd_date representing the same date.
        */
-      friend ymd_date to_ymd_date(ydoy_date ydoy)
+      friend BOOST_FORCEINLINE ymd_date to_ymd_date(ydoy_date ydoy)
       {
         return ymd_date(to_days_date(ydoy));
       }
@@ -272,7 +272,7 @@ namespace boost
       /**
        * @Returns: chrono::month(m_).
        */
-      chrono::month to_month() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::month to_month() const BOOST_NOEXCEPT
       {
         return chrono::month(day_of_year_month(leap_,doy_));
       }
@@ -286,7 +286,7 @@ namespace boost
       /**
        * @Returns: chrono::year(y_).
        */
-      BOOST_CONSTEXPR chrono::year to_year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR chrono::year to_year() const BOOST_NOEXCEPT
       {
         return chrono::year(y_);
       }
@@ -294,33 +294,33 @@ namespace boost
        * @Returns: chrono::year(y_).
        */
       //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return chrono::year(y_);
       }
-      chrono::month_day month_day() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::month_day month_day() const BOOST_NOEXCEPT
       {
         return chrono::month_day(chrono::month(day_of_year_month(leap_,doy_)), chrono::day(day_of_year_day_of_month(leap_,doy_)));
       }
-      chrono::year_month year_month() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::year_month year_month() const BOOST_NOEXCEPT
       {
         return chrono::year_month(chrono::year(y_),chrono::month(day_of_year_month(leap_,doy_)));
       }
-      chrono::year_month_day year_month_day() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::year_month_day year_month_day() const BOOST_NOEXCEPT
       {
         return to_ymd(chrono::year_day_of_year(chrono::year(y_),day_of_year(doy_)));
       }
       /**
        * @Returns: true if year() is a leap year, and otherwise returns false.
        */
-      BOOST_CONSTEXPR bool to_is_leap_year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool to_is_leap_year() const BOOST_NOEXCEPT
       {
         return leap_;
       }
       /**
        * @Returns: true if year() is a leap year, and otherwise returns false.
        */
-      BOOST_CONSTEXPR bool is_leap_year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_leap_year() const BOOST_NOEXCEPT
       {
         return leap_;
       }
@@ -329,7 +329,7 @@ namespace boost
        * @Returns: A weekday constructed with an int corresponding to *this
        * ydoy_date's day of the week (a value in the range of [0 - 6], 0 is Sunday).
        */
-      chrono::weekday to_weekday() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE chrono::weekday to_weekday() const BOOST_NOEXCEPT
       {
         return chrono::weekday((days_since_epoch()+days(1)).count() % chrono::weekday::size);
       }
@@ -536,14 +536,14 @@ namespace boost
       /**
        * @Returns: x.days_since_epoch() == y.days_since_epoch()
        */
-      friend BOOST_CONSTEXPR bool operator==(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
       {
         return x.y_ == y.y_ && x.doy_ == y.doy_;
       }
       /**
        * @Returns: x.days_since_epoch() < y.days_since_epoch()
        */
-      friend BOOST_CONSTEXPR bool operator< (const ydoy_date& x, const ydoy_date& y)
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (const ydoy_date& x, const ydoy_date& y)
       {
         return x.y_ < y.y_ ||
         (!(y.y_ < x.y_) && (x.doy_ < y.doy_));
@@ -551,28 +551,28 @@ namespace boost
       /**
        * @Returns: !(x == y).
        */
-      friend BOOST_CONSTEXPR bool operator!=(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator!=(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
       {
         return !(x == y);
       }
       /**
        * @Returns: y < x.
        */
-      friend BOOST_CONSTEXPR bool operator> (const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator> (const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
       {
         return y < x;
       }
       /**
        * @Returns: !(y < x).
        */
-      friend BOOST_CONSTEXPR bool operator<=(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator<=(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
       {
         return !(y < x);
       }
       /**
        * @Returns: !(x < y).
        */
-      friend BOOST_CONSTEXPR bool operator>=(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator>=(const ydoy_date& x, const ydoy_date& y) BOOST_NOEXCEPT
       {
         return !(x < y);
       }
@@ -605,7 +605,7 @@ namespace boost
      * @c ydoy_date factory.
      * @Returns @c ydoy_date(y,d)
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(chrono::year y, day_of_year d)
+    BOOST_FORCEINLINE  BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(chrono::year y, day_of_year d)
     {
       return ydoy_date(y, d);
     }
@@ -613,7 +613,7 @@ namespace boost
      * @c ydoy_date factory.
      * @Returns @c ydoy_date(y,d)
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(day_of_year d, chrono::year y)
+    BOOST_FORCEINLINE  BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(day_of_year d, chrono::year y)
     {
       return ydoy_date(y, d);
     }
@@ -621,7 +621,7 @@ namespace boost
      * @c ydoy_date factory.
      * @Returns @c y/day_of_year(d)
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(chrono::year y, int d)
+    BOOST_FORCEINLINE  BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(chrono::year y, int d)
     {
       return y / day_of_year(d);
     }
@@ -629,7 +629,7 @@ namespace boost
      * @c ydoy_date factory.
      * @Returns @c d/chrono::year(y)
      */
-    inline BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(day_of_year d, int y)
+    BOOST_FORCEINLINE  BOOST_CHRONO_DATE_CONSTEXPR ydoy_date operator/(day_of_year d, int y)
     {
       return d / chrono::year(y);
     }

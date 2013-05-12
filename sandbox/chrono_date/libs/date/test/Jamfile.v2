@@ -115,6 +115,18 @@ rule date-run-2 ( sources + : name )
     ;
 }
 
+rule date-run-2-fail ( sources + : name )
+{
+    return
+    [ run-fail $(sources) ../build//boost_chrono_date
+        : :
+        :
+            <library>/boost/chrono//boost_chrono
+            <library>/boost/system//boost_system
+        :   $(name)_shared ]
+    ;
+}
+
 
     test-suite "wrappers"
         :
@@ -126,6 +138,9 @@ rule date-run-2 ( sources + : name )
         [ date-run-2 wrappers/week_pass.cpp : week_pass ]
         [ date-run-2 wrappers/month_pass.cpp : month_pass ]
         [ date-run-2 wrappers/year_pass.cpp : year_pass ]
+
+        #[ date-run-2-fail wrappers/day_of_year_fail.cpp : day_of_year_f ]
+
         ;
 
     test-suite "dates"

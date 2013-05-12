@@ -10,22 +10,17 @@ int main()
 {
   using namespace boost::chrono;
 
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
+#if defined BOOST_NO_CXX11_CONSTEXPR
   {
     try
     {
-      std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
       nth_week d(0, check);
-      std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
       BOOST_TEST(false && "0 is not a valid nth_week");
-      std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
     }
     catch (...)
     {
-      std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
     }
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
     try
     {
@@ -36,44 +31,37 @@ int main()
     {
     }
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
+#endif
   {
     nth_week d(0);
     BOOST_TEST(!d.is_valid() && "0 is not a valid nth_week");
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
     nth_week d(7);
     BOOST_TEST(!d.is_valid() && "7 is not a valid nth_week");
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
     nth_week d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid nth_week");
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
       nth_week d(1);
       BOOST_TEST(d.is_valid() && "1 is a valid nth_week");
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
       nth_week d(5);
       BOOST_TEST(d.is_valid() );
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
       nth_week d(6);
       BOOST_TEST(d.is_valid() );
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
       nth_week d(2);
       BOOST_TEST(d.is_valid() && "2 is a valid nth_week");
       nth_week::rep i = d;
       BOOST_TEST(i==2);
   }
-  std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
   {
       nth_week d(3);
       BOOST_TEST(d.is_valid() && "3 is a valid nth_week");
