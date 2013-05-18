@@ -154,7 +154,7 @@ namespace boost
 
 
 //      /**
-//       * @Effects: tp is converted to UTC, and then trucated to 00:00:00 hours.
+//       * @Effects tp is converted to UTC, and then trucated to 00:00:00 hours.
 //       * A ydoy_date is created which reflects this point in time.
 //       * @Throws If the conversion from tp overflows the range of ydoy_date, throws
 //       * an exception of type bad_date.
@@ -165,7 +165,7 @@ namespace boost
 //       * @Returns: A system_clock::time_point which represents the ydoy_date
 //       * referred to by *this at 00:00:00 UTC.
 //       *
-//       * @Throws: If the conversion to tp overflows the range of
+//       * @Throws If the conversion to tp overflows the range of
 //       * system_clock::time_point, throws an exception of type bad_date.
 //       *
 //       */
@@ -205,7 +205,7 @@ namespace boost
        *
        * @Returns a @c days_date representing the same date.
        */
-      //BOOST_CHRONO_EXPLICT
+      //BOOST_CHRONO_EXPLICIT
       BOOST_FORCEINLINE operator days_date() const
       {
         year::rep by = y_ + 32799;
@@ -237,7 +237,7 @@ namespace boost
        *
        * @Returns a @c ymd_date representing the same date.
        */
-      BOOST_CHRONO_EXPLICT BOOST_FORCEINLINE operator ymd_date() const
+      BOOST_CHRONO_EXPLICIT BOOST_FORCEINLINE operator ymd_date() const
       {
         //return days_date(chrono::year(y_), day_of_year(doy_));
         return ymd_date(to_days_date(*this));
@@ -294,13 +294,13 @@ namespace boost
        * @Returns: chrono::year(y_).
        */
       //BOOST_CONSTEXPR chrono::year year() const BOOST_NOEXCEPT
-      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::year() const BOOST_NOEXCEPT
       {
         return chrono::year(y_);
       }
       BOOST_FORCEINLINE chrono::month_day month_day() const BOOST_NOEXCEPT
       {
-        return chrono::month_day(chrono::month(day_of_year_month(leap_,doy_)), chrono::day(day_of_year_day_of_month(leap_,doy_)));
+        return chrono::month_day(chrono::month(day_of_year_month(leap_,doy_)), chrono::day(day_of_year_day_of_month(leap_,doy_), no_check));
       }
       BOOST_FORCEINLINE chrono::year_month year_month() const BOOST_NOEXCEPT
       {
@@ -336,16 +336,16 @@ namespace boost
 
 
 //      /**
-//       * @Effects: Adds d.count() days to the current ydoy_date.
+//       * @Effects Adds d.count() days to the current ydoy_date.
 //       * @Returns: *this.
-//       * @Throws: If the addition would create a ydoy_date with a y_ outside of the
+//       * @Throws If the addition would create a ydoy_date with a y_ outside of the
 //       * range of year, throws an exception of type bad_date.
 //       *
 //       */
 //      ydoy_date& operator+=(days d);
 //
 //      /**
-//       * @Effects: *this += days(1).
+//       * @Effects *this += days(1).
 //       * @Returns: *this.
 //       */
 //      ydoy_date& operator++()
@@ -353,7 +353,7 @@ namespace boost
 //        return *this += days(1);
 //      }
 //      /**
-//       * @Effects: *this += days(1).
+//       * @Effects *this += days(1).
 //       * @Returns: A copy of *this prior to the increment.
 //       */
 //      ydoy_date operator++(int)
@@ -363,7 +363,7 @@ namespace boost
 //        return tmp;
 //      }
 //      /**
-//       * @Effects: *this += -d.
+//       * @Effects *this += -d.
 //       * @Returns: *this.
 //       */
 //      ydoy_date& operator-=(days d)
@@ -371,7 +371,7 @@ namespace boost
 //        return *this += -d;
 //      }
 //      /**
-//       * @Effects: *this -= days(1).
+//       * @Effects *this -= days(1).
 //       * @Returns: *this.
 //       */
 //      ydoy_date& operator--()
@@ -379,7 +379,7 @@ namespace boost
 //        return *this -= days(1);
 //      }
 //      /**
-//       * @Effects: *this -= days(1).
+//       * @Effects *this -= days(1).
 //       * @Returns: A copy of *this prior to the increment.
 //       */
 //      ydoy_date operator--(int)
@@ -441,7 +441,7 @@ namespace boost
 //       *
 //       * @Returns: *this.
 //       *
-//       * @Throws: If the addition would create a ydoy_date with a y_ outside of the
+//       * @Throws If the addition would create a ydoy_date with a y_ outside of the
 //       * range of year, or a doy_ outside the range for the newly computed y_,
 //       * throws an exception of type bad_date.
 //       *
@@ -485,12 +485,12 @@ namespace boost
 //      }
 //
 //      /**
-//       * @Effects: Adds y.count() years to the current ydoy_date.
+//       * @Effects Adds y.count() years to the current ydoy_date.
 //       * This is accomplished as if by storing temporary values of the ydoy_date's
 //       * y_, doy_. Computing a new value for y_. And then assigning to *this
 //       * a new ydoy_date constructed from the newly computed y_, and the original doy_.
 //       * @Returns: *this.
-//       * @Throws: If the addition would create a ydoy_date with a y_ outside of the
+//       * @Throws If the addition would create a ydoy_date with a y_ outside of the
 //       * range of year, or a doy_ outside the range for the newly computed y_,
 //       * throws an exception of type bad_date.
 //       */

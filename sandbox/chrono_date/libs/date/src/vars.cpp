@@ -24,6 +24,12 @@ namespace boost
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _3rd, 3)
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _4th, 4)
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _5th, 5)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _6th, 6)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _7th, 7)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _8th, 8)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _9th, 9)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _10th, 10)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _29th, 29)
 
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, jan, 1)
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, feb, 2)
@@ -47,42 +53,42 @@ namespace boost
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(weekday, sat, 6)
 
 
-    const month_nth jan_1st(month(1), 1);
+//    const month_nth jan_1st(month(1), 1);
+//
+//    const month_day jan_01(month(1), day( 1, no_check));
+//    const month_day jan_02(month(1), day( 2, no_check));
+//    const month_day jan_03(month(1), day( 3, no_check));
+//    const month_day jan_04(month(1), day( 4, no_check));
+//    const month_day jan_05(month(1), day( 5, no_check));
+//    const month_day jan_06(month(1), day( 6, no_check));
+//    const month_day jan_07(month(1), day( 7, no_check));
+//    const month_day jan_08(month(1), day( 8, no_check));
+//    const month_day jan_09(month(1), day( 9, no_check));
+//    const month_day jan_10(month(1), day( 10, no_check));
+//    const month_day jan_11(month(1), day( 11, no_check));
+//    const month_day jan_12(month(1), day( 12, no_check));
+//    const month_day jan_13(month(1), day( 13, no_check));
+//    const month_day jan_14(month(1), day( 14));
+//    const month_day jan_15(month(1), day( 15));
+//    const month_day jan_16(month(1), day( 16));
+//    const month_day jan_17(month(1), day( 17));
+//    const month_day jan_18(month(1), day( 18));
+//    const month_day jan_19(month(1), day( 19));
+//    const month_day jan_20(month(1), day( 20));
+//    const month_day jan_21(month(1), day( 21));
+//    const month_day jan_22(month(1), day( 22));
+//    const month_day jan_23(month(1), day( 23));
+//    const month_day jan_24(month(1), day( 24));
+//    const month_day jan_25(month(1), day( 25));
+//    const month_day jan_26(month(1), day( 26));
+//    const month_day jan_27(month(1), day( 27));
+//    const month_day jan_28(month(1), day( 28));
+//    const month_day jan_29(month(1), day( 29));
+//    const month_day jan_30(month(1), day( 30));
+//    const month_day jan_31(month(1), day( 31));
 
-    const month_day jan_01(month(1), day( 1));
-    const month_day jan_02(month(1), day( 2));
-    const month_day jan_03(month(1), day( 3));
-    const month_day jan_04(month(1), day( 4));
-    const month_day jan_05(month(1), day( 5));
-    const month_day jan_06(month(1), day( 6));
-    const month_day jan_07(month(1), day( 7));
-    const month_day jan_08(month(1), day( 8));
-    const month_day jan_09(month(1), day( 9));
-    const month_day jan_10(month(1), day( 10));
-    const month_day jan_11(month(1), day( 11));
-    const month_day jan_12(month(1), day( 12));
-    const month_day jan_13(month(1), day( 13));
-    const month_day jan_14(month(1), day( 14));
-    const month_day jan_15(month(1), day( 15));
-    const month_day jan_16(month(1), day( 16));
-    const month_day jan_17(month(1), day( 17));
-    const month_day jan_18(month(1), day( 18));
-    const month_day jan_19(month(1), day( 19));
-    const month_day jan_20(month(1), day( 20));
-    const month_day jan_21(month(1), day( 21));
-    const month_day jan_22(month(1), day( 22));
-    const month_day jan_23(month(1), day( 23));
-    const month_day jan_24(month(1), day( 24));
-    const month_day jan_25(month(1), day( 25));
-    const month_day jan_26(month(1), day( 26));
-    const month_day jan_27(month(1), day( 27));
-    const month_day jan_28(month(1), day( 28));
-    const month_day jan_29(month(1), day( 29));
-    const month_day jan_30(month(1), day( 30));
-    const month_day jan_31(month(1), day( 31));
 
-
-    BOOST_STATIC_CONSTEXPR day::rep days_in_month_[2][13] =
+    BOOST_STATIC_CONSTEXPR day_rep days_in_month_[2][13] =
     {
     { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
     { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
@@ -92,8 +98,11 @@ namespace boost
     {
 #ifndef  BOOST_NO_CXX11_CONSTEXPR
 #else
-    day::rep max_days_in_month_[13] =
+      day_rep leap_days_in_month_[13] =
         { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+      day_rep normal_days_in_month_[13] =
+        { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 #endif
     }
 
@@ -220,14 +229,14 @@ namespace boost
       return *this;
     }
 
-    months operator-(year_month x, year_month y) BOOST_NOEXCEPT
-    {
-      year::rep y1 = x.y_;
-      month::rep m1 = x.m_;
-      year::rep y2 = y.y_;
-      month::rep m2 = y.m_;
-      return months(y1 * 12 + m1 - (y2 * 12 + m2));
-    }
+//    months operator-(year_month x, year_month y) BOOST_NOEXCEPT
+//    {
+//      year::rep y1 = x.y_;
+//      month::rep m1 = x.m_;
+//      year::rep y2 = y.y_;
+//      month::rep m2 = y.m_;
+//      return months(y1 * 12 + m1 - (y2 * 12 + m2));
+//    }
 
 } // boost
   } // chrono

@@ -47,13 +47,16 @@ if --enable-index in  [ modules.peek : ARGV ]
                                    \"BOOST_STATIC_CONSTEXPR=static constexpr\" \\
                                    \"BOOST_DEDUCED_TYPENAME=typename\" \\
                                    \"BOOST_EXPLICIT=explicit\" \\
+                                   \"BOOST_CHRONO_EXPLICIT=explicit\" \\
                                    \"BOOST_NOEXCEPT=noexcept\" \\
                                    \"BOOST_PREVENT_MACRO_SUBSTITUTION=\" \\
                                    \"BOOST_STATIC_CONSTANT(x,y)=static x const y\" \\
                                    \"BOOST_STATIC_ASSERT(cnd)=\" \\
                                    \"BOOST_CHRONO_DATE_REQUIRES(CND) \" \\
                                    \"BOOST_CHRONO_INLINE \" \\
+                                   \"BOOST_FORCEINLINE \" \\
                                    \"BOOST_CONSTEXPR_OR_CONST=constexpr\" \\
+                                   \"BOOST_CHRONO_DATE_CONSTEXPR=constexpr\" \\
                                    \"BOOST_CONSTEXPR=constexpr\"" \\
 
 
@@ -69,6 +72,7 @@ if --enable-index in  [ modules.peek : ARGV ]
                                  Pre=\"<p><b>Requires:</b>\" \\
                                  Requires=\"<p><b>Requires:</b>\" \\
                                  Post=\"<p><b>Post-conditions:</b>\" \\
+                                 Postconditions=\"<p><b>Post-conditions:</b>\" \\
                                  Condition=\"<p><b>Condition:</b>\" \\
                                  Remark=\"<p><b>Remark(s):</b>\" \\
                                  Note=\"<p><b>Note(s):</b>\" \\
@@ -116,14 +120,18 @@ else
                                    \"BOOST_STATIC_CONSTEXPR=static constexpr\" \\
                                    \"BOOST_DEDUCED_TYPENAME=typename\" \\
                                    \"BOOST_EXPLICIT=explicit\" \\
+                                   \"BOOST_CHRONO_EXPLICIT=explicit\" \\
                                    \"BOOST_NOEXCEPT=noexcept\" \\
                                    \"BOOST_PREVENT_MACRO_SUBSTITUTION=\" \\
                                    \"BOOST_STATIC_CONSTANT(x,y)=static x const y\" \\
                                    \"BOOST_STATIC_ASSERT(cnd)=\" \\
                                    \"BOOST_CHRONO_DATE_REQUIRES(CND) \" \\
                                    \"BOOST_CHRONO_INLINE \" \\
+                                   \"BOOST_FORCEINLINE \" \\
                                    \"BOOST_CONSTEXPR_OR_CONST=constexpr\" \\
+                                   \"BOOST_CHRONO_DATE_CONSTEXPR=constexpr\" \\
                                    \"BOOST_CONSTEXPR=constexpr\""
+
 
 #                                   \"BOOST_CHRONO_DATE_REQUIRES(CND) , typename enable_if_c< CND >::type\" \\
 
@@ -139,6 +147,7 @@ else
                                  Requires=\"<p><b>Requires:</b>\" \\
                                  Condition=\"<p><b>Condition:</b>\" \\
                                  Post=\"<p><b>Post-conditions:</b>\" \\
+                                 Postconditions=\"<p><b>Post-conditions:</b>\" \\
                                  Remark=\"<p><b>Remark(s):</b>\" \\
                                  Note=\"<p><b>Note(s):</b>\" \\
                                  See=\"<p><b>See:</b>\" \\

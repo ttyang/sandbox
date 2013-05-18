@@ -28,8 +28,8 @@ namespace boost
     {
     public:
       /**
-       * @Effects: Constructs an object of class @c bad_date.
-       * @Postcondition: <c>what() == s</c>.
+       * @Effects Constructs an object of class @c bad_date.
+       * @Postcondition <c>what() == s</c>.
        */
       explicit bad_date(const std::string& s) :
       std::runtime_error(s)
@@ -37,8 +37,8 @@ namespace boost
       }
 
       /**
-       * @Effects: Constructs an object of class @c bad_date.
-       * @Postcondition: <c>strcmp(what(), s) == 0</c>.
+       * @Effects Constructs an object of class @c bad_date.
+       * @Postcondition <c>strcmp(what(), s) == 0</c>.
        */
       explicit bad_date(const char* s) :
       std::runtime_error(s)

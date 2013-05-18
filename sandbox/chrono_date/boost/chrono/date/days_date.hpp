@@ -204,7 +204,7 @@ namespace boost
 
 //      // Conversions
 //      /**
-//       * @Effects: @c tp is converted to UTC, and then truncated to 00:00:00 hours.
+//       * @Effects @c tp is converted to UTC, and then truncated to 00:00:00 hours.
 //       * A @c days_date is created which reflects this point in time.
 //       * @Throws If the conversion from @c tp overflows the range of @c days_date, throws
 //       * an exception of type @c bad_date.
@@ -215,7 +215,7 @@ namespace boost
 //       * @Returns: A system_clock::time_point which represents the @c days_date
 //       * referred to by *this at 00:00:00 UTC.
 //       *
-//       * @Throws: If the conversion to @c tp overflows the range of
+//       * @Throws If the conversion to @c tp overflows the range of
 //       * system_clock::time_point, throws an exception of type @c bad_date.
 //       *
 //       */
@@ -247,7 +247,7 @@ namespace boost
        */
       BOOST_FORCEINLINE chrono::day to_day() const BOOST_NOEXCEPT
       {
-        return chrono::day(day_from_day_number());
+        return chrono::day(day_from_day_number(), no_check);
       }
 //      /**
 //       * Returns: <c>chrono::day(d_)</c>.
@@ -263,7 +263,7 @@ namespace boost
        */
       BOOST_FORCEINLINE chrono::month to_month() const BOOST_NOEXCEPT
       {
-        return chrono::month(month_from_day_number());
+        return chrono::month(month_from_day_number(), no_check);
       }
 //      /**
 //       * Returns: <c>chrono::month(m_)</c>.
@@ -304,18 +304,18 @@ namespace boost
 //      {
 //        return to_is_leap_year();
 //      }
-      /**
-       * @return the @c month_day built from the @c month and @c day associated to the date.
-       */
-      chrono::month_day month_day() const BOOST_NOEXCEPT;
-      /**
-       * @return the @c year_month built from the @c year and @c month associated to the date.
-       */
-      chrono::year_month year_month() const BOOST_NOEXCEPT;
-      /**
-       * @return the @c year_month_day built from the @c year, @c month and @c day associated to the date.
-       */
-      chrono::year_month_day year_month_day() const BOOST_NOEXCEPT;
+//      /**
+//       * @return the @c month_day built from the @c month and @c day associated to the date.
+//       */
+//      chrono::month_day to_month_day() const BOOST_NOEXCEPT;
+//      /**
+//       * @return the @c year_month built from the @c year and @c month associated to the date.
+//       */
+//      chrono::year_month to_year_month() const BOOST_NOEXCEPT;
+//      /**
+//       * @return the @c year_month_day built from the @c year, @c month and @c day associated to the date.
+//       */
+//      chrono::year_month_day to_year_month_day() const BOOST_NOEXCEPT;
 
       /**
        * @Returns: A weekday constructed with an int corresponding to *this
@@ -331,23 +331,23 @@ namespace boost
        * days_date's day of the week (a value in the range of [0 - 6], 0 is Sunday).
        */
       //BOOST_CONSTEXPR chrono::weekday weekday() const BOOST_NOEXCEPT
-      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return to_weekday();
       }
 
       // Days Based Arithmetic
       /**
-       * @Effects: Adds @c d.count() days to the current @c days_date.
+       * @Effects Adds @c d.count() days to the current @c days_date.
        * @Returns: <c>*this</c>.
-       * @Throws: If the addition would create a @c days_date with a year() outside of the
+       * @Throws If the addition would create a @c days_date with a year() outside of the
        * range of @c year, throws an exception of type @c bad_date.
        *
        */
       days_date& operator+=(days d);
 
       /**
-       * @Effects: <c>*this += days(1)</c>.
+       * @Effects <c>*this += days(1)</c>.
        * @Returns: <c>*this</c>.
        */
       BOOST_FORCEINLINE days_date& operator++()
@@ -355,7 +355,7 @@ namespace boost
         return *this += days(1);
       }
       /**
-       * @Effects: <c>*this += days(1)</c>.
+       * @Effects <c>*this += days(1)</c>.
        * @Returns: A copy of @c *this prior to the increment.
        */
       BOOST_FORCEINLINE days_date operator++(int)
@@ -365,7 +365,7 @@ namespace boost
         return tmp;
       }
       /**
-       * @Effects: <c>*this += -d</c>.
+       * @Effects <c>*this += -d</c>.
        * @Returns: <c>*this</c>.
        */
       BOOST_FORCEINLINE days_date& operator-=(days d)
@@ -373,7 +373,7 @@ namespace boost
         return *this += -d;
       }
       /**
-       * @Effects: <c>*this -= days(1)</c>.
+       * @Effects <c>*this -= days(1)</c>.
        * @Returns: <c>*this</c>.
        */
       BOOST_FORCEINLINE days_date& operator--()
@@ -381,7 +381,7 @@ namespace boost
         return *this -= days(1);
       }
       /**
-       * @Effects: <c>*this -= days(1)</c>.
+       * @Effects <c>*this -= days(1)</c>.
        * @Returns: A copy of @c *this prior to the increment.
        */
       BOOST_FORCEINLINE days_date operator--(int)
@@ -433,7 +433,7 @@ namespace boost
 //       *
 //       * @Returns: @c *this.
 //       *
-//       * @Throws: If the addition would create a @c days_date with a @c y_ outside of the
+//       * @Throws If the addition would create a @c days_date with a @c y_ outside of the
 //       * range of @c year, or a @c d_ outside the range for the newly computed @c y_/@c m_,
 //       * throws an exception of type @c bad_date.
 //       *
@@ -479,12 +479,12 @@ namespace boost
 //      // Years Based Arithmetic
 //
 //      /*
-//       * @Effects: Adds @c y.count() years to the current date.
+//       * @Effects Adds @c y.count() years to the current date.
 //       * This is accomplished as if by storing temporary values of the days_date's
 //       * @c year @c y_, @c month @c m_, @c day @c d_. Computing a new value for @c y_. And then assigning to @c *this
 //       * a new @c days_date constructed from the newly computed @c y_, and the original @c m_, @c d_.
 //       * @Returns: @c *this.
-//       * @Throws: If the addition would create a @c days_date with a @c y_ outside of the
+//       * @Throws If the addition would create a @c days_date with a @c y_ outside of the
 //       * range of @c year, or a @c d_ outside the range for the newly computed @c y_/@c m_,
 //       * throws an exception of type @c bad_date.
 //       */

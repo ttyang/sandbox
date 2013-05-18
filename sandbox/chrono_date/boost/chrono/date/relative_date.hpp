@@ -115,7 +115,7 @@ namespace boost
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       chrono::day to_day() const BOOST_NOEXCEPT
       {
-        return chrono::day(d_);
+        return chrono::day(d_, no_check);
       }
       //chrono::day day() const BOOST_NOEXCEPT
       operator chrono::day() const BOOST_NOEXCEPT
@@ -127,7 +127,7 @@ namespace boost
         return chrono::month(m_);
       }
       //chrono::month month() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT operator chrono::month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT operator chrono::month() const BOOST_NOEXCEPT
       {
         return chrono::month(m_);
       }
@@ -137,7 +137,7 @@ namespace boost
       }
       //chrono::year year() const BOOST_NOEXCEPT
       //BOOST_CONSTEXPR
-      BOOST_CHRONO_EXPLICT operator chrono::year() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT operator chrono::year() const BOOST_NOEXCEPT
       {
         return chrono::year(y_);
       }
@@ -166,13 +166,13 @@ namespace boost
 #endif
 #if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
       //chrono::weekday weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT operator chrono::weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return chrono::weekday((x_+1) % weekday::size);
       }
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       //chrono::weekday weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT operator chrono::weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return chrono::weekday((day_number_from_ymd()+1) % weekday::size);
       }

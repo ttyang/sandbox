@@ -107,8 +107,8 @@ namespace boost
        *
        * @param fmt
        * @param refs
-       * @Effects: Constructs a @c datepunct by constructing the base class with @c refs.
-       * @Postconditions: <c>fmt() == frmt</c>.
+       * @Effects Constructs a @c datepunct by constructing the base class with @c refs.
+       * @Postconditions <c>fmt() == frmt</c>.
        */
       explicit datepunct(string_type fmt, std::size_t refs = 0) :
         std::locale::facet(refs),
@@ -220,7 +220,7 @@ namespace boost
      *
      * @param is
      * @param item
-     * @Effects: Behaves as a formatted input function. After constructing a
+     * @Effects Behaves as a formatted input function. After constructing a
      * @c sentry object, if the @c sentry converts to @c true, acquires the
      * @c time_get facet from the stream's locale. If the locale has a
      * @c datepunct facet,obtains the conversion specifier string from that
@@ -274,7 +274,7 @@ namespace boost
           if (!(err & std::ios_base::failbit))
           {
             item
-                = Date(year(t.tm_year + 1900), chrono::month(t.tm_mon + 1), day(t.tm_mday));
+                = Date(year(t.tm_year + 1900), chrono::month(t.tm_mon + 1), day(t.tm_mday, no_check));
           }
         }
 #ifndef BOOST_NO_EXCEPTIONS
@@ -292,7 +292,7 @@ namespace boost
      *
      * @param os
      * @param item
-     * @Effects: Behaves as a formatted output function. After constructing a
+     * @Effects Behaves as a formatted output function. After constructing a
      * @c sentry object, if the @c sentry converts to @c true, acquires the
      * @c time_put facet from the stream's locale. If the locale has a
      * @c datepunct facet, obtains the formatting string from that facet,

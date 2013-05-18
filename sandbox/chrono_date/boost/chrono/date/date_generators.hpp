@@ -121,22 +121,22 @@ namespace boost
       Date res;
       if (month(d)==dec)
       {  // dec and jan have 31 days
-        res = Date(year(d),month(d),n.value());
+        res = Date(year(d),month(d),day(n.value()));
 
         if (res > d) return res;
-        return Date(year(d),jan,n.value());
+        return Date(year(d),jan,day(n.value()));
       }
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
-        if (res.set_if_valid_date(year(d),month(d),day(n.value())) && res > d) return res;
-        if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value())) && res > d) return res;
-        return Date(year(d),month(month(d)+2),day(n.value())) ;
+        if (res.set_if_valid_date(year(d),month(d),day(n.value(), no_check)) && res > d) return res;
+        if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value(), no_check)) && res > d) return res;
+        return Date(year(d),month(month(d)+2),day(n.value(), no_check)) ;
       }
       // nth <= 28 is always valid, so the next is either in this month or the next one
-      res = Date(year(d),month(d),n.value());
+      res = Date(year(d),month(d),day(n.value()));
       if (res > d) return res;
-      return Date(year(d),month(month(d)+1),day(n.value()));
+      return Date(year(d),month(month(d)+1),day(n.value(), no_check));
     }
     template <typename Date>
     BOOST_FORCEINLINE Date
@@ -152,14 +152,14 @@ namespace boost
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
-        if (res.set_if_valid_date(year(d),month(d),day(n.value())) && res >= d) return res;
-        if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value())) && res >= d) return res;
-        return Date(year(d),month(d)+2,n.value()) ;
+        if (res.set_if_valid_date(year(d),month(d),day(n.value(), no_check)) && res >= d) return res;
+        if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value(), no_check)) && res >= d) return res;
+        return Date(year(d),month(d)+2,n.value(), no_check) ;
       }
       // nth <= 28 is always valid, so the next is either in this month or the next one
       res = Date(year(d),month(d),n.value());
       if (res >= d) return res;
-      return Date(year(d),month(month(d)+1),n.value());
+      return Date(year(d),month(month(d)+1),n.value(), no_check);
     }
 
 

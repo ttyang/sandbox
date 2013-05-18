@@ -88,27 +88,27 @@ int main()
     BOOST_TEST(dt.to_day()==22);
   }
   std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
-  { // construct from ymd: 2011/jan_01
-    //days_date dt(year(2011),jan_01, check);
-    days_date dt(jan_01/2011);
+  { // construct from ymd: 2011/jan/day(1, no_check)
+    //days_date dt(year(2011),jan/day(1, no_check), check);
+    days_date dt(jan/day(1, no_check)/2011);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.to_year()==2011);
     BOOST_TEST(dt.to_month()==jan);
     BOOST_TEST(dt.to_day()==1);
   }
   std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
-  { // no_check construct from ymd: 2011/jan_01
-    //days_date dt(year(2011),jan_01);
-    days_date dt(jan_01/2011);
+  { // no_check construct from ymd: 2011/jan/day(1, no_check)
+    //days_date dt(year(2011),jan/day(1, no_check));
+    days_date dt(jan/day(1, no_check)/2011);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.to_year()==2011);
     BOOST_TEST(dt.to_month()==jan);
     BOOST_TEST(dt.to_day()==1);
   }
   std::cerr << __FILE__ << ":" << __LINE__ << " " << std::endl;
-  { // construct from ymd: first day: -32768/jan_01
-    //days_date dt(year(-32768),jan_01);
-    days_date dt(jan_01/-32768);
+  { // construct from ymd: first day: -32768/jan/day(1, no_check)
+    //days_date dt(year(-32768),jan/day(1, no_check));
+    days_date dt(jan/day(1, no_check)/-32768);
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.to_year()==-32768);
     BOOST_TEST(dt.to_month()==jan);
@@ -127,7 +127,7 @@ int main()
     BOOST_TEST(dt.days_since_epoch().count()==23947853);
     std::cout <<"32767/12/31 days "<< dt.days_since_epoch().count() << std::endl;
   }
-  { // construct from days: first day: -32768/jan_01
+  { // construct from days: first day: -32768/jan/day(1, no_check)
     days_date dt(days(11322));
     BOOST_TEST( dt.is_valid());
     BOOST_TEST(dt.to_year()==-32768);

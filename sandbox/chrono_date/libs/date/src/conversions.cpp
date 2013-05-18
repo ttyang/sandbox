@@ -150,7 +150,7 @@ namespace boost
       const bool leap = is_leap(y);
       const month::rep m = day_of_year_month(leap,doy+1);
       const day::rep d = day_of_year_day_of_month(leap,doy+1);
-      return year_month_day(year(y), month(m), day(d));
+      return year_month_day(year(y), month(m), day(d, no_check));
     }
     year_month_day_leap to_ymd_leap(days dt) BOOST_NOEXCEPT
     {
@@ -206,7 +206,7 @@ namespace boost
     year_month_day to_ymd(year_day_of_year dt) BOOST_NOEXCEPT
     {
       bool leap=year(dt).is_leap();
-      return year_month_day(year(year(dt)), month(day_of_year_month(leap,day_of_year(dt))), day(day_of_year_day_of_month(leap,day_of_year(dt))));
+      return year_month_day(year(year(dt)), month(day_of_year_month(leap,day_of_year(dt))), day(day_of_year_day_of_month(leap,day_of_year(dt)), no_check));
     }
 
 

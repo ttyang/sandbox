@@ -34,7 +34,7 @@ namespace boost
       /**
        * @param n the nth week
        * @param dow the day of the year
-       * @Effects: Constructs a pair of nth-weekday.
+       * @Effects Constructs a pair of nth-weekday.
        */
       BOOST_CONSTEXPR nth_weekday(nth_week n, weekday dow, check_t) BOOST_NOEXCEPT
       :
@@ -47,7 +47,7 @@ namespace boost
        * @param n the nth week
        * @param dow the day of the year
        * @param tag to state that no check is performed.
-       * @Effects: Constructs a pair of nth-weekday.
+       * @Effects Constructs a pair of nth-weekday.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
@@ -69,7 +69,7 @@ namespace boost
        * @Return The nth stored component.
        */
       //BOOST_CONSTEXPR nth_week nth_week() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::nth_week() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::nth_week() const BOOST_NOEXCEPT
       {
         return n_;
       }
@@ -77,7 +77,7 @@ namespace boost
        * @Return The weekday stored component.
        */
       //BOOST_CONSTEXPR weekday weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return dow_;
       }

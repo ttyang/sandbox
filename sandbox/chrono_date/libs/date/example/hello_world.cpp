@@ -71,7 +71,7 @@ int main()
     date dt = aug/day(16)/2011;
     // ...
     // Create date with the same month and year but on the 5th
-    date dt2 = year(dt)/month(dt)/5;  // aug/5/2011
+    date dt2 = year_month(dt)/day(5, no_check);  // aug/5/2011
     (void)dt2;
     int d = day(dt);   // d == 5
     int m = month(dt); // m == 8
@@ -187,7 +187,7 @@ int main()
       for (rel_date d = last/jan/2011, e = last/dec/2011; d <= e; d += months(1))
       {
           if (day(d) >= 29)
-              std::cout << year(d)/month(d)/29 << '\n';
+              std::cout << year(d)/month(d)/day(29,no_check) << '\n';
       }
     }
     {

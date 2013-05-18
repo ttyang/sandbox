@@ -31,8 +31,8 @@ namespace boost
       nth_weekday d_; // :6
     public:
 //      /**
-//       * @Effects: Constructs an object of class @c month_nth_weekday by storing @c m and @c nwd.
-//       * @Postconditions: month() == m && nth_weekday() == nwd && is_valid().
+//       * @Effects Constructs an object of class @c month_nth_weekday by storing @c m and @c nwd.
+//       * @Postconditions month() == m && nth_weekday() == nwd && is_valid().
 //       */
 //      month_nth_weekday(month m, nth_weekday nwd, check_t) BOOST_NOEXCEPT
 //      : m_(m, check),
@@ -41,8 +41,8 @@ namespace boost
 //        // There is no bad combination, so no exception is thrown
 //      }
       /**
-       * @Effects: Constructs an object of class @c month_nth_weekday by storing @c m and @c nwd.
-       * @Postconditions: month() == m && nth_weekday() == nwd.
+       * @Effects Constructs an object of class @c month_nth_weekday by storing @c m and @c nwd.
+       * @Postconditions month() == m && nth_weekday() == nwd.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
@@ -55,7 +55,7 @@ namespace boost
        * @Return the @c month component.
        */
       //month month() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
@@ -63,7 +63,7 @@ namespace boost
        * @Return the @c nth_weekday component.
        */
       //BOOST_CONSTEXPR nth_weekday nth_weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::nth_weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::nth_weekday() const BOOST_NOEXCEPT
       {
         return d_;
       }
@@ -132,12 +132,12 @@ namespace boost
       {
       }
       //month month() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
       //BOOST_CONSTEXPR dom dom() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::dom() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::dom() const BOOST_NOEXCEPT
       {
         return d_;
       }

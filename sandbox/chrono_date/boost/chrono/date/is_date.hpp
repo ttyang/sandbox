@@ -21,7 +21,8 @@ namespace boost
 
     /*
      * Trait type for Date classes.
-     */template <typename Date>
+     */
+    template <typename Date>
     struct is_date : false_type {};
 
 

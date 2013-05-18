@@ -13,7 +13,7 @@ int main()
   {
     try
     {
-      day d(0, check);
+      day d(0);
       BOOST_TEST(false && "0 is not a valid day");
     }
     catch (...)
@@ -23,7 +23,7 @@ int main()
   {
     try
     {
-      day d(32, check);
+      day d(32);
       BOOST_TEST(false && "32 is not a valid day");
     }
     catch (...)
@@ -32,15 +32,15 @@ int main()
   }
 #endif
   {
-    day d(0);
+    unchecked::day d(0);
     BOOST_TEST(!d.is_valid() && "0 is not a valid day");
   }
   {
-    day d(32);
+    unchecked::day d(32);
     BOOST_TEST(!d.is_valid() && "32 is not a valid day");
   }
   {
-    day d(-1);
+    unchecked::day d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid day");
   }
   {

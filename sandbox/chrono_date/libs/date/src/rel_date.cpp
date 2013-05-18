@@ -1439,7 +1439,7 @@ namespace boost
     BOOST_NOEXCEPT
     {
       return to_ymd(
-          (  (mon <= jan / day(4) / year(p))
+          (  (mon <= jan / day(4, no_check) / year(p))
            + days(
                   (week(p) - 1) * weekday::size + (weekday(p) == 0 ? weekday::size-1 : weekday(p) - 1)
              )
@@ -1463,7 +1463,7 @@ namespace boost
     BOOST_NOEXCEPT
     {
       days_date dt(month(ymd)/day(ymd)/year(ymd));
-      chrono::month_day jan4 = jan / day(4);
+      chrono::month_day jan4 = jan / day(4, no_check);
       days_date jan4_y(jan4 / year(ymd));
       days_date jan4_y_m_1(jan4 / (year(ymd)-1));
       days_date jan4_y_p_1(jan4 / (year(ymd)+1));
@@ -1482,7 +1482,7 @@ namespace boost
       }
       return year_week_weekday(
           (thu > start).to_year(),
-          (dt - start).count() / weekday::size + 1,
+          week((dt - start).count() / weekday::size + 1),
           weekday(dt)
       );
     }

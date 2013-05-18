@@ -10,20 +10,20 @@ int main()
 {
   using namespace boost::chrono;
 
-  {
+//  {
 //    try
 //    {
-//      month d(0, check);
+//      month d(0);
 //      BOOST_TEST(false && "0 is not a valid month");
 //    }
 //    catch (...)
 //    {
 //    }
-  }
+//  }
 //  {
 //    try
 //    {
-//      month d(13, check);
+//      month d(13);
 //      BOOST_TEST(false && "13 is not a valid month");
 //    }
 //    catch (...)
@@ -35,11 +35,11 @@ int main()
 //    BOOST_TEST(!d.is_valid() && "0 is not a valid month");
 //  }
   {
-    month d(13);
+    unchecked::month d(13);
     BOOST_TEST(!d.is_valid() && "13 is not a valid month");
   }
   {
-    month d(-1);
+    unchecked::month d(-1);
     BOOST_TEST(!d.is_valid() && "-1 is not a valid month");
   }
   {

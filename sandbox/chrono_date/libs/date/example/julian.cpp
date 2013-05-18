@@ -153,7 +153,7 @@ namespace julian
     int* year_data = db[is_civil_leap(y)];
     int m = std::lower_bound(year_data, year_data + 13, doy) - year_data;
     int d = doy - year_data[m - 1];
-    return boost::chrono::year(y) / boost::chrono::month(m) / d;
+    return boost::chrono::year(y) / boost::chrono::month(m) / boost::chrono::day(d);
   }
 
   date::date(julian::year y, julian::month m, julian::day d) :

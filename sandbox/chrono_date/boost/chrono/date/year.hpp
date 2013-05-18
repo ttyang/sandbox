@@ -39,25 +39,26 @@ namespace boost
       typedef bounded<year_tag, -32768, 32767, year_rep> base_type;
     public:
       /**
-       * @Effects: Constructs an object of class year by storing y.
-       * @Postconditions: static_cast<int>(*this) == y.
+       * @Effects Constructs an object of class year by storing y.
+       * @Postconditions <c>static_cast<rep>(*this) == y</c>.
        */
       BOOST_FORCEINLINE BOOST_CONSTEXPR explicit year(int v) :
         base_type(v)
       {
       }
 
-      /**
-       * @Effects: Constructs an object of class year by storing y.
-       * @Postconditions: static_cast<int>(*this) == y.
-       * @Throws: if y is outside of the supported range, throws an exception of type bad_date.
-       */
-      BOOST_FORCEINLINE BOOST_CONSTEXPR year(int y, check_t) BOOST_NOEXCEPT
-      : base_type(y, check)
-      {}
+//      /**
+//       * @Effects Constructs an object of class year by storing y.
+//       * @Postconditions static_cast<int>(*this) == y.
+//       * @Throws if y is outside of the supported range, throws an exception of type bad_date.
+//       */
+//      BOOST_FORCEINLINE BOOST_CONSTEXPR year(int y, check_t) BOOST_NOEXCEPT
+//      : base_type(y, check)
+//      {}
 
       /**
-       * @Return the number of days of this year.
+       * @Returns the number of days of this year.
+       *
        */
       BOOST_FORCEINLINE BOOST_CONSTEXPR days days_in() const BOOST_NOEXCEPT
       {
@@ -65,15 +66,21 @@ namespace boost
       }
 
       /**
-       * @Return the number of days of the month parameter in this year.
+       * @Returns the number of days of the month @m parameter in this year.
        */
-      BOOST_FORCEINLINE days days_in_month(month m) const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR days days_in_month(month m) const BOOST_NOEXCEPT
       {
         return m.days_in(is_leap());
       }
-
       /**
-       * @Return the number of days since the epoch until the fist day of this year.
+       * @Returns the number of days of the month @m parameter in this year.
+       */
+      BOOST_FORCEINLINE BOOST_CONSTEXPR days days_in_month(unchecked::month m) const BOOST_NOEXCEPT
+      {
+        return m.days_in(is_leap());
+      }
+      /**
+       * @Returns the number of days since the epoch until the fist day of this year.
        */
       BOOST_FORCEINLINE days days_since_epoch() const BOOST_NOEXCEPT
       {
@@ -81,7 +88,7 @@ namespace boost
       }
 
       /**
-       * @Return whether this year is leap or not.
+       * @Returns whether this year is leap or not.
        */
       BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_leap() const BOOST_NOEXCEPT
       {

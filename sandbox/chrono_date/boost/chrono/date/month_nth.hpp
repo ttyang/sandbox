@@ -32,8 +32,8 @@ namespace boost
       nth d_; // :6
     public:
       /**
-       * @Effects: Constructs an object of class @c month_nth by storing @c m and @c d.
-       * @Postconditions: month() == m && nth() == d && is_valid().
+       * @Effects Constructs an object of class @c month_nth by storing @c m and @c d.
+       * @Postconditions month() == m && nth() == d && is_valid().
        * @Throws: if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
        */
       month_nth(month m, nth d, check_t)
@@ -46,8 +46,8 @@ namespace boost
         }
       }
       /**
-       * @Effects: Constructs an object of class @c month_nth by storing @c m and @c d.
-       * @Postconditions: month() == m && nth() == d.
+       * @Effects Constructs an object of class @c month_nth by storing @c m and @c d.
+       * @Postconditions month() == m && nth() == d.
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide the valid ones.
        */
@@ -60,7 +60,7 @@ namespace boost
        * @Return the @c month component.
        */
       //BOOST_CONSTEXPR month month() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
@@ -68,7 +68,7 @@ namespace boost
        * @Return the @c nth component.
        */
       //BOOST_CONSTEXPR nth nth() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICT BOOST_CONSTEXPR operator chrono::nth() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::nth() const BOOST_NOEXCEPT
       {
         return d_;
       }
