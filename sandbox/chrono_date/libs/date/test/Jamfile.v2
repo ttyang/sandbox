@@ -131,7 +131,7 @@ rule date-run-2-fail ( sources + : name )
     test-suite "wrappers"
         :
         [ date-run-2 wrappers/day_pass.cpp : day_pass ]
-        [ date-run-2 wrappers/nth_pass.cpp : nth_pass ]
+        #[ date-run-2 wrappers/nth_pass.cpp : nth_pass ]
         [ date-run-2 wrappers/weekday_pass.cpp : weekday_pass ]
         [ date-run-2 wrappers/day_of_year_pass.cpp : day_of_year_pass ]
         [ date-run-2 wrappers/nth_week_pass.cpp : nth_week_pass ]

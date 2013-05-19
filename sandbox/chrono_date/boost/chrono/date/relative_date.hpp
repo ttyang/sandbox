@@ -18,7 +18,7 @@
 #include <boost/chrono/date/month_nth_weekday.hpp>
 #include <boost/chrono/date/month_nth.hpp>
 #include <boost/chrono/date/nth_week.hpp>
-#include <boost/chrono/date/nth.hpp>
+#include <boost/chrono/date/nth_tag.hpp>
 #include <boost/chrono/date/days_date.hpp>
 #include <boost/chrono/date/ymd_date.hpp>
 #include <boost/chrono/date/ydoy_date.hpp>
@@ -77,8 +77,12 @@ namespace boost
       rel_date() BOOST_NOEXCEPT;
       rel_date(chrono::year, chrono::month, nth_weekday);
       rel_date(chrono::year, chrono::month, nth_weekday, check_t) BOOST_NOEXCEPT;
-      rel_date(chrono::year, chrono::month, nth);
-      rel_date(chrono::year, chrono::month, nth, check_t)BOOST_NOEXCEPT;
+      rel_date(chrono::year, chrono::month, last_weekday);
+      rel_date(chrono::year, chrono::month, last_weekday, check_t) BOOST_NOEXCEPT;
+      rel_date(chrono::year, chrono::month_nth);
+      rel_date(chrono::year, chrono::month_nth, check_t)BOOST_NOEXCEPT;
+      rel_date(chrono::year, chrono::month, last_tag);
+      rel_date(chrono::year, chrono::month, last_tag, check_t)BOOST_NOEXCEPT;
 #if BOOST_CHRONO_DATE_REL_DATE_IS_A_MODEL_OF_DATE
       rel_date(chrono::year, chrono::month, chrono::day); // TODO
       rel_date(chrono::year, chrono::month, chrono::day, check_t)BOOST_NOEXCEPT;// TODO
@@ -354,24 +358,36 @@ namespace boost
     {
       return rel_date(year(ym), month(ym), d);
     }
-    inline rel_date operator/(year_month ym, nth d)
+    inline rel_date operator/(year_month ym, last_weekday d)
     {
       return rel_date(year(ym), month(ym), d);
+    }
+    inline rel_date operator/(year_month ym, last_tag)
+    {
+      return rel_date(year(ym), month(ym), last);
     }
 
     inline rel_date operator/(month_nth_weekday md, chrono::year y)
     {
       return rel_date(y, month(md), nth_weekday(md));
     }
+    inline rel_date operator/(month_last_weekday md, chrono::year y)
+    {
+      return rel_date(y, month(md), last_weekday(md));
+    }
 
     inline rel_date operator/(month_nth_weekday md, year::rep y)
+    {
+      return md / chrono::year(y);
+    }
+    inline rel_date operator/(month_last_weekday md, year::rep y)
     {
       return md / chrono::year(y);
     }
 
     inline rel_date operator/(month_nth md, chrono::year y)
     {
-      return rel_date(y, month(md), nth(md));
+      return rel_date(y, month(md), last);
     }
 
     inline rel_date operator/(month_nth md, year::rep y)

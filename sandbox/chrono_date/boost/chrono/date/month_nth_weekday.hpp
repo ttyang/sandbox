@@ -13,7 +13,7 @@
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/config.hpp>
 #include <boost/chrono/date/no_check.hpp>
-#include <boost/chrono/date/nth.hpp>
+//#include <boost/chrono/date/nth.hpp>
 #include <boost/chrono/date/nth_week.hpp>
 #include <boost/chrono/date/nth_weekday.hpp>
 
@@ -92,67 +92,63 @@ namespace boost
     }
 
     /**
-     *
-     * The class dom is used to specify a small integral value that indicates the nth day of the month (example: last, 1st).
-     * valid from -32..31,
-     * 1..31 means the nth day of the month,
-     * 0 means last and
-     * -30..-1 means last but -nth.
-     * -32 means not_applicable
+     * The class @c month_nth_weekday is a tuple of @c month and @c nth_weekday that is useful when constructing dates.
      */
-    class dom
-    {
-    public:
-      typedef int_least8_t rep;
-      static const rep not_applicable=-31;
-
-      BOOST_CONSTEXPR dom(rep s) BOOST_NOEXCEPT : value_(s)
-      {
-      }
-      BOOST_CONSTEXPR rep value() const BOOST_NOEXCEPT
-      {
-        return value_;
-      }
-      BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
-      {
-        return value_==not_applicable;
-      }
-    private:
-      rep value_; // :6 bits
-    };
-
-    class month_dom
+    class month_last_weekday
     {
       month m_; // :4
-      dom d_; // :6
+      last_weekday d_; // :6
     public:
-      BOOST_CONSTEXPR month_dom(month m, dom d) BOOST_NOEXCEPT
+      /**
+       * @Effects Constructs an object of class @c month_last_weekday by storing @c m and @c nwd.
+       * @Postconditions month() == m && last_weekday() == nwd.
+       * @Note This function doesn't check the parameters validity.
+       * It is up to the user to provide a valid ones.
+       */
+      BOOST_CONSTEXPR month_last_weekday(month::rep m, last_weekday d) BOOST_NOEXCEPT
       : m_(m),
       d_(d)
       {
       }
+      /**
+       * @Return the @c month component.
+       */
       //month month() const BOOST_NOEXCEPT
       BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
-      //BOOST_CONSTEXPR dom dom() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::dom() const BOOST_NOEXCEPT
+      /**
+       * @Return the @c last_weekday component.
+       */
+      //BOOST_CONSTEXPR last_weekday last_weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::last_weekday() const BOOST_NOEXCEPT
       {
         return d_;
       }
+      /**
+       * @Return if the stored value is a valid one.
+       */
+      BOOST_CONSTEXPR  bool is_valid() const BOOST_NOEXCEPT
+      {
+        return ( m_.is_valid() &&  d_.is_valid() );
+      }
     };
 
-    inline BOOST_CONSTEXPR month_dom operator/(month m, dom d) BOOST_NOEXCEPT
+    /**
+     * @return a @c month_last_weekday build with the given parameters.
+     */
+    inline BOOST_CONSTEXPR month_last_weekday operator/(month m, last_weekday d) BOOST_NOEXCEPT
     {
-      return month_dom(m, d);
+      return month_last_weekday(m, d);
     }
-    inline BOOST_CONSTEXPR month_dom operator/(dom d, month m) BOOST_NOEXCEPT
+    /**
+     * @return a @c month_last_weekday build with the given parameters.
+     */
+    inline BOOST_CONSTEXPR month_last_weekday operator/(last_weekday d, month m) BOOST_NOEXCEPT
     {
-      return month_dom(m, d);
+      return month_last_weekday(m, d);
     }
-
-
 
   } // chrono
 

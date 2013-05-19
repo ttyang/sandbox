@@ -9,7 +9,7 @@
 #include <boost/chrono/date/weekday.hpp>
 #include <boost/chrono/date/month.hpp>
 #include <boost/chrono/date/nth_week.hpp>
-#include <boost/chrono/date/nth.hpp>
+//#include <boost/chrono/date/nth.hpp>
 #include <boost/chrono/date/month_nth.hpp>
 #include <boost/chrono/date/tuples.hpp>
 
@@ -18,18 +18,18 @@ namespace boost
   namespace chrono
   {
 
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, last, 0)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _1st, 1)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _2nd, 2)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _3rd, 3)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _4th, 4)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _5th, 5)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _6th, 6)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _7th, 7)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _8th, 8)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _9th, 9)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _10th, 10)
-    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, _29th, 29)
+    //BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_tag, last, 0)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_1_5_tag, _1st, 1)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_1_5_tag, _2nd, 2)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_1_5_tag, _3rd, 3)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_1_5_tag, _4th, 4)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_1_5_tag, _5th, 5)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_6_31_tag, _6th, 6)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_6_31_tag, _7th, 7)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_6_31_tag, _8th, 8)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_6_31_tag, _9th, 9)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_6_31_tag, _10th, 10)
+    BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(nth_6_31_tag, _29th, 29)
 
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, jan, 1)
     BOOST_CONSTEXPR_OR_EXTERN_CONST_DEF(month, feb, 2)

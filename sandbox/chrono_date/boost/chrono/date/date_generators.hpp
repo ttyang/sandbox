@@ -19,7 +19,7 @@
 #include <boost/chrono/date/month_nth_weekday.hpp>
 #include <boost/chrono/date/month_nth.hpp>
 #include <boost/chrono/date/nth_week.hpp>
-#include <boost/chrono/date/nth.hpp>
+#include <boost/chrono/date/nth_tag.hpp>
 #include <boost/chrono/date/date_io.hpp>
 
 namespace boost
@@ -114,52 +114,52 @@ namespace boost
       return res;
     }
 
-    template <typename Date>
-    BOOST_FORCEINLINE Date
-    operator >(nth n, Date d)
+    //template <typename Date>
+    BOOST_FORCEINLINE ymd_date
+    operator >(day n, ymd_date d)
     {
-      Date res;
+      ymd_date res;
       if (month(d)==dec)
       {  // dec and jan have 31 days
-        res = Date(year(d),month(d),day(n.value()));
+        res = ymd_date(year(d),month(d),n);
 
         if (res > d) return res;
-        return Date(year(d),jan,day(n.value()));
+        return ymd_date(year(d),jan,n);
       }
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
         if (res.set_if_valid_date(year(d),month(d),day(n.value(), no_check)) && res > d) return res;
         if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value(), no_check)) && res > d) return res;
-        return Date(year(d),month(month(d)+2),day(n.value(), no_check)) ;
+        return ymd_date(year(d),month(month(d)+2),day(n.value(), no_check)) ;
       }
-      // nth <= 28 is always valid, so the next is either in this month or the next one
-      res = Date(year(d),month(d),day(n.value()));
+      // day <= 28 is always valid, so the next is either in this month or the next one
+      res = ymd_date(year(d),month(d),day(n.value()));
       if (res > d) return res;
-      return Date(year(d),month(month(d)+1),day(n.value(), no_check));
+      return ymd_date(year(d),month(month(d)+1),day(n.value(), no_check));
     }
-    template <typename Date>
-    BOOST_FORCEINLINE Date
-    operator >=(nth n, Date d)
+    //template <typename Date>
+    BOOST_FORCEINLINE ymd_date
+    operator >=(day n, ymd_date d)
     {
-      Date res;
+      ymd_date res;
       if (month(d)==dec)
       {  // dec and jan have 31 days
-        res = Date(year(d),month(d),n.value());
+        res = ymd_date(year(d),month(d),n);
         if (res >= d) return res;
-        return Date(year(d),jan,n.value());
+        return ymd_date(year(d),jan,n);
       }
 
       if (n.value()>28)
       { // As feb could have 29,30 and 31, we need to validate the two first dates
-        if (res.set_if_valid_date(year(d),month(d),day(n.value(), no_check)) && res >= d) return res;
-        if (res.set_if_valid_date(year(d),month(month(d)+1),day(n.value(), no_check)) && res >= d) return res;
-        return Date(year(d),month(d)+2,n.value(), no_check) ;
+        if (res.set_if_valid_date(year(d),month(d),n) && res >= d) return res;
+        if (res.set_if_valid_date(year(d),month(month(d)+1),n) && res >= d) return res;
+        return ymd_date(year(d),month(month(d)+2),n, no_check) ;
       }
-      // nth <= 28 is always valid, so the next is either in this month or the next one
-      res = Date(year(d),month(d),n.value());
+      // day <= 28 is always valid, so the next is either in this month or the next one
+      res = ymd_date(year(d),month(d),n);
       if (res >= d) return res;
-      return Date(year(d),month(month(d)+1),n.value(), no_check);
+      return ymd_date(year(d),month(month(d)+1),n, no_check);
     }
 
 

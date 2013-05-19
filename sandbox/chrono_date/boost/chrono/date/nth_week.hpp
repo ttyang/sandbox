@@ -12,7 +12,7 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
-#include <boost/chrono/date/nth.hpp>
+#include <boost/chrono/date/nth_tag.hpp>
 
 namespace boost
 {
@@ -25,16 +25,13 @@ namespace boost
 
     /**
      * The class nth_week is used to specify a small integral value that indicates the nth week of the month
-     * (example: last_week, 1st_week).  Its range is [1,6].
+     * (example: last_week, 1st_week).  Its range is [1,5].
      */
-    class nth_week : public bounded<nth_week_tag, 1, 6, int_least8_t>
+    class nth_week : public bounded<nth_week_tag, 1, 5, int_least8_t>
     {
-      typedef bounded<nth_week_tag, 1, 6, int_least8_t> base_type;
+      typedef bounded<nth_week_tag, 1, 5, int_least8_t> base_type;
 
     public:
-      BOOST_STATIC_CONSTEXPR rep not_applicable=7;
-      BOOST_FORCEINLINE BOOST_CONSTEXPR nth_week() : base_type(not_applicable) {}
-
       /**
        * @Effects Constructs an object of class @c nth_week by storing @c s.
        * Throws: if @c s is outside of the range [1, 6], throws an exception of type bad_date.
@@ -49,14 +46,9 @@ namespace boost
       BOOST_FORCEINLINE BOOST_CONSTEXPR nth_week(int s) BOOST_NOEXCEPT
           : base_type(s)
       {}
-      BOOST_FORCEINLINE BOOST_CONSTEXPR nth_week(nth_tag s) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR nth_week(nth_1_5_tag s) BOOST_NOEXCEPT
           : base_type(s.value_)
       {}
-
-      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_not_applicable() const BOOST_NOEXCEPT
-      {
-        return value()==not_applicable;
-      }
     };
 
   } // chrono

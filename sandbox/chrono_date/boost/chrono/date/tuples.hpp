@@ -17,7 +17,7 @@
 #include <boost/chrono/date/day.hpp>
 #include <boost/chrono/date/day_of_year.hpp>
 #include <boost/chrono/date/week.hpp>
-#include <boost/chrono/date/nth.hpp>
+#include <boost/chrono/date/nth_tag.hpp>
 #include <boost/chrono/date/detail/helpers.hpp>
 
 namespace boost

@@ -17,7 +17,7 @@
 #include <boost/chrono/date/month_nth.hpp>
 #include <boost/chrono/date/month_nth_weekday.hpp>
 #include <boost/chrono/date/week.hpp>
-#include <boost/chrono/date/nth.hpp>
+#include <boost/chrono/date/nth_tag.hpp>
 #include <boost/chrono/date/nth_week.hpp>
 #include <boost/chrono/date/nth_weekday.hpp>
 #include <boost/chrono/date/weekday.hpp>

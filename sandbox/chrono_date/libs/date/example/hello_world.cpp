@@ -22,14 +22,14 @@ int main()
     typedef boost::chrono::high_resolution_clock Clock;
     typedef boost::chrono::duration<double,boost::micro> micros;
 
-    std::cout << jan/day(2)/2011 << '\n';  // 2011-01-02
-    std::cout << month(1)/day(2)/2011 << '\n';  // 2011-01-02
-    std::cout << date(year(2011),jan,day(2)) << '\n';  // 2011-01-02
+    std::cout << jan/_2nd/2011 << '\n';  // 2011-01-02
+    std::cout << month(1)/_2nd/2011 << '\n';  // 2011-01-02
+    std::cout << date(year(2011),jan,_2nd) << '\n';  // 2011-01-02
     std::cout << '\n';
 
-    std::cout << jan/day(1)/2011 << '\n';  // 2011-01-02
-    std::cout << jan/day(2)/2011 << '\n';  // 2011-01-02
-    std::cout << feb/day(1)/2011 << '\n';  // 2011-01-02
+    std::cout << jan/_1st/2011 << '\n';  // 2011-01-02
+    std::cout << jan/_2nd/2011 << '\n';  // 2011-01-02
+    std::cout << feb/_1st/2011 << '\n';  // 2011-01-02
 
     // Print Feb. 28 for each year in the decade
     for (ymd_date d = feb/day(28)/2010, e = feb/day(28)/2020; d <= e; d += years(1))
@@ -52,7 +52,7 @@ int main()
 
     {
     // How many days between may/1/2011 and jan/1/2011?
-    std::cout <<"How many days between may/1/2011 and jan/1/2011? "<<  days_date(may/day(01)/2011) - jan/day(01)/2011 << '\n';  // x == 120
+    std::cout <<"How many days between may/1/2011 and jan/1/2011? "<<  days_date(may/_1st/2011) - jan/_1st/2011 << '\n';  // x == 120
 
     std::cout << '\n';
     }
@@ -71,7 +71,7 @@ int main()
     date dt = aug/day(16)/2011;
     // ...
     // Create date with the same month and year but on the 5th
-    date dt2 = year_month(dt)/day(5, no_check);  // aug/5/2011
+    date dt2 = year_month(dt)/_5th;  // aug/5/2011
     (void)dt2;
     int d = day(dt);   // d == 5
     int m = month(dt); // m == 8
@@ -134,7 +134,7 @@ int main()
 
     {
 //      int num_fri_in_may = (_fri[last]/may/2011).day() > 28 ? 5 : 4;  // 4
-      int num_fri_in_may = day(last*fri/may/2011) > 28 ? 5 : 4;  // 4
+      int num_fri_in_may = (day(_1st*fri/may/2011) > 28) ? 5 : 4;  // 4
       std::cout <<"Number of fridays in May"<< num_fri_in_may << '\n';
 
 //      date d1 = rel_weekday(5)[_1st]/may/2011;
@@ -160,9 +160,9 @@ int main()
 //    }
 
     {
-      rel_date d1 =  jan/_2nd/2011;          // jan/2/2011
-      rel_date d2 =  year(2011)/jan/_2nd;    // jan/2/2011
-      rel_date d3 =  _2nd/jan/2011;          // jan/2/2011
+      ymd_date d1 =  jan/_2nd/2011;          // jan/2/2011
+      ymd_date d2 =  year(2011)/jan/_2nd;    // jan/2/2011
+      ymd_date d3 =  _2nd/jan/2011;          // jan/2/2011
 
       std::cout << d1 << '\n';
       std::cout << d2 << '\n';
@@ -187,7 +187,7 @@ int main()
       for (rel_date d = last/jan/2011, e = last/dec/2011; d <= e; d += months(1))
       {
           if (day(d) >= 29)
-              std::cout << year(d)/month(d)/day(29,no_check) << '\n';
+              std::cout << year(d)/month(d)/_29th << '\n';
       }
     }
     {
@@ -221,10 +221,9 @@ int main()
       std::cout << dt2 << '\n';
     }
     {
-      ymd_date ISO_week_start(mon <= jan/day(4)/2012);
+      ymd_date ISO_week_start(mon <= jan/_4th/2012);
       std::cout << "ISO_week_start " << ISO_week_start << '\n';
     }
-
     {
       // How many weeks until Christmas?
       days_date dt = dec/day(25)/2011;
@@ -244,7 +243,7 @@ int main()
     {
       std::cout << __FILE__<<"["<<__LINE__ <<"] "<< "How many days until next 28th?" << '\n';
       // How many days until next 28th?
-      days d=days_date(nth(5)>date::today()) - date::today();
+      days d=days_date(_5th>date::today()) - date::today();
       std::cout << d << '\n';
     }
     {

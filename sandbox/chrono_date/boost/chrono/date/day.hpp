@@ -12,6 +12,7 @@
 #include <boost/cstdint.hpp>
 #include <boost/chrono/date/detail/bounded.hpp>
 #include <boost/chrono/date/detail/helpers.hpp>
+#include <boost/chrono/date/nth_tag.hpp>
 
 namespace boost
 {
@@ -67,6 +68,25 @@ namespace boost
         base_type(v, check)
       {
       }
+
+      /**
+       * @Effects Constructs an object of class day by storing y.
+       * @Postconditions <c>static_cast<rep>(*this) == v.value()</c>.
+       */
+      BOOST_FORCEINLINE BOOST_CONSTEXPR day(nth_1_5_tag v) :
+        base_type(v.value(), no_check)
+      {
+      }
+
+      /**
+       * @Effects Constructs an object of class day by storing y.
+       * @Postconditions <c>static_cast<rep>(*this) == v.value()</c>.
+       */
+      BOOST_FORCEINLINE BOOST_CONSTEXPR day(nth_6_31_tag v) :
+        base_type(v.value(), no_check)
+      {
+      }
+
       /**
        * @Effects Constructs an object of class day by storing y.
        * @Postconditions <c>static_cast<rep>(*this) == v.value()</c>.

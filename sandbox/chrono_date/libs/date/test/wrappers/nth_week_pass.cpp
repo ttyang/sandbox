@@ -24,7 +24,7 @@ int main()
   {
     try
     {
-      nth_week d(7, check);
+      nth_week d(6, check);
       BOOST_TEST(false && "7 is not a valid nth_week");
     }
     catch (...)
@@ -50,10 +50,6 @@ int main()
   }
   {
       nth_week d(5);
-      BOOST_TEST(d.is_valid() );
-  }
-  {
-      nth_week d(6);
       BOOST_TEST(d.is_valid() );
   }
   {
@@ -87,10 +83,6 @@ int main()
 //  {
 //      BOOST_TEST(_5th_week.is_valid() );
 //      BOOST_TEST(_5th_week==nth_week(5));
-//  }
-//  {
-//      BOOST_TEST(last_week.is_valid() );
-//      BOOST_TEST(last_week==nth_week(6));
 //  }
 
   return boost::report_errors();

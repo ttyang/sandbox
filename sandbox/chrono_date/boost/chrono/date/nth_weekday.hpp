@@ -11,8 +11,7 @@
 
 
 #include <boost/cstdint.hpp>
-#include <boost/chrono/config.hpp>
-#include <boost/chrono/date/nth.hpp>
+#include <boost/chrono/date/config.hpp>
 #include <boost/chrono/date/nth_week.hpp>
 #include <boost/chrono/date/weekday.hpp>
 #include <boost/chrono/date/no_check.hpp>
@@ -36,7 +35,7 @@ namespace boost
        * @param dow the day of the year
        * @Effects Constructs a pair of nth-weekday.
        */
-      BOOST_CONSTEXPR nth_weekday(nth_week n, weekday dow, check_t) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR nth_weekday(nth_week n, weekday dow, check_t) BOOST_NOEXCEPT
       :
       n_(n, check),
       dow_(dow, check)
@@ -51,7 +50,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR nth_weekday(nth_week n, weekday dow) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR nth_weekday(nth_week n, weekday dow) BOOST_NOEXCEPT
       :
       n_(n),
       dow_(dow)
@@ -61,7 +60,7 @@ namespace boost
       /**
        * @Return if the stored value is a valid one.
        */
-      BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
       {
         return (n_.is_valid() && dow_.is_valid());
       }
@@ -69,7 +68,7 @@ namespace boost
        * @Return The nth stored component.
        */
       //BOOST_CONSTEXPR nth_week nth_week() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::nth_week() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::nth_week() const BOOST_NOEXCEPT
       {
         return n_;
       }
@@ -77,7 +76,54 @@ namespace boost
        * @Return The weekday stored component.
        */
       //BOOST_CONSTEXPR weekday weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
+      {
+        return dow_;
+      }
+    };
+
+    class last_weekday
+    {
+      weekday dow_; // :3
+
+    public:
+      /**
+       * @param n the nth week
+       * @param dow the day of the year
+       * @Effects Constructs a pair of nth-weekday.
+       */
+      BOOST_FORCEINLINE BOOST_CONSTEXPR last_weekday(weekday dow, check_t) BOOST_NOEXCEPT
+      :
+      dow_(dow, check)
+      {
+        // No invalid condition
+      }
+      /**
+       * @param n the nth week
+       * @param dow the day of the year
+       * @param tag to state that no check is performed.
+       * @Effects Constructs a pair of nth-weekday.
+       * @Note This function doesn't check the parameters validity.
+       * It is up to the user to provide a valid ones.
+       */
+      BOOST_FORCEINLINE BOOST_CONSTEXPR last_weekday(weekday dow) BOOST_NOEXCEPT
+      :
+      dow_(dow)
+      {
+      }
+
+      /**
+       * @Return if the stored value is a valid one.
+       */
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      {
+        return (dow_.is_valid());
+      }
+      /**
+       * @Return The weekday stored component.
+       */
+      //BOOST_CONSTEXPR weekday weekday() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return dow_;
       }
@@ -89,21 +135,25 @@ namespace boost
      * @param wd the weekday
      * @return a nth_weekday with the given parameters
      */
-    inline BOOST_CONSTEXPR nth_weekday operator*(nth_week nw, weekday wd) BOOST_NOEXCEPT
+    BOOST_FORCEINLINE BOOST_CONSTEXPR nth_weekday operator*(nth_week nw, weekday wd) BOOST_NOEXCEPT
     {
       return nth_weekday(nw, wd);
+    }
+    BOOST_FORCEINLINE BOOST_CONSTEXPR last_weekday operator*(last_tag, weekday wd) BOOST_NOEXCEPT
+    {
+      return last_weekday(wd);
     }
 
     /**
      * nth_weekday pseudo-literals.
      */
-    extern const nth_weekday last_sun;
-    extern const nth_weekday last_mon;
-    extern const nth_weekday last_tue;
-    extern const nth_weekday last_wed;
-    extern const nth_weekday last_thu;
-    extern const nth_weekday last_fri;
-    extern const nth_weekday last_sat;
+    extern const last_weekday last_sun;
+    extern const last_weekday last_mon;
+    extern const last_weekday last_tue;
+    extern const last_weekday last_wed;
+    extern const last_weekday last_thu;
+    extern const last_weekday last_fri;
+    extern const last_weekday last_sat;
     extern const nth_weekday _1st_sun;
     extern const nth_weekday _1st_mon;
     extern const nth_weekday _1st_tue;
