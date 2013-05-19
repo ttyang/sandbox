@@ -15,7 +15,7 @@ volatile int d;
 volatile boost::int_least16_t m16;
 volatile boost::int_least16_t d16;
 
-#if 0
+#if 1
 void empty_unchecked_ymd_dcl()
 {
   int count = 0;
@@ -91,8 +91,8 @@ void unchecked_ymd_dcl()
         //ymd_date dt((year(y)), month(m), day(d, no_check));
         //ymd_date dt((year(y)), month(m, no_check), day(d));
         //ymd_date dt((year(y)), month(m, no_check), day(d, no_check));
-        //ymd_date dt((year(y)), month(m, no_check), day(d, no_check), no_check);
-        ymd_date dt((year(y)), month_day(month(m, no_check), day(d, no_check), no_check));
+        ymd_date dt((year(y)), month(m, no_check), day(d, no_check), no_check);
+        //ymd_date dt((year(y)), month_day(month(m, no_check), day(d, no_check), no_check));
         //ymd_date dt((year_month(year(y), month(m, no_check))), day(d, no_check));
         ycount+= day(dt)+month(dt)+year(dt);
 #endif
@@ -105,7 +105,7 @@ void unchecked_ymd_dcl()
   auto encode = t1 - t0;
   std::cout << "unchecked calendar " << sec(encode).count() / count << " " << ycount << '\n';
 }
-#if 0
+#if 1
 
 void checked_month_ymd_dcl()
 {
@@ -538,41 +538,41 @@ void unchecked_class_encoding_decoding_perf()
 
 int main()
 {
-//  empty_checked_ymd_dcl();
-//  empty_checked_ymd_dcl();
-//  empty_checked_ymd_dcl();
-//  empty_checked_ymd_dcl();
-//  empty_checked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_day_ymd_dcl();
-//  checked_month_ymd_dcl();
-//  checked_month_ymd_dcl();
-//  checked_month_ymd_dcl();
-//  checked_month_ymd_dcl();
-//  checked_month_ymd_dcl();
+  empty_checked_ymd_dcl();
+  empty_checked_ymd_dcl();
+  empty_checked_ymd_dcl();
+  empty_checked_ymd_dcl();
+  empty_checked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_day_ymd_dcl();
+  checked_month_ymd_dcl();
+  checked_month_ymd_dcl();
+  checked_month_ymd_dcl();
+  checked_month_ymd_dcl();
+  checked_month_ymd_dcl();
   unchecked_ymd_dcl();
   unchecked_ymd_dcl();
   unchecked_ymd_dcl();
@@ -593,77 +593,77 @@ int main()
   unchecked_ymd_dcl();
   unchecked_ymd_dcl();
   unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  unchecked_checked_ymd_dcl();
-//  unchecked_checked_ymd_dcl();
-//  unchecked_checked_ymd_dcl();
-//  unchecked_checked_ymd_dcl();
-//  unchecked_checked_ymd_dcl();
-//  empty_checked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  checked_ymd_dcl();
-//  unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  raw_encoding_perf();
-//  raw_space_encoding_perf();
-//  class_encoding_perf();
-//  empty_decoding_perf();
-//  raw_decoding_perf();
-//  raw_space_decoding_perf();
-//  class_decoding_perf();
-//  class_decoding_encoding_perf();
-//  unchecked_class_decoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//  class_decoding_perf();
-//  class_decoding_encoding_perf();
-//
-//  empty_checked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  checked_ymd_dcl();
-//  unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  empty_checked_ymd_dcl();
-//  empty_unchecked_ymd_dcl();
-//  checked_ymd_dcl();
-//  unchecked_ymd_dcl();
-//  checked_unchecked_ymd_dcl();
-//  raw_encoding_perf();
-//  raw_space_encoding_perf();
-//  class_encoding_perf();
-//  empty_decoding_perf();
-//  raw_decoding_perf();
-//  raw_space_decoding_perf();
-//  class_decoding_perf();
-//  class_decoding_encoding_perf();
-//  unchecked_class_decoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//  class_decoding_perf();
-//  class_decoding_encoding_perf();
-//  class_decoding_encoding_perf();
-//  class_decoding_encoding_perf();
-//  class_decoding_encoding_perf();
-//  class_decoding_encoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//  unchecked_class_decoding_encoding_perf();
-//
-//  class_encoding_decoding_perf();
-//  class_encoding_decoding_perf();
-//  class_encoding_decoding_perf();
-//  class_encoding_decoding_perf();
-//  class_encoding_decoding_perf();
-//  unchecked_class_encoding_decoding_perf();
-//  unchecked_class_encoding_decoding_perf();
-//  unchecked_class_encoding_decoding_perf();
-//  unchecked_class_encoding_decoding_perf();
-//  unchecked_class_encoding_decoding_perf();
+  checked_unchecked_ymd_dcl();
+  checked_unchecked_ymd_dcl();
+  checked_unchecked_ymd_dcl();
+  checked_unchecked_ymd_dcl();
+  checked_unchecked_ymd_dcl();
+  unchecked_checked_ymd_dcl();
+  unchecked_checked_ymd_dcl();
+  unchecked_checked_ymd_dcl();
+  unchecked_checked_ymd_dcl();
+  unchecked_checked_ymd_dcl();
+  empty_checked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  checked_ymd_dcl();
+  unchecked_ymd_dcl();
+  checked_unchecked_ymd_dcl();
+  raw_encoding_perf();
+  raw_space_encoding_perf();
+  class_encoding_perf();
+  empty_decoding_perf();
+  raw_decoding_perf();
+  raw_space_decoding_perf();
+  class_decoding_perf();
+  class_decoding_encoding_perf();
+  unchecked_class_decoding_perf();
+  unchecked_class_decoding_encoding_perf();
+  class_decoding_perf();
+  class_decoding_encoding_perf();
+
+  empty_checked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  checked_ymd_dcl();
+  unchecked_ymd_dcl();
+  checked_unchecked_ymd_dcl();
+  empty_checked_ymd_dcl();
+  empty_unchecked_ymd_dcl();
+  checked_ymd_dcl();
+  unchecked_ymd_dcl();
+  checked_unchecked_ymd_dcl();
+  raw_encoding_perf();
+  raw_space_encoding_perf();
+  class_encoding_perf();
+  empty_decoding_perf();
+  raw_decoding_perf();
+  raw_space_decoding_perf();
+  class_decoding_perf();
+  class_decoding_encoding_perf();
+  unchecked_class_decoding_perf();
+  unchecked_class_decoding_encoding_perf();
+  class_decoding_perf();
+  class_decoding_encoding_perf();
+  class_decoding_encoding_perf();
+  class_decoding_encoding_perf();
+  class_decoding_encoding_perf();
+  class_decoding_encoding_perf();
+  unchecked_class_decoding_encoding_perf();
+  unchecked_class_decoding_encoding_perf();
+  unchecked_class_decoding_encoding_perf();
+  unchecked_class_decoding_encoding_perf();
+  unchecked_class_decoding_encoding_perf();
+  unchecked_class_decoding_encoding_perf();
+
+  class_encoding_decoding_perf();
+  class_encoding_decoding_perf();
+  class_encoding_decoding_perf();
+  class_encoding_decoding_perf();
+  class_encoding_decoding_perf();
+  unchecked_class_encoding_decoding_perf();
+  unchecked_class_encoding_decoding_perf();
+  unchecked_class_encoding_decoding_perf();
+  unchecked_class_encoding_decoding_perf();
+  unchecked_class_encoding_decoding_perf();
   return 1;
 }
 

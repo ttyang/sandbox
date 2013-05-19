@@ -10,6 +10,7 @@
 #define BOOST_CHRONO_DATE_YMD_DATE_HPP
 
 #define BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+//#define BOOST_CHRONO_DATE_YMD_DATE_COMPACT
 
 #include <boost/cstdint.hpp>
 #include <boost/chrono/system_clocks.hpp>
@@ -52,18 +53,36 @@ namespace boost
   #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
   #if defined __clang__
         int_least32_t y_;
-        int_least16_t m_;
-        int_least16_t d_;
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_COMPACT
+      int_least16_t m_;
+      int_least16_t d_;
+#else
+      int_least32_t m_;
+      int_least32_t d_;
+#endif
+      bool leap_ ;
   #else
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_COMPACT
         int_least16_t y_;
         int_least8_t m_;
         int_least8_t d_;
-  #endif
+#else
+        int_least32_t y_;
+        int_least32_t m_;
+        int_least32_t d_;
+#endif
         bool leap_ ;
+  #endif
   #else
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_COMPACT
         int_least32_t y_;
         int_least16_t m_;
         int_least16_t d_;
+#else
+        int_least32_t y_;
+        int_least32_t m_;
+        int_least32_t d_;
+#endif
   #endif
 
       public:
@@ -665,8 +684,13 @@ namespace boost
 #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
 #if defined __clang__
       int_least32_t y_;
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_COMPACT
       int_least16_t m_;
       int_least16_t d_;
+#else
+      int_least32_t m_;
+      int_least32_t d_;
+#endif
 #else
       int_least16_t y_;
       int_least8_t m_;
@@ -674,9 +698,15 @@ namespace boost
 #endif
       bool leap_ ;
 #else
-      int_least32_t y_;
-      int_least16_t m_;
-      int_least16_t d_;
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_COMPACT
+        int_least32_t y_;
+        int_least16_t m_;
+        int_least16_t d_;
+#else
+        int_least32_t y_;
+        int_least32_t m_;
+        int_least32_t d_;
+#endif
 #endif
 
     public:
@@ -813,6 +843,17 @@ namespace boost
         d_(check_invariants(year(y), m, d))
 #if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
         , leap_(boost::chrono::is_leap(y_))
+#endif
+      {
+      }
+
+      BOOST_FORCEINLINE BOOST_CONSTEXPR ymd_date(chrono::year y, chrono::month m, chrono::day d, no_check_t) BOOST_NOEXCEPT :
+        y_(y),
+        m_(m),
+        d_(d)
+#if defined  BOOST_CHRONO_DATE_YMD_DATE_HAS_LEAP_FIELD
+        //, leap_(boost::chrono::is_leap(y_))
+        , leap_(y % 4 == 0 && (y % 100 != 0 || y % 400 == 0))
 #endif
       {
       }

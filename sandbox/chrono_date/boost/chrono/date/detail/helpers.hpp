@@ -31,19 +31,19 @@ namespace boost
 //    typedef boost::int_least32_t day_of_year_rep;
 //    typedef boost::int_least32_t year_rep;
 //#endif
-    inline BOOST_CONSTEXPR bool
+    BOOST_FORCEINLINE BOOST_CONSTEXPR bool
     is_leap(year_rep y)
     BOOST_NOEXCEPT
     {
       return y % 4 == 0 && (y % 100 != 0 || y % 400 == 0);
     }
 
-    inline BOOST_CONSTEXPR days_rep days_before_year(year_rep y)
+    BOOST_FORCEINLINE BOOST_CONSTEXPR days_rep days_before_year(year_rep y)
     {
       return y * 365 + y / 4 - y / 100 + y / 400;
     }
 
-    inline BOOST_CONSTEXPR year_rep
+    BOOST_FORCEINLINE BOOST_CONSTEXPR year_rep
     to_average_year(days_rep ds)
     BOOST_NOEXCEPT
     {

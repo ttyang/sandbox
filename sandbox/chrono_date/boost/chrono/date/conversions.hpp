@@ -42,6 +42,8 @@ namespace boost
     days::rep to_days(int_least32_t y, int_least16_t m, int_least16_t d, bool) BOOST_NOEXCEPT;
     void to_ymd(days::rep dt, int& y, int& m, int& d) BOOST_NOEXCEPT;
     void to_ymd(days::rep dt, int_least32_t& y, int_least16_t& m, int_least16_t& d) BOOST_NOEXCEPT;
+    void to_ymd_leap(days::rep dt, int_least32_t& y, int_least32_t& m, int_least32_t& d, int_least32_t& leap) BOOST_NOEXCEPT;
+    void to_ymd_leap(days::rep dt, int_least32_t& y, int_least32_t& m, int_least32_t& d, bool& leap) BOOST_NOEXCEPT;
     void to_ymd_leap(days::rep dt, int_least32_t& y, int_least16_t& m, int_least16_t& d, bool& leap) BOOST_NOEXCEPT;
     void to_ymd_leap(days::rep dt, int_least16_t& y, int_least8_t& m, int_least8_t& d, bool& leap) BOOST_NOEXCEPT;
     //int_least16_t to_ymd_leap(days::rep dt, int_least32_t y, int_least16_t& m, int_least16_t& d, bool& leap) BOOST_NOEXCEPT;

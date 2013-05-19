@@ -104,6 +104,36 @@ namespace boost
 //      d = day_of_year_day_of_month(leap,doy+1);
 //      return y;
 //    }
+    void to_ymd_leap(days::rep x_, int_least32_t& y, int_least32_t& m, int_least32_t& d, bool& leap) BOOST_NOEXCEPT
+    {
+      y = static_cast<int_least32_t>(static_cast<int64_t>(x_ + 2) * 400 / 146097);
+      int doy = x_ - days_before_year(y);
+      if (doy < 0)
+      {
+        --y;
+        doy = x_ - days_before_year(y);
+      }
+      //y += (year::first_-1);
+      y -= 32799;
+      leap = is_leap(y);
+      m = day_of_year_month(leap,doy+1);
+      d = day_of_year_day_of_month(leap,doy+1);
+    }
+    void to_ymd_leap(days::rep x_, int_least32_t& y, int_least32_t& m, int_least32_t& d, int_least32_t& leap) BOOST_NOEXCEPT
+    {
+      y = static_cast<int_least32_t>(static_cast<int64_t>(x_ + 2) * 400 / 146097);
+      int doy = x_ - days_before_year(y);
+      if (doy < 0)
+      {
+        --y;
+        doy = x_ - days_before_year(y);
+      }
+      //y += (year::first_-1);
+      y -= 32799;
+      leap = is_leap(y);
+      m = day_of_year_month(leap,doy+1);
+      d = day_of_year_day_of_month(leap,doy+1);
+    }
     void to_ymd_leap(days::rep x_, int_least32_t& y, int_least16_t& m, int_least16_t& d, bool& leap) BOOST_NOEXCEPT
     {
       y = static_cast<int_least32_t>(static_cast<int64_t>(x_ + 2) * 400 / 146097);
