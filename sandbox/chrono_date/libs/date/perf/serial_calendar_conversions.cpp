@@ -8,19 +8,14 @@
 
 using namespace boost::chrono;
 const int Ymin = 1900;
-const int Ymax = 2100;
+const int Ymax = 4100;
 volatile int y;
 volatile int m;
 volatile int d;
 volatile boost::int_least16_t m16;
 volatile boost::int_least16_t d16;
 
-//#define VOLATILE
-//#define CHECK_IS_VALID(d) if(d.is_valid())
-
-#define VOLATILE volatile
-#define CHECK_IS_VALID(d)
-
+#if 0
 void empty_unchecked_ymd_dcl()
 {
   int count = 0;
@@ -34,11 +29,7 @@ void empty_unchecked_ymd_dcl()
       int last = unchecked::month(m).days_in(is_l).count();
       for (int d = 1; d <= last; ++d)
       {
-        unchecked::ymd_date dt=unchecked::ymd_date(
-            year(y),
-            unchecked::month(m),
-            unchecked::day(d)
-        );
+        unchecked::ymd_date dt;
         ycount+= unchecked::day(dt);
         ++count;
       }
@@ -47,8 +38,9 @@ void empty_unchecked_ymd_dcl()
   auto t1 = boost::chrono::high_resolution_clock::now();
   typedef boost::chrono::duration<float, boost::nano> sec;
   auto encode = t1 - t0;
-  std::cout << "unchecked calendar " << sec(encode).count() / count << " " << ycount << '\n';
+  std::cout << "default unchecked calendar " << sec(encode).count() / count << " " << ycount << '\n';
 }
+
 void empty_checked_ymd_dcl()
 {
   int count = 0;
@@ -59,10 +51,10 @@ void empty_checked_ymd_dcl()
     bool is_l = year(y).is_leap();
     for (int m = 1; m <= 12; ++m)
     {
-      int last = month(m).days_in(is_l).count();
+      int last = unchecked::month(m).days_in(is_l).count();
       for (int d = 1; d <= last; ++d)
       {
-        ymd_date dt = ymd_date(year(y), month(m), day(d));
+        ymd_date dt;
         ycount+= day(dt);
         ++count;
       }
@@ -71,10 +63,10 @@ void empty_checked_ymd_dcl()
   auto t1 = boost::chrono::high_resolution_clock::now();
   typedef boost::chrono::duration<float, boost::nano> sec;
   auto encode = t1 - t0;
-  std::cout << "checked calendar   " << sec(encode).count() / count << " " << ycount << '\n';
+  std::cout << "default checked calendar   " << sec(encode).count() / count << " " << ycount << '\n';
 }
-
-void empty_encoding_perf()
+#endif
+void unchecked_ymd_dcl()
 {
   int count = 0;
   int ycount = 0;
@@ -84,10 +76,26 @@ void empty_encoding_perf()
     bool is_l = year(y).is_leap();
     for (int m = 1; m <= 12; ++m)
     {
-      int last = month(m).days_in(is_l).count();
+      int last = unchecked::month(m).days_in(is_l).count();
       for (int d = 1; d <= last; ++d)
       {
-        ycount+= d;
+#if 1
+        unchecked::ymd_date dt(
+            (year(y)),
+            unchecked::month(m),
+            unchecked::day(d)
+        );
+        ycount+= unchecked::day(dt)+unchecked::month(dt)+year(dt);
+#else
+        //ymd_date dt((year(y)), month(m), day(d));
+        //ymd_date dt((year(y)), month(m), day(d, no_check));
+        //ymd_date dt((year(y)), month(m, no_check), day(d));
+        //ymd_date dt((year(y)), month(m, no_check), day(d, no_check));
+        //ymd_date dt((year(y)), month(m, no_check), day(d, no_check), no_check);
+        ymd_date dt((year(y)), month_day(month(m, no_check), day(d, no_check), no_check));
+        //ymd_date dt((year_month(year(y), month(m, no_check))), day(d, no_check));
+        ycount+= day(dt)+month(dt)+year(dt);
+#endif
         ++count;
       }
     }
@@ -95,7 +103,139 @@ void empty_encoding_perf()
   auto t1 = boost::chrono::high_resolution_clock::now();
   typedef boost::chrono::duration<float, boost::nano> sec;
   auto encode = t1 - t0;
-  std::cout << "ymd empty loop     " << sec(encode).count() / count << " " << ycount << '\n';
+  std::cout << "unchecked calendar " << sec(encode).count() / count << " " << ycount << '\n';
+}
+#if 0
+
+void checked_month_ymd_dcl()
+{
+  int count = 0;
+  int ycount = 0;
+  auto t0 = boost::chrono::high_resolution_clock::now();
+  for (int y = Ymin; y <= Ymax; ++y)
+  {
+    bool is_l = year(y).is_leap();
+    for (int m = 1; m <= 12; ++m)
+    {
+      int last = unchecked::month(m).days_in(is_l).count();
+      for (int d = 1; d <= last; ++d)
+      {
+        ymd_date dt((year(y)), month(m), day(d));
+        //ymd_date dt((year(y)), month(m), day(d, no_check));
+        //ymd_date dt((year(y)), month(m, no_check), day(d));
+        //ymd_date dt((year(y)), month(m, no_check), day(d, no_check));
+        ycount+= day(dt);
+        ++count;
+      }
+    }
+  }
+  auto t1 = boost::chrono::high_resolution_clock::now();
+  typedef boost::chrono::duration<float, boost::nano> sec;
+  auto encode = t1 - t0;
+  std::cout << "checked month calendar   " << sec(encode).count() / count << " " << ycount << '\n';
+}
+void checked_ymd_dcl()
+{
+  int count = 0;
+  int ycount = 0;
+  auto t0 = boost::chrono::high_resolution_clock::now();
+  for (int y = Ymin; y <= Ymax; ++y)
+  {
+    bool is_l = year(y).is_leap();
+    for (int m = 1; m <= 12; ++m)
+    {
+      int last = unchecked::month(m).days_in(is_l).count();
+      for (int d = 1; d <= last; ++d)
+      {
+        ymd_date dt((year(y)), month(m), day(d));
+        ycount+= day(dt);
+        ++count;
+      }
+    }
+  }
+  auto t1 = boost::chrono::high_resolution_clock::now();
+  typedef boost::chrono::duration<float, boost::nano> sec;
+  auto encode = t1 - t0;
+  std::cout << "checked month/day calendar   " << sec(encode).count() / count << " " << ycount << '\n';
+}
+void checked_day_ymd_dcl()
+{
+  int count = 0;
+  int ycount = 0;
+  auto t0 = boost::chrono::high_resolution_clock::now();
+  for (int y = Ymin; y <= Ymax; ++y)
+  {
+    bool is_l = year(y).is_leap();
+    for (int m = 1; m <= 12; ++m)
+    {
+      int last = unchecked::month(m).days_in(is_l).count();
+      //month pm(m, no_check);
+      for (int d = 1; d <= last; ++d)
+      {
+        //ymd_date dt((year(y)), month(m, no_check), day(d));
+        ymd_date dt((year(y)), month(m), day(d));
+        //ymd_date dt((year(y)), pm, day(d));
+        ycount+= day(dt);
+        ++count;
+      }
+    }
+  }
+  auto t1 = boost::chrono::high_resolution_clock::now();
+  typedef boost::chrono::duration<float, boost::nano> sec;
+  auto encode = t1 - t0;
+  std::cout << "checked day calendar   " << sec(encode).count() / count << " " << ycount << '\n';
+}
+
+void checked_unchecked_ymd_dcl()
+{
+  int count = 0;
+  int ycount = 0;
+  auto t0 = boost::chrono::high_resolution_clock::now();
+  for (int y = Ymin; y <= Ymax; ++y)
+  {
+    bool is_l = year(y).is_leap();
+    for (int m = 1; m <= 12; ++m)
+    {
+      int last = unchecked::month(m).days_in(is_l).count();
+      for (int d = 1; d <= last; ++d)
+      {
+        ymd_date dt((year(y)), month(m), day(d));
+        unchecked::ymd_date dt2 = dt;
+        ycount+= unchecked::day(dt2);
+        ++count;
+      }
+    }
+  }
+  auto t1 = boost::chrono::high_resolution_clock::now();
+  typedef boost::chrono::duration<float, boost::nano> sec;
+  auto encode = t1 - t0;
+  std::cout << "calendar -> unchecked calendar " << sec(encode).count() / count << " " << ycount << '\n';
+}
+
+void unchecked_checked_ymd_dcl()
+{
+  int count = 0;
+  int ycount = 0;
+  auto t0 = boost::chrono::high_resolution_clock::now();
+  for (int y = Ymin; y <= Ymax; ++y)
+  {
+    bool is_l = year(y).is_leap();
+    for (int m = 1; m <= 12; ++m)
+    {
+      int last = unchecked::month(m).days_in(is_l).count();
+      for (int d = 1; d <= last; ++d)
+      {
+        unchecked::ymd_date dt((year(y)), unchecked::month(m), unchecked::day(d));
+        ymd_date dt2(dt);
+        ycount+= day(dt2);
+        ++count;
+      }
+    }
+  }
+  auto t1 = boost::chrono::high_resolution_clock::now();
+  typedef boost::chrono::duration<float, boost::nano> sec;
+  auto encode = t1 - t0;
+  std::cout << "unchecked calendar -> calendar " << sec(encode).count() / count << " " << ycount << '\n';
 }
 
 void raw_encoding_perf()
@@ -394,63 +534,136 @@ void unchecked_class_encoding_decoding_perf()
   auto encode = t1 - t0;
   std::cout << "unchecked calendar -> serial -> unchecked calendar " << sec(encode).count() / count << " " << ycount <<" " << count <<" " << y2count << '\n';
 }
+#endif
 
 int main()
 {
-  empty_encoding_perf();
-  empty_checked_ymd_dcl();
-  empty_unchecked_ymd_dcl();
-  empty_encoding_perf();
-  raw_encoding_perf();
-  raw_space_encoding_perf();
-  class_encoding_perf();
-  empty_decoding_perf();
-  raw_decoding_perf();
-  raw_space_decoding_perf();
-  class_decoding_perf();
-  class_decoding_encoding_perf();
-  unchecked_class_decoding_perf();
-  unchecked_class_decoding_encoding_perf();
-  class_decoding_perf();
-  class_decoding_encoding_perf();
-
-  empty_encoding_perf();
-  empty_checked_ymd_dcl();
-  empty_unchecked_ymd_dcl();
-  empty_encoding_perf();
-  raw_encoding_perf();
-  raw_space_encoding_perf();
-  class_encoding_perf();
-  empty_decoding_perf();
-  raw_decoding_perf();
-  raw_space_decoding_perf();
-  class_decoding_perf();
-  class_decoding_encoding_perf();
-  unchecked_class_decoding_perf();
-  unchecked_class_decoding_encoding_perf();
-  class_decoding_perf();
-  class_decoding_encoding_perf();
-  class_decoding_encoding_perf();
-  class_decoding_encoding_perf();
-  class_decoding_encoding_perf();
-  class_decoding_encoding_perf();
-  unchecked_class_decoding_encoding_perf();
-  unchecked_class_decoding_encoding_perf();
-  unchecked_class_decoding_encoding_perf();
-  unchecked_class_decoding_encoding_perf();
-  unchecked_class_decoding_encoding_perf();
-  unchecked_class_decoding_encoding_perf();
-
-  class_encoding_decoding_perf();
-  class_encoding_decoding_perf();
-  class_encoding_decoding_perf();
-  class_encoding_decoding_perf();
-  class_encoding_decoding_perf();
-  unchecked_class_encoding_decoding_perf();
-  unchecked_class_encoding_decoding_perf();
-  unchecked_class_encoding_decoding_perf();
-  unchecked_class_encoding_decoding_perf();
-  unchecked_class_encoding_decoding_perf();
+//  empty_checked_ymd_dcl();
+//  empty_checked_ymd_dcl();
+//  empty_checked_ymd_dcl();
+//  empty_checked_ymd_dcl();
+//  empty_checked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_day_ymd_dcl();
+//  checked_month_ymd_dcl();
+//  checked_month_ymd_dcl();
+//  checked_month_ymd_dcl();
+//  checked_month_ymd_dcl();
+//  checked_month_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+  unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  unchecked_checked_ymd_dcl();
+//  unchecked_checked_ymd_dcl();
+//  unchecked_checked_ymd_dcl();
+//  unchecked_checked_ymd_dcl();
+//  unchecked_checked_ymd_dcl();
+//  empty_checked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  checked_ymd_dcl();
+//  unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  raw_encoding_perf();
+//  raw_space_encoding_perf();
+//  class_encoding_perf();
+//  empty_decoding_perf();
+//  raw_decoding_perf();
+//  raw_space_decoding_perf();
+//  class_decoding_perf();
+//  class_decoding_encoding_perf();
+//  unchecked_class_decoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//  class_decoding_perf();
+//  class_decoding_encoding_perf();
+//
+//  empty_checked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  checked_ymd_dcl();
+//  unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  empty_checked_ymd_dcl();
+//  empty_unchecked_ymd_dcl();
+//  checked_ymd_dcl();
+//  unchecked_ymd_dcl();
+//  checked_unchecked_ymd_dcl();
+//  raw_encoding_perf();
+//  raw_space_encoding_perf();
+//  class_encoding_perf();
+//  empty_decoding_perf();
+//  raw_decoding_perf();
+//  raw_space_decoding_perf();
+//  class_decoding_perf();
+//  class_decoding_encoding_perf();
+//  unchecked_class_decoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//  class_decoding_perf();
+//  class_decoding_encoding_perf();
+//  class_decoding_encoding_perf();
+//  class_decoding_encoding_perf();
+//  class_decoding_encoding_perf();
+//  class_decoding_encoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//  unchecked_class_decoding_encoding_perf();
+//
+//  class_encoding_decoding_perf();
+//  class_encoding_decoding_perf();
+//  class_encoding_decoding_perf();
+//  class_encoding_decoding_perf();
+//  class_encoding_decoding_perf();
+//  unchecked_class_encoding_decoding_perf();
+//  unchecked_class_encoding_decoding_perf();
+//  unchecked_class_encoding_decoding_perf();
+//  unchecked_class_encoding_decoding_perf();
+//  unchecked_class_encoding_decoding_perf();
   return 1;
 }
 

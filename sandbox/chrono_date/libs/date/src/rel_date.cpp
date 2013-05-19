@@ -686,7 +686,7 @@ namespace boost
     m_(m.value()),
     dow_(weekday(d)),
     d_(0),
-    n_(d.nth_weekday())
+    n_(nth_week(d))
     {
       leap_ = chrono::year(y_).is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap_);
@@ -763,7 +763,7 @@ namespace boost
 #elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
 
     rel_date::rel_date(year y, chrono::month m, nth_weekday nwd) :
-      n_(nwd.nth_weekday()), dow_(weekday(nwd))
+      n_(nth_week(nwd)), dow_(weekday(nwd))
     {
       bool leap = y.is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap);
@@ -862,25 +862,25 @@ namespace boost
 
       leap_ = chrono::year(y).is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap_);
-      if (n_ != nth_week::not_applicable) // if a nth is involved
+//      if (n_ != nth_week::not_applicable) // if a nth is involved
 
       {
-        if (dow_ == weekday::not_applicable) // if we want nth day of month
-
-        {
-          if (n_ == last.value_) // want last day of month
-
-          {
-            d_ = year_data[m_] - year_data[m_-1];
-            std::cout <<"  =========== d= "<< int(d_) << std::endl;
-          }
-          else
-          {
-            d_ = n_; // want nth day of month
-            std::cout <<"   =========== d= "<< int(d_) << std::endl;
-          }
-        }
-        else // we want nth weekday of month
+//        if (dow_ == weekday::not_applicable) // if we want nth day of month
+//
+//        {
+//          if (n_ == last.value_) // want last day of month
+//
+//          {
+//            d_ = year_data[m_] - year_data[m_-1];
+//            std::cout <<"  =========== d= "<< int(d_) << std::endl;
+//          }
+//          else
+//          {
+//            d_ = n_; // want nth day of month
+//            std::cout <<"   =========== d= "<< int(d_) << std::endl;
+//          }
+//        }
+//        else // we want nth weekday of month
 
         {
           // dow_ = [0 - 5] 0 means last
@@ -925,13 +925,13 @@ namespace boost
           std::cout <<"    =========== d= "<< int(d_) << std::endl;
         }
       }
-      if (!(1 <= d_ && d_ <= year_data[m_] - year_data[m_-1]))
-      {
-        std::cout <<"===== ====== d= "<< int(d_) << std::endl;
-        throw bad_date("day " + to_string(int(d_)) +
-            " is out of range for " + to_string(y_) +
-            '-' + to_string(int(m_)));
-      }
+//      if (!(1 <= d_ && d_ <= year_data[m_] - year_data[m_-1]))
+//      {
+//        std::cout <<"===== ====== d= "<< int(d_) << std::endl;
+//        throw bad_date("day " + to_string(int(d_)) +
+//            " is out of range for " + to_string(y_) +
+//            '-' + to_string(int(m_)));
+//      }
     }
 
 #endif
@@ -1117,10 +1117,10 @@ namespace boost
     {
       leap_ = y.is_leap();
       const day_of_year::rep* year_data = days_in_year_before(leap_);
-      if (n_ != nth_week::not_applicable) // if a nth is involved
+//      if (n_ != nth_week::not_applicable) // if a nth is involved
 
       {
-        if (dow_ == weekday::not_applicable) // if we want nth day of month
+//        if (dow_ == weekday::not_applicable) // if we want nth day of month
 
         {
           if (n_ == last.value_) // want last day of month
@@ -1133,56 +1133,56 @@ namespace boost
             d_ = n_; // want nth day of month
           }
         }
-        else // we want nth weekday of month
-
-        {
-          // dow_ = [0 - 6]
-          // n_ = [1 - 6] 6 means last
-          int32_t by = y.value() + 32799;
-          int32_t fy = by*365 + by/4 - by/100 + by/400;
-          int n_days_in_month = year_data[m_] - year_data[m_-1];
-          int d;
-          if (n_ == last.value_)
-          {
-            int ldow = (fy + year_data[m_] + 1) % weekday::size;
-            d = n_days_in_month;
-            if (dow_ < ldow)
-            {
-              d -= ldow - dow_;
-            }
-            else if (dow_ > ldow)
-            {
-              d -= weekday::size - (dow_ - ldow);
-            }
-          }
-          else
-          {
-            int fdow = (fy + year_data[m_-1] + 2) % weekday::size;
-            d = 1 + (n_-1) * weekday::size;
-            if (dow_ < fdow)
-            {
-              d += weekday::size - (fdow - dow_);
-            }
-            else if (dow_ > fdow)
-            {
-              d += dow_ - fdow;
-            }
-            if (d > n_days_in_month)
-            {
-              throw bad_date("day " + to_string(int(d)) +
-                  " is out of range for " + to_string(y_) +
-                  '-' + to_string(int(m_)));
-            }
-          }
-          d_ = d;
-        }
+//        else // we want nth weekday of month
+//
+//        {
+//          // dow_ = [0 - 6]
+//          // n_ = [1 - 6] 6 means last
+//          int32_t by = y.value() + 32799;
+//          int32_t fy = by*365 + by/4 - by/100 + by/400;
+//          int n_days_in_month = year_data[m_] - year_data[m_-1];
+//          int d;
+//          if (n_ == last.value_)
+//          {
+//            int ldow = (fy + year_data[m_] + 1) % weekday::size;
+//            d = n_days_in_month;
+//            if (dow_ < ldow)
+//            {
+//              d -= ldow - dow_;
+//            }
+//            else if (dow_ > ldow)
+//            {
+//              d -= weekday::size - (dow_ - ldow);
+//            }
+//          }
+//          else
+//          {
+//            int fdow = (fy + year_data[m_-1] + 2) % weekday::size;
+//            d = 1 + (n_-1) * weekday::size;
+//            if (dow_ < fdow)
+//            {
+//              d += weekday::size - (fdow - dow_);
+//            }
+//            else if (dow_ > fdow)
+//            {
+//              d += dow_ - fdow;
+//            }
+//            if (d > n_days_in_month)
+//            {
+//              throw bad_date("day " + to_string(int(d)) +
+//                  " is out of range for " + to_string(y_) +
+//                  '-' + to_string(int(m_)));
+//            }
+//          }
+//          d_ = d;
+//        }
       }
-      if (!(1 <= d_ && d_ <= year_data[m_] - year_data[m_-1]))
-      {
-        throw bad_date("day " + to_string(int(d_)) +
-            " is out of range for " + to_string(y_) +
-            '-' + to_string(int(m_)));
-      }
+//      if (!(1 <= d_ && d_ <= year_data[m_] - year_data[m_-1]))
+//      {
+//        throw bad_date("day " + to_string(int(d_)) +
+//            " is out of range for " + to_string(y_) +
+//            '-' + to_string(int(m_)));
+//      }
     }
 
 #endif

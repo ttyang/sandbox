@@ -189,6 +189,7 @@ namespace boost
   #endif
         {
         }
+
         /**
          * @Effects @c tp is converted to UTC, and then truncated to 00:00:00 hours.
          * A ymd_date is created which reflects this point in time.
@@ -465,11 +466,11 @@ namespace boost
           return *this += years(-y.count());
         }
 
-        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
-        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
 
   #if ! defined  BOOST_CHRONO_DATE_DOXYGEN_INVOKED
       private:
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
+        friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
 
         days::rep day_number_from_ymd() const BOOST_NOEXCEPT;
   #endif
@@ -721,7 +722,7 @@ namespace boost
       BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
       bool is_valid_(year_month ym, day d)
       {
-          return d < ym.days_in().count();
+          return d <= ym.days_in().count();
       }
 
 #ifndef  BOOST_NO_CXX11_CONSTEXPR
@@ -968,9 +969,10 @@ namespace boost
        * @Returns whether the @c year()/month()/day() is a valid proleptic Gregorian date.
        */
       // @todo BOOST_CONSTEXPR
-      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
       {
-        return month(m_).is_valid() && unchecked::day(d_).is_valid() && is_valid_(year(y_), month(m_), day(d_, no_check));
+        //return month(m_).is_valid() && unchecked::day(d_).is_valid() && is_valid_(year(y_), month(m_), day(d_, no_check));
+        return true;
       }
 
 //#if ! defined  BOOST_CHRONO_DATE_DOXYGEN_INVOKED
@@ -1058,7 +1060,7 @@ namespace boost
       }
       BOOST_FORCEINLINE BOOST_CONSTEXPR operator chrono::month_day() const BOOST_NOEXCEPT
       {
-        return chrono::month_day(chrono::month(m_, no_check), chrono::day(d_, no_check));
+        return chrono::month_day(chrono::month(m_, no_check), chrono::day(d_, no_check), no_check);
       }
       BOOST_FORCEINLINE BOOST_CONSTEXPR operator chrono::year_month() const BOOST_NOEXCEPT
       {
@@ -1240,12 +1242,10 @@ namespace boost
         return *this += years(-y.count());
       }
 
-      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
-      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
-
-
 #if ! defined  BOOST_CHRONO_DATE_DOXYGEN_INVOKED
     private:
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator==(const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
+      friend BOOST_FORCEINLINE BOOST_CONSTEXPR bool operator< (const ymd_date& x, const ymd_date& y) BOOST_NOEXCEPT;
 
       days::rep day_number_from_ymd() const BOOST_NOEXCEPT;
 #endif

@@ -397,6 +397,12 @@ namespace boost
       {
         month m_;
         day d_;
+
+        BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
+        bool is_valid_(month m, day d)
+        {
+            return (d<=m.days_in(true).count());
+        }
       public:
         BOOST_FORCEINLINE BOOST_CONSTEXPR month_day(month m, day d) BOOST_NOEXCEPT
         : m_(m),
@@ -420,6 +426,15 @@ namespace boost
         BOOST_CHRONO_EXPLICIT BOOST_FORCEINLINE BOOST_CONSTEXPR operator unchecked::day() const BOOST_NOEXCEPT
         {
           return d_;
+        }
+        /**
+         *
+         * @Returns whether the @c month()/day() is a valid proleptic Gregorian date.
+         */
+        // @todo BOOST_CONSTEXPR
+        BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+        {
+          return month(m_).is_valid() && day(d_).is_valid() && is_valid_(month(m_), day(d_));
         }
       };
 
@@ -463,16 +478,40 @@ namespace boost
     {
       month m_;
       day d_;
-    public:
-      BOOST_FORCEINLINE BOOST_CONSTEXPR month_day(month m, day d)BOOST_NOEXCEPT
-      : m_(m),
-      d_(d)
+
+      BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
+      bool is_valid_(month m, day d)
       {
-        // check validity of day relative to month.
+          return (d<=m.days_in(true).count());
       }
-      BOOST_FORCEINLINE BOOST_CONSTEXPR month_day(month::rep m, day::rep d, check_t)
+
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+      BOOST_FORCEINLINE static BOOST_CHRONO_DATE_CONSTEXPR
+      day check_invariants(month m, day d)
+      {
+          return is_valid_(m,d)
+                  ? d
+                  : throw bad_date("day " + to_string(d) + " is out of range for month " + to_string(m))
+                ;
+      }
+#else
+      BOOST_FORCEINLINE static
+      day check_invariants(month m, day d)
+      {
+          if ( is_valid_(m,d) )
+              return d;
+          else throw bad_date("day " + to_string(d) + " is out of range for month " + to_string(m));
+      }
+#endif
+    public:
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR month_day(month m, day d)
       : m_(m),
-      d_(d)
+      d_(check_invariants(m,d))
+      {
+      }
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR month_day(month::rep m, day::rep d, check_t)
+      : m_(m),
+      d_(check_invariants(month(m),day(d)))
       {
       }
 
@@ -482,9 +521,11 @@ namespace boost
       {
       }
 
-      BOOST_FORCEINLINE BOOST_CONSTEXPR explicit month_day(unchecked::month_day md)
-          : m_(unchecked::month(md)),
-          d_(unchecked::day(md))
+      // conversions
+
+      BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR explicit month_day(unchecked::month_day md)
+          : m_(unchecked::month(md),no_check),
+          d_(check_invariants(month(unchecked::month(md)), day(unchecked::day(md))))
       {
       }
 
@@ -493,6 +534,7 @@ namespace boost
         return unchecked::month_day(m_, d_);
       }
 
+      // Observers
       /**
        * @Return the month stored component.
        */
@@ -509,15 +551,26 @@ namespace boost
       {
         return d_;
       }
+
+      /**
+       *
+       * @Returns whether the @c month()/day() is a valid proleptic Gregorian date.
+       */
+      // @todo BOOST_CONSTEXPR
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
+      {
+        //return month(m_).is_valid() && day(d_).is_valid() && is_valid_(year(y_), month(m_), day(d_));
+        return true;
+      }
     };
 
-    BOOST_FORCEINLINE BOOST_CONSTEXPR month_day operator/(month m, day d) BOOST_NOEXCEPT
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR month_day operator/(month m, day d) BOOST_NOEXCEPT
     {
       return month_day(m, d);
     }
 
 
-    BOOST_FORCEINLINE BOOST_CONSTEXPR month_day operator/(day d, month m) BOOST_NOEXCEPT
+    BOOST_FORCEINLINE BOOST_CHRONO_DATE_CONSTEXPR month_day operator/(day d, month m) BOOST_NOEXCEPT
     {
       return month_day(m, d);
     }
