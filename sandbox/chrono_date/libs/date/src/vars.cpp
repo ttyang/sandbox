@@ -1,7 +1,7 @@
 //  date.cpp
 //
 //  (C) Copyright Howard Hinnant
-//  Copyright 2011 Vicente J. Botet Escriba
+//  Copyright 2011-2013 Vicente J. Botet Escriba
 //  Use, modification and distribution are subject to the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
@@ -96,16 +96,21 @@ namespace boost
 
     namespace chrono_detail
     {
-#ifndef  BOOST_NO_CXX11_CONSTEXPR
-#else
+#ifdef  BOOST_NO_CXX11_CONSTEXPR
       day_rep leap_days_in_month_[13] =
         { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
       day_rep normal_days_in_month_[13] =
         { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+      day_rep leap_days_in_year_before_[13] =
+          { -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+
+      day_rep normal_days_in_year_before_[13] =
+          { -1, 30, 58, 89, 119, 150, 180, 211, 242, 272, 303, 333, 364 };
+
 #endif
     }
-
 
 //    days year::days_in_month(month m) const BOOST_NOEXCEPT
 //    {

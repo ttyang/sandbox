@@ -1,7 +1,7 @@
 //  date
 //
 //  (C) Copyright Howard Hinnant
-//  Copyright 2011 Vicente J. Botet Escriba
+//  Copyright 2011-2013 Vicente J. Botet Escriba
 //  Use, modification and distribution are subject to the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
@@ -79,14 +79,14 @@ namespace boost
     /**
      * @return a @c month_nth_weekday build with the given parameters.
      */
-    inline BOOST_CONSTEXPR month_nth_weekday operator/(month m, nth_weekday d) BOOST_NOEXCEPT
+    BOOST_FORCEINLINE BOOST_CONSTEXPR month_nth_weekday operator/(month m, nth_weekday d) BOOST_NOEXCEPT
     {
       return month_nth_weekday(m, d);
     }
     /**
      * @return a @c month_nth_weekday build with the given parameters.
      */
-    inline BOOST_CONSTEXPR month_nth_weekday operator/(nth_weekday d, month m) BOOST_NOEXCEPT
+    BOOST_FORCEINLINE BOOST_CONSTEXPR month_nth_weekday operator/(nth_weekday d, month m) BOOST_NOEXCEPT
     {
       return month_nth_weekday(m, d);
     }
@@ -105,7 +105,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR month_last_weekday(month::rep m, last_weekday d) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR month_last_weekday(month::rep m, last_weekday d) BOOST_NOEXCEPT
       : m_(m),
       d_(d)
       {
@@ -114,7 +114,7 @@ namespace boost
        * @Return the @c month component.
        */
       //month month() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_FORCEINLINE BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
@@ -122,14 +122,14 @@ namespace boost
        * @Return the @c last_weekday component.
        */
       //BOOST_CONSTEXPR last_weekday last_weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::last_weekday() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_FORCEINLINE BOOST_CONSTEXPR operator chrono::last_weekday() const BOOST_NOEXCEPT
       {
         return d_;
       }
       /**
        * @Return if the stored value is a valid one.
        */
-      BOOST_CONSTEXPR  bool is_valid() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR  bool is_valid() const BOOST_NOEXCEPT
       {
         return ( m_.is_valid() &&  d_.is_valid() );
       }
@@ -138,14 +138,14 @@ namespace boost
     /**
      * @return a @c month_last_weekday build with the given parameters.
      */
-    inline BOOST_CONSTEXPR month_last_weekday operator/(month m, last_weekday d) BOOST_NOEXCEPT
+    BOOST_FORCEINLINE BOOST_CONSTEXPR month_last_weekday operator/(month m, last_weekday d) BOOST_NOEXCEPT
     {
       return month_last_weekday(m, d);
     }
     /**
      * @return a @c month_last_weekday build with the given parameters.
      */
-    inline BOOST_CONSTEXPR month_last_weekday operator/(last_weekday d, month m) BOOST_NOEXCEPT
+    BOOST_FORCEINLINE BOOST_CONSTEXPR month_last_weekday operator/(last_weekday d, month m) BOOST_NOEXCEPT
     {
       return month_last_weekday(m, d);
     }

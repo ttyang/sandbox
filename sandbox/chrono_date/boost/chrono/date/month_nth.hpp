@@ -1,7 +1,7 @@
 //  date
 //
 //  (C) Copyright Howard Hinnant
-//  Copyright 2011 Vicente J. Botet Escriba
+//  Copyright 2011-2013 Vicente J. Botet Escriba
 //  Use, modification and distribution are subject to the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
@@ -36,7 +36,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide the valid ones.
        */
-      BOOST_CONSTEXPR month_nth(month m, last_tag) BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR month_nth(month m, last_tag) BOOST_NOEXCEPT
       : m_(m)
       {
       }
@@ -44,7 +44,7 @@ namespace boost
        * @Return the @c month component.
        */
       //BOOST_CONSTEXPR month month() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICIT BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
+      BOOST_CHRONO_EXPLICIT BOOST_FORCEINLINE BOOST_CONSTEXPR operator chrono::month() const BOOST_NOEXCEPT
       {
         return m_;
       }
@@ -52,7 +52,7 @@ namespace boost
       /**
        * @Return if the stored value is a valid one.
        */
-      bool is_valid() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR bool is_valid() const BOOST_NOEXCEPT
       {
         return (m_.is_valid());
       }
@@ -61,7 +61,7 @@ namespace boost
      * @Return a the @c month_nth with the associated parameters.
      * @Throws if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
      */
-    inline BOOST_CONSTEXPR month_nth operator/(chrono::month m, last_tag d)
+    BOOST_FORCEINLINE BOOST_CONSTEXPR month_nth operator/(chrono::month m, last_tag d)
     BOOST_NOEXCEPT
     {
       return month_nth(m, d);
@@ -71,7 +71,7 @@ namespace boost
      * @Returns the @c month_nth with the associated parameters.
      * @Throws if @c d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
      */
-    inline BOOST_CONSTEXPR month_nth operator/(last_tag d, chrono::month m)
+    BOOST_FORCEINLINE BOOST_CONSTEXPR month_nth operator/(last_tag d, chrono::month m)
 BOOST_NOEXCEPT  {
     return month_nth(m, d);
   }

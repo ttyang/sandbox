@@ -1,7 +1,7 @@
 //  date
 //
 //  (C) Copyright Howard Hinnant
-//  Copyright 2011 Vicente J. Botet Escriba
+//  Copyright 2011-2013 Vicente J. Botet Escriba
 //  Use, modification and distribution are subject to the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
@@ -24,6 +24,31 @@ namespace boost
 {
   namespace chrono
   {
+    namespace chrono_detail
+    {
+#ifndef  BOOST_NO_CXX11_CONSTEXPR
+      BOOST_STATIC_CONSTEXPR day_rep leap_days_in_year_before_[13] =
+          { -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+
+      BOOST_FORCEINLINE static BOOST_CONSTEXPR
+      day_rep leap_days_in_year_before(int d) BOOST_NOEXCEPT { return leap_days_in_year_before_[d]; }
+
+      BOOST_STATIC_CONSTEXPR day_rep normal_days_in_year_before_[13] =
+          { -1, 30, 58, 89, 119, 150, 180, 211, 242, 272, 303, 333, 364 };
+      BOOST_FORCEINLINE static BOOST_CONSTEXPR
+      day_rep normal_days_in_year_before(int d) BOOST_NOEXCEPT { return normal_days_in_year_before_[d]; }
+#else
+      extern  day_rep leap_days_in_year_before_[];
+      BOOST_FORCEINLINE
+      day_rep leap_days_in_year_before(int d) BOOST_NOEXCEPT { return leap_days_in_year_before_[d]; }
+      extern  day_rep normal_days_in_year_before_[];
+      BOOST_FORCEINLINE
+      day_rep normal_days_in_year_before(int d) BOOST_NOEXCEPT { return normal_days_in_year_before_[d]; }
+
+#endif
+
+    }
+
     namespace unchecked
     {
       /**
@@ -75,7 +100,22 @@ namespace boost
         {
           return y_.days_in_month(m_);
         }
-
+        /**
+         * @Returns the number of days since the epoch until the first day of this year/month.
+         */
+        BOOST_FORCEINLINE BOOST_CONSTEXPR days days_since_start_of_year() const BOOST_NOEXCEPT
+        {
+          return (y_.is_leap())
+              ? days(chrono_detail::leap_days_in_year_before(m_)+1)
+              : days(chrono_detail::normal_days_in_year_before(m_)+1)
+              ;        }
+        /**
+         * @Returns the number of days since the epoch until the first day of this year/month.
+         */
+        BOOST_FORCEINLINE BOOST_CONSTEXPR days days_since_epoch() const BOOST_NOEXCEPT
+        {
+          return y_.days_since_epoch() + days_since_start_of_year();
+        }
         year_month& operator+=(months m) BOOST_NOEXCEPT;
         BOOST_FORCEINLINE year_month& operator++() BOOST_NOEXCEPT
         {

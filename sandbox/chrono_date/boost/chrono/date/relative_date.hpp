@@ -1,15 +1,13 @@
 //  rel_date
 //
 //  (C) Copyright Howard Hinnant
-//  Copyright 2011 Vicente J. Botet Escriba
+//  Copyright 2011-2013 Vicente J. Botet Escriba
 //  Use, modification and distribution are subject to the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
 
 #ifndef BOOST_CHRONO_DATE_RELATIVE_DATE_HPP
 #define BOOST_CHRONO_DATE_RELATIVE_DATE_HPP
-
-
 
 #include <boost/cstdint.hpp>
 #include <boost/chrono/config.hpp>
@@ -41,23 +39,7 @@ namespace boost
      */
     class rel_date
     {
-#if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1
-      // Store x, y/m/d, n, dow. Total 64 bits
-      uint_least32_t x_;
-      int_least16_t y_;
 
-      uint_least8_t m_    : 4;
-      uint_least8_t leap_ : 1;
-      uint_least8_t dow_  : 3;
-
-      uint_least8_t d_    : 5; // :5
-      uint_least8_t n_    : 3; // :3
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      // Store x, n, dow. Total 64 bits
-      uint_least32_t x_;
-      uint_least8_t n_    :5;
-      uint_least8_t dow_  :3;
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       // Store y/m/d, n, dow. Total 32 bits
       int_least16_t y_;
       uint_least8_t m_    : 4;
@@ -65,7 +47,6 @@ namespace boost
       uint_least8_t dow_  : 3;
       uint_least8_t d_    : 5;
       uint_least8_t n_    : 3;
-#endif
 
     public:
 
@@ -116,7 +97,6 @@ namespace boost
       // observers
       //bool is_valid() const BOOST_NOEXCEPT;
 
-#if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       chrono::day to_day() const BOOST_NOEXCEPT
       {
         return chrono::day(d_, no_check);
@@ -149,50 +129,17 @@ namespace boost
       {
         return leap_;
       }
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      //chrono::day day() const BOOST_NOEXCEPT
-      operator chrono::day() const BOOST_NOEXCEPT
-      {
-        return chrono::day(day_from_day_number());
-      }
-      chrono::month month() const BOOST_NOEXCEPT
-      {
-        return chrono::month(month_from_day_number());
-      }
-      chrono::year year() const BOOST_NOEXCEPT
-      {
-        return chrono::year(year_from_day_number());
-      }
-      bool is_leap_year() const BOOST_NOEXCEPT
-      {
-        return leap_from_day_number();
-      }
-#endif
-#if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      //chrono::weekday weekday() const BOOST_NOEXCEPT
-      BOOST_CHRONO_EXPLICIT operator chrono::weekday() const BOOST_NOEXCEPT
-      {
-        return chrono::weekday((x_+1) % weekday::size);
-      }
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
+
       //chrono::weekday weekday() const BOOST_NOEXCEPT
       BOOST_CHRONO_EXPLICIT operator chrono::weekday() const BOOST_NOEXCEPT
       {
         return chrono::weekday((day_number_from_ymd()+1) % weekday::size);
       }
-#endif
 
-#if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      days days_since_epoch() const
-      {
-        return days(x_);
-      }
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       days days_since_epoch() const
       {
         return days(day_number_from_ymd());
       }
-#endif
 
 #if BOOST_CHRONO_DATE_REL_DATE_IS_A_MODEL_OF_DATE
 
@@ -237,17 +184,10 @@ namespace boost
         return dt;
       }
 #endif
-#if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      friend days operator-(rel_date x, rel_date y) BOOST_NOEXCEPT
-      {
-        return x.days_since_epoch() - y.days_since_epoch();
-      }
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       friend days operator-(rel_date x, rel_date y) BOOST_NOEXCEPT
       {
         return days_date(x).days_since_epoch() - days_date(y).days_since_epoch();
       }
-#endif
       friend days operator-(rel_date x, ymd_date y) BOOST_NOEXCEPT
       {
         return days_date(x).days_since_epoch() - days_date(y).days_since_epoch();
@@ -302,16 +242,6 @@ namespace boost
         return dt;
       }
 
-#if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 1 || BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-      friend bool operator==(const rel_date& x, const rel_date& y) BOOST_NOEXCEPT
-      {
-        return x.x_ == y.x_;
-      }
-      friend bool operator< (const rel_date& x, const rel_date& y) BOOST_NOEXCEPT
-      {
-        return x.x_ < y.x_;
-      }
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       friend bool operator==(const rel_date& x, const rel_date& y) BOOST_NOEXCEPT
       {
         return x.y_ == y.y_ && x.m_ == y.m_ && x.d_ == y.d_;
@@ -322,7 +252,6 @@ namespace boost
         (!(y.y_ < x.y_) && (x.m_ < y.m_ ||
                 (!(y.m_ < x.m_) && x.d_ < y.d_)));
       }
-#endif
       friend bool operator!=(const rel_date& x, const rel_date& y) BOOST_NOEXCEPT
       {
         return !(x == y);
@@ -340,57 +269,49 @@ namespace boost
         return !(x < y);
       }
 
-#if BOOST_CHRONO_DATE_REL_DATE_DESIGN == 2
-    private:
-      uint16_t day_from_day_number() const BOOST_NOEXCEPT;
-      uint16_t month_from_day_number() const BOOST_NOEXCEPT;
-      int16_t year_from_day_number() const BOOST_NOEXCEPT;
-      bool leap_from_day_number() const BOOST_NOEXCEPT;
-#elif BOOST_CHRONO_DATE_REL_DATE_DESIGN == 3
       uint32_t day_number_from_ymd() const BOOST_NOEXCEPT;
-#endif
     };
 
     template <>
     struct is_date<rel_date> : true_type {};
 
-    inline rel_date operator/(year_month ym, nth_weekday d)
+    BOOST_FORCEINLINE rel_date operator/(year_month ym, nth_weekday d)
     {
       return rel_date(year(ym), month(ym), d);
     }
-    inline rel_date operator/(year_month ym, last_weekday d)
+    BOOST_FORCEINLINE rel_date operator/(year_month ym, last_weekday d)
     {
       return rel_date(year(ym), month(ym), d);
     }
-    inline rel_date operator/(year_month ym, last_tag)
+    BOOST_FORCEINLINE rel_date operator/(year_month ym, last_tag)
     {
       return rel_date(year(ym), month(ym), last);
     }
 
-    inline rel_date operator/(month_nth_weekday md, chrono::year y)
+    BOOST_FORCEINLINE rel_date operator/(month_nth_weekday md, chrono::year y)
     {
       return rel_date(y, month(md), nth_weekday(md));
     }
-    inline rel_date operator/(month_last_weekday md, chrono::year y)
+    BOOST_FORCEINLINE rel_date operator/(month_last_weekday md, chrono::year y)
     {
       return rel_date(y, month(md), last_weekday(md));
     }
 
-    inline rel_date operator/(month_nth_weekday md, year::rep y)
+    BOOST_FORCEINLINE rel_date operator/(month_nth_weekday md, year::rep y)
     {
       return md / chrono::year(y);
     }
-    inline rel_date operator/(month_last_weekday md, year::rep y)
+    BOOST_FORCEINLINE rel_date operator/(month_last_weekday md, year::rep y)
     {
       return md / chrono::year(y);
     }
 
-    inline rel_date operator/(month_nth md, chrono::year y)
+    BOOST_FORCEINLINE rel_date operator/(month_nth md, chrono::year y)
     {
       return rel_date(y, month(md), last);
     }
 
-    inline rel_date operator/(month_nth md, year::rep y)
+    BOOST_FORCEINLINE rel_date operator/(month_nth md, year::rep y)
     {
       return md / chrono::year(y);
     }

@@ -1,7 +1,7 @@
 //  date
 //
 //  (C) Copyright Howard Hinnant
-//  Copyright 2011 Vicente J. Botet Escriba
+//  Copyright 2011-2013 Vicente J. Botet Escriba
 //  Use, modification and distribution are subject to the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
@@ -20,6 +20,7 @@ namespace boost
 {
   namespace chrono
   {
+
     /**
      * year tag
      */
@@ -80,9 +81,9 @@ namespace boost
         return m.days_in(is_leap());
       }
       /**
-       * @Returns the number of days since the epoch until the fist day of this year.
+       * @Returns the number of days since the epoch until the first day of this year.
        */
-      BOOST_FORCEINLINE days days_since_epoch() const BOOST_NOEXCEPT
+      BOOST_FORCEINLINE BOOST_CONSTEXPR days days_since_epoch() const BOOST_NOEXCEPT
       {
         return days(days_before_year(value()));
       }

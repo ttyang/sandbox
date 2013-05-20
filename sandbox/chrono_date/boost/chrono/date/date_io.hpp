@@ -1,7 +1,7 @@
 //  date_io.hpp
 //
 //  (C) Copyright Howard Hinnant
-//  Copyright 2011 Vicente J. Botet Escriba
+//  Copyright 2011-2013 Vicente J. Botet Escriba
 //  Use, modification and distribution are subject to the Boost Software License,
 //  Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt).
@@ -196,7 +196,7 @@ namespace boost
      * @endcode
      */
     template<class charT>
-    inline date_manip<charT> date_fmt(std::basic_string<charT> fmt)
+    BOOST_FORCEINLINE date_manip<charT> date_fmt(std::basic_string<charT> fmt)
     {
       //#if ! defined BOOST_NO_RVALUE_DEFERENCES
       //      return date_manip<charT>(std::move(fmt));
@@ -211,7 +211,7 @@ namespace boost
      * @return <c>date_fmt(std::string(fmt))</c>
      */
     template<class charT>
-    inline date_manip<charT> date_fmt(const charT* fmt)
+    BOOST_FORCEINLINE date_manip<charT> date_fmt(const charT* fmt)
     {
       return date_manip<charT> (fmt);
     }
