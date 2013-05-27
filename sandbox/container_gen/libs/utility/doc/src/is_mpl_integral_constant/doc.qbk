@@ -1,0 +1,32 @@
+[article is_mpl_integral_constant
+    [quickbook 1.5]
+    [copyright 2013 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __MPL_Integral_Constant__ [@boost:libs/mpl/doc/refmanual/integral-constant.html [*MPL Integral Constant]]]
+[def __mpl_true__ [@boost:libs/mpl/doc/refmanual/bool.html `boost::mpl::true_`]]
+[def __mpl_false__ [@boost:libs/mpl/doc/refmanual/bool.html `boost::mpl::false_`]]
+[def __boost_utility_is_mpl_integral_constant_hpp__ [@../../../../boost/utility/is_mpl_integral_constant.hpp boost/utility/is_mpl_integral_constant.hpp]]
+
+[import ../../../../../boost/utility/is_mpl_integral_constant.hpp]
+
+[section Synopsis]
+[reference__is_mpl_integral_constant]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the bound argument type models the
+__MPL_Integral_Constant__ concept, __mpl_false__ otherwise.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_is_mpl_integral_constant_hpp__>
+``
+[endsect]
+
