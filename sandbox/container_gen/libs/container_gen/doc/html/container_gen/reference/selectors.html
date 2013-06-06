@@ -1,0 +1,1237 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Selectors</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.8">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="../reference.html" title="Reference">
+<link rel="next" href="container_gen.html" title="container_gen">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="container_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container_gen.reference.selectors"></a><a class="link" href="selectors.html" title="Selectors">Selectors</a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.selectors.synopsis"></a><a class="link" href="selectors.html#container_gen.reference.selectors.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+          This library provides several selector templates, one for each <a href="http://www.sgi.com/tech/stl/Container.html" target="_top"><span class="bold"><strong>STL Container</strong></span></a> model, <a href="http://www.boost.org/doc/html/container.html" target="_top"><span class="bold"><strong>Boost.Container</strong></span></a>, <a href="http://www.boost.org/doc/html/unordered.html" target="_top"><span class="bold"><strong>Boost.Unordered</strong></span></a> container, and <a href="http://www.boost.org/libs/ptr_container/doc/index.html" target="_top"><span class="bold"><strong>Boost.PointerContainer</strong></span></a> to which it corresponds.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ConstantSize</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsTR1</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">array_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsBoostNotStd</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">vector_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsBoostNotStd</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">deque_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsBoostNotStd</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">list_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">stable_vector_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">slist_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsBoostNotStd</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">set_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsBoostNotStd</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">map_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsBoostNotStd</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">multiset_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsBoostNotStd</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">multimap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_flat_allocator_selector</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_set_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_flat_allocator_selector</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_map_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_flat_allocator_selector</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_multiset_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_flat_allocator_selector</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_multimap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsTR1NotBoost</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_set_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsTR1NotBoost</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_map_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsTR1NotBoost</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_multiset_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsTR1NotBoost</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_multimap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">ConstantSize</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_array_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_vector_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_deque_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_list_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_set_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_map_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_multiset_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_multimap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_hash_set_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_hash_map_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_hash_multiset_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">HashSelector</span> <span class="special">=</span> <span class="identifier">boost_hash_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">equal_to_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CloneAllocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap_clone_allocator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Allocator</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">void</span><span class="special">*&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">ptr_hash_multimap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">SequenceSelector</span> <span class="special">=</span> <span class="identifier">deque_selector</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">stack_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">SequenceSelector</span> <span class="special">=</span> <span class="identifier">deque_selector</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">queue_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">SequenceSelector</span> <span class="special">=</span> <span class="identifier">deque_selector</span><span class="special">&lt;&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">std_heap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsStable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stable</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">StabilityCounterType</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stability_counter_type</span><span class="special">&lt;</span>
+            <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span>
+        <span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">priority_queue_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">Arity</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsStable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stable</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">StabilityCounterType</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stability_counter_type</span><span class="special">&lt;</span>
+            <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span>
+        <span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsMutable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">mutable_</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">d_ary_heap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsStable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stable</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">StabilityCounterType</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stability_counter_type</span><span class="special">&lt;</span>
+            <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span>
+        <span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">binomial_heap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsStable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stable</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">StabilityCounterType</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stability_counter_type</span><span class="special">&lt;</span>
+            <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span>
+        <span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ConstantTimeSize</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">fibonacci_heap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsStable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stable</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">StabilityCounterType</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stability_counter_type</span><span class="special">&lt;</span>
+            <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span>
+        <span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ConstantTimeSize</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">pairing_heap_selector</span><span class="special">;</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">CompareSelector</span> <span class="special">=</span> <span class="identifier">less_than_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AllocatorSelector</span> <span class="special">=</span> <span class="identifier">std_allocator_selector</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsStable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stable</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">StoresParentPointer</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">store_parent_pointer</span><span class="special">&lt;</span>
+            <span class="keyword">false</span>
+        <span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">StabilityCounterType</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stability_counter_type</span><span class="special">&lt;</span>
+            <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span>
+        <span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ConstantTimeSize</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">constant_time_size</span><span class="special">&lt;</span><span class="keyword">true</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IsMutable</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">mutable_</span><span class="special">&lt;</span><span class="keyword">false</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">skew_heap_selector</span><span class="special">;</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+        </p>
+<p>
+          A selector template also exists for each STL container adaptor and <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a>
+          data structure to which it corresponds.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">SequenceSelector</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">stack_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">SequenceSelector</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">queue_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T0</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">std_heap_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T0</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T3</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">priority_queue_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">T0</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T3</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T4</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T5</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">d_ary_heap_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T0</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T3</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">binomial_heap_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T0</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T3</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T4</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">fibonacci_heap_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T0</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T3</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T4</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">pairing_heap_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">T0</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T3</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T4</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T5</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T6</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">skew_heap_selector</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+        </p>
+<p>
+          In turn, some of the default arguments of these selector templates are
+          themselves selector types.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">struct</span> <span class="identifier">equal_to_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <span class="comment">// implementation_defined</span>
+                    <span class="identifier">type</span><span class="special">;</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">less_than_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <span class="comment">// implementation_defined</span>
+                    <span class="identifier">type</span><span class="special">;</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">greater_than_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_</span><span class="special">&lt;</span>
+                        <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">metafunction</span><span class="special">::</span><span class="identifier">is_container</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">range_greater</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">greater</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
+                    <span class="special">&gt;::</span><span class="identifier">type</span>
+                    <span class="identifier">type</span><span class="special">;</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">boost_hash_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">tr1_hash_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">std_allocator_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span> <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_</span><span class="special">&lt;</span>
+                        <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_void</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">&gt;</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">&gt;</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span> <span class="keyword">const</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span> <span class="special">&gt;</span>
+                    <span class="special">&gt;::</span><span class="identifier">type</span>
+                    <span class="identifier">type</span><span class="special">;</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">std_flat_allocator_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span> <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_</span><span class="special">&lt;</span>
+                        <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_void</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">&gt;</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">&gt;</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span> <span class="special">&gt;</span>
+                    <span class="special">&gt;::</span><span class="identifier">type</span>
+                    <span class="identifier">type</span><span class="special">;</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+        </p>
+<p>
+          To instantiate a model of <a href="http://www.sgi.com/tech/stl/AssociativeContainer.html" target="_top"><span class="bold"><strong>Associative Container</strong></span></a> that stores C-style
+          strings as keys, pass the appropriate one of these types as the <code class="computeroutput"><span class="identifier">CompareSelector</span></code> argument to the corresponding
+          container selector template. The following <a class="link" href="selectors.html#container_gen.reference.selectors.description" title="Description">table</a>
+          will describe the <code class="computeroutput"><span class="identifier">CompareSelector</span></code>
+          template argument among others in further detail.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">struct</span> <span class="identifier">c_str_equal_to_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">class</span> <span class="identifier">type</span>
+            <span class="special">{</span>
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">true_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="special">!</span><span class="identifier">strcmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">);</span>
+                <span class="special">}</span>
+
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">false_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="special">!</span><span class="identifier">wcscmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">);</span>
+                <span class="special">}</span>
+
+             <span class="keyword">public</span><span class="special">:</span>
+                <span class="keyword">typedef</span> <span class="keyword">bool</span> <span class="identifier">result_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">first_argument_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">second_argument_type</span><span class="special">;</span>
+
+                <span class="keyword">inline</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="keyword">const</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">type</span><span class="special">::</span><span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span>
+                            <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_cv</span><span class="special">&lt;</span>
+                                <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span>
+                                    <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_extent</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span>
+                                <span class="special">&gt;::</span><span class="identifier">type</span>
+                            <span class="special">&gt;::</span><span class="identifier">type</span>
+                          <span class="special">,</span> <span class="keyword">char</span>
+                        <span class="special">&gt;()</span>
+                    <span class="special">);</span>
+                <span class="special">}</span>
+            <span class="special">};</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">c_str_less_than_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">class</span> <span class="identifier">type</span>
+            <span class="special">{</span>
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">true_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">strcmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">0</span><span class="special">;</span>
+                <span class="special">}</span>
+
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">false_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">wcscmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="special">&lt;</span> <span class="number">0</span><span class="special">;</span>
+                <span class="special">}</span>
+
+             <span class="keyword">public</span><span class="special">:</span>
+                <span class="keyword">typedef</span> <span class="keyword">bool</span> <span class="identifier">result_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">first_argument_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">second_argument_type</span><span class="special">;</span>
+
+                <span class="keyword">inline</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="keyword">const</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">type</span><span class="special">::</span><span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span>
+                            <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_cv</span><span class="special">&lt;</span>
+                                <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span>
+                                    <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_extent</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span>
+                                <span class="special">&gt;::</span><span class="identifier">type</span>
+                            <span class="special">&gt;::</span><span class="identifier">type</span>
+                          <span class="special">,</span> <span class="keyword">char</span>
+                        <span class="special">&gt;()</span>
+                    <span class="special">);</span>
+                <span class="special">}</span>
+            <span class="special">};</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+
+    <span class="keyword">struct</span> <span class="identifier">c_str_greater_than_selector</span>
+    <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+        <span class="keyword">struct</span> <span class="identifier">apply</span>
+        <span class="special">{</span>
+            <span class="keyword">class</span> <span class="identifier">type</span>
+            <span class="special">{</span>
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">true_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="number">0</span> <span class="special">&lt;</span> <span class="identifier">strcmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">);</span>
+                <span class="special">}</span>
+
+                <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">bool</span>
+                    <span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">false_type</span>
+                    <span class="special">)</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="number">0</span> <span class="special">&lt;</span> <span class="identifier">wcscmp</span><span class="special">(</span><span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">rhs</span><span class="special">);</span>
+                <span class="special">}</span>
+
+             <span class="keyword">public</span><span class="special">:</span>
+                <span class="keyword">typedef</span> <span class="keyword">bool</span> <span class="identifier">result_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">first_argument_type</span><span class="special">;</span>
+                <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">second_argument_type</span><span class="special">;</span>
+
+                <span class="keyword">inline</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span><span class="special">,</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">)</span> <span class="keyword">const</span>
+                <span class="special">{</span>
+                    <span class="keyword">return</span> <span class="identifier">type</span><span class="special">::</span><span class="identifier">_evaluate</span><span class="special">(</span>
+                        <span class="identifier">lhs</span>
+                      <span class="special">,</span> <span class="identifier">rhs</span>
+                      <span class="special">,</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span>
+                            <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_cv</span><span class="special">&lt;</span>
+                                <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span>
+                                    <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">remove_extent</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span>
+                                <span class="special">&gt;::</span><span class="identifier">type</span>
+                            <span class="special">&gt;::</span><span class="identifier">type</span>
+                          <span class="special">,</span> <span class="keyword">char</span>
+                        <span class="special">&gt;()</span>
+                    <span class="special">);</span>
+                <span class="special">}</span>
+            <span class="special">};</span>
+        <span class="special">};</span>
+    <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+        </p>
+<p>
+          This library also retains the old selector types and, for completeness,
+          provides type definitions of the selector templates with default arguments.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">typedef</span> <span class="identifier">vector_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">vecS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">deque_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">dequeS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">list_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">listS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">slist_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">slistS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">set_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">setS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">map_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">mapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">multiset_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">multisetS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">multimap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">multimapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">hash_set_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">hash_setS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">hash_map_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">hash_mapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">hash_multiset_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">hash_multisetS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">hash_multimap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">hash_multimapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_vector_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_vecS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_deque_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_dequeS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_list_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_listS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_set_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_setS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_map_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_mapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_multiset_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_multisetS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_multimap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_multimapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_hash_set_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_hash_setS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_hash_map_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_hash_mapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_hash_multiset_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_hash_multisetS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">ptr_hash_multimap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">ptr_hash_multimapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">stable_vector_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">stable_vecS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">flat_set_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">flat_setS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">flat_map_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">flat_mapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">flat_multiset_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">flat_multisetS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">flat_multimap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">flat_multimapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">stack_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">stackS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">queue_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">queueS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std_heap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">std_heapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">priority_queue_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">priority_queueS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">binomial_heap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">binomial_heapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">fibonacci_heap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">fibonacci_heapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">pairing_heap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">pairing_heapS</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">skew_heap_selector</span><span class="special">&lt;&gt;</span> <span class="identifier">skew_heapS</span><span class="special">;</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.selectors.description"></a><a class="link" href="selectors.html#container_gen.reference.selectors.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          Selector templates determine the return type of the <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> metafunction. Since
+          the container models are not templatized on just their value types, the
+          selector templates must take in analogous arguments in order to provide
+          maximum flexibility. The following example demonstrates how a <a href="http://www.sgi.com/tech/stl/List.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code></a> with a custom allocator
+          type can become the <code class="computeroutput"><span class="identifier">OutEdgeList</span></code>
+          of a <a href="http://www.boost.org/libs/graph/doc/adjacency_list.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">adjacency_list</span></code></a>.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">int_allocator_selector</span>
+<span class="special">{</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">apply</span>
+    <span class="special">{</span>
+        <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+    <span class="special">};</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">char</span><span class="special">*[])</span>
+<span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">adjacency_list</span><span class="special">&lt;</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">list_selector</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">,</span><span class="identifier">int_allocator_selector</span><span class="special">&gt;</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dequeS</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">directedS</span>
+    <span class="special">&gt;</span> <span class="identifier">g</span><span class="special">(</span><span class="number">5</span><span class="special">);</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_index</span><span class="special">,</span> <span class="identifier">g</span><span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="identifier">g</span><span class="special">)</span>
+    <span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          Selector templates evaluate each parameter the same way, so the following
+          table will suffice in documenting the parameters. Note that fully qualified
+          template parameters must be explicitly named if required by the container
+          return type or when overriding the default argument type unless the table
+          specifies that the argument types to which they are bound can be deduced.
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Parameter
+                  </p>
+                </th>
+<th>
+                  <p>
+                    <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Parameter</strong></span></a> Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Deducible?
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">ConstantSize</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">constant_size_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    An <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>Integral Constant</strong></span></a> that determines
+                    the size of the <a href="http://www.boost.org/doc/html/array.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span></code></a> or <a href="http://www.boost.org/doc/html/boost_tr1/subject_list.html#boost_tr1.subject_list.array" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">array</span></code></a> type to be returned
+                    by <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a>.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, by <a href="../../../../../../libs/utility/doc/html/is_mpl_integral_constant.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_mpl_integral_constant</span></code></a>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">IsBoostNotStd</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_boost_not_std_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>Boolean Integral Constant</strong></span></a> that
+                    determines whether <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> will return
+                    the appropriate <a href="http://www.boost.org/doc/html/container.html" target="_top"><span class="bold"><strong>Boost.Container</strong></span></a> type or the corresponding
+                    C++ standard container.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, by <a href="../../../../../../libs/utility/doc/html/is_mpl_boolean_constant.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_mpl_boolean_constant</span></code></a>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">IsTR1NotBoost</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_tr1_not_boost_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>Boolean Integral Constant</strong></span></a> that
+                    determines whether <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> will return
+                    the appropriate <a href="http://www.boost.org/doc/html/boost_tr1.html" target="_top"><span class="bold"><strong>Boost.TR1</strong></span></a> container type or the
+                    corresponding Boost container type.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, by <a href="../../../../../../libs/utility/doc/html/is_mpl_boolean_constant.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_mpl_boolean_constant</span></code></a>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">AllocatorSelector</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">allocator_selector_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
+                    takes in the value type and returns an allocator model. The return
+                    type will become the container template's <code class="computeroutput"><span class="identifier">Allocator</span></code>
+                    or <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">allocator</span></code></a> argument.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, by <a class="link" href="is_allocator_selector.html" title="is_allocator_selector"><code class="computeroutput"><span class="identifier">is_allocator_selector</span></code></a>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">CompareSelector</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">compare_selector_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    If the selector template causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.sgi.com/tech/stl/SortedAssociativeContainer.html" target="_top"><span class="bold"><strong>Sorted Associative Container</strong></span></a> model,
+                    a <a href="http://www.sgi.com/tech/stl/priority_queue.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">priority_queue</span></code></a> template
+                    class, or a <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a>
+                    data structure, then a <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
+                    takes in the value type and returns a <a href="http://www.sgi.com/tech/stl/StrictWeakOrdering.html" target="_top"><span class="bold"><strong>Strict Weak Ordering</strong></span></a> model. If
+                    the selector template causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.sgi.com/tech/stl/HashAssociativeContainer.html" target="_top"><span class="bold"><strong>Hashed Associative Container</strong></span></a> model,
+                    then a <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
+                    takes in the value type and returns a <a href="http://www.sgi.com/tech/stl/BinaryPredicate.html" target="_top"><span class="bold"><strong>Binary Predicate</strong></span></a> model. The return
+                    type will become the container template's <code class="computeroutput"><span class="identifier">Compare</span></code>,
+                    <code class="computeroutput"><span class="identifier">Pred</span></code>, or <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">compare</span></code></a> argument.
+                  </p>
+                  <p>
+                    By way of example, as discussed in the <a class="link" href="selectors.html#container_gen.reference.selectors.synopsis" title="Synopsis">synopsis</a>,
+                    the <code class="computeroutput"><span class="identifier">c_str_equal_to_selector</span></code>
+                    type can be passed as the <code class="computeroutput"><span class="identifier">CompareSelector</span></code>
+                    argument to the <code class="computeroutput"><span class="identifier">hash_set_selector</span></code>
+                    template, which in turn can be passed to <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.sgi.com/tech/stl/HashAssociativeContainer.html" target="_top"><span class="bold"><strong>Hashed Associative Container</strong></span></a> model
+                    that stores C-style strings as keys.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, by <a class="link" href="is_compare_selector.html" title="is_compare_selector"><code class="computeroutput"><span class="identifier">is_compare_selector</span></code></a>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">HashSelector</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">hasher_selector_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
+                    takes in the value type and returns a <a href="http://www.sgi.com/tech/stl/HashFunction.html" target="_top"><span class="bold"><strong>Hash Function</strong></span></a> model. The return
+                    type will become the container template's <code class="computeroutput"><span class="identifier">Hash</span></code>
+                    argument.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, by <a class="link" href="is_hasher_selector.html" title="is_hasher_selector"><code class="computeroutput"><span class="identifier">is_hasher_selector</span></code></a>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">SequenceSelector</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">sequence_selector_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Unary Metafunction Class</strong></span></a> that
+                    takes in the value type and returns a <a href="http://www.sgi.com/tech/stl/Sequence.html" target="_top"><span class="bold"><strong>Sequence</strong></span></a> model. The return type
+                    will become the container adaptor template's <code class="computeroutput"><span class="identifier">Sequence</span></code>
+                    argument.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, by <a class="link" href="is_container_selector.html" title="is_container_selector"><code class="computeroutput"><span class="identifier">is_container_selector</span></code></a>.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">CloneAllocator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ptr_clone_allocator_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A <a href="http://www.boost.org/libs/ptr_container/doc/reference.html#the-clone-allocator-concept" target="_top"><span class="bold"><strong>Clone Allocator</strong></span></a> model that will
+                    become the container template's corresponding argument.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, as long as the <a href="http://www.boost.org/libs/mpl/doc/refmanual/cfg-no-has-xxx.html" target="_top"><code class="computeroutput"><span class="identifier">BOOST_MPL_CFG_NO_HAS_XXX</span></code></a>
+                    preprocessor token is not defined.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Allocator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ptr_allocator_arg</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    An allocator model that will become the container template's
+                    corresponding argument.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Yes, as long as the <a href="http://www.boost.org/libs/mpl/doc/refmanual/cfg-no-has-xxx.html" target="_top"><code class="computeroutput"><span class="identifier">BOOST_MPL_CFG_NO_HAS_XXX</span></code></a>
+                    preprocessor token is not defined.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">IsStable</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stable</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a>
+                    data structure that either orders elements with the same priority
+                    according to insertion time or does not, depending on the value
+                    of the boolean non-type template argument. The default value
+                    is <code class="computeroutput"><span class="keyword">false</span></code>.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    No.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">IsMutable</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">mutable_</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a>
+                    data structure that either allows the priority of its elements
+                    to be changed or does not, depending on the value of the boolean
+                    non-type template argument. The default value is <code class="computeroutput"><span class="keyword">false</span></code>.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    No.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">StabilityCounterType</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">stability_counter_type</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a>
+                    data structure that associates an integer version count with
+                    each element in order to distinguish between elements with the
+                    same priority. The default type is <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">uintmax_t</span></code>.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    No.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">ConstantTimeSize</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">constant_time_size</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Causes <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return
+                    a <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a>
+                    data structure whose <code class="computeroutput"><span class="identifier">size</span><span class="special">()</span></code> member function either has
+                    constant time complexity or does not, depending on the value
+                    of the boolean non-type template argument. The default value
+                    is <code class="computeroutput"><span class="keyword">true</span></code>.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    No.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Arity</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">arity</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Please consult the class reference of the <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a> data structure which
+                    the selector template will cause <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    No.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">StoresParentPointer</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a href="http://www.boost.org/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">heap</span><span class="special">::</span><span class="identifier">store_parent_pointer</span></code></a>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Please consult the class reference of the <a href="http://www.boost.org/doc/html/heap.html" target="_top"><span class="bold"><strong>Boost.Heap</strong></span></a> data structure which
+                    the selector template will cause <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> to return.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    No.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.selectors.definition"></a><a class="link" href="selectors.html#container_gen.reference.selectors.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+          C-style string comparator selectors:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/c_str_cmp_selectors.hpp" target="_top">boost/container_gen/c_str_cmp_selectors.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          Forward declarations:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/c_str_cmp_selectors_fwd.hpp" target="_top">boost/container_gen/c_str_cmp_selectors_fwd.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          To register them under <a href="http://www.boost.org/doc/html/typeof.html" target="_top"><span class="bold"><strong>Boost.Typeof</strong></span></a>:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/typeof/boost/container_gen/c_str_cmp_selectors.hpp" target="_top">boost/typeof/boost/container_gen/c_str_cmp_selectors.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          All other selectors and selector templates:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/selectors.hpp" target="_top">boost/container_gen/selectors.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          Forward declarations:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/selectors_fwd.hpp" target="_top">boost/container_gen/selectors_fwd.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+<p>
+          To register them under <a href="http://www.boost.org/doc/html/typeof.html" target="_top"><span class="bold"><strong>Boost.Typeof</strong></span></a>:
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/typeof/boost/container_gen/selectors.hpp" target="_top">boost/typeof/boost/container_gen/selectors.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 1997-2013 Andrew Lumsdaine, Lie-Quan Lee,
+      Thomas Claveirole, Jeremy G. Siek, Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="container_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+[article get_reference
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+
+[def __BOOST_TYPEOF__ [@boost:doc/html/typeof.refe.html#typeof `BOOST_TYPEOF`]]
+[def __BOOST_TYPEOF_TPL__ [@boost:doc/html/typeof.refe.html#typeof `BOOST_TYPEOF_TPL`]]
+[def __Default_Constructible__ [@http://www.sgi.com/tech/stl/DefaultConstructible.html [*Default Constructible]]]
+[def __boost_utility_get_reference_hpp__ [@../../../../boost/utility/get_reference.hpp boost/utility/get_reference.hpp]]
+
+[import ../../../../../boost/utility/get_reference.hpp]
+
+
+[/======================================]
+[section:func_synopsis Function Synopsis]
+[/======================================]
+
+[reference__get_reference]
+
+[endsect]
+
+
+[/=====================================]
+[section:func_desc Function Description]
+[/=====================================]
+
+Allows a __BOOST_TYPEOF__ or __BOOST_TYPEOF_TPL__ expression to obtain a
+reference to the specified type without requiring the type to be
+__Default_Constructible__.
+
+[endsect]
+
+
+[/===============================]
+[section:definition Where defined]
+[/===============================]
+
+``
+#include <__boost_utility_get_reference_hpp__>
+``
+
+[endsect]
+

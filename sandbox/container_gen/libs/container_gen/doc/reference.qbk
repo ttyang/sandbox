@@ -1,0 +1,82 @@
+[/=============================================================================
+    Copyright (C) 2011-2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Reference]
+
+[include ref_selectors.qbk]
+[include ref_container_gen.qbk]
+[include ref_emplace_function_gen.qbk]
+[include ref_emplace_assoc_func_gen.qbk]
+[include ref_push_range_function_gen.qbk]
+[include ref_ins_range_function_gen.qbk]
+[include ref_splice_function_gen.qbk]
+[include ref_insert_range_result_gen.qbk]
+[include ref_is_compare_selector.qbk]
+[include ref_is_hasher_selector.qbk]
+[include ref_is_allocator_selector.qbk]
+[include ref_is_container_selector.qbk]
+[include ref_is_reversible_selector.qbk]
+[include ref_is_rand_access_selector.qbk]
+[include ref_is_associative_selector.qbk]
+[include ref_is_unique_assoc_sel.qbk]
+[include ref_is_multiple_assoc_sel.qbk]
+[include ref_is_flat_assoc_selector.qbk]
+[include ref_is_hashed_assoc_sel.qbk]
+[include ref_is_tr1_selector.qbk]
+[include ref_is_ptr_selector.qbk]
+[include ref_is_queue_selector.qbk]
+[include ref_is_stack_selector.qbk]
+[include ref_is_std_heap_selector.qbk]
+[include ref_is_heap_selector.qbk]
+[include ref_is_iter_heap_selector.qbk]
+[include ref_is_o_iter_heap_selector.qbk]
+[include ref_is_muta_heap_selector.qbk]
+[include ref_is_recursive_selector.qbk]
+[include ref_has_stable_iters_sel.qbk]
+[include ref_has_emplace_mfunc_sel.qbk]
+
+  * __Selectors__
+
+[heading Type Generation Metafunctions]
+
+  * __container_gen__
+  * __emplace_function_gen__
+  * __emplace_associative_function_gen__
+  * __push_range_function_gen__
+  * __insert_range_function_gen__
+  * __splice_function_gen__
+  * __insert_range_result_gen__
+
+[heading Selector Introspection Metafunctions]
+
+  * __is_container_selector__
+  * __is_compare_selector__
+  * __is_hasher_selector__
+  * __is_allocator_selector__
+  * __is_reversible_selector__
+  * __is_random_access_selector__
+  * __is_associative_selector__
+  * __is_unique_associative_selector__
+  * __is_multiple_associative_selector__
+  * __is_flat_associative_selector__
+  * __is_hashed_associative_selector__
+  * __is_tr1_selector__
+  * __is_ptr_selector__
+  * __is_queue_selector__
+  * __is_stack_selector__
+  * __is_std_heap_selector__
+  * __is_heap_selector__
+  * __is_iteratable_heap_selector__
+  * __is_order_iteratable_heap_selector__
+  * __is_mutable_heap_selector__
+  * __is_recursive_selector__
+  * __has_stable_iterators_selector__
+  * __has_emplace_member_function_selector__
+
+[endsect] [/ Reference]
+

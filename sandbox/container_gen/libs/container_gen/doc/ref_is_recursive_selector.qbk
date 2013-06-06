@@ -1,0 +1,34 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_recursive_selector `is_recursive_selector`]
+
+[section Synopsis]
+[reference__is_recursive_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the type to be returned by __container_gen__ can be
+used to define a __Recursive_Container__, __mpl_false__ otherwise.
+
+The current implementation returns __mpl_true__ when passed in selectors
+for which __container_gen__ will return a __Boost_Container__ type, a
+__Boost_Pointer_Container__ type, or a __Boost_Unordered__ container; it will
+return __mpl_false__ for all other types of selectors.  Specialize this
+metafunction to return __mpl_true__ for your custom selector if and only if the
+type to be returned by __container_gen__ supports __recursive_data_types__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_is_recursive_selector_hpp__>
+``
+[endsect]
+
+[endsect] [/ is_recursive_selector]
+

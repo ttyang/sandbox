@@ -1,0 +1,36 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_muta_heap_selector `is_mutable_heap_selector`]
+
+[section Synopsis]
+[reference__is_mutable_heap_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the specified selector will cause __container_gen__ to
+return a mutable __Boost_Heap__ model type, __mpl_false__ otherwise.
+
+If __MPL_CFG_NO_HAS_XXX__ is defined, then you must specialize this
+metafunction to return __mpl_true__ for your custom selector if and only if
+the type to be returned by __container_gen__ is a mutable __Boost_Heap__ model
+type.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_is_mutable_heap_selector_hpp__>
+``
+[endsect]
+
+[section Test]
+[test__is_mutable_heap_selector]
+[endsect]
+
+[endsect] [/ is_mutable_heap_selector]
+

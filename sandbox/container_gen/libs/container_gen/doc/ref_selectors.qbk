@@ -1,0 +1,274 @@
+[/=============================================================================
+    Copyright (C) 2012-2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Selectors]
+
+[section Synopsis]
+This library provides several selector templates, one for each
+__STL_Container__ model, __Boost_Container__, __Boost_Unordered__ container,
+and __Boost_Pointer_Container__ to which it corresponds.
+
+[reference__container_selector_templates]
+
+A selector template also exists for each STL container adaptor and
+__Boost_Heap__ data structure to which it corresponds.
+
+[reference__adaptor_and_heap_selector_templates]
+
+In turn, some of the default arguments of these selector templates are
+themselves selector types.
+
+[reference__template_argument_selectors]
+
+To instantiate a model of __Associative_Container__ that stores C-style strings
+as keys, pass the appropriate one of these types as the `CompareSelector`
+argument to the corresponding container selector template.  The following
+__Selectors_table__ will describe the `CompareSelector` template argument among
+others in further detail.
+
+[reference__c_str_compare_selectors]
+
+This library also retains the old selector types and, for completeness,
+provides type definitions of the selector templates with default arguments.
+
+[reference__container_selector_typedefs]
+[endsect]
+
+[section Description]
+Selector templates determine the return type of the __container_gen__
+metafunction.  Since the container models are not templatized on just their
+value types, the selector templates must take in analogous arguments in order
+to provide maximum flexibility.  The following example demonstrates how a
+__std_list__ with a custom allocator type can become the `OutEdgeList` of a
+__graph_adjacency_list__.
+
+[example__container_gen__list_with_custom_allocator_selector]
+
+Selector templates evaluate each parameter the same way, so the following table
+will suffice in documenting the parameters.  Note that fully qualified template
+parameters must be explicitly named if required by the container return type or
+when overriding the default argument type unless the table specifies that the
+argument types to which they are bound can be deduced.
+
+[table
+    [[Parameter][__Boost_Parameter__ Name][Description][Deducible?]]
+    [
+        [`ConstantSize`]
+        [`boost::constant_size_arg`]
+        [
+            An __Integral_Constant__ that determines the size of the __array__
+            or __tr1_array__ type to be returned by __container_gen__.
+        ]
+        [Yes, by __is_mpl_integral_constant__.]
+    ]
+    [
+        [`IsBoostNotStd`]
+        [`boost::is_boost_not_std_arg`]
+        [
+            A __Boolean_Integral_Constant__ that determines whether
+            __container_gen__ will return the appropriate __Boost_Container__
+            type or the corresponding C++ standard container.
+        ]
+        [Yes, by __is_mpl_boolean_constant__.]
+    ]
+    [
+        [`IsTR1NotBoost`]
+        [`boost::is_tr1_not_boost_arg`]
+        [
+            A __Boolean_Integral_Constant__ that determines whether
+            __container_gen__ will return the appropriate __Boost_TR1__
+            container type or the corresponding Boost container type.
+        ]
+        [Yes, by __is_mpl_boolean_constant__.]
+    ]
+    [
+        [`AllocatorSelector`]
+        [`boost::allocator_selector_arg`]
+        [
+            A __Unary_Metafunction_Class__ that takes in the value type and
+            returns an allocator model.  The return type will become the
+            container template's `Allocator` or __heap_allocator__ argument.
+        ]
+        [Yes, by __is_allocator_selector__.]
+    ]
+    [
+        [`CompareSelector`]
+        [`boost::compare_selector_arg`]
+        [
+            If the selector template causes __container_gen__ to return a
+            __Sorted_Associative_Container__ model, a __std_priority_queue__
+            template class, or a __Boost_Heap__ data structure, then a
+            __Unary_Metafunction_Class__ that takes in the value type and
+            returns a __Strict_Weak_Ordering__ model.  If the selector template
+            causes __container_gen__ to return a
+            __Hashed_Associative_Container__ model, then a
+            __Unary_Metafunction_Class__ that takes in the value type and
+            returns a __Binary_Predicate__ model.  The return type will become
+            the container template's `Compare`, `Pred`, or __heap_compare__
+            argument.
+
+            By way of example, as discussed in the __Selectors_synopsis__,
+            the `c_str_equal_to_selector` type can be passed as the
+            `CompareSelector` argument to the `hash_set_selector` template,
+            which in turn can be passed to __container_gen__ to return a
+            __Hashed_Associative_Container__ model that stores C-style strings
+            as keys.
+        ]
+        [Yes, by __is_compare_selector__.]
+    ]
+    [
+        [`HashSelector`]
+        [`boost::hasher_selector_arg`]
+        [
+            A __Unary_Metafunction_Class__ that takes in the value type and
+            returns a __Hash_Function__ model.  The return type will become the
+            container template's `Hash` argument.
+        ]
+        [Yes, by __is_hasher_selector__.]
+    ]
+    [
+        [`SequenceSelector`]
+        [`boost::sequence_selector_arg`]
+        [
+            A __Unary_Metafunction_Class__ that takes in the value type and
+            returns a __Sequence__ model.  The return type will become the
+            container adaptor template's `Sequence` argument.
+        ]
+        [Yes, by __is_container_selector__.]
+    ]
+    [
+        [`CloneAllocator`]
+        [`boost::ptr_clone_allocator_arg`]
+        [
+            A __Clone_Allocator__ model that will become the container
+            template's corresponding argument.
+        ]
+        [
+            Yes, as long as the __MPL_CFG_NO_HAS_XXX__ preprocessor token is
+            not defined.
+        ]
+    ]
+    [
+        [`Allocator`]
+        [`boost::ptr_allocator_arg`]
+        [
+            An allocator model that will become the container template's
+            corresponding argument.
+        ]
+        [
+            Yes, as long as the __MPL_CFG_NO_HAS_XXX__ preprocessor token is
+            not defined.
+        ]
+    ]
+    [
+        [`IsStable`]
+        [__heap_stable__]
+        [
+            Causes __container_gen__ to return a __Boost_Heap__ data structure
+            that either orders elements with the same priority according to
+            insertion time or does not, depending on the value of the boolean
+            non-type template argument.  The default value is `false`.
+        ]
+        [No.]
+    ]
+    [
+        [`IsMutable`]
+        [__heap_mutable__]
+        [
+            Causes __container_gen__ to return a __Boost_Heap__ data structure
+            that either allows the priority of its elements to be changed or
+            does not, depending on the value of the boolean non-type template
+            argument.  The default value is `false`.
+        ]
+        [No.]
+    ]
+    [
+        [`StabilityCounterType`]
+        [__heap_stability_counter_type__]
+        [
+            Causes __container_gen__ to return a __Boost_Heap__ data structure
+            that associates an integer version count with each element in order
+            to distinguish between elements with the same priority.  The
+            default type is `boost::uintmax_t`.
+        ]
+        [No.]
+    ]
+    [
+        [`ConstantTimeSize`]
+        [__heap_constant_time_size__]
+        [
+            Causes __container_gen__ to return a __Boost_Heap__ data structure
+            whose `size()` member function either has constant time complexity
+            or does not, depending on the value of the boolean non-type
+            template argument.  The default value is `true`.
+        ]
+        [No.]
+    ]
+    [
+        [`Arity`]
+        [__heap_arity__]
+        [
+            Please consult the class reference of the __Boost_Heap__ data
+            structure which the selector template will cause __container_gen__
+            to return.
+        ]
+        [No.]
+    ]
+    [
+        [`StoresParentPointer`]
+        [__heap_store_parent_pointer__]
+        [
+            Please consult the class reference of the __Boost_Heap__ data
+            structure which the selector template will cause __container_gen__
+            to return.
+        ]
+        [No.]
+    ]
+]
+[endsect] [/ Description]
+
+[section:definition Where defined]
+C-style string comparator selectors:
+
+``
+#include <__boost_container_gen_c_str_cmp_selectors_hpp__>
+``
+
+Forward declarations:
+
+``
+#include <__boost_container_gen_c_str_cmp_selectors_fwd_hpp__>
+``
+
+To register them under __Boost_Typeof__:
+
+``
+#include <__boost_typeof_boost_container_gen_c_str_cmp_selectors_hpp__>
+``
+
+All other selectors and selector templates:
+
+``
+#include <__boost_container_gen_selectors_hpp__>
+``
+
+Forward declarations:
+
+``
+#include <__boost_container_gen_selectors_fwd_hpp__>
+``
+
+To register them under __Boost_Typeof__:
+
+``
+#include <__boost_typeof_boost_container_gen_selectors_hpp__>
+``
+[endsect]
+
+[endsect] [/ Selectors]
+

@@ -1,0 +1,36 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_compare_selector `is_compare_selector`]
+
+[section Synopsis]
+[reference__is_compare_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the specified selector is a metafunction class that
+takes in a value type and returns a __Binary_Predicate__ model, __mpl_false__
+otherwise.
+
+If either __MPL_CFG_NO_HAS_XXX__ or __MPL_CFG_NO_HAS_XXX_TEMPLATE__ are
+defined, then you must specialize this metafunction to return __mpl_true__ for
+your custom selector.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_is_compare_selector_hpp__>
+``
+[endsect]
+
+[section Test]
+[test__is_compare_selector]
+[endsect]
+
+[endsect] [/ is_compare_selector]
+

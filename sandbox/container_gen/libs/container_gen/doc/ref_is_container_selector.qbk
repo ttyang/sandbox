@@ -1,0 +1,37 @@
+[/=============================================================================
+    Copyright (C) 2013 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_container_selector `is_container_selector`]
+
+[section Synopsis]
+[reference__is_container_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the __container_gen__ metafunction has been specialized
+to return a type given the specified selector type, __mpl_false__ otherwise.
+
+If __MPL_CFG_NO_HAS_XXX__ is defined, then you must also specialize this
+metafunction to return __mpl_true__ for your custom selector.
+
+This metafunction is useful for facilitating __Boost_Parameter__-enabled
+template argument deduction for types that take in __Selectors__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_is_container_selector_hpp__>
+``
+[endsect]
+
+[section Test]
+[test__is_container_selector]
+[endsect]
+
+[endsect] [/ is_container_selector]
+

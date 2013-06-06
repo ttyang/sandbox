@@ -1,0 +1,210 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>insert_range_function_gen</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.8">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="push_range_function_gen.html" title="push_range_function_gen">
+<link rel="next" href="splice_function_gen.html" title="splice_function_gen">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="push_range_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="splice_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container_gen.reference.insert_range_function_gen"></a><a class="link" href="insert_range_function_gen.html" title="insert_range_function_gen"><code class="computeroutput"><span class="identifier">insert_range_function_gen</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.insert_range_function_gen.synopsis"></a><a class="link" href="insert_range_function_gen.html#container_gen.reference.insert_range_function_gen.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Selector</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">insert_range_function_gen</span>
+    <span class="special">{</span>
+        <span class="comment">// typedef ... type;</span>
+    <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.insert_range_function_gen.description"></a><a class="link" href="insert_range_function_gen.html#container_gen.reference.insert_range_function_gen.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          Returns a <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> function object type
+          whose call operator will take in a reference to a container, a valid iterator
+          representing the point of insertion, and either two <a href="http://www.sgi.com/tech/stl/InputIterator.html" target="_top"><span class="bold"><strong>Input Iterator</strong></span></a> arguments or a <a href="http://www.boost.org/libs/range/doc/html/range/concepts/single_pass_range.html" target="_top"><span class="bold"><strong>Single Pass Range</strong></span></a> argument. In practice,
+          the container type must be produced by <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> when given the same
+          selector template argument.
+        </p>
+<p>
+          If the container type models the <a href="http://www.sgi.com/tech/stl/Sequence.html" target="_top"><span class="bold"><strong>Sequence</strong></span></a> concept, then the function object
+          will forward the other argument(s) to the container's range insertion method;
+          the call operator's return value will be a <a href="http://www.boost.org/libs/range/doc/html/range/concepts/single_pass_range.html" target="_top"><span class="bold"><strong>Single Pass Range</strong></span></a> over the elements inserted
+          in the container.
+        </p>
+<p>
+          If the container type models the <a href="http://www.sgi.com/tech/stl/AssociativeContainer.html" target="_top"><span class="bold"><strong>Associative Container</strong></span></a> concept, then the
+          function object will forward each element in the specified range to the
+          container's insertion method. If <a class="link" href="has_stable_iters_selector.html" title="has_stable_iterators_selector"><code class="computeroutput"><span class="identifier">has_stable_iterators_selector</span></code></a>
+          evaluates to <a href="http://www.boost.org/libs/mpl/doc/refmanual/bool.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span></code></a> for the specified selector,
+          then the call operator's return value will be a <a href="http://www.boost.org/libs/range/doc/html/range/concepts/single_pass_range.html" target="_top"><span class="bold"><strong>Single Pass Range</strong></span></a> of iterators pointing
+          to each of the elements that were successfully inserted in the container.
+        </p>
+<p>
+          The return type of this metafunction also defines an indexing operator
+          that accepts a reference to a container and returns a proxy object that
+          allows range insertion function calls to be chained together, much like
+          <a href="http://www.boost.org/libs/assign/doc/index.html" target="_top"><span class="bold"><strong>Boost.Assign</strong></span></a>.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.insert_range_function_gen.definition"></a><a class="link" href="insert_range_function_gen.html#container_gen.reference.insert_range_function_gen.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/container_gen/insert_range_function_gen.hpp" target="_top">boost/container_gen/insert_range_function_gen.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.insert_range_function_gen.example"></a><a class="link" href="insert_range_function_gen.html#container_gen.reference.insert_range_function_gen.example" title="Example">Example</a>
+</h4></div></div></div>
+<p>
+          Use the <a href="http://www.boost.org/libs/range/doc/html/range/reference/algorithms/non_mutating/equal.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">range</span><span class="special">::</span><span class="identifier">equal</span><span class="special">()</span></code></a>
+          algorithm to test two ranges for equality. To handle the case where the
+          range returned from a call to the <code class="computeroutput"><span class="identifier">insert_range_function_gen</span></code>
+          return function type is a <a href="http://www.boost.org/libs/range/doc/html/range/concepts/single_pass_range.html" target="_top"><span class="bold"><strong>Single Pass Range</strong></span></a> of iterators, use <a href="http://www.boost.org/libs/range/doc/html/range/reference/adaptors/reference/indirected.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">adaptors</span><span class="special">::</span><span class="identifier">indirect</span><span class="special">()</span></code></a>.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ResultRange</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AddedContainer</span><span class="special">&gt;</span>
+<span class="keyword">bool</span>
+    <span class="identifier">test_result_range</span><span class="special">(</span>
+        <span class="identifier">ResultRange</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">r</span>
+      <span class="special">,</span> <span class="identifier">AddedContainer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">c</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span>
+    <span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range</span><span class="special">::</span><span class="identifier">equal</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">adaptors</span><span class="special">::</span><span class="identifier">indirect</span><span class="special">(</span><span class="identifier">r</span><span class="special">),</span> <span class="identifier">c</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ResultRange</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AddedContainer</span><span class="special">&gt;</span>
+<span class="keyword">bool</span>
+    <span class="identifier">test_result_range</span><span class="special">(</span>
+        <span class="identifier">ResultRange</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">r</span>
+      <span class="special">,</span> <span class="identifier">AddedContainer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">c</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">range</span><span class="special">::</span><span class="identifier">equal</span><span class="special">(</span><span class="identifier">r</span><span class="special">,</span> <span class="identifier">c</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          Use the <a class="link" href="emplace_function_gen.html" title="emplace_function_gen"><code class="computeroutput"><span class="identifier">emplace_function_gen</span></code></a> metafunction
+          to construct containers using individual elements, then use this metafunction
+          to append the elements of one container to another in a single step. Use
+          the <a class="link" href="insert_range_result_gen.html" title="insert_range_result_gen"><code class="computeroutput"><span class="identifier">insert_range_result_gen</span></code></a> metafunction
+          to store the result of the operation.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Selector</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AddedContainer</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">test_insert_range_function_gen</span><span class="special">(</span><span class="identifier">AddedContainer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">added_container</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container_gen</span><span class="special">&lt;</span><span class="identifier">Selector</span><span class="special">,</span><span class="identifier">test_string</span><span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="identifier">example_container</span><span class="special">,</span> <span class="identifier">test_container</span><span class="special">,</span> <span class="identifier">input_container</span><span class="special">;</span>
+    <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">emplace_function_gen</span><span class="special">&lt;</span><span class="identifier">Selector</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">emplacer</span><span class="special">;</span>
+    <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">insert_range_function_gen</span><span class="special">&lt;</span><span class="identifier">Selector</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">range_inserter</span><span class="special">;</span>
+
+    <span class="identifier">emplacer</span><span class="special">[</span><span class="identifier">example_container</span><span class="special">]</span>
+        <span class="special">(</span><span class="string">"able"</span><span class="special">)(</span><span class="string">"fox"</span><span class="special">)(</span><span class="string">"easy"</span><span class="special">)</span>
+        <span class="special">(</span><span class="string">"able"</span><span class="special">)(</span><span class="string">"fox"</span><span class="special">)(</span><span class="string">"iota"</span><span class="special">)(</span><span class="string">"hotel"</span><span class="special">)(</span><span class="string">"jupiter"</span><span class="special">)(</span><span class="string">"dog"</span><span class="special">)</span>
+        <span class="special">(</span><span class="string">"baker"</span><span class="special">)(</span><span class="string">"charlie"</span><span class="special">)(</span><span class="string">"dog"</span><span class="special">);</span>
+    <span class="identifier">emplacer</span><span class="special">[</span><span class="identifier">test_container</span><span class="special">]</span>
+        <span class="special">(</span><span class="string">"able"</span><span class="special">)(</span><span class="string">"fox"</span><span class="special">)(</span><span class="string">"easy"</span><span class="special">)(</span><span class="string">"baker"</span><span class="special">)(</span><span class="string">"charlie"</span><span class="special">)(</span><span class="string">"dog"</span><span class="special">);</span>
+    <span class="identifier">emplacer</span><span class="special">[</span><span class="identifier">input_container</span><span class="special">]</span>
+        <span class="special">(</span><span class="string">"able"</span><span class="special">)(</span><span class="string">"fox"</span><span class="special">)(</span><span class="string">"iota"</span><span class="special">)(</span><span class="string">"hotel"</span><span class="special">)(</span><span class="string">"jupiter"</span><span class="special">)(</span><span class="string">"dog"</span><span class="special">);</span>
+
+    <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">insert_range_result_gen</span><span class="special">&lt;</span><span class="identifier">Selector</span><span class="special">,</span><span class="identifier">test_string</span><span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="identifier">insert_range_result</span> <span class="special">=</span> <span class="identifier">range_inserter</span><span class="special">(</span>
+            <span class="identifier">test_container</span>
+          <span class="special">,</span> <span class="special">++++++</span><span class="identifier">test_container</span><span class="special">.</span><span class="identifier">begin</span><span class="special">()</span>
+          <span class="special">,</span> <span class="identifier">input_container</span>
+        <span class="special">);</span>
+
+    <span class="identifier">BOOST_CHECK</span><span class="special">(</span>
+        <span class="identifier">test_result_range</span><span class="special">(</span>
+            <span class="identifier">insert_range_result</span>
+          <span class="special">,</span> <span class="identifier">added_container</span>
+          <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_associative_selector</span><span class="special">&lt;</span><span class="identifier">Selector</span><span class="special">&gt;()</span>
+        <span class="special">)</span>
+    <span class="special">);</span>
+    <span class="identifier">BOOST_CHECK</span><span class="special">(</span><span class="number">6</span> <span class="special">==</span> <span class="identifier">input_container</span><span class="special">.</span><span class="identifier">size</span><span class="special">());</span>
+    <span class="identifier">BOOST_CHECK</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">range</span><span class="special">::</span><span class="identifier">equal</span><span class="special">(</span><span class="identifier">test_container</span><span class="special">,</span> <span class="identifier">example_container</span><span class="special">));</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          Test this metafunction across a wide variety of selector types.
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">test_main</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">argc</span><span class="special">,</span> <span class="keyword">char</span><span class="special">**</span> <span class="identifier">argv</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">container_gen</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dequeS</span><span class="special">,</span><span class="identifier">test_string</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">added_container</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">emplace_function_gen</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dequeS</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">emplacer</span><span class="special">;</span>
+
+    <span class="identifier">emplacer</span><span class="special">[</span><span class="identifier">added_container</span><span class="special">]</span>
+        <span class="special">(</span><span class="string">"able"</span><span class="special">)(</span><span class="string">"fox"</span><span class="special">)(</span><span class="string">"iota"</span><span class="special">)(</span><span class="string">"hotel"</span><span class="special">)(</span><span class="string">"jupiter"</span><span class="special">)(</span><span class="string">"dog"</span><span class="special">);</span>
+    <span class="identifier">test_insert_range_function_gen</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vecS</span><span class="special">&gt;(</span><span class="identifier">added_container</span><span class="special">);</span>
+    <span class="identifier">test_insert_range_function_gen</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dequeS</span><span class="special">&gt;(</span><span class="identifier">added_container</span><span class="special">);</span>
+    <span class="identifier">test_insert_range_function_gen</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">listS</span><span class="special">&gt;(</span><span class="identifier">added_container</span><span class="special">);</span>
+    <span class="comment">// ...</span>
+
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          The complete test program spans the following source files:
+        </p>
+<pre class="programlisting"><span class="special">*</span> <a href="../../../../../../libs/container_gen/test/result_range.hpp" target="_top"><code class="computeroutput"><span class="special">&lt;</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">result_range</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code></a>
+<span class="special">*</span> <a href="../../../../../../libs/container_gen/test/insert_range_function_gen.cpp" target="_top"><code class="computeroutput"><span class="special">&lt;</span><span class="identifier">test</span><span class="special">/</span><span class="identifier">insert_range_function_gen</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">&gt;</span></code></a>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 1997-2013 Andrew Lumsdaine, Lie-Quan Lee,
+      Thomas Claveirole, Jeremy G. Siek, Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="push_range_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="splice_function_gen.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
