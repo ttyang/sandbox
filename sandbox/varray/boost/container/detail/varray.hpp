@@ -734,7 +734,7 @@ public:
         errh::check_capacity(*this, m_size + 1);                                    // may throw
 
         namespace sv = varray_detail;
-        sv::construct(dti(), this->end(), value);                                          // may throw
+        sv::construct(dti(), this->end(), ::boost::move(value));                           // may throw
         ++m_size; // update end
     }
 
@@ -776,7 +776,28 @@ public:
     //!   Constant or linear.
     iterator insert(iterator position, value_type const& value)
     {
-        return this->priv_insert(position, value);
+        typedef typename vt::disable_trivial_init dti;
+        namespace sv = varray_detail;
+
+        errh::check_iterator_end_eq(*this, position);
+        errh::check_capacity(*this, m_size + 1);                                    // may throw
+
+        if ( position == this->end() )
+        {
+            sv::construct(dti(), position, value);                                  // may throw
+            ++m_size; // update end
+        }
+        else
+        {
+            // TODO - should move be used only if it's nonthrowing?
+            value_type & r = *(this->end() - 1);
+            sv::construct(dti(), this->end(), boost::move(r));                      // may throw
+            ++m_size; // update end
+            sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
+            sv::assign(position, value);                                            // may throw
+        }
+
+        return position;
     }
 
     //! @pre
@@ -798,7 +819,28 @@ public:
     //!   Constant or linear.
     iterator insert(iterator position, BOOST_RV_REF(value_type) value)
     {
-        return this->priv_insert(position, value);
+        typedef typename vt::disable_trivial_init dti;
+        namespace sv = varray_detail;
+
+        errh::check_iterator_end_eq(*this, position);
+        errh::check_capacity(*this, m_size + 1);                                    // may throw
+
+        if ( position == this->end() )
+        {
+            sv::construct(dti(), position, boost::move(value));                     // may throw
+            ++m_size; // update end
+        }
+        else
+        {
+            // TODO - should move be used only if it's nonthrowing?
+            value_type & r = *(this->end() - 1);
+            sv::construct(dti(), this->end(), boost::move(r));                      // may throw
+            ++m_size; // update end
+            sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
+            sv::assign(position, boost::move(value));                               // may throw
+        }
+
+        return position;
     }
 
     //! @pre
@@ -1532,7 +1574,6 @@ private:
     {
         ::memcpy(this->data(), other.data(), sizeof(Value) * other.m_size);
         m_size = other.m_size;
-        other.m_size = 0;
     }
 
     // @par Throws
@@ -1546,8 +1587,6 @@ private:
         namespace sv = varray_detail;
         sv::uninitialized_move_if_noexcept(other.begin(), other.end(), this->begin());                  // may throw
         m_size = other.m_size;
-        sv::destroy(other.begin(), other.end());        
-        other.m_size = 0;
     }
 
     // @par Throws
@@ -1584,8 +1623,6 @@ private:
             sv::destroy(this->begin() + other.size(), this->end());
         }
         m_size = other.size(); // update end
-
-        other.clear();
     }
 
     // @par Throws
@@ -1676,42 +1713,6 @@ private:
         }
         sv::uninitialized_move(first_la, last_la, first_sm);                        // may throw
         sv::destroy(first_la, last_la);
-    }
-
-    // insert
-
-    // @par Throws
-    //   If Value's move constructor or move assignment throws
-    //   or if Value's copy assignment throws.
-    // @par Complexity
-    //   Linear O(N).
-    template <typename V>
-    iterator priv_insert(iterator position, V & value)
-    {
-        typedef typename vt::disable_trivial_init dti;
-        namespace sv = varray_detail;
-
-        errh::check_iterator_end_eq(*this, position);
-        errh::check_capacity(*this, m_size + 1);                                    // may throw
-
-        if ( position == this->end() )
-        {
-            sv::construct(dti(), position, value);                                         // may throw
-            ++m_size; // update end
-        }
-        else
-        {
-            // TODO - should following lines check for exception and revert to the old size?
-
-            // TODO - should move be used only if it's nonthrowing?
-            value_type & r = *(this->end() - 1);
-            sv::construct(dti(), this->end(), boost::move(r));                             // may throw
-            ++m_size; // update end
-            sv::move_backward(position, this->end() - 2, this->end() - 1);          // may throw
-            sv::assign(position, value);                                            // may throw
-        }
-
-        return position;
     }
 
     // insert

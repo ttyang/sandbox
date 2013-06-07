@@ -512,9 +512,9 @@ void test_swap_and_move_nd()
 
         BOOST_CHECK(v1.size() == N/2);
         BOOST_CHECK(s1.size() == N);
-        BOOST_CHECK(v2.size() == 0);
+        BOOST_CHECK(v2.size() == N); // objects aren't destroyed
         BOOST_CHECK(s2.size() == N);
-        BOOST_CHECK(v3.size() == 0);
+        BOOST_CHECK(v3.size() == N); // objects aren't destroyed
         BOOST_CHECK(s3.size() == N);
         BOOST_CHECK(v4.size() == N/2);
         BOOST_CHECK(s4.size() == N);
@@ -553,9 +553,9 @@ void test_swap_and_move_nd()
 
         BOOST_CHECK(v1.size() == N/3);
         BOOST_CHECK(s1.size() == N/2);
-        BOOST_CHECK(v2.size() == 0);
+        BOOST_CHECK(v2.size() == N/2); // objects aren't destroyed
         BOOST_CHECK(s2.size() == N/2);
-        BOOST_CHECK(v3.size() == 0);
+        BOOST_CHECK(v3.size() == N/2); // objects aren't destroyed
         BOOST_CHECK(s3.size() == N/2);
         for (size_t i = 0 ; i < N/3 ; ++i )
             BOOST_CHECK(v1[i] == T(100 + i));

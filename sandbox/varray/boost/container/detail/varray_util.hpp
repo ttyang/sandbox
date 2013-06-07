@@ -574,7 +574,7 @@ void construct(DisableTrivialInit const&, I pos, BOOST_RV_REF(P) p)
     use_memcpy;
 
     typedef typename boost::iterator_value<I>::type V;
-    new (static_cast<void*>(boost::addressof(*pos))) V(p);                      // may throw
+    new (static_cast<void*>(boost::addressof(*pos))) V(::boost::move(p));       // may throw
 }
 
 // Needed by emplace_back() and emplace()
@@ -654,7 +654,7 @@ template <typename I, typename V>
 inline
 void assign(I pos, BOOST_RV_REF(V) v)
 {
-    *pos = v;                                                                     // may throw
+    *pos = boost::move(v);                                                        // may throw
 }
 
 
